@@ -252,12 +252,31 @@ impl GhlServer {
         &self,
         Parameters(p): Parameters<ListLocationsParams>,
     ) -> Result<String, ErrorData> {
-        let locations = self
+        // /locations/search needs an agency (Company) token. Location-scoped
+        // credentials (the common PIT case) get 403 there but can still fetch
+        // their own location — fall back to that so the tool stays useful.
+        let (locations, note) = match self
             .ghl
             .locations()
             .search(p.company_id.as_deref(), p.limit.unwrap_or(50))
             .await
-            .map_err(internal)?;
+        {
+            Ok(list) => (list, None),
+            Err(ghl_sdk::Error::Api { status, .. })
+                if status.as_u16() == 403 && self.default_location.is_some() =>
+            {
+                let id = self.default_location.as_deref().unwrap();
+                let location = self.ghl.locations().get(id).await.map_err(internal)?;
+                (
+                    vec![location],
+                    Some(
+                        "credential is location-scoped (agency-wide search is forbidden); \
+                         showing the configured location only",
+                    ),
+                )
+            }
+            Err(e) => return Err(internal(e)),
+        };
         let summaries: Vec<_> = locations
             .iter()
             .map(|l| {
@@ -270,7 +289,7 @@ impl GhlServer {
                 })
             })
             .collect();
-        ok_json(&json!({ "locations": summaries, "count": summaries.len() }))
+        ok_json(&json!({ "locations": summaries, "count": summaries.len(), "note": note }))
     }
 
     #[tool(
