@@ -1,12 +1,26 @@
 //! MCP tool definitions, delegating to `ghl-sdk`.
 
+use ghl_sdk::calendars::CreateAppointment;
 use ghl_sdk::contacts::{CreateContact, UpdateContact};
+use ghl_sdk::conversations::SendMessage;
 use ghl_sdk::opportunities::{CreateOpportunity, UpdateOpportunity};
 use ghl_sdk::Ghl;
 use rmcp::handler::server::wrapper::Parameters;
 use rmcp::{tool, tool_handler, tool_router, ErrorData, ServerHandler};
 use serde::Deserialize;
 use serde_json::json;
+
+use crate::operations;
+
+/// Percent-encode a value going into a path segment.
+fn urlencode_segment(s: &str) -> String {
+    s.chars()
+        .flat_map(|c| match c {
+            'A'..='Z' | 'a'..='z' | '0'..='9' | '-' | '_' | '.' | '~' => vec![c],
+            _ => format!("%{:02X}", c as u32).chars().collect(),
+        })
+        .collect()
+}
 
 /// Shared server state.
 #[derive(Clone)]
@@ -156,6 +170,106 @@ pub struct MoveOpportunityParams {
     pub pipeline_stage_id: Option<String>,
     /// New status: "open", "won", "lost", or "abandoned".
     pub status: Option<String>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct SearchConversationsParams {
+    /// Free-text search over contact name / message content.
+    pub query: Option<String>,
+    /// Sub-account (location) id. Omit to use the server's default location.
+    pub location_id: Option<String>,
+    /// Max results, 1-100 (default 20).
+    pub limit: Option<u32>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct GetMessagesParams {
+    /// Conversation id from ghl_search_conversations.
+    pub conversation_id: String,
+    /// Max messages, 1-100 (default 20). Newest first.
+    pub limit: Option<u32>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct SendMessageParams {
+    /// Contact id to message.
+    pub contact_id: String,
+    /// Channel: "SMS", "Email", "WhatsApp", "IG", "FB", or "Live_Chat".
+    pub message_type: String,
+    /// Message body (plain text).
+    pub message: Option<String>,
+    /// Subject line — Email only.
+    pub subject: Option<String>,
+    /// HTML body — Email only.
+    pub html: Option<String>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct ListCalendarsParams {
+    /// Sub-account (location) id. Omit to use the server's default location.
+    pub location_id: Option<String>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct FreeSlotsParams {
+    /// Calendar id from ghl_list_calendars.
+    pub calendar_id: String,
+    /// Range start as epoch milliseconds.
+    pub start_date: i64,
+    /// Range end as epoch milliseconds.
+    pub end_date: i64,
+    /// IANA timezone for the returned slots, e.g. "America/New_York".
+    pub timezone: Option<String>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct BookAppointmentParams {
+    /// Calendar id from ghl_list_calendars.
+    pub calendar_id: String,
+    /// Contact id to book for.
+    pub contact_id: String,
+    /// Start time, ISO-8601 with offset, e.g. "2026-08-01T14:00:00+05:00".
+    /// Use a slot from ghl_get_free_slots.
+    pub start_time: String,
+    /// End time; defaults to the calendar's slot duration when omitted.
+    pub end_time: Option<String>,
+    /// Appointment title.
+    pub title: Option<String>,
+    /// Sub-account (location) id. Omit to use the server's default location.
+    pub location_id: Option<String>,
+    /// Notify the contact and assigned user (default: API's own default).
+    pub to_notify: Option<bool>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct SearchOperationsParams {
+    /// What you want to do, e.g. "create invoice", "list calendar events",
+    /// "send sms", "upload media". Leave empty with a module filter to browse.
+    pub query: String,
+    /// Restrict to one API module, e.g. "invoices", "calendars", "payments".
+    /// Call with an empty query and no module to see every module name.
+    pub module: Option<String>,
+    /// Max results (default 10, max 50).
+    pub limit: Option<u32>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct DescribeOperationParams {
+    /// Operation id from ghl_search_operations, e.g. "invoices.post_invoices".
+    pub operation_id: String,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct ExecuteOperationParams {
+    /// Operation id from ghl_search_operations, e.g. "invoices.get_invoices".
+    pub operation_id: String,
+    /// Path placeholder values, e.g. {"invoiceId": "abc123"}. Required for any
+    /// path containing {braces}.
+    pub path_params: Option<serde_json::Map<String, serde_json::Value>>,
+    /// Query string values, e.g. {"limit": "20", "altId": "loc_x"}.
+    pub query: Option<serde_json::Map<String, serde_json::Value>>,
+    /// JSON request body for POST/PUT/PATCH operations.
+    pub body: Option<serde_json::Value>,
 }
 
 #[derive(Debug, Deserialize, schemars::JsonSchema)]
@@ -500,6 +614,422 @@ impl GhlServer {
     }
 
     #[tool(
+        description = "Search conversation threads in a location, with the latest message \
+                       preview and unread counts. Read-only."
+    )]
+    async fn ghl_search_conversations(
+        &self,
+        Parameters(p): Parameters<SearchConversationsParams>,
+    ) -> Result<String, ErrorData> {
+        let location = self.resolve_location(p.location_id)?;
+        let page = self
+            .ghl
+            .conversations()
+            .search(&location, p.query.as_deref(), p.limit.unwrap_or(20))
+            .await
+            .map_err(internal)?;
+        let listed: Vec<_> = page
+            .conversations
+            .iter()
+            .map(|c| {
+                json!({
+                    "id": c.id,
+                    "contactId": c.contact_id,
+                    "fullName": c.full_name,
+                    "lastMessageBody": c.last_message_body,
+                    "lastMessageType": c.last_message_type,
+                    "unreadCount": c.unread_count,
+                })
+            })
+            .collect();
+        ok_json(&json!({
+            "conversations": listed,
+            "count": listed.len(),
+            "total": page.total,
+        }))
+    }
+
+    #[tool(description = "Read messages in a conversation thread, newest first. Read-only.")]
+    async fn ghl_get_messages(
+        &self,
+        Parameters(p): Parameters<GetMessagesParams>,
+    ) -> Result<String, ErrorData> {
+        let page = self
+            .ghl
+            .conversations()
+            .messages(&p.conversation_id, p.limit.unwrap_or(20))
+            .await
+            .map_err(internal)?;
+        let listed: Vec<_> = page
+            .messages
+            .iter()
+            .map(|m| {
+                json!({
+                    "id": m.id,
+                    "body": m.body,
+                    "messageType": m.message_type,
+                    "direction": m.direction,
+                    "status": m.status,
+                    "dateAdded": m.date_added,
+                })
+            })
+            .collect();
+        ok_json(&json!({
+            "messages": listed,
+            "count": listed.len(),
+            "has_more": page.next_page,
+        }))
+    }
+
+    #[tool(
+        description = "Send an SMS, email, or channel message to a contact. This contacts a real \
+                       person — requires the server started with --allow-destructive."
+    )]
+    async fn ghl_send_message(
+        &self,
+        Parameters(p): Parameters<SendMessageParams>,
+    ) -> Result<String, ErrorData> {
+        // Sending reaches a real recipient and cannot be undone, so it sits
+        // behind the same gate as deletes.
+        if !self.allow_destructive {
+            return Err(ErrorData::invalid_request(
+                "sending messages is disabled — restart ghl-mcp with --allow-destructive \
+                 (or GHL_ALLOW_DESTRUCTIVE=true) to permit outbound messages",
+                None,
+            ));
+        }
+        if p.message.is_none() && p.html.is_none() {
+            return Err(ErrorData::invalid_params(
+                "provide `message` (or `html` for email)",
+                None,
+            ));
+        }
+        let result = self
+            .ghl
+            .conversations()
+            .send_message(SendMessage {
+                message_type: p.message_type,
+                contact_id: p.contact_id,
+                message: p.message,
+                subject: p.subject,
+                html: p.html,
+                ..Default::default()
+            })
+            .await
+            .map_err(internal)?;
+        ok_json(&json!({
+            "conversationId": result.conversation_id,
+            "messageId": result.message_id,
+            "sent": true,
+        }))
+    }
+
+    #[tool(
+        description = "List bookable calendars in a location. Call before checking free slots or \
+                       booking. Read-only."
+    )]
+    async fn ghl_list_calendars(
+        &self,
+        Parameters(p): Parameters<ListCalendarsParams>,
+    ) -> Result<String, ErrorData> {
+        let location = self.resolve_location(p.location_id)?;
+        let calendars = self
+            .ghl
+            .calendars()
+            .list(&location)
+            .await
+            .map_err(internal)?;
+        let listed: Vec<_> = calendars
+            .iter()
+            .map(|c| {
+                json!({
+                    "id": c.id,
+                    "name": c.name,
+                    "calendarType": c.calendar_type,
+                    "slotDurationMinutes": c.slot_duration,
+                    "isActive": c.is_active,
+                })
+            })
+            .collect();
+        ok_json(&json!({ "calendars": listed, "count": listed.len() }))
+    }
+
+    #[tool(
+        description = "Get bookable free slots for a calendar in a date range (epoch \
+                       milliseconds). Returns slots grouped by date. Read-only."
+    )]
+    async fn ghl_get_free_slots(
+        &self,
+        Parameters(p): Parameters<FreeSlotsParams>,
+    ) -> Result<String, ErrorData> {
+        if p.end_date <= p.start_date {
+            return Err(ErrorData::invalid_params(
+                "end_date must be after start_date (both epoch milliseconds)",
+                None,
+            ));
+        }
+        let slots = self
+            .ghl
+            .calendars()
+            .free_slots(
+                &p.calendar_id,
+                p.start_date,
+                p.end_date,
+                p.timezone.as_deref(),
+            )
+            .await
+            .map_err(internal)?;
+        ok_json(&json!({
+            "by_date": slots.by_date.iter().map(|(d, s)| json!({ "date": d, "slots": s }))
+                .collect::<Vec<_>>(),
+            "total_slots": slots.all().len(),
+        }))
+    }
+
+    #[tool(
+        description = "Book an appointment on a calendar for a contact. Creates a real booking \
+                       (and may notify the contact) — requires the server started with \
+                       --allow-destructive."
+    )]
+    async fn ghl_book_appointment(
+        &self,
+        Parameters(p): Parameters<BookAppointmentParams>,
+    ) -> Result<String, ErrorData> {
+        if !self.allow_destructive {
+            return Err(ErrorData::invalid_request(
+                "booking is disabled — restart ghl-mcp with --allow-destructive \
+                 (or GHL_ALLOW_DESTRUCTIVE=true) to permit appointment creation",
+                None,
+            ));
+        }
+        let location = self.resolve_location(p.location_id)?;
+        let appointment = self
+            .ghl
+            .calendars()
+            .create_appointment(CreateAppointment {
+                calendar_id: p.calendar_id,
+                location_id: location,
+                contact_id: p.contact_id,
+                start_time: p.start_time,
+                end_time: p.end_time,
+                title: p.title,
+                to_notify: p.to_notify,
+                ..Default::default()
+            })
+            .await
+            .map_err(internal)?;
+        ok_json(&json!({
+            "id": appointment.id,
+            "title": appointment.title,
+            "startTime": appointment.start_time,
+            "endTime": appointment.end_time,
+            "status": appointment.appointment_status,
+        }))
+    }
+
+    #[tool(
+        description = "Discover any GoHighLevel API operation across all 41 modules (invoices, \
+                       calendars, payments, workflows, forms, products, social planner, custom \
+                       objects, and more). Use this when no dedicated tool covers what you need, \
+                       then ghl_describe_operation and ghl_execute_operation. Read-only."
+    )]
+    async fn ghl_search_operations(
+        &self,
+        Parameters(p): Parameters<SearchOperationsParams>,
+    ) -> Result<String, ErrorData> {
+        let limit = p.limit.unwrap_or(10).clamp(1, 50) as usize;
+
+        // Empty query with no module filter: return the module map so an agent
+        // can orient itself in one call.
+        if p.query.trim().is_empty() && p.module.is_none() {
+            return ok_json(&json!({
+                "hint": "pass a query like \"create invoice\", or a module name to browse it",
+                "total_operations": operations::operation_count(),
+                "modules": operations::modules(),
+            }));
+        }
+
+        let hits = operations::search(&p.query, p.module.as_deref(), limit);
+        if hits.is_empty() {
+            return ok_json(&json!({
+                "operations": [],
+                "hint": format!(
+                    "nothing matched. Try fewer words, or browse a module: {}",
+                    operations::modules().keys().take(12).cloned().collect::<Vec<_>>().join(", ")
+                ),
+            }));
+        }
+        let listed: Vec<_> = hits
+            .iter()
+            .map(|o| {
+                json!({
+                    "operation_id": o.id,
+                    "module": o.module,
+                    "method": o.method,
+                    "path": o.path,
+                    "summary": o.summary,
+                })
+            })
+            .collect();
+        ok_json(&json!({
+            "operations": listed,
+            "count": listed.len(),
+            "next_step": "call ghl_describe_operation with an operation_id for parameters",
+        }))
+    }
+
+    #[tool(
+        description = "Show the full call signature of an API operation: path and query \
+                       parameters, request-body fields, required OAuth scopes. Read-only."
+    )]
+    async fn ghl_describe_operation(
+        &self,
+        Parameters(p): Parameters<DescribeOperationParams>,
+    ) -> Result<String, ErrorData> {
+        let op = operations::find(&p.operation_id).ok_or_else(|| {
+            ErrorData::invalid_params(
+                format!(
+                    "unknown operation_id `{}` — find valid ids with ghl_search_operations",
+                    p.operation_id
+                ),
+                None,
+            )
+        })?;
+        ok_json(&json!({
+            "operation_id": op.id,
+            "module": op.module,
+            "method": op.method,
+            "path": op.path,
+            "summary": op.summary,
+            "description": op.desc,
+            "path_params": op.params.iter().filter(|q| q.location == "path").map(|q| json!({
+                "name": q.name, "type": q.r#type, "required": q.required, "description": q.desc,
+            })).collect::<Vec<_>>(),
+            "query_params": op.params.iter().filter(|q| q.location == "query").map(|q| json!({
+                "name": q.name, "type": q.r#type, "required": q.required, "description": q.desc,
+            })).collect::<Vec<_>>(),
+            "body": op.body.as_ref().map(|b| json!({
+                "fields": b.fields, "required": b.required, "schema_ref": b.r#ref,
+            })),
+            "required_scopes": op.scopes,
+            "next_step": "call ghl_execute_operation with this operation_id",
+        }))
+    }
+
+    #[tool(
+        description = "Execute any GoHighLevel API operation by id, with path params, query \
+                       params, and JSON body. Covers the entire API — use ghl_search_operations \
+                       and ghl_describe_operation first. Write operations (POST/PUT/PATCH) need \
+                       the server started with --allow-destructive; DELETE is always gated."
+    )]
+    async fn ghl_execute_operation(
+        &self,
+        Parameters(p): Parameters<ExecuteOperationParams>,
+    ) -> Result<String, ErrorData> {
+        let op = operations::find(&p.operation_id).ok_or_else(|| {
+            ErrorData::invalid_params(
+                format!(
+                    "unknown operation_id `{}` — find valid ids with ghl_search_operations",
+                    p.operation_id
+                ),
+                None,
+            )
+        })?;
+
+        // Anything that mutates data goes through the same gate as the typed
+        // destructive tools — an agent must not be able to route around it.
+        if op.method != "GET" && !self.allow_destructive {
+            return Err(ErrorData::invalid_request(
+                format!(
+                    "`{}` is a {} (write) operation; restart ghl-mcp with --allow-destructive \
+                     (or GHL_ALLOW_DESTRUCTIVE=true) to permit writes. Read-only GET operations \
+                     work without it.",
+                    op.id, op.method
+                ),
+                None,
+            ));
+        }
+
+        // Substitute {placeholders}; refuse rather than send a malformed path.
+        let mut path = op.path.clone();
+        let supplied = p.path_params.unwrap_or_default();
+        for param in op.params.iter().filter(|q| q.location == "path") {
+            let placeholder = format!("{{{}}}", param.name);
+            match supplied.get(&param.name) {
+                Some(value) => {
+                    let raw = value
+                        .as_str()
+                        .map(str::to_owned)
+                        .unwrap_or_else(|| value.to_string().trim_matches('"').to_owned());
+                    path = path.replace(&placeholder, &urlencode_segment(&raw));
+                }
+                None => {
+                    return Err(ErrorData::invalid_params(
+                        format!(
+                            "missing path_params.{} for `{}` (path {})",
+                            param.name, op.id, op.path
+                        ),
+                        None,
+                    ))
+                }
+            }
+        }
+        if path.contains('{') {
+            return Err(ErrorData::invalid_params(
+                format!("unresolved path placeholders in `{path}` — see ghl_describe_operation"),
+                None,
+            ));
+        }
+
+        // Default locationId-style params to the configured location when the
+        // caller omitted them, so simple calls just work.
+        let mut query: Vec<(String, String)> = p
+            .query
+            .unwrap_or_default()
+            .into_iter()
+            .map(|(k, v)| {
+                let s = v
+                    .as_str()
+                    .map(str::to_owned)
+                    .unwrap_or_else(|| v.to_string().trim_matches('"').to_owned());
+                (k, s)
+            })
+            .collect();
+        let requires = |name: &str| {
+            op.params
+                .iter()
+                .any(|q| q.location == "query" && q.name == name && q.required)
+        };
+        let missing = |q: &[(String, String)], name: &str| !q.iter().any(|(k, _)| k == name);
+
+        if let Some(default_loc) = &self.default_location {
+            for name in ["locationId", "location_id", "altId"] {
+                if requires(name) && missing(&query, name) {
+                    query.push((name.to_owned(), default_loc.clone()));
+                }
+            }
+        }
+        // `altId` is meaningless to the API without its companion discriminator,
+        // and every spec that has one enumerates only "location".
+        if requires("altType") && missing(&query, "altType") {
+            query.push(("altType".to_owned(), "location".to_owned()));
+        }
+
+        let result = self
+            .ghl
+            .request_raw(
+                &op.method,
+                &path,
+                &query,
+                p.body.as_ref(),
+                op.version.as_deref(),
+            )
+            .await
+            .map_err(internal)?;
+        ok_json(&result)
+    }
+
+    #[tool(
         description = "Report remaining GoHighLevel API rate-limit budget (burst window and \
                        daily) as last observed. Read-only, makes no API call."
     )]
@@ -515,12 +1045,17 @@ impl GhlServer {
 
 #[tool_handler(
     name = "ghl-mcp",
-    version = "0.1.0",
-    instructions = "Tools for working with a GoHighLevel (HighLevel) CRM account: contacts, \
-                    opportunities (pipeline deals), and locations. If no default location is \
-                    configured, call ghl_list_locations first and pass location_id explicitly. \
-                    For opportunity work, call ghl_list_pipelines first to get pipeline and \
-                    stage ids. Paginate with the returned next_cursor. Deletion requires the \
-                    server to be started with --allow-destructive."
+    version = "0.2.0",
+    instructions = "Tools for working with a GoHighLevel (HighLevel) CRM account. Dedicated \
+                    typed tools cover contacts, opportunities (pipeline deals), and locations. \
+                    For anything else — invoices, calendars, payments, workflows, forms, \
+                    products, social planner, custom objects, and every other module — use \
+                    ghl_search_operations to find the endpoint, ghl_describe_operation to see \
+                    its parameters, then ghl_execute_operation to call it; together these reach \
+                    the entire API. If no default location is configured, call \
+                    ghl_list_locations first and pass location_id explicitly. For opportunity \
+                    work, call ghl_list_pipelines first to get pipeline and stage ids. Paginate \
+                    with the returned next_cursor. Writes and deletions require the server to \
+                    be started with --allow-destructive."
 )]
 impl ServerHandler for GhlServer {}

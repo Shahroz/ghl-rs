@@ -28,20 +28,50 @@ Create the `pit-…` token in your sub-account under **Settings → Private Inte
 
 ## Tools
 
+21 tools: dedicated typed tools for the busiest modules, plus meta-tools that reach **every** GoHighLevel endpoint.
+
+### Contacts
 | Tool | Effect |
 |---|---|
 | `ghl_search_contacts` | Search/list contacts (paginated via `next_cursor`) — read-only |
 | `ghl_get_contact` | Full contact by id — read-only |
 | `ghl_create_contact` | Create a contact (requires email or phone) |
 | `ghl_update_contact` | Update provided fields only |
-| `ghl_delete_contact` | **Destructive** — disabled unless `--allow-destructive` |
+| `ghl_delete_contact` | **Gated** — needs `--allow-destructive` |
+
+### Opportunities
+| Tool | Effect |
+|---|---|
 | `ghl_list_pipelines` | Pipelines + stage ids for a location — read-only |
 | `ghl_search_opportunities` | Search deals by pipeline/status/text (paginated) — read-only |
 | `ghl_get_opportunity` | Full opportunity by id — read-only |
 | `ghl_create_opportunity` | Create a deal in a pipeline |
-| `ghl_move_opportunity` | Change a deal's stage and/or status (open/won/lost/abandoned) |
+| `ghl_move_opportunity` | Change a deal's stage and/or status |
+
+### Conversations & calendars
+| Tool | Effect |
+|---|---|
+| `ghl_search_conversations` | Threads with last-message preview and unread counts — read-only |
+| `ghl_get_messages` | Messages in a thread, newest first — read-only |
+| `ghl_send_message` | Send SMS/email/channel message — **gated** (reaches a real person) |
+| `ghl_list_calendars` | Bookable calendars — read-only |
+| `ghl_get_free_slots` | Available slots in a date range — read-only |
+| `ghl_book_appointment` | Book an appointment — **gated** |
+
+### Whole-API access (meta-tools)
+| Tool | Effect |
+|---|---|
+| `ghl_search_operations` | Find any of **576 operations across all 41 modules** — read-only |
+| `ghl_describe_operation` | Parameters, body fields, and required scopes for an operation — read-only |
+| `ghl_execute_operation` | Call any endpoint by id; writes are **gated** — read-only GETs always work |
+
+### Utility
+| Tool | Effect |
+|---|---|
 | `ghl_list_locations` | Discover sub-accounts visible to the credential — read-only |
 | `ghl_rate_status` | Remaining API rate budget — read-only, no API call |
+
+The operations catalog is generated from [HighLevel's official OpenAPI specs](https://github.com/GoHighLevel/highlevel-api-docs) and embedded in the binary, so invoices, payments, workflows, forms, products, social planner, custom objects — everything — is callable without waiting for typed coverage.
 
 ## Configuration
 

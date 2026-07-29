@@ -31,7 +31,7 @@ async fn main() -> Result<(), ghl_sdk::Error> {
 }
 ```
 
-Current coverage: **contacts, locations, OAuth/token exchange** — the rest of the 41-module API surface is on the [roadmap](https://github.com/Shahroz/ghl-rs#status--roadmap). Untyped endpoints are reachable today via `ghl.get_raw()` / `ghl.post_raw()`.
+Typed coverage today: **contacts, opportunities, conversations, calendars, locations**, plus OAuth/token exchange. Any other endpoint in GoHighLevel's 41-module API is reachable right now through `ghl.request_raw()` (arbitrary method/path/query/body, same auth + retry + rate-limit handling) or the convenience `get_raw()` / `post_raw()` helpers.
 
 Looking for the AI-agent side? See [`ghl-mcp`](https://crates.io/crates/ghl-mcp), the MCP server built on this SDK.
 

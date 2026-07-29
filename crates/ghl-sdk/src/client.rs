@@ -10,7 +10,9 @@ use serde::de::DeserializeOwned;
 use serde::Serialize;
 
 use crate::auth::Auth;
+use crate::calendars::CalendarsService;
 use crate::contacts::ContactsService;
+use crate::conversations::ConversationsService;
 use crate::error::{Error, Result};
 use crate::locations::LocationsService;
 use crate::opportunities::OpportunitiesService;
@@ -196,6 +198,16 @@ impl Ghl {
         OpportunitiesService::new(self.clone())
     }
 
+    /// Conversations (threads, messages, sending) API.
+    pub fn conversations(&self) -> ConversationsService {
+        ConversationsService::new(self.clone())
+    }
+
+    /// Calendars (calendars, free slots, appointments) API.
+    pub fn calendars(&self) -> CalendarsService {
+        CalendarsService::new(self.clone())
+    }
+
     /// The most recently observed rate-limit headroom.
     pub fn rate_status(&self) -> RateStatus {
         let read = |a: &AtomicI64| {
@@ -268,6 +280,26 @@ impl Ghl {
         self.send(Method::POST, path, &[], Some(body)).await
     }
 
+    /// Call any API endpoint with an arbitrary method, query, and body.
+    ///
+    /// This is the fully generic escape hatch. Prefer the typed module services
+    /// when they cover what you need — they validate inputs and return real
+    /// types. `version` overrides the `Version` header for the endpoints that
+    /// require a value other than [`API_VERSION`].
+    pub async fn request_raw(
+        &self,
+        method: &str,
+        path: &str,
+        query: &[(String, String)],
+        body: Option<&serde_json::Value>,
+        version: Option<&str>,
+    ) -> Result<serde_json::Value> {
+        let method = Method::from_bytes(method.to_uppercase().as_bytes())
+            .map_err(|_| Error::Config(format!("invalid HTTP method `{method}`")))?;
+        self.send_versioned(method, path, query, body, version)
+            .await
+    }
+
     // ----- request core -----
 
     pub(crate) async fn send<T: DeserializeOwned>(
@@ -276,6 +308,17 @@ impl Ghl {
         path: &str,
         query: &[(String, String)],
         body: Option<&impl Serialize>,
+    ) -> Result<T> {
+        self.send_versioned(method, path, query, body, None).await
+    }
+
+    pub(crate) async fn send_versioned<T: DeserializeOwned>(
+        &self,
+        method: Method,
+        path: &str,
+        query: &[(String, String)],
+        body: Option<&impl Serialize>,
+        version: Option<&str>,
     ) -> Result<T> {
         // Serialize the body once so retries don't re-serialize (and can't observe drift).
         let body = match body {
@@ -305,7 +348,7 @@ impl Ghl {
                 .http
                 .request(method.clone(), &url)
                 .header(AUTHORIZATION, format!("Bearer {bearer}"))
-                .header("Version", API_VERSION)
+                .header("Version", version.unwrap_or(API_VERSION))
                 .header(reqwest::header::ACCEPT, "application/json");
             if !query.is_empty() {
                 request = request.query(query);

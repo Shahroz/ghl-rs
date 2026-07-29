@@ -13,6 +13,8 @@ One typed SDK. One static-binary MCP server. Every location in your agency — n
 | [`ghl-sdk`](crates/ghl-sdk) | Async, typed Rust client for the GoHighLevel API 2.0 — OAuth 2.0 + Private Integration Tokens, automatic token refresh, rate-limit-aware retries, pagination as `Stream`s |
 | [`ghl-mcp`](crates/ghl-mcp) | [MCP](https://modelcontextprotocol.io) server exposing GoHighLevel to Claude, ChatGPT, Gemini, and any MCP host — built on the official `rmcp` SDK, ships as a single binary |
 
+**Full API coverage, two ways.** Typed services cover the highest-traffic modules (contacts, opportunities, conversations, calendars, locations). Everything else — invoices, payments, workflows, forms, products, social planner, custom objects, and the rest — is reachable through the MCP server's meta-tools, which index **576 operations across all 41 API modules** straight from HighLevel's official OpenAPI specs. No endpoint is out of reach while typed coverage grows.
+
 ## Why this exists
 
 GoHighLevel powers **60k+ agencies and ~2M businesses**, but its developer stack has gaps:
@@ -25,6 +27,7 @@ GoHighLevel powers **60k+ agencies and ~2M businesses**, but its developer stack
 
 |  | Official MCP server | Community Node servers | **ghl-mcp** |
 |---|---|---|---|
+| API coverage | ~36 curated tools | varies, often stale | ✅ 21 tools + all 576 operations via meta-tools |
 | Agency (multi-location) access | ❌ one location per connection | ⚠️ varies | ✅ agency token → per-location routing |
 | Self-hostable | ❌ | ✅ | ✅ |
 | Runtime | hosted | Node.js | **single static binary** |
@@ -117,16 +120,18 @@ Secrets are held in [`secrecy`](https://docs.rs/secrecy) types — they never ap
 
 ## Status & roadmap
 
-Early but real: v0.1 covers **auth (PIT + OAuth token refresh + agency→location token exchange), contacts, opportunities, and locations**, with retries, rate-limit handling, and a wiremock-backed test suite. The full research and design rationale lives in [docs/PROPOSAL.md](docs/PROPOSAL.md).
+The MCP server reaches the **entire** API today; typed SDK services cover the busiest modules and keep growing. Design rationale lives in [docs/PROPOSAL.md](docs/PROPOSAL.md).
 
 - [x] Private Integration Token + OAuth token refresh + `/oauth/locationToken` exchange
 - [x] Contacts (CRUD + cursor-paginated list as `Stream`)
 - [x] Opportunities (pipelines, search, CRUD, stage/status moves)
+- [x] Conversations (search threads, read messages, send SMS/email)
+- [x] Calendars (list, free slots, book/fetch appointments)
 - [x] Locations (get + search, with location-scoped fallback)
-- [x] MCP server: 12 contact/opportunity/location tools over stdio, destructive gating
-- [ ] Conversations, calendars, payments, invoices
+- [x] MCP server: 21 tools over stdio, write/destructive gating
+- [x] Meta-tools reaching all **576 operations / 41 modules** from the official specs
+- [ ] Typed services for invoices, payments, products, workflows
 - [ ] Streamable HTTP transport (hosted multi-tenant gateway)
-- [ ] Meta-tools (`ghl_execute_operation`) for full ~413-operation coverage
 - [ ] Webhook signature validation + typed events
 - [ ] `npx ghl-mcp` wrapper, Homebrew tap, Docker image
 

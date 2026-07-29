@@ -33,8 +33,10 @@
 #![warn(clippy::all)]
 
 pub mod auth;
+pub mod calendars;
 mod client;
 pub mod contacts;
+pub mod conversations;
 mod error;
 pub mod locations;
 pub mod opportunities;

@@ -1,5 +1,6 @@
 //! ghl-mcp: MCP server for GoHighLevel CRM, over stdio.
 
+mod operations;
 mod server;
 
 use anyhow::Context;
