@@ -13,6 +13,7 @@ use crate::auth::Auth;
 use crate::contacts::ContactsService;
 use crate::error::{Error, Result};
 use crate::locations::LocationsService;
+use crate::opportunities::OpportunitiesService;
 
 /// Production API base URL.
 pub const DEFAULT_BASE_URL: &str = "https://services.leadconnectorhq.com";
@@ -188,6 +189,11 @@ impl Ghl {
     /// Locations (sub-accounts) API.
     pub fn locations(&self) -> LocationsService {
         LocationsService::new(self.clone())
+    }
+
+    /// Opportunities (pipeline deals) API.
+    pub fn opportunities(&self) -> OpportunitiesService {
+        OpportunitiesService::new(self.clone())
     }
 
     /// The most recently observed rate-limit headroom.

@@ -117,13 +117,14 @@ Secrets are held in [`secrecy`](https://docs.rs/secrecy) types — they never ap
 
 ## Status & roadmap
 
-Early but real: v0.1 covers **auth (PIT + OAuth token refresh + agency→location token exchange), contacts, and locations**, with retries, rate-limit handling, and a wiremock-backed test suite.
+Early but real: v0.1 covers **auth (PIT + OAuth token refresh + agency→location token exchange), contacts, opportunities, and locations**, with retries, rate-limit handling, and a wiremock-backed test suite. The full research and design rationale lives in [docs/PROPOSAL.md](docs/PROPOSAL.md).
 
 - [x] Private Integration Token + OAuth token refresh + `/oauth/locationToken` exchange
 - [x] Contacts (CRUD + cursor-paginated list as `Stream`)
-- [x] Locations (get + search)
-- [x] MCP server: contact & location tools over stdio, destructive gating
-- [ ] Opportunities, conversations, calendars, payments, invoices
+- [x] Opportunities (pipelines, search, CRUD, stage/status moves)
+- [x] Locations (get + search, with location-scoped fallback)
+- [x] MCP server: 12 contact/opportunity/location tools over stdio, destructive gating
+- [ ] Conversations, calendars, payments, invoices
 - [ ] Streamable HTTP transport (hosted multi-tenant gateway)
 - [ ] Meta-tools (`ghl_execute_operation`) for full ~413-operation coverage
 - [ ] Webhook signature validation + typed events

@@ -35,6 +35,11 @@ Create the `pit-…` token in your sub-account under **Settings → Private Inte
 | `ghl_create_contact` | Create a contact (requires email or phone) |
 | `ghl_update_contact` | Update provided fields only |
 | `ghl_delete_contact` | **Destructive** — disabled unless `--allow-destructive` |
+| `ghl_list_pipelines` | Pipelines + stage ids for a location — read-only |
+| `ghl_search_opportunities` | Search deals by pipeline/status/text (paginated) — read-only |
+| `ghl_get_opportunity` | Full opportunity by id — read-only |
+| `ghl_create_opportunity` | Create a deal in a pipeline |
+| `ghl_move_opportunity` | Change a deal's stage and/or status (open/won/lost/abandoned) |
 | `ghl_list_locations` | Discover sub-accounts visible to the credential — read-only |
 | `ghl_rate_status` | Remaining API rate budget — read-only, no API call |
 

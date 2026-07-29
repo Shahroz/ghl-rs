@@ -162,3 +162,115 @@ async fn rate_status_reflects_headers() {
     assert_eq!(status.burst_remaining, Some(42));
     assert_eq!(status.daily_remaining, Some(199000));
 }
+
+#[tokio::test]
+async fn opportunity_search_uses_snake_case_params_and_paginates() {
+    use ghl_sdk::opportunities::Opportunity;
+
+    let server = MockServer::start().await;
+    Mock::given(method("GET"))
+        .and(path("/opportunities/search"))
+        .and(query_param("location_id", "loc-1"))
+        .and(query_param("limit", "2"))
+        .and(query_param("status", "open"))
+        .and(query_param("startAfterId", "o-b"))
+        .respond_with(ResponseTemplate::new(200).set_body_json(json!({
+            "opportunities": [{ "id": "o-c", "name": "Deal C" }],
+            "meta": {}
+        })))
+        .expect(1)
+        .mount(&server)
+        .await;
+    Mock::given(method("GET"))
+        .and(path("/opportunities/search"))
+        .and(query_param("location_id", "loc-1"))
+        .and(query_param("limit", "2"))
+        .and(query_param("status", "open"))
+        .respond_with(ResponseTemplate::new(200).set_body_json(json!({
+            "opportunities": [
+                { "id": "o-a", "monetaryValue": 1500.5 },
+                { "id": "o-b" }
+            ],
+            "meta": { "startAfterId": "o-b" }
+        })))
+        .expect(1)
+        .mount(&server)
+        .await;
+
+    let all: Vec<Opportunity> = client(&server)
+        .opportunities()
+        .search("loc-1")
+        .limit(2)
+        .status("open")
+        .stream()
+        .try_collect()
+        .await
+        .expect("stream completes");
+
+    assert_eq!(
+        all.iter().map(|o| o.id.as_str()).collect::<Vec<_>>(),
+        vec!["o-a", "o-b", "o-c"]
+    );
+    assert_eq!(all[0].monetary_value, Some(1500.5));
+}
+
+#[tokio::test]
+async fn pipelines_and_opportunity_create_roundtrip() {
+    let server = MockServer::start().await;
+    Mock::given(method("GET"))
+        .and(path("/opportunities/pipelines"))
+        .and(query_param("locationId", "loc-1"))
+        .respond_with(ResponseTemplate::new(200).set_body_json(json!({
+            "pipelines": [{
+                "id": "pipe-1",
+                "name": "Sales",
+                "stages": [
+                    { "id": "st-1", "name": "New", "position": 0 },
+                    { "id": "st-2", "name": "Won", "position": 1 }
+                ]
+            }]
+        })))
+        .mount(&server)
+        .await;
+    Mock::given(method("POST"))
+        .and(path("/opportunities/"))
+        .respond_with(ResponseTemplate::new(201).set_body_json(json!({
+            "opportunity": {
+                "id": "o-1", "name": "Acme deal",
+                "pipelineId": "pipe-1", "pipelineStageId": "st-1", "status": "open"
+            }
+        })))
+        .mount(&server)
+        .await;
+    Mock::given(method("PUT"))
+        .and(path("/opportunities/o-1/status"))
+        .respond_with(ResponseTemplate::new(200).set_body_json(json!({ "succeded": true })))
+        .mount(&server)
+        .await;
+
+    let ghl = client(&server);
+    let pipelines = ghl
+        .opportunities()
+        .pipelines("loc-1")
+        .await
+        .expect("pipelines");
+    assert_eq!(pipelines[0].stages.len(), 2);
+
+    let created = ghl
+        .opportunities()
+        .create(ghl_sdk::opportunities::CreateOpportunity {
+            location_id: "loc-1".into(),
+            pipeline_id: pipelines[0].id.clone(),
+            name: "Acme deal".into(),
+            ..Default::default()
+        })
+        .await
+        .expect("create");
+    assert_eq!(created.id, "o-1");
+    assert_eq!(created.status.as_deref(), Some("open"));
+
+    ghl.opportunities()
+        .update_status("o-1", "won")
+        .await
+        .expect("status update");
+}

@@ -1,6 +1,7 @@
 //! MCP tool definitions, delegating to `ghl-sdk`.
 
 use ghl_sdk::contacts::{CreateContact, UpdateContact};
+use ghl_sdk::opportunities::{CreateOpportunity, UpdateOpportunity};
 use ghl_sdk::Ghl;
 use rmcp::handler::server::wrapper::Parameters;
 use rmcp::{tool, tool_handler, tool_router, ErrorData, ServerHandler};
@@ -87,6 +88,74 @@ pub struct UpdateContactParams {
 pub struct DeleteContactParams {
     /// The contact id to delete.
     pub contact_id: String,
+}
+
+fn opportunity_summary(o: &ghl_sdk::opportunities::Opportunity) -> serde_json::Value {
+    json!({
+        "id": o.id,
+        "name": o.name,
+        "status": o.status,
+        "pipelineId": o.pipeline_id,
+        "pipelineStageId": o.pipeline_stage_id,
+        "contactId": o.contact_id,
+        "monetaryValue": o.monetary_value,
+        "assignedTo": o.assigned_to,
+        "updatedAt": o.updated_at,
+    })
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct ListPipelinesParams {
+    /// Sub-account (location) id. Omit to use the server's default location.
+    pub location_id: Option<String>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct SearchOpportunitiesParams {
+    /// Free-text search on opportunity/contact name. Omit to list all.
+    pub query: Option<String>,
+    /// Sub-account (location) id. Omit to use the server's default location.
+    pub location_id: Option<String>,
+    /// Restrict to one pipeline id (see ghl_list_pipelines).
+    pub pipeline_id: Option<String>,
+    /// Filter: "open", "won", "lost", "abandoned", or "all".
+    pub status: Option<String>,
+    /// Max results, 1-100 (default 20).
+    pub limit: Option<u32>,
+    /// Cursor from a previous call's `next_cursor` to fetch the next page.
+    pub cursor: Option<String>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct GetOpportunityParams {
+    /// The opportunity id.
+    pub opportunity_id: String,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct CreateOpportunityParams {
+    /// Sub-account (location) id. Omit to use the server's default location.
+    pub location_id: Option<String>,
+    /// Pipeline id (find via ghl_list_pipelines).
+    pub pipeline_id: String,
+    /// Opportunity name, e.g. "Acme Corp — annual plan".
+    pub name: String,
+    /// Stage id within the pipeline (defaults to the first stage).
+    pub pipeline_stage_id: Option<String>,
+    /// Contact id to attach the deal to.
+    pub contact_id: Option<String>,
+    /// Deal value in the location's currency.
+    pub monetary_value: Option<f64>,
+}
+
+#[derive(Debug, Deserialize, schemars::JsonSchema)]
+pub struct MoveOpportunityParams {
+    /// The opportunity id.
+    pub opportunity_id: String,
+    /// Target stage id within the same pipeline (see ghl_list_pipelines).
+    pub pipeline_stage_id: Option<String>,
+    /// New status: "open", "won", "lost", or "abandoned".
+    pub status: Option<String>,
 }
 
 #[derive(Debug, Deserialize, schemars::JsonSchema)]
@@ -293,6 +362,144 @@ impl GhlServer {
     }
 
     #[tool(
+        description = "List sales pipelines and their ordered stages for a location. Call this \
+                       before creating or moving opportunities to get pipeline/stage ids. \
+                       Read-only."
+    )]
+    async fn ghl_list_pipelines(
+        &self,
+        Parameters(p): Parameters<ListPipelinesParams>,
+    ) -> Result<String, ErrorData> {
+        let location = self.resolve_location(p.location_id)?;
+        let pipelines = self
+            .ghl
+            .opportunities()
+            .pipelines(&location)
+            .await
+            .map_err(internal)?;
+        let summaries: Vec<_> = pipelines
+            .iter()
+            .map(|pl| {
+                json!({
+                    "id": pl.id,
+                    "name": pl.name,
+                    "stages": pl.stages.iter().map(|s| json!({
+                        "id": s.id, "name": s.name, "position": s.position,
+                    })).collect::<Vec<_>>(),
+                })
+            })
+            .collect();
+        ok_json(&json!({ "pipelines": summaries, "count": summaries.len() }))
+    }
+
+    #[tool(
+        description = "Search or list opportunities (pipeline deals) in a location, optionally \
+                       filtered by pipeline, status, or free text. Returns summaries and a \
+                       `next_cursor` for pagination. Read-only."
+    )]
+    async fn ghl_search_opportunities(
+        &self,
+        Parameters(p): Parameters<SearchOpportunitiesParams>,
+    ) -> Result<String, ErrorData> {
+        let location = self.resolve_location(p.location_id)?;
+        let mut request = self
+            .ghl
+            .opportunities()
+            .search(&location)
+            .limit(p.limit.unwrap_or(20));
+        if let Some(q) = p.query {
+            request = request.query(q);
+        }
+        if let Some(id) = p.pipeline_id {
+            request = request.pipeline_id(id);
+        }
+        if let Some(s) = p.status {
+            request = request.status(s);
+        }
+        if let Some(cursor) = p.cursor {
+            request = request.start_after_id(cursor);
+        }
+        let page = request.page().await.map_err(internal)?;
+        let next_cursor = page.meta.as_ref().and_then(|m| m.start_after_id.clone());
+        ok_json(&json!({
+            "opportunities": page.opportunities.iter().map(opportunity_summary).collect::<Vec<_>>(),
+            "count": page.opportunities.len(),
+            "total": page.meta.as_ref().and_then(|m| m.total),
+            "next_cursor": next_cursor,
+        }))
+    }
+
+    #[tool(description = "Fetch one opportunity by id, with all fields. Read-only.")]
+    async fn ghl_get_opportunity(
+        &self,
+        Parameters(p): Parameters<GetOpportunityParams>,
+    ) -> Result<String, ErrorData> {
+        let opportunity = self
+            .ghl
+            .opportunities()
+            .get(&p.opportunity_id)
+            .await
+            .map_err(internal)?;
+        ok_json(&serde_json::to_value(&opportunity).unwrap_or_default())
+    }
+
+    #[tool(
+        description = "Create an opportunity (deal) in a pipeline. Get pipeline_id and stage \
+                       ids from ghl_list_pipelines first."
+    )]
+    async fn ghl_create_opportunity(
+        &self,
+        Parameters(p): Parameters<CreateOpportunityParams>,
+    ) -> Result<String, ErrorData> {
+        let location = self.resolve_location(p.location_id)?;
+        let opportunity = self
+            .ghl
+            .opportunities()
+            .create(CreateOpportunity {
+                location_id: location,
+                pipeline_id: p.pipeline_id,
+                name: p.name,
+                pipeline_stage_id: p.pipeline_stage_id,
+                contact_id: p.contact_id,
+                monetary_value: p.monetary_value,
+                ..Default::default()
+            })
+            .await
+            .map_err(internal)?;
+        ok_json(&opportunity_summary(&opportunity))
+    }
+
+    #[tool(
+        description = "Move an opportunity to another pipeline stage and/or change its status \
+                       (open/won/lost/abandoned). Provide at least one of the two."
+    )]
+    async fn ghl_move_opportunity(
+        &self,
+        Parameters(p): Parameters<MoveOpportunityParams>,
+    ) -> Result<String, ErrorData> {
+        if p.pipeline_stage_id.is_none() && p.status.is_none() {
+            return Err(ErrorData::invalid_params(
+                "provide `pipeline_stage_id`, `status`, or both",
+                None,
+            ));
+        }
+        let opportunity = self
+            .ghl
+            .opportunities()
+            .update(
+                &p.opportunity_id,
+                UpdateOpportunity {
+                    pipeline_stage_id: p.pipeline_stage_id,
+                    status: p.status,
+                    ..Default::default()
+                },
+            )
+            .await
+            .map_err(internal)?;
+        ok_json(&opportunity_summary(&opportunity))
+    }
+
+    #[tool(
         description = "Report remaining GoHighLevel API rate-limit budget (burst window and \
                        daily) as last observed. Read-only, makes no API call."
     )]
@@ -309,10 +516,11 @@ impl GhlServer {
 #[tool_handler(
     name = "ghl-mcp",
     version = "0.1.0",
-    instructions = "Tools for working with a GoHighLevel (HighLevel) CRM account. \
-                    Contacts and locations are supported today. If no default location is \
+    instructions = "Tools for working with a GoHighLevel (HighLevel) CRM account: contacts, \
+                    opportunities (pipeline deals), and locations. If no default location is \
                     configured, call ghl_list_locations first and pass location_id explicitly. \
-                    Paginate with the returned next_cursor. Deletion requires the server to be \
-                    started with --allow-destructive."
+                    For opportunity work, call ghl_list_pipelines first to get pipeline and \
+                    stage ids. Paginate with the returned next_cursor. Deletion requires the \
+                    server to be started with --allow-destructive."
 )]
 impl ServerHandler for GhlServer {}

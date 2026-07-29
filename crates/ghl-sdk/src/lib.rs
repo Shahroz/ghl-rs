@@ -37,6 +37,7 @@ mod client;
 pub mod contacts;
 mod error;
 pub mod locations;
+pub mod opportunities;
 
 pub use auth::{Auth, MemoryTokenStore, OAuthConfig, TokenSet, TokenStore, UserType};
 pub use client::{Ghl, GhlBuilder, RateStatus, API_VERSION, DEFAULT_BASE_URL};
