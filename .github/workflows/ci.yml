@@ -10,6 +10,21 @@ env:
   RUSTFLAGS: -D warnings
 
 jobs:
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail if GoHighLevel credentials are committed
+        # PITs look like pit-<uuid>; location/company ids are 20-char base62.
+        # Real ids must never appear in code, fixtures, or docs — config is
+        # env-var/flag only (GHL_PIT_TOKEN, GHL_LOCATION_ID).
+        run: |
+          if grep -rInE "pit-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}" --exclude-dir=.git .; then
+            echo "::error::GoHighLevel Private Integration Token found in the repo"
+            exit 1
+          fi
+          echo "no credential patterns found"
+
   test:
     runs-on: ubuntu-latest
     strategy:
