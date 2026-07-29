@@ -2,7 +2,10 @@
 name = "ghl-mcp"
 description = "MCP server for GoHighLevel CRM — agency-grade, single static binary, built on the official rmcp SDK"
 readme = "README.md"
-version.workspace = true
+# Binary-only crate: docs.rs doesn't build docs for it, so point the
+# crates.io Documentation link at the README instead.
+documentation = "https://github.com/Shahroz/ghl-rs/tree/main/crates/ghl-mcp#readme"
+version = "0.1.1"
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
