@@ -1,0 +1,80 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.shahroz/ghl-mcp",
+  "title": "GoHighLevel",
+  "description": "Typed access to the whole GoHighLevel (HighLevel) CRM API from AI agents: contacts, opportunities, conversations, calendars, plus meta-tools reaching all 1,203 operations across 45 modules. Single static binary, agency-wide multi-location support, writes gated off by default.",
+  "websiteUrl": "https://github.com/Shahroz/ghl-rs",
+  "repository": {
+    "url": "https://github.com/Shahroz/ghl-rs",
+    "source": "github",
+    "subfolder": "crates/ghl-mcp"
+  },
+  "version": "0.5.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "ghl-mcp",
+      "version": "0.5.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "GHL_PIT_TOKEN",
+          "description": "GoHighLevel Private Integration Token, created in a sub-account under Settings -> Private Integrations. Either this or GHL_ACCESS_TOKEN is required.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "GHL_ACCESS_TOKEN",
+          "description": "OAuth 2.0 access token, as an alternative to a Private Integration Token.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "GHL_LOCATION_ID",
+          "description": "Default sub-account (location) id used when a tool call omits location_id.",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "GHL_ALLOW_DESTRUCTIVE",
+          "description": "Set to true to permit writes, deletions, outbound messages and bookings. Off by default, so read-only tools work without risk.",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "GHL_BASE_URL",
+          "description": "Override the API base URL (proxies, testing).",
+          "isRequired": false,
+          "isSecret": false
+        }
+      ]
+    },
+    {
+      "registryType": "oci",
+      "registryBaseUrl": "https://ghcr.io",
+      "identifier": "shahroz/ghl-mcp",
+      "version": "0.5.1",
+      "transport": {
+        "type": "streamable-http",
+        "url": "http://localhost:8000/mcp"
+      },
+      "environmentVariables": [
+        {
+          "name": "GHL_PIT_TOKEN",
+          "description": "GoHighLevel Private Integration Token.",
+          "isRequired": false,
+          "isSecret": true
+        },
+        {
+          "name": "GHL_HTTP_AUTH_TOKEN",
+          "description": "Bearer token callers must present on the HTTP endpoint. Strongly recommended whenever the port is reachable by anything but localhost.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

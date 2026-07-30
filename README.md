@@ -43,6 +43,7 @@ let dup = ghl.v3().contacts().get_duplicate_contact(&p).await?;   // API v3
 | [docs.rs/ghl-sdk](https://docs.rs/ghl-sdk) | Client API docs |
 | [docs.rs/ghl-models](https://docs.rs/ghl-models) | All 2,417 DTOs, field by field |
 | [Design proposal](docs/PROPOSAL.md) | Research and architecture rationale |
+| [Release & distribution](docs/DISTRIBUTION.md) | Tagging, crates.io, Homebrew, npm, Docker, MCP registries |
 
 ## Why this exists
 
@@ -102,8 +103,8 @@ async fn main() -> Result<(), ghl_sdk::Error> {
 Need an endpoint without a typed service? Use the generated DTOs plus `request_raw`:
 
 ```toml
-ghl-sdk = { version = "0.3", features = ["models"] }
-ghl-models = { version = "0.3", features = ["invoices"] }
+ghl-sdk = { version = "0.5", features = ["models"] }
+ghl-models = { version = "0.5", features = ["invoices"] }
 ```
 
 ```rust,ignore
@@ -133,7 +134,7 @@ while let Some(c) = contacts.try_next().await? {
 ## Quickstart — MCP server
 
 ```sh
-cargo install ghl-mcp        # or: npx ghl-mcp   ·   docker run ghcr.io/shahroz/ghl-mcp
+cargo install ghl-mcp    # or: npx ghl-mcp · brew install · docker run
 ```
 
 Claude Desktop / Claude Code config:
@@ -157,10 +158,18 @@ Then ask your agent things like *"find every contact tagged `hot-lead` added thi
 To share one server between several agents, serve **Streamable HTTP** instead of stdio:
 
 ```sh
-ghl-mcp --http 127.0.0.1:8000     # MCP endpoint: http://127.0.0.1:8000/mcp
+ghl-mcp --http 127.0.0.1:8000 --http-auth-token "$(openssl rand -hex 32)"
 ```
 
-That listener has no authentication of its own — bind it to localhost or put an authenticating proxy in front.
+Callers then send `Authorization: Bearer <token>`. Omit the flag and the endpoint is unauthenticated (the server warns at startup) — only do that on localhost.
+
+Install without Rust:
+
+```sh
+npx ghl-mcp
+brew tap shahroz/ghl-rs https://github.com/Shahroz/ghl-rs && brew install ghl-mcp
+docker run -p 8000:8000 -e GHL_PIT_TOKEN=pit-… ghcr.io/shahroz/ghl-mcp
+```
 
 ## Configuration
 
@@ -174,6 +183,7 @@ Everything is configurable **by environment variable or explicitly as a paramete
 | `GHL_BASE_URL` | `--base-url` | `.base_url(…)` | API base (default `https://services.leadconnectorhq.com`) |
 | `GHL_ALLOW_DESTRUCTIVE` | `--allow-destructive` | — | Enable write/delete/send tools (off by default) |
 | `GHL_HTTP_ADDR` | `--http` | — | Serve Streamable HTTP instead of stdio |
+| `GHL_HTTP_AUTH_TOKEN` | `--http-auth-token` | — | Require a bearer token on the HTTP endpoint |
 | `RUST_LOG` | — | — | Log filter (logs go to stderr, MCP-safe) |
 
 Secrets are held in [`secrecy`](https://docs.rs/secrecy) types — they never appear in `Debug` output or logs.
@@ -195,8 +205,9 @@ The MCP server reaches the **entire** API today; typed SDK services cover the bu
 - [x] Webhook RSA signature verification + typed events (`webhooks` feature)
 - [x] Streamable HTTP transport for the MCP server (`--http`)
 - [x] `npx ghl-mcp` wrapper, Docker image, prebuilt release binaries
-- [ ] Homebrew tap, MCP registry listings
-- [ ] Hosted multi-tenant gateway (auth, per-location rate pooling, audit)
+- [x] Homebrew formula, MCP registry manifests (`server.json`, `smithery.yaml`)
+- [x] Bearer-token auth on the HTTP endpoint
+- [ ] Hosted gateway as a product: token vault, per-tenant rate pooling, audit trail, billing
 
 ## License
 

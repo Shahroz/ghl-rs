@@ -1,13 +1,32 @@
 {
   "name": "ghl-mcp",
-  "version": "0.5.0",
-  "description": "MCP server for GoHighLevel CRM — a single static binary, no Node runtime needed at run time",
-  "keywords": ["mcp", "gohighlevel", "highlevel", "crm", "model-context-protocol"],
+  "version": "0.5.1",
+  "description": "MCP server for GoHighLevel CRM \u2014 a single static binary, no Node runtime needed at run time",
+  "keywords": [
+    "mcp",
+    "gohighlevel",
+    "highlevel",
+    "crm",
+    "model-context-protocol"
+  ],
   "license": "MIT OR Apache-2.0",
-  "repository": { "type": "git", "url": "git+https://github.com/Shahroz/ghl-rs.git" },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shahroz/ghl-rs.git"
+  },
   "homepage": "https://github.com/Shahroz/ghl-rs#readme",
-  "bin": { "ghl-mcp": "bin/ghl-mcp.js" },
-  "files": ["bin/", "install.js", "README.md"],
-  "scripts": { "postinstall": "node install.js" },
-  "engines": { "node": ">=18" }
+  "bin": {
+    "ghl-mcp": "bin/ghl-mcp.js"
+  },
+  "files": [
+    "bin/",
+    "install.js",
+    "README.md"
+  ],
+  "scripts": {
+    "postinstall": "node install.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }

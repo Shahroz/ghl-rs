@@ -32,7 +32,7 @@ Everything you need to call GoHighLevel from Rust or from an AI agent. **Every A
 |---|---|---|
 | Call the API from Rust code | `ghl-sdk` | `cargo add ghl-sdk --features invoices,contacts` |
 | Typed request/response structs for any module | `ghl-models` | `cargo add ghl-models --features invoices,payments` |
-| Let Claude/ChatGPT/Gemini use your CRM | `ghl-mcp` | `cargo install ghl-mcp` |
+| Let Claude/ChatGPT/Gemini use your CRM | `ghl-mcp` | `cargo install ghl-mcp`, `npx ghl-mcp`, `brew install`, or Docker |
 
 `ghl-sdk` re-exports the models when you enable its `models` feature, so you can depend on just the SDK if you prefer:
 
@@ -628,8 +628,11 @@ HighLevel rotates the signing key occasionally and announces it by email and in 
 stdio is the default and what most MCP hosts launch. To share one server between several agents:
 
 ```sh
-ghl-mcp --http 127.0.0.1:8000      # MCP endpoint: http://127.0.0.1:8000/mcp
+ghl-mcp --http 127.0.0.1:8000 --http-auth-token "$(openssl rand -hex 32)"
+# MCP endpoint: http://127.0.0.1:8000/mcp
 ```
+
+Callers send `Authorization: Bearer <token>`; anything else gets `401` with a `WWW-Authenticate: Bearer` header. The comparison is constant-time, so the token can't be recovered from response timings.
 
 Or in a container:
 
@@ -637,7 +640,7 @@ Or in a container:
 docker run -p 8000:8000 -e GHL_PIT_TOKEN=pit-… -e GHL_LOCATION_ID=… ghcr.io/shahroz/ghl-mcp
 ```
 
-> **The HTTP listener has no authentication of its own.** Every caller gets whatever GoHighLevel credentials the server was started with. Bind it to localhost, or put an authenticating proxy in front. Never expose it to the internet directly.
+> **Omit `--http-auth-token` and the endpoint is unauthenticated** — every caller gets whatever GoHighLevel credentials the server was started with. The server logs a warning at startup in that case. Set a token whenever the port is reachable by anything other than localhost.
 
 The transport is stateless (MCP `2026-07-28`), so it scales horizontally behind a load balancer with no shared session store.
 

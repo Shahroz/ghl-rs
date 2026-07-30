@@ -1,0 +1,40 @@
+# Smithery deployment manifest — https://smithery.ai/docs
+# Smithery runs the container and speaks Streamable HTTP to it.
+runtime: container
+startCommand:
+  type: http
+build:
+  dockerfile: Dockerfile
+  dockerBuildPath: .
+configSchema:
+  type: object
+  required: []
+  properties:
+    ghlPitToken:
+      type: string
+      title: Private Integration Token
+      description: >-
+        Create one in your GoHighLevel sub-account under
+        Settings → Private Integrations. Either this or an OAuth access token is
+        required.
+      format: password
+    ghlAccessToken:
+      type: string
+      title: OAuth access token
+      description: Alternative to a Private Integration Token.
+      format: password
+    ghlLocationId:
+      type: string
+      title: Default location id
+      description: Sub-account used when a tool call omits location_id.
+    ghlAllowDestructive:
+      type: boolean
+      title: Allow writes
+      description: >-
+        Permit writes, deletions, outbound messages and bookings. Off by default,
+        so read-only tools are safe to enable without it.
+      default: false
+exampleConfig:
+  ghlPitToken: pit-REPLACE-WITH-YOUR-TOKEN
+  ghlLocationId: your-location-id
+  ghlAllowDestructive: false

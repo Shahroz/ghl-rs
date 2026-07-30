@@ -12,6 +12,13 @@ Or without a Rust toolchain:
 
 ```sh
 npx ghl-mcp                                    # downloads the prebuilt binary
+```
+
+```sh
+brew tap shahroz/ghl-rs https://github.com/Shahroz/ghl-rs && brew install ghl-mcp
+```
+
+```sh
 docker run -p 8000:8000 -e GHL_PIT_TOKEN=pit-… ghcr.io/shahroz/ghl-mcp
 ```
 
@@ -82,7 +89,7 @@ The operations catalog is generated from [HighLevel's official OpenAPI specs](ht
 
 **Both API versions.** v2 operation ids look like `invoices.get_invoices`; v3 ids are prefixed `v3:` (e.g. `v3:social-planner.post_posts`). Each carries its own `Version` header, so the right one is always sent — including the V3 `ad-publishing` module, which unusually declares `2021-07-28` rather than `v3`. Pass `api_version` to `ghl_search_operations` to filter; v2 wins ties by default since it's the stable API.
 
-Writing Rust rather than driving an agent? [`ghl-sdk`](https://crates.io/crates/ghl-sdk) has a typed method for every API v2 endpoint (576 of them), and [`ghl-models`](https://crates.io/crates/ghl-models) has all 2,417 DTOs.
+Writing Rust rather than driving an agent? [`ghl-sdk`](https://crates.io/crates/ghl-sdk) has a typed method for every endpoint (1,203 across v2 and v3), and [`ghl-models`](https://crates.io/crates/ghl-models) has all 2,417 DTOs.
 
 ## Full endpoint reference
 
@@ -95,10 +102,15 @@ Every operation id, its parameters, and its required scopes are listed per modul
 **Streamable HTTP** serves one shared server for several agents:
 
 ```sh
-ghl-mcp --http 127.0.0.1:8000     # MCP endpoint: http://127.0.0.1:8000/mcp
+ghl-mcp --http 127.0.0.1:8000 --http-auth-token "$(openssl rand -hex 32)"
+# MCP endpoint: http://127.0.0.1:8000/mcp
 ```
 
-> The HTTP listener has **no authentication of its own** — every caller gets the configured GoHighLevel credentials. Bind it to localhost, or front it with an authenticating proxy. Never expose it to the internet directly.
+Clients then send `Authorization: Bearer <token>`. Requests without it get `401` and a `WWW-Authenticate: Bearer` header; the comparison is constant-time so the token can't be recovered from response timings.
+
+> **Without `--http-auth-token` the endpoint is unauthenticated** and hands every caller the configured GoHighLevel credentials. The server logs a warning at startup in that case. Set a token whenever the port is reachable by anything other than localhost.
+
+The transport is stateless (MCP `2026-07-28`), so it scales horizontally behind a load balancer with no shared session store.
 
 ## Configuration
 
@@ -112,6 +124,7 @@ Flags win over environment variables.
 | `GHL_BASE_URL` | `--base-url` | API base override |
 | `GHL_ALLOW_DESTRUCTIVE` | `--allow-destructive` | Enable write/delete/send tools |
 | `GHL_HTTP_ADDR` | `--http` | Serve Streamable HTTP instead of stdio |
+| `GHL_HTTP_AUTH_TOKEN` | `--http-auth-token` | Require `Authorization: Bearer` on the HTTP endpoint |
 | `RUST_LOG` | — | Log filter (stderr only; stdout is the MCP channel) |
 
 License: MIT or Apache-2.0. *Not affiliated with HighLevel Inc.*

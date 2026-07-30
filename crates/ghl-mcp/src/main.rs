@@ -10,6 +10,7 @@ mod operations;
 mod server;
 
 use anyhow::Context;
+use axum::response::IntoResponse as _;
 use clap::Parser;
 use ghl_sdk::Ghl;
 use rmcp::transport::stdio;
@@ -46,12 +47,16 @@ struct Cli {
 
     /// Serve Streamable HTTP on this address instead of stdio,
     /// e.g. `127.0.0.1:8000`. The MCP endpoint is `/mcp`.
-    ///
-    /// The listener has **no authentication of its own** — it hands every caller
-    /// the credentials above. Bind it to localhost, or put it behind a proxy that
-    /// authenticates, and never expose it to the internet directly.
     #[arg(long, env = "GHL_HTTP_ADDR")]
     http: Option<String>,
+
+    /// Require `Authorization: Bearer <token>` on the HTTP endpoint.
+    ///
+    /// Without this, anyone who can reach the port gets full use of the
+    /// GoHighLevel credentials above. Set it whenever the port is reachable by
+    /// anything other than localhost.
+    #[arg(long, env = "GHL_HTTP_AUTH_TOKEN", hide_env_values = true)]
+    http_auth_token: Option<String>,
 }
 
 #[tokio::main]
@@ -90,7 +95,7 @@ async fn main() -> anyhow::Result<()> {
     let destructive = cli.allow_destructive;
 
     match cli.http {
-        Some(addr) => serve_http(ghl, location, destructive, &addr).await,
+        Some(addr) => serve_http(ghl, location, destructive, &addr, cli.http_auth_token).await,
         None => {
             tracing::info!(
                 default_location = location.as_deref().unwrap_or("<none>"),
@@ -106,12 +111,13 @@ async fn main() -> anyhow::Result<()> {
     }
 }
 
-/// Serve MCP over Streamable HTTP at `/mcp`.
+/// Serve MCP over Streamable HTTP at `/mcp`, optionally behind a bearer token.
 async fn serve_http(
     ghl: Ghl,
     location: Option<String>,
     destructive: bool,
     addr: &str,
+    auth_token: Option<String>,
 ) -> anyhow::Result<()> {
     use rmcp::transport::streamable_http_server::session::local::LocalSessionManager;
     use rmcp::transport::streamable_http_server::{
@@ -128,19 +134,86 @@ async fn serve_http(
             .with_json_response(true),
     );
 
-    let app = axum::Router::new().nest_service("/mcp", service);
+    let mut app = axum::Router::new().nest_service("/mcp", service);
+    if let Some(expected) = auth_token {
+        if expected.trim().is_empty() {
+            anyhow::bail!("--http-auth-token was empty; omit it or supply a real token");
+        }
+        app = app.layer(axum::middleware::from_fn(
+            move |req: axum::extract::Request, next: axum::middleware::Next| {
+                let expected = expected.clone();
+                async move { require_bearer(&expected, req, next).await }
+            },
+        ));
+        tracing::info!(%addr, "serving MCP over HTTP at /mcp (bearer auth required)");
+    } else {
+        tracing::warn!(
+            %addr,
+            "serving MCP over HTTP at /mcp with NO AUTHENTICATION — any caller \
+             reaching this port can use the configured GoHighLevel credentials. \
+             Set --http-auth-token (or GHL_HTTP_AUTH_TOKEN), bind to localhost, \
+             or front it with an authenticating proxy"
+        );
+    }
+
     let listener = tokio::net::TcpListener::bind(addr)
         .await
         .with_context(|| format!("failed to bind {addr}"))?;
-
-    tracing::warn!(
-        %addr,
-        "serving MCP over HTTP at /mcp — this endpoint is UNAUTHENTICATED and \
-         exposes the configured GoHighLevel credentials to any caller; bind to \
-         localhost or front it with an authenticating proxy"
-    );
     axum::serve(listener, app)
         .await
         .context("HTTP server failed")?;
     Ok(())
+}
+
+/// Reject requests without a matching `Authorization: Bearer` token.
+async fn require_bearer(
+    expected: &str,
+    req: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> axum::response::Response {
+    use axum::http::{header::AUTHORIZATION, StatusCode};
+
+    let presented = req
+        .headers()
+        .get(AUTHORIZATION)
+        .and_then(|v| v.to_str().ok())
+        .and_then(|v| v.strip_prefix("Bearer "))
+        .unwrap_or("");
+
+    if constant_time_eq(presented.as_bytes(), expected.as_bytes()) {
+        return next.run(req).await;
+    }
+    tracing::warn!("rejected an HTTP request with a missing or incorrect bearer token");
+    (
+        StatusCode::UNAUTHORIZED,
+        [(axum::http::header::WWW_AUTHENTICATE, "Bearer")],
+        "unauthorized: send Authorization: Bearer <token>",
+    )
+        .into_response()
+}
+
+/// Compare in time independent of how many leading bytes match, so a caller
+/// can't discover the token byte by byte from response timings.
+fn constant_time_eq(a: &[u8], b: &[u8]) -> bool {
+    if a.len() != b.len() {
+        return false;
+    }
+    a.iter().zip(b).fold(0u8, |acc, (x, y)| acc | (x ^ y)) == 0
+}
+
+#[cfg(test)]
+mod tests {
+    use super::constant_time_eq;
+
+    #[test]
+    fn compares_only_equal_bytes_as_equal() {
+        assert!(constant_time_eq(b"token", b"token"));
+        assert!(!constant_time_eq(b"token", b"tokeN"));
+        // A prefix must not pass — the length check is part of the contract.
+        assert!(!constant_time_eq(b"tok", b"token"));
+        assert!(!constant_time_eq(b"token", b"tok"));
+        // An absent header arrives as empty, which must never match a real token.
+        assert!(!constant_time_eq(b"", b"token"));
+        assert!(constant_time_eq(b"", b""));
+    }
 }
