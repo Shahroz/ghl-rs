@@ -38,7 +38,10 @@ jobs:
           components: rustfmt, clippy
       - uses: Swatinem/rust-cache@v2
       - run: cargo fmt --all --check
+      # Both extremes matter: feature-gated generated code can be unused with
+      # no features on, and only compiles at all with them on.
       - run: cargo clippy --workspace --all-targets
+      - run: cargo clippy --workspace --all-targets --all-features
       - run: cargo test --workspace
       # Docs are built with every feature on, matching how docs.rs renders them:
       # ghl-models' module-index links only resolve when those modules are compiled.

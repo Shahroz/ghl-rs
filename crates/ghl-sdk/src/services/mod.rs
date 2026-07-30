@@ -7,6 +7,10 @@
 //! compiling every module is far slower than compiling one.
 
 /// Percent-encode a value being interpolated into a URL path segment.
+///
+/// Only the generated services call this, and each is feature-gated, so with
+/// no module features enabled it is legitimately unused.
+#[allow(dead_code)]
 pub(crate) fn encode(s: &str) -> String {
     s.chars()
         .flat_map(|c| match c {
