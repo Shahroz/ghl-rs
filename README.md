@@ -10,10 +10,21 @@ One typed SDK. One static-binary MCP server. Every location in your agency — n
 
 | Crate | What it is |
 |---|---|
-| [`ghl-sdk`](crates/ghl-sdk) | Async, typed Rust client for the GoHighLevel API 2.0 — OAuth 2.0 + Private Integration Tokens, automatic token refresh, rate-limit-aware retries, pagination as `Stream`s |
+| [`ghl-sdk`](crates/ghl-sdk) | Async, typed Rust client for the GoHighLevel API — OAuth 2.0 + Private Integration Tokens, automatic token refresh, rate-limit-aware retries, pagination as `Stream`s |
+| [`ghl-models`](crates/ghl-models) | **2,417 generated DTOs** for every API module, both API versions, feature-gated per module |
 | [`ghl-mcp`](crates/ghl-mcp) | [MCP](https://modelcontextprotocol.io) server exposing GoHighLevel to Claude, ChatGPT, Gemini, and any MCP host — built on the official `rmcp` SDK, ships as a single binary |
 
-**Full API coverage, two ways.** Typed services cover the highest-traffic modules (contacts, opportunities, conversations, calendars, locations). Everything else — invoices, payments, workflows, forms, products, social planner, custom objects, and the rest — is reachable through the MCP server's meta-tools, which index **576 operations across all 41 API modules** straight from HighLevel's official OpenAPI specs. No endpoint is out of reach while typed coverage grows.
+**Complete API coverage.** Generated from [HighLevel's official OpenAPI specs](https://github.com/GoHighLevel/highlevel-api-docs):
+
+| | Count |
+|---|---|
+| API operations callable | **1,203** (576 in v2 + 627 in v3) |
+| API modules covered | **45** across both versions |
+| Typed data models (DTOs) | **2,417** |
+| Ergonomic typed SDK services | 5 modules (contacts, opportunities, conversations, calendars, locations) |
+| MCP tools | 21 (16 typed + 3 meta-tools + 2 utility) |
+
+Hand-written services give you the nicest ergonomics for the busiest modules; the meta-tools and generated DTOs cover everything else — invoices, payments, ad publishing, social planner, voice AI, SaaS, custom objects, workflows, and the rest — so no endpoint is ever out of reach.
 
 ## Why this exists
 
@@ -27,7 +38,9 @@ GoHighLevel powers **60k+ agencies and ~2M businesses**, but its developer stack
 
 |  | Official MCP server | Community Node servers | **ghl-mcp** |
 |---|---|---|---|
-| API coverage | ~36 curated tools | varies, often stale | ✅ 21 tools + all 576 operations via meta-tools |
+| API coverage | ~36 curated tools | varies, often stale | ✅ 21 tools + all **1,203** operations via meta-tools |
+| API v3 support | ❌ | ❌ | ✅ v2 and v3 side by side |
+| Typed data models | — | ❌ | ✅ 2,417 generated DTOs |
 | Agency (multi-location) access | ❌ one location per connection | ⚠️ varies | ✅ agency token → per-location routing |
 | Self-hostable | ❌ | ✅ | ✅ |
 | Runtime | hosted | Node.js | **single static binary** |
@@ -39,7 +52,7 @@ GoHighLevel powers **60k+ agencies and ~2M businesses**, but its developer stack
 
 ```toml
 [dependencies]
-ghl-sdk = "0.1"
+ghl-sdk = "0.3"
 tokio = { version = "1", features = ["full"] }
 ```
 
@@ -66,6 +79,26 @@ async fn main() -> Result<(), ghl_sdk::Error> {
     println!("created contact {}", contact.id);
     Ok(())
 }
+```
+
+Need an endpoint without a typed service? Use the generated DTOs plus `request_raw`:
+
+```toml
+ghl-sdk = { version = "0.3", features = ["models"] }
+ghl-models = { version = "0.3", features = ["invoices"] }
+```
+
+```rust,ignore
+use ghl_models::v2::invoices::CreateInvoiceDto;
+
+let body = serde_json::to_value(CreateInvoiceDto {
+    alt_id: location_id.clone(),
+    alt_type: "location".into(),
+    name: "August retainer".into(),
+    currency: "USD".into(),
+    ..Default::default()
+})?;
+let created = ghl.request_raw("POST", "/invoices/", &[], Some(&body), None).await?;
 ```
 
 Pagination is a `Stream` — the SDK handles GoHighLevel's cursor scheme (`startAfterId`) for you:
@@ -129,8 +162,9 @@ The MCP server reaches the **entire** API today; typed SDK services cover the bu
 - [x] Calendars (list, free slots, book/fetch appointments)
 - [x] Locations (get + search, with location-scoped fallback)
 - [x] MCP server: 21 tools over stdio, write/destructive gating
-- [x] Meta-tools reaching all **576 operations / 41 modules** from the official specs
-- [ ] Typed services for invoices, payments, products, workflows
+- [x] Meta-tools reaching all **1,203 operations / 45 modules**, v2 **and** v3
+- [x] **2,417 generated DTOs** in `ghl-models`, feature-gated per module
+- [ ] Typed service methods for invoices, payments, products, workflows
 - [ ] Streamable HTTP transport (hosted multi-tenant gateway)
 - [ ] Webhook signature validation + typed events
 - [ ] `npx ghl-mcp` wrapper, Homebrew tap, Docker image

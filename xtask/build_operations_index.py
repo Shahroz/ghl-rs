@@ -1,16 +1,24 @@
 #!/usr/bin/env python3
 """Build a compact operations index for ghl-mcp from GoHighLevel's official OpenAPI specs.
 
+Usage:
+    python3 xtask/build_operations_index.py <highlevel-api-docs-checkout> <out.json>
+
+Covers both API versions: `apps/*.json` (V2) and `apps/v3/*.json` (V3). V3
+operation ids are prefixed `v3:` so the two never collide, and each entry keeps
+its own `Version` header value so the caller always sends the right one.
+
 Output: crates/ghl-mcp/operations.json — one entry per endpoint, holding only
 what the meta-tools need (id, module, method, path, summary, params, scopes,
-Version header). Full schemas stay out; agents fetch details via describe.
+Version header). Full schemas stay out; agents fetch details via describe, and
+typed DTOs live in the `ghl-models` crate.
 """
 import json
 import pathlib
 import re
 import sys
 
-SPEC_DIR = pathlib.Path(sys.argv[1])
+DOCS_ROOT = pathlib.Path(sys.argv[1])
 OUT = pathlib.Path(sys.argv[2])
 
 METHODS = ("get", "post", "put", "patch", "delete")
@@ -89,52 +97,61 @@ def version_header(op, path_level):
 operations = []
 modules = {}
 
-for spec_file in sorted(SPEC_DIR.glob("*.json")):
-    module = spec_file.stem
-    try:
-        spec = json.loads(spec_file.read_text())
-    except json.JSONDecodeError as e:
-        print(f"!! skipping {module}: {e}", file=sys.stderr)
-        continue
+SPEC_SETS = [
+    ("v2", DOCS_ROOT / "apps", ""),
+    ("v3", DOCS_ROOT / "apps/v3", "v3:"),
+]
 
-    servers = spec.get("servers") or []
-    base = servers[0].get("url", "") if servers else ""
-    count = 0
+for api_version, spec_dir, id_prefix in SPEC_SETS:
+    for spec_file in sorted(spec_dir.glob("*.json")):
+        module = spec_file.stem.replace("-v3", "")
+        try:
+            spec = json.loads(spec_file.read_text())
+        except json.JSONDecodeError as e:
+            print(f"!! skipping {api_version}/{module}: {e}", file=sys.stderr)
+            continue
 
-    for path, item in (spec.get("paths") or {}).items():
-        path_params = item.get("parameters") or []
-        for method in METHODS:
-            op = item.get(method)
-            if not op:
-                continue
-            summary = (op.get("summary") or op.get("operationId") or "").strip()
-            desc = (op.get("description") or "").strip()
-            entry = {
-                "id": op_id(module, method, path),
-                "module": module,
-                "method": method.upper(),
-                "path": path,
-                "summary": summary[:200],
-            }
-            if desc and desc != summary:
-                entry["desc"] = re.sub(r"\s+", " ", desc)[:300]
-            params = collect_params(op.get("parameters"), path_params)
-            if params:
-                entry["params"] = params
-            bf = body_fields(op)
-            if bf:
-                entry["body"] = bf
-            sc = scopes_of(op)
-            if sc:
-                entry["scopes"] = sc
-            v = version_header(op, path_params)
-            if v:
-                entry["version"] = v
-            if base and "leadconnectorhq" not in base:
-                entry["base"] = base
-            operations.append(entry)
-            count += 1
-    modules[module] = count
+        servers = spec.get("servers") or []
+        base = servers[0].get("url", "") if servers else ""
+        count = 0
+
+        for path, item in (spec.get("paths") or {}).items():
+            path_params = item.get("parameters") or []
+            for method in METHODS:
+                op = item.get(method)
+                if not op:
+                    continue
+                summary = (op.get("summary") or op.get("operationId") or "").strip()
+                desc = (op.get("description") or "").strip()
+                entry = {
+                    "id": id_prefix + op_id(module, method, path),
+                    "module": module,
+                    "api_version": api_version,
+                    "method": method.upper(),
+                    "path": path,
+                    "summary": summary[:200],
+                }
+                if desc and desc != summary:
+                    entry["desc"] = re.sub(r"\s+", " ", desc)[:300]
+                params = collect_params(op.get("parameters"), path_params)
+                if params:
+                    entry["params"] = params
+                bf = body_fields(op)
+                if bf:
+                    entry["body"] = bf
+                sc = scopes_of(op)
+                if sc:
+                    entry["scopes"] = sc
+                v = version_header(op, path_params)
+                if v:
+                    entry["version"] = v
+                elif api_version == "v3":
+                    entry["version"] = "v3"  # V3 endpoints all take Version: v3
+                if base and "leadconnectorhq" not in base:
+                    entry["base"] = base
+                operations.append(entry)
+                count += 1
+        modules[f"{module}" if api_version == "v2" else f"v3:{module}"] = count
 
 operations.sort(key=lambda o: o["id"])
 payload = {
@@ -144,7 +161,11 @@ payload = {
     "operations": operations,
 }
 OUT.write_text(json.dumps(payload, separators=(",", ":")))
-print(f"{len(operations)} operations across {len(modules)} modules -> {OUT}")
+by_version = {}
+for o in operations:
+    by_version[o["api_version"]] = by_version.get(o["api_version"], 0) + 1
+print(f"{len(operations)} operations across {len(modules)} module/version pairs -> {OUT}")
+print(f"  by API version: {by_version}")
 print(f"size: {OUT.stat().st_size/1024:.0f} KiB")
 top = sorted(modules.items(), key=lambda kv: -kv[1])[:10]
-print("largest modules:", ", ".join(f"{m}={n}" for m, n in top))
+print("largest:", ", ".join(f"{m}={n}" for m, n in top))

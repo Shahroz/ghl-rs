@@ -31,6 +31,23 @@
 
 #![warn(missing_docs)]
 #![warn(clippy::all)]
+#![cfg_attr(docsrs, feature(doc_cfg))]
+
+/// Generated data models (DTOs) for the whole GoHighLevel API, re-exported from
+/// the [`ghl-models`](https://docs.rs/ghl-models) crate.
+///
+/// Enable the `models` feature, then pick the API modules you need through
+/// `ghl-models`' own per-module features:
+///
+/// ```toml
+/// ghl-sdk = { version = "0.3", features = ["models"] }
+/// ghl-models = { version = "0.3", features = ["invoices", "payments"] }
+/// ```
+///
+/// Types live under `models::v2::*` and `models::v3::*`.
+#[cfg(feature = "models")]
+#[cfg_attr(docsrs, doc(cfg(feature = "models")))]
+pub use ghl_models as models;
 
 pub mod auth;
 pub mod calendars;

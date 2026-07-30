@@ -17,10 +17,14 @@ const CATALOG_JSON: &str = include_str!("../operations.json");
 /// One API operation (endpoint + method) with the metadata agents need.
 #[derive(Debug, Clone, Deserialize)]
 pub struct Operation {
-    /// Stable identifier, e.g. `contacts.post_contacts`.
+    /// Stable identifier, e.g. `contacts.post_contacts`. V3 operations are
+    /// prefixed `v3:` so the two API versions never collide.
     pub id: String,
     /// Owning API module, e.g. `contacts`.
     pub module: String,
+    /// Which API version this operation belongs to: `v2` or `v3`.
+    #[serde(default)]
+    pub api_version: String,
     /// HTTP method, uppercase.
     pub method: String,
     /// Path template, e.g. `/contacts/{contactId}`.
@@ -111,8 +115,14 @@ pub fn find(id: &str) -> Option<&'static Operation> {
 ///
 /// Scoring favours exact id matches, then module matches, then summary hits, so
 /// `"create contact"` surfaces `contacts.post_contacts` ahead of incidental
-/// mentions of contacts elsewhere.
-pub fn search(query: &str, module: Option<&str>, limit: usize) -> Vec<&'static Operation> {
+/// mentions of contacts elsewhere. V2 operations outrank their V3 twins unless
+/// the caller asks for V3, since V2 is the stable API today.
+pub fn search(
+    query: &str,
+    module: Option<&str>,
+    api_version: Option<&str>,
+    limit: usize,
+) -> Vec<&'static Operation> {
     let needle = query.trim().to_lowercase();
     let terms: Vec<&str> = needle.split_whitespace().collect();
 
@@ -120,14 +130,17 @@ pub fn search(query: &str, module: Option<&str>, limit: usize) -> Vec<&'static O
         .operations
         .iter()
         .filter(|o| module.is_none_or(|m| o.module.eq_ignore_ascii_case(m)))
+        .filter(|o| api_version.is_none_or(|v| o.api_version.eq_ignore_ascii_case(v)))
         .filter_map(|o| {
+            // Prefer V2 on ties: it's the stable API, V3 is still rolling out.
+            let version_bias = if o.api_version == "v2" { 2 } else { 0 };
             if terms.is_empty() {
-                return Some((0, o));
+                return Some((version_bias, o));
             }
             let id = o.id.to_lowercase();
             let summary = o.summary.to_lowercase();
             let path = o.path.to_lowercase();
-            let mut score = 0;
+            let mut score = version_bias;
             let mut matched_all = true;
 
             for term in &terms {
@@ -180,34 +193,56 @@ mod tests {
     use super::*;
 
     #[test]
-    fn catalog_loads_and_covers_all_modules() {
-        assert!(operation_count() > 500, "expected the full API surface");
-        assert_eq!(modules().len(), 41, "all 41 GoHighLevel modules present");
-        // Spot-check a few modules the hand-written SDK does not cover.
-        for m in ["invoices", "calendars", "payments", "workflows", "objects"] {
-            assert!(modules().contains_key(m), "missing module {m}");
+    fn catalog_covers_both_api_versions() {
+        assert!(operation_count() > 1_100, "expected V2 + V3 surface");
+        let v2 = catalog()
+            .operations
+            .iter()
+            .filter(|o| o.api_version == "v2")
+            .count();
+        let v3 = catalog()
+            .operations
+            .iter()
+            .filter(|o| o.api_version == "v3")
+            .count();
+        assert!(v2 > 550, "V2 operations: {v2}");
+        assert!(v3 > 600, "V3 operations: {v3}");
+        // Spot-check modules the hand-written SDK does not cover, and the
+        // modules V3 renamed.
+        for m in ["invoices", "payments", "workflows", "objects", "ad-manager"] {
+            assert!(modules().contains_key(m), "missing V2 module {m}");
+        }
+        for m in ["v3:ad-publishing", "v3:social-planner", "v3:saas"] {
+            assert!(modules().contains_key(m), "missing V3 module {m}");
         }
     }
 
     #[test]
     fn search_ranks_relevant_operations_first() {
-        let hits = search("create contact", None, 5);
+        let hits = search("create contact", None, None, 5);
         assert!(!hits.is_empty());
         let top = hits[0];
         assert_eq!(top.method, "POST");
         assert!(top.module == "contacts", "got {}", top.id);
+        // V2 wins ties by default, since it's the stable API.
+        assert_eq!(top.api_version, "v2", "got {}", top.id);
     }
 
     #[test]
-    fn search_can_filter_by_module() {
-        let hits = search("", Some("invoices"), 500);
+    fn search_can_filter_by_module_and_version() {
+        let hits = search("", Some("invoices"), None, 500);
         assert!(hits.len() > 10);
         assert!(hits.iter().all(|o| o.module == "invoices"));
+
+        let v3_only = search("", Some("invoices"), Some("v3"), 500);
+        assert!(!v3_only.is_empty());
+        assert!(v3_only.iter().all(|o| o.api_version == "v3"));
+        assert!(v3_only.iter().all(|o| o.id.starts_with("v3:")));
     }
 
     #[test]
     fn find_resolves_known_ids_and_rejects_unknown() {
-        let id = &search("", Some("contacts"), 1)[0].id;
+        let id = &search("", Some("contacts"), None, 1)[0].id;
         assert!(find(id).is_some());
         assert!(find("nope.not_real").is_none());
     }
@@ -222,6 +257,23 @@ mod tests {
                 o.id,
                 o.method
             );
+            assert!(
+                o.api_version == "v2" || o.api_version == "v3",
+                "{} has odd api_version {}",
+                o.id,
+                o.api_version
+            );
+            // Version headers are not uniform per API version: the V3
+            // `ad-publishing` specs declare `2021-07-28`, and ~29 operations
+            // declare none at all (the client then sends its default). So we
+            // always carry the spec's own value and only check it's one we know.
+            if let Some(version) = o.version.as_deref() {
+                assert!(
+                    ["v3", "2021-07-28", "2021-04-15"].contains(&version),
+                    "{} has unexpected Version header {version:?}",
+                    o.id
+                );
+            }
         }
     }
 }

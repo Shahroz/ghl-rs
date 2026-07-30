@@ -249,6 +249,9 @@ pub struct SearchOperationsParams {
     /// Restrict to one API module, e.g. "invoices", "calendars", "payments".
     /// Call with an empty query and no module to see every module name.
     pub module: Option<String>,
+    /// API version: "v2" (stable, the default preference) or "v3" (newer, adds
+    /// modules like ad-publishing, social-planner, saas, chat-widget).
+    pub api_version: Option<String>,
     /// Max results (default 10, max 50).
     pub limit: Option<u32>,
 }
@@ -838,18 +841,31 @@ impl GhlServer {
         Parameters(p): Parameters<SearchOperationsParams>,
     ) -> Result<String, ErrorData> {
         let limit = p.limit.unwrap_or(10).clamp(1, 50) as usize;
+        // Treat blank strings as absent — agents pass "" for "no filter".
+        let blank = |s: &Option<String>| s.as_deref().is_none_or(|v| v.trim().is_empty());
+        let module = if blank(&p.module) {
+            None
+        } else {
+            p.module.clone()
+        };
+        let api_version = if blank(&p.api_version) {
+            None
+        } else {
+            p.api_version.clone()
+        };
 
         // Empty query with no module filter: return the module map so an agent
         // can orient itself in one call.
-        if p.query.trim().is_empty() && p.module.is_none() {
+        if p.query.trim().is_empty() && module.is_none() {
             return ok_json(&json!({
-                "hint": "pass a query like \"create invoice\", or a module name to browse it",
+                "hint": "pass a query like \"create invoice\", or a module name to browse it. \
+                         Modules prefixed `v3:` belong to API v3; pass api_version to filter.",
                 "total_operations": operations::operation_count(),
                 "modules": operations::modules(),
             }));
         }
 
-        let hits = operations::search(&p.query, p.module.as_deref(), limit);
+        let hits = operations::search(&p.query, module.as_deref(), api_version.as_deref(), limit);
         if hits.is_empty() {
             return ok_json(&json!({
                 "operations": [],
@@ -865,6 +881,7 @@ impl GhlServer {
                 json!({
                     "operation_id": o.id,
                     "module": o.module,
+                    "api_version": o.api_version,
                     "method": o.method,
                     "path": o.path,
                     "summary": o.summary,
@@ -898,6 +915,7 @@ impl GhlServer {
         ok_json(&json!({
             "operation_id": op.id,
             "module": op.module,
+            "api_version": op.api_version,
             "method": op.method,
             "path": op.path,
             "summary": op.summary,
@@ -1045,7 +1063,7 @@ impl GhlServer {
 
 #[tool_handler(
     name = "ghl-mcp",
-    version = "0.2.0",
+    version = "0.3.0",
     instructions = "Tools for working with a GoHighLevel (HighLevel) CRM account. Dedicated \
                     typed tools cover contacts, opportunities (pipeline deals), and locations. \
                     For anything else — invoices, calendars, payments, workflows, forms, \

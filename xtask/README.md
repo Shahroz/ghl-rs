@@ -2,24 +2,46 @@
 
 Maintenance scripts. Not part of the published crates.
 
-## Regenerating the operations catalog
-
-`crates/ghl-mcp/operations.json` is generated from GoHighLevel's official
-OpenAPI specs and embedded in the `ghl-mcp` binary. Refresh it when HighLevel
-ships new endpoints:
+Both generators read a local checkout of HighLevel's official spec repo:
 
 ```bash
-curl -sL https://codeload.github.com/GoHighLevel/highlevel-api-docs/tar.gz/refs/heads/main | tar xz
+git clone https://github.com/GoHighLevel/highlevel-api-docs.git
 ```
+
+Layout that matters: `apps/*.json` are the V2 module specs, `apps/v3/*.json` the
+V3 ones, and `common/` + `apps/v3/common/` hold shared error DTOs
+(`BadRequestDTO`, `UnauthorizedDTO`, `UnprocessableDTO`, …) whose shape the SDK's
+error handling already mirrors.
+
+## 1. Operations catalog (for `ghl-mcp`)
+
+`crates/ghl-mcp/operations.json` is embedded in the binary and powers the
+meta-tools. It covers **both** API versions — V3 ids are prefixed `v3:`.
 
 ```bash
-python3 xtask/build_operations_index.py highlevel-api-docs-main/apps crates/ghl-mcp/operations.json
+python3 xtask/build_operations_index.py ../highlevel-api-docs crates/ghl-mcp/operations.json
 ```
 
-Then run `cargo test -p ghl-mcp` — the catalog tests assert the module count and
-that every entry still has a usable method/path shape. Commit the regenerated
-JSON along with any test updates.
+Keeps only what the meta-tools need (id, module, api_version, method, path,
+summary, params, body field names, scopes, `Version` header) so the catalog stays
+around 650 KiB instead of shipping full schemas.
 
-The generator keeps only what the meta-tools need (id, module, method, path,
-summary, params, body field names, scopes, `Version` header) so the embedded
-catalog stays around 300 KiB rather than shipping full request/response schemas.
+## 2. Data models (the `ghl-models` crate)
+
+```bash
+python3 xtask/generate_models.py ../highlevel-api-docs crates/ghl-models
+```
+
+Regenerates every DTO (~2,400 structs) into `crates/ghl-models/src/{v2,v3}/`,
+one Rust module per API module. **Also update `crates/ghl-models/Cargo.toml`** if
+HighLevel adds or renames a module, since each one is its own cargo feature.
+
+## After regenerating either
+
+```bash
+cargo test --workspace && cargo clippy --workspace --all-targets
+```
+
+The catalog tests assert operation counts per version, module presence, and that
+every entry has a sane method/path/`Version`. Commit the regenerated JSON and
+Rust files together with any test updates.

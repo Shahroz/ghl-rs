@@ -1,0 +1,73 @@
+[package]
+name = "ghl-models"
+description = "Rust data models (DTOs) for the GoHighLevel (HighLevel) API v2 and v3, generated from the official OpenAPI specifications"
+readme = "README.md"
+documentation = "https://docs.rs/ghl-models"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+[features]
+# No models by default — enable only the API modules you need.
+default = []
+ad-manager = []
+ad-publishing = []
+affiliate-manager = []
+agent-studio = []
+associations = []
+blogs = []
+brand-boards = []
+businesses = []
+calendars = []
+campaigns = []
+chat-widget = []
+companies = []
+contacts = []
+conversation-ai = []
+conversations = []
+courses = []
+custom-fields = []
+custom-menus = []
+email-isv = []
+emails = []
+forms = []
+funnels = []
+invoices = []
+knowledge-base = []
+links = []
+locations = []
+marketplace = []
+medias = []
+oauth = []
+objects = []
+opportunities = []
+payments = []
+phone-system = []
+products = []
+proposals = []
+saas = []
+saas-api = []
+snapshots = []
+social-media-posting = []
+social-planner = []
+store = []
+surveys = []
+users = []
+voice-ai = []
+workflows = []
+
+# Everything (large: 2417 structs across both API versions).
+full = ["ad-manager", "ad-publishing", "affiliate-manager", "agent-studio", "associations", "blogs", "brand-boards", "businesses", "calendars", "campaigns", "chat-widget", "companies", "contacts", "conversation-ai", "conversations", "courses", "custom-fields", "custom-menus", "email-isv", "emails", "forms", "funnels", "invoices", "knowledge-base", "links", "locations", "marketplace", "medias", "oauth", "objects", "opportunities", "payments", "phone-system", "products", "proposals", "saas", "saas-api", "snapshots", "social-media-posting", "social-planner", "store", "surveys", "users", "voice-ai", "workflows"]
+
+[package.metadata.docs.rs]
+features = ["full"]
+rustdoc-args = ["--cfg", "docsrs"]
