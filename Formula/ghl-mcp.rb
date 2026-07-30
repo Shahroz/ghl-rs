@@ -10,28 +10,28 @@
 class GhlMcp < Formula
   desc "MCP server for GoHighLevel CRM - typed, agency-grade, single static binary"
   homepage "https://github.com/Shahroz/ghl-rs"
-  version "0.5.0"
+  version "0.5.1"
   license any_of: ["MIT", "Apache-2.0"]
 
   on_macos do
     on_arm do
-      url "https://github.com/Shahroz/ghl-rs/releases/download/v0.5.0/ghl-mcp-aarch64-apple-darwin.tar.gz"
-      sha256 "64516574da3797d98399a84176688db3a446c29aab3f1963e9eb95d1ad2bb931"
+      url "https://github.com/Shahroz/ghl-rs/releases/download/v0.5.1/ghl-mcp-aarch64-apple-darwin.tar.gz"
+      sha256 "ba7a3cab722e03707f138706c3625042fe7c491a46dd294736e6e39994d90d33"
     end
     on_intel do
-      url "https://github.com/Shahroz/ghl-rs/releases/download/v0.5.0/ghl-mcp-x86_64-apple-darwin.tar.gz"
-      sha256 "aab3f6bd5b94d4d7a269d261ca64b60f0efc222f6c4604cda65c40f200b6afad"
+      url "https://github.com/Shahroz/ghl-rs/releases/download/v0.5.1/ghl-mcp-x86_64-apple-darwin.tar.gz"
+      sha256 "ec6ee793896dd30640f83abb266b0d4ab45dd077e6f1b24e313da3dfe527600b"
     end
   end
 
   on_linux do
     on_arm do
-      url "https://github.com/Shahroz/ghl-rs/releases/download/v0.5.0/ghl-mcp-aarch64-unknown-linux-gnu.tar.gz"
-      sha256 "d6aa09179afcc3396c63abbb42b6e7137520868ef733e75740327637019e5f20"
+      url "https://github.com/Shahroz/ghl-rs/releases/download/v0.5.1/ghl-mcp-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "b7b000ab333d62eb0b1e4dcdac037340fd1a5a2a481c28d239a8f142c142bbe4"
     end
     on_intel do
-      url "https://github.com/Shahroz/ghl-rs/releases/download/v0.5.0/ghl-mcp-x86_64-unknown-linux-gnu.tar.gz"
-      sha256 "746769346ca81dc1fa56970da22e7e2b6f4e4feafcd6fe679f11aef59ecac571"
+      url "https://github.com/Shahroz/ghl-rs/releases/download/v0.5.1/ghl-mcp-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "d300ec6ca71304de9ff48d3a804cb0bb964c258e31802ffe66563929b1e777dc"
     end
   end
 
