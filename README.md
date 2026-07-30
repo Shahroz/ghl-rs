@@ -167,7 +167,15 @@ Install without Rust:
 
 ```sh
 npx ghl-mcp
-brew tap shahroz/ghl-rs https://github.com/Shahroz/ghl-rs && brew install ghl-mcp
+```
+
+```sh
+brew tap shahroz/ghl-rs https://github.com/Shahroz/ghl-rs
+brew trust shahroz/ghl-rs        # Homebrew requires this for any third-party tap
+brew install ghl-mcp
+```
+
+```sh
 docker run -p 8000:8000 -e GHL_PIT_TOKEN=pit-… ghcr.io/shahroz/ghl-mcp
 ```
 

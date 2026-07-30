@@ -15,7 +15,9 @@ npx ghl-mcp                                    # downloads the prebuilt binary
 ```
 
 ```sh
-brew tap shahroz/ghl-rs https://github.com/Shahroz/ghl-rs && brew install ghl-mcp
+brew tap shahroz/ghl-rs https://github.com/Shahroz/ghl-rs
+brew trust shahroz/ghl-rs    # Homebrew requires this for any third-party tap
+brew install ghl-mcp
 ```
 
 ```sh

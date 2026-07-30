@@ -30,10 +30,15 @@ No separate tap repo — this repo *is* the tap:
 
 ```bash
 brew tap shahroz/ghl-rs https://github.com/Shahroz/ghl-rs
+brew trust shahroz/ghl-rs
 brew install ghl-mcp
 ```
 
-`brew tap` takes an explicit URL, so `Formula/ghl-mcp.rb` here works without a `homebrew-*` repo. The release workflow keeps it current. To move to the canonical `Shahroz/homebrew-tap` later, copy `Formula/` there and point the bump script at it.
+`brew tap` takes an explicit URL, so `Formula/ghl-mcp.rb` here works without a `homebrew-*` repo. The release workflow keeps it current.
+
+**`brew trust` is not optional.** Current Homebrew refuses to load a formula from any untrusted third-party tap — `Refusing to load formula … from untrusted tap`. This applies to every third-party tap, not just this one, so the instructions must include it. Verified end to end: tap → trust → install → `brew test` passes → `ghl-mcp --version` reports the tagged version.
+
+To move to the canonical `Shahroz/homebrew-tap` later, copy `Formula/` there and point the bump script at it.
 
 ## 4. npm (for `npx ghl-mcp`)
 
