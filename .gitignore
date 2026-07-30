@@ -2,3 +2,7 @@
 **/*.rs.bk
 .env
 .DS_Store
+
+# Python bytecode from the xtask generators
+__pycache__/
+*.pyc
