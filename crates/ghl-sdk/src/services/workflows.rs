@@ -2,7 +2,7 @@
 //! `workflows` — typed methods for all 1 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::workflows`](crate::Ghl::workflows)
+//! Access via [`Ghl::workflows`](crate::Ghl::workflows).
 //!
 //! Request and response types come from [`ghl_models::v2::workflows`](https://docs.rs/ghl-models/latest/ghl_models/v2/workflows/); every endpoint is also documented in the
 //! [`workflows` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/workflows.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::workflows as models;
 
-/// Typed access to the `workflows` API (1 operations). Obtained via
+/// Typed access to the `workflows` API v2 surface (1 operations). Obtained via
 /// [`Ghl::workflows`](crate::Ghl::workflows).
 #[derive(Debug, Clone)]
 pub struct WorkflowsService {

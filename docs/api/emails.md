@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `emails` cargo feature on `ghl-sdk`, then call any of the 5 generated methods on `ghl.emails()`:
+**Every endpoint has a typed Rust method.** Enable the `emails` cargo feature on `ghl-sdk`, then call any of the 23 generated methods on `ghl.emails()` (v2) or `ghl.v3().emails()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["emails"] }
+ghl-sdk = { version = "0.5", features = ["emails"] }
 ```
 
 
@@ -227,26 +227,26 @@ let out = ghl.emails().get_campaigns(&params).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/emails/locations/{locationId}/campaigns/bulk-actions` | List Bulk Action Campaigns | `v3:emails.get_emails_locations_by_locationId_campaigns_bulk_actions` |
-| `GET` | `/emails/locations/{locationId}/campaigns/bulk-actions/{campaignId}` | Get Bulk Action Campaign by ID | `v3:emails.get_emails_locations_by_locationId_campaigns_bulk_actions_by_campaignId` |
-| `GET` | `/emails/locations/{locationId}/campaigns/emails` | List Email Campaigns | `v3:emails.get_emails_locations_by_locationId_campaigns_emails` |
-| `POST` | `/emails/locations/{locationId}/campaigns/emails` | Create Email Campaign | `v3:emails.post_emails_locations_by_locationId_campaigns_emails` |
-| `DELETE` | `/emails/locations/{locationId}/campaigns/emails/{campaignId}` | Delete Campaign | `v3:emails.delete_emails_locations_by_locationId_campaigns_emails_by_campaignId` |
-| `GET` | `/emails/locations/{locationId}/campaigns/emails/{campaignId}` | Get Email Campaign by ID | `v3:emails.get_emails_locations_by_locationId_campaigns_emails_by_campaignId` |
-| `PATCH` | `/emails/locations/{locationId}/campaigns/emails/{campaignId}` | Update Email Campaign | `v3:emails.patch_emails_locations_by_locationId_campaigns_emails_by_campaignId` |
-| `POST` | `/emails/locations/{locationId}/campaigns/emails/{campaignId}/schedule` | Schedule Campaign | `v3:emails.post_emails_locations_by_locationId_campaigns_emails_by_campaignId_schedule` |
-| `GET` | `/emails/locations/{locationId}/campaigns/stats/{source}/{sourceId}` | Get Campaign Statistics | `v3:emails.get_emails_locations_by_locationId_campaigns_stats_by_source_by_sourceId` |
-| `GET` | `/emails/locations/{locationId}/campaigns/workflows` | List Workflow Campaigns | `v3:emails.get_emails_locations_by_locationId_campaigns_workflows` |
-| `GET` | `/emails/locations/{locationId}/campaigns/workflows/{campaignId}` | Get Workflow Campaign by ID | `v3:emails.get_emails_locations_by_locationId_campaigns_workflows_by_campaignId` |
-| `GET` | `/emails/locations/{locationId}/templates` | List templates | `v3:emails.get_emails_locations_by_locationId_templates` |
-| `POST` | `/emails/locations/{locationId}/templates` | Create an email template | `v3:emails.post_emails_locations_by_locationId_templates` |
-| `POST` | `/emails/locations/{locationId}/templates/folders` | Create a template folder | `v3:emails.post_emails_locations_by_locationId_templates_folders` |
-| `POST` | `/emails/locations/{locationId}/templates/import` | Import an email template | `v3:emails.post_emails_locations_by_locationId_templates_import` |
-| `DELETE` | `/emails/locations/{locationId}/templates/{templateId}` | Delete a template | `v3:emails.delete_emails_locations_by_locationId_templates_by_templateId` |
-| `GET` | `/emails/locations/{locationId}/templates/{templateId}` | Get Email Template by ID | `v3:emails.get_emails_locations_by_locationId_templates_by_templateId` |
-| `PATCH` | `/emails/locations/{locationId}/templates/{templateId}` | Update an email template | `v3:emails.patch_emails_locations_by_locationId_templates_by_templateId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/emails/locations/{locationId}/campaigns/bulk-actions` | List Bulk Action Campaigns | `list_bulk_action_campaigns()` | `v3:emails.get_emails_locations_by_locationId_campaigns_bulk_actions` |
+| `GET` | `/emails/locations/{locationId}/campaigns/bulk-actions/{campaignId}` | Get Bulk Action Campaign by ID | `get_bulk_action_campaign_by_id()` | `v3:emails.get_emails_locations_by_locationId_campaigns_bulk_actions_by_campaignId` |
+| `GET` | `/emails/locations/{locationId}/campaigns/emails` | List Email Campaigns | `list_email_campaigns()` | `v3:emails.get_emails_locations_by_locationId_campaigns_emails` |
+| `POST` | `/emails/locations/{locationId}/campaigns/emails` | Create Email Campaign | `create_email_campaign()` | `v3:emails.post_emails_locations_by_locationId_campaigns_emails` |
+| `DELETE` | `/emails/locations/{locationId}/campaigns/emails/{campaignId}` | Delete Campaign | `delete_campaign()` | `v3:emails.delete_emails_locations_by_locationId_campaigns_emails_by_campaignId` |
+| `GET` | `/emails/locations/{locationId}/campaigns/emails/{campaignId}` | Get Email Campaign by ID | `get_email_campaign_by_id()` | `v3:emails.get_emails_locations_by_locationId_campaigns_emails_by_campaignId` |
+| `PATCH` | `/emails/locations/{locationId}/campaigns/emails/{campaignId}` | Update Email Campaign | `update_email_campaign()` | `v3:emails.patch_emails_locations_by_locationId_campaigns_emails_by_campaignId` |
+| `POST` | `/emails/locations/{locationId}/campaigns/emails/{campaignId}/schedule` | Schedule Campaign | `schedule_campaign()` | `v3:emails.post_emails_locations_by_locationId_campaigns_emails_by_campaignId_schedule` |
+| `GET` | `/emails/locations/{locationId}/campaigns/stats/{source}/{sourceId}` | Get Campaign Statistics | `get_campaign_statistics()` | `v3:emails.get_emails_locations_by_locationId_campaigns_stats_by_source_by_sourceId` |
+| `GET` | `/emails/locations/{locationId}/campaigns/workflows` | List Workflow Campaigns | `list_workflow_campaigns()` | `v3:emails.get_emails_locations_by_locationId_campaigns_workflows` |
+| `GET` | `/emails/locations/{locationId}/campaigns/workflows/{campaignId}` | Get Workflow Campaign by ID | `get_workflow_campaign_by_id()` | `v3:emails.get_emails_locations_by_locationId_campaigns_workflows_by_campaignId` |
+| `GET` | `/emails/locations/{locationId}/templates` | List templates | `list_templates()` | `v3:emails.get_emails_locations_by_locationId_templates` |
+| `POST` | `/emails/locations/{locationId}/templates` | Create an email template | `create_an_email_template()` | `v3:emails.post_emails_locations_by_locationId_templates` |
+| `POST` | `/emails/locations/{locationId}/templates/folders` | Create a template folder | `create_a_template_folder()` | `v3:emails.post_emails_locations_by_locationId_templates_folders` |
+| `POST` | `/emails/locations/{locationId}/templates/import` | Import an email template | `import_an_email_template()` | `v3:emails.post_emails_locations_by_locationId_templates_import` |
+| `DELETE` | `/emails/locations/{locationId}/templates/{templateId}` | Delete a template | `delete_a_template()` | `v3:emails.delete_emails_locations_by_locationId_templates_by_templateId` |
+| `GET` | `/emails/locations/{locationId}/templates/{templateId}` | Get Email Template by ID | `get_email_template_by_id()` | `v3:emails.get_emails_locations_by_locationId_templates_by_templateId` |
+| `PATCH` | `/emails/locations/{locationId}/templates/{templateId}` | Update an email template | `update_an_email_template()` | `v3:emails.patch_emails_locations_by_locationId_templates_by_templateId` |
 
 ### Endpoint details — v3
 
@@ -276,6 +276,15 @@ Operation id: `v3:emails.get_emails_locations_by_locationId_campaigns_bulk_actio
 | `status` | enum: `processing`, `scheduled`, `paused`, `complete`, `cancelled` | no | Filter by status |
 
 *Response*: [`ListBulkActionCampaignsPublicV2ResponseDto`](#listbulkactioncampaignspublicv2responsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::emails::ListBulkActionCampaignsParams;
+
+let params = ListBulkActionCampaignsParams::new();
+let out = ghl.v3().emails().list_bulk_action_campaigns(&locationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -309,6 +318,12 @@ Operation id: `v3:emails.get_emails_locations_by_locationId_campaigns_bulk_actio
 | `campaignId` | string | **yes** | Campaign ID |
 
 *Response*: [`GetBulkActionCampaignPublicV2ResponseDto`](#getbulkactioncampaignpublicv2responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().get_bulk_action_campaign_by_id(&locationId, &campaignId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -352,6 +367,15 @@ Operation id: `v3:emails.get_emails_locations_by_locationId_campaigns_emails` ·
 
 *Response*: [`ListEmailCampaignsPublicV2ResponseDto`](#listemailcampaignspublicv2responsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::emails::ListEmailCampaignsParams;
+
+let params = ListEmailCampaignsParams::new();
+let out = ghl.v3().emails().list_email_campaigns(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -385,6 +409,12 @@ Operation id: `v3:emails.post_emails_locations_by_locationId_campaigns_emails` �
 *Request body*: [`CreateEmailCampaignPublicV2BodyDto`](#createemailcampaignpublicv2bodydto)
 
 *Response*: [`CreateEmailCampaignPublicV2ResponseDto`](#createemailcampaignpublicv2responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().create_email_campaign(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -422,6 +452,12 @@ Operation id: `v3:emails.delete_emails_locations_by_locationId_campaigns_emails_
 
 *Response*: [`DeleteCampaignPublicV2ResponseDto`](#deletecampaignpublicv2responsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().delete_campaign(&locationId, &campaignId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -455,6 +491,12 @@ Operation id: `v3:emails.get_emails_locations_by_locationId_campaigns_emails_by_
 | `campaignId` | string | **yes** | Campaign ID |
 
 *Response*: [`GetEmailCampaignPublicV2ResponseDto`](#getemailcampaignpublicv2responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().get_email_campaign_by_id(&locationId, &campaignId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -491,6 +533,12 @@ Operation id: `v3:emails.patch_emails_locations_by_locationId_campaigns_emails_b
 *Request body*: [`UpdateEmailCampaignPublicV2BodyDto`](#updateemailcampaignpublicv2bodydto)
 
 *Response*: [`UpdateEmailCampaignPublicV2ResponseDto`](#updateemailcampaignpublicv2responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().update_email_campaign(&locationId, &campaignId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -530,6 +578,12 @@ Operation id: `v3:emails.post_emails_locations_by_locationId_campaigns_emails_by
 *Request body*: [`ScheduleCampaignPublicV2BodyDto`](#schedulecampaignpublicv2bodydto)
 
 *Response*: [`ScheduleCampaignPublicV2ResponseDto`](#schedulecampaignpublicv2responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().schedule_campaign(&locationId, &campaignId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -575,6 +629,15 @@ Operation id: `v3:emails.get_emails_locations_by_locationId_campaigns_stats_by_s
 
 *Response*: [`GetCampaignStatsPublicV2ResponseDto`](#getcampaignstatspublicv2responsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::emails::GetCampaignStatisticsParams;
+
+let params = GetCampaignStatisticsParams::new();
+let out = ghl.v3().emails().get_campaign_statistics(&locationId, &source, &sourceId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -618,6 +681,15 @@ Operation id: `v3:emails.get_emails_locations_by_locationId_campaigns_workflows`
 
 *Response*: [`ListWorkflowCampaignsPublicV2ResponseDto`](#listworkflowcampaignspublicv2responsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::emails::ListWorkflowCampaignsParams;
+
+let params = ListWorkflowCampaignsParams::new();
+let out = ghl.v3().emails().list_workflow_campaigns(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -650,6 +722,12 @@ Operation id: `v3:emails.get_emails_locations_by_locationId_campaigns_workflows_
 | `campaignId` | string | **yes** | Campaign ID |
 
 *Response*: [`GetWorkflowCampaignPublicV2ResponseDto`](#getworkflowcampaignpublicv2responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().get_workflow_campaign_by_id(&locationId, &campaignId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -697,6 +775,15 @@ Operation id: `v3:emails.get_emails_locations_by_locationId_templates` · `Versi
 
 *Response*: [`ListTemplatesPublicV2ResponseDto`](#listtemplatespublicv2responsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::emails::ListTemplatesParams;
+
+let params = ListTemplatesParams::new();
+let out = ghl.v3().emails().list_templates(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -730,6 +817,12 @@ Operation id: `v3:emails.post_emails_locations_by_locationId_templates` · `Vers
 *Request body*: [`CreateTemplatePublicV2BodyDto`](#createtemplatepublicv2bodydto)
 
 *Response*: [`CreateTemplatePublicV2ResponseDto`](#createtemplatepublicv2responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().create_an_email_template(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -768,6 +861,12 @@ Operation id: `v3:emails.post_emails_locations_by_locationId_templates_folders` 
 
 *Response*: [`CreateTemplateFolderPublicV2ResponseDto`](#createtemplatefolderpublicv2responsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().create_a_template_folder(&locationId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -805,6 +904,12 @@ Operation id: `v3:emails.post_emails_locations_by_locationId_templates_import` �
 
 *Response*: [`ImportTemplatePublicV2ResponseDto`](#importtemplatepublicv2responsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().import_an_email_template(&locationId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -839,6 +944,12 @@ Operation id: `v3:emails.delete_emails_locations_by_locationId_templates_by_temp
 
 *Response*: [`DeleteTemplatePublicV2ResponseDto`](#deletetemplatepublicv2responsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().delete_a_template(&locationId, &templateId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -872,6 +983,12 @@ Operation id: `v3:emails.get_emails_locations_by_locationId_templates_by_templat
 | `templateId` | string | **yes** | Template ID |
 
 *Response*: [`GetTemplatePublicV2ResponseDto`](#gettemplatepublicv2responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().get_email_template_by_id(&locationId, &templateId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -908,6 +1025,12 @@ Operation id: `v3:emails.patch_emails_locations_by_locationId_templates_by_templ
 *Request body*: [`UpdateTemplatePublicV2BodyDto`](#updatetemplatepublicv2bodydto)
 
 *Response*: [`UpdateTemplatePublicV2ResponseDto`](#updatetemplatepublicv2responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().emails().update_an_email_template(&locationId, &templateId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

@@ -2,7 +2,7 @@
 //! `objects` — typed methods for all 9 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::objects`](crate::Ghl::objects)
+//! Access via [`Ghl::objects`](crate::Ghl::objects).
 //!
 //! Request and response types come from [`ghl_models::v2::objects`](https://docs.rs/ghl-models/latest/ghl_models/v2/objects/); every endpoint is also documented in the
 //! [`objects` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/objects.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::objects as models;
 
-/// Typed access to the `objects` API (9 operations). Obtained via
+/// Typed access to the `objects` API v2 surface (9 operations). Obtained via
 /// [`Ghl::objects`](crate::Ghl::objects).
 #[derive(Debug, Clone)]
 pub struct ObjectsService {

@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `associations` cargo feature on `ghl-sdk`, then call any of the 10 generated methods on `ghl.associations()`:
+**Every endpoint has a typed Rust method.** Enable the `associations` cargo feature on `ghl-sdk`, then call any of the 20 generated methods on `ghl.associations()` (v2) or `ghl.v3().associations()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["associations"] }
+ghl-sdk = { version = "0.5", features = ["associations"] }
 ```
 
 
@@ -462,18 +462,18 @@ let out = ghl.associations().update_association_by_id(&associationId, &body).awa
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/associations/` | Get all associations for a sub-account / location | `v3:associations.get_associations` |
-| `POST` | `/associations/` | Create Association | `v3:associations.post_associations` |
-| `GET` | `/associations/key/{key_name}` | Get association key by key name | `v3:associations.get_associations_key_by_key_name` |
-| `GET` | `/associations/objectKey/{objectKey}` | Get association by object keys | `v3:associations.get_associations_objectKey_by_objectKey` |
-| `POST` | `/associations/relations` | Create Relation for you associated entities. | `v3:associations.post_associations_relations` |
-| `GET` | `/associations/relations/{recordId}` | Get all relations By record Id | `v3:associations.get_associations_relations_by_recordId` |
-| `DELETE` | `/associations/relations/{relationId}` | Delete Relation | `v3:associations.delete_associations_relations_by_relationId` |
-| `DELETE` | `/associations/{associationId}` | Delete Association | `v3:associations.delete_associations_by_associationId` |
-| `GET` | `/associations/{associationId}` | Get association by ID | `v3:associations.get_associations_by_associationId` |
-| `PUT` | `/associations/{associationId}` | Update Association By Id | `v3:associations.put_associations_by_associationId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/associations/` | Get all associations for a sub-account / location | `get_all_associations_for_a_sub_account_location()` | `v3:associations.get_associations` |
+| `POST` | `/associations/` | Create Association | `create_association()` | `v3:associations.post_associations` |
+| `GET` | `/associations/key/{key_name}` | Get association key by key name | `get_association_key_by_key_name()` | `v3:associations.get_associations_key_by_key_name` |
+| `GET` | `/associations/objectKey/{objectKey}` | Get association by object keys | `get_association_by_object_keys()` | `v3:associations.get_associations_objectKey_by_objectKey` |
+| `POST` | `/associations/relations` | Create Relation for you associated entities. | `create_relation_for_you_associated_entities()` | `v3:associations.post_associations_relations` |
+| `GET` | `/associations/relations/{recordId}` | Get all relations By record Id | `get_all_relations_by_record_id()` | `v3:associations.get_associations_relations_by_recordId` |
+| `DELETE` | `/associations/relations/{relationId}` | Delete Relation | `delete_relation()` | `v3:associations.delete_associations_relations_by_relationId` |
+| `DELETE` | `/associations/{associationId}` | Delete Association | `delete_association()` | `v3:associations.delete_associations_by_associationId` |
+| `GET` | `/associations/{associationId}` | Get association by ID | `get_association_by_id()` | `v3:associations.get_associations_by_associationId` |
+| `PUT` | `/associations/{associationId}` | Update Association By Id | `update_association_by_id()` | `v3:associations.put_associations_by_associationId` |
 
 ### Endpoint details — v3
 
@@ -494,6 +494,15 @@ Operation id: `v3:associations.get_associations` · `Version: v3` · Scopes: `as
 | `limit` | number | **yes** | — |
 
 *Response*: [`GetPostSuccessfulResponseDto`](#getpostsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::associations::GetAllAssociationsForASubAccountLocationParams;
+
+let params = GetAllAssociationsForASubAccountLocationParams::new("locationId", "skip", "limit");
+let out = ghl.v3().associations().get_all_associations_for_a_sub_account_location(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -524,6 +533,12 @@ Operation id: `v3:associations.post_associations` · `Version: v3` · Scopes: `a
 *Request body*: [`createAssociationReqDto`](#createassociationreqdto)
 
 *Response*: [`GetPostSuccessfulResponseDto`](#getpostsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().associations().create_association(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -562,6 +577,15 @@ Operation id: `v3:associations.get_associations_key_by_key_name` · `Version: v3
 | `locationId` | string | **yes** | — |
 
 *Response*: [`GetPostSuccessfulResponseDto`](#getpostsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::associations::GetAssociationKeyByKeyNameParams;
+
+let params = GetAssociationKeyByKeyNameParams::new("locationId");
+let out = ghl.v3().associations().get_association_key_by_key_name(&key_name, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -604,6 +628,15 @@ Operation id: `v3:associations.get_associations_objectKey_by_objectKey` · `Vers
 
 *Response*: [`GetPostSuccessfulResponseDto`](#getpostsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::associations::GetAssociationByObjectKeysParams;
+
+let params = GetAssociationByObjectKeysParams::new();
+let out = ghl.v3().associations().get_association_by_object_keys(&objectKey, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -631,6 +664,12 @@ Operation id: `v3:associations.post_associations_relations` · `Version: v3` · 
 *Request body*: [`createRelationReqDto`](#createrelationreqdto)
 
 *Response*: [`GetPostSuccessfulResponseDto`](#getpostsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().associations().create_relation_for_you_associated_entities(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -673,6 +712,15 @@ Operation id: `v3:associations.get_associations_relations_by_recordId` · `Versi
 
 *Response*: [`GetPostSuccessfulResponseDto`](#getpostsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::associations::GetAllRelationsByRecordIdParams;
+
+let params = GetAllRelationsByRecordIdParams::new("locationId", "skip", "limit");
+let out = ghl.v3().associations().get_all_relations_by_record_id(&recordId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -714,6 +762,15 @@ Operation id: `v3:associations.delete_associations_relations_by_relationId` · `
 
 *Response*: [`GetPostSuccessfulResponseDto`](#getpostsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::associations::DeleteRelationParams;
+
+let params = DeleteRelationParams::new("locationId");
+let out = ghl.v3().associations().delete_relation(&relationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -749,6 +806,12 @@ Operation id: `v3:associations.delete_associations_by_associationId` · `Version
 
 *Response*: [`DeleteAssociationsResponseDTO`](#deleteassociationsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().associations().delete_association(&associationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -780,6 +843,12 @@ Operation id: `v3:associations.get_associations_by_associationId` · `Version: v
 | `associationId` | string | **yes** | — |
 
 *Response*: [`GetPostSuccessfulResponseDto`](#getpostsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().associations().get_association_by_id(&associationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -814,6 +883,12 @@ Operation id: `v3:associations.put_associations_by_associationId` · `Version: v
 *Request body*: [`UpdateAssociationReqDto`](#updateassociationreqdto)
 
 *Response*: [`GetPostSuccessfulResponseDto`](#getpostsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().associations().update_association_by_id(&associationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

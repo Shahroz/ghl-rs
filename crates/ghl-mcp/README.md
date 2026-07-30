@@ -8,6 +8,13 @@ MCP server for [GoHighLevel](https://www.gohighlevel.com) CRM — a **single sta
 cargo install ghl-mcp
 ```
 
+Or without a Rust toolchain:
+
+```sh
+npx ghl-mcp                                    # downloads the prebuilt binary
+docker run -p 8000:8000 -e GHL_PIT_TOKEN=pit-… ghcr.io/shahroz/ghl-mcp
+```
+
 Claude Desktop / Claude Code / any MCP host:
 
 ```json
@@ -81,6 +88,18 @@ Writing Rust rather than driving an agent? [`ghl-sdk`](https://crates.io/crates/
 
 Every operation id, its parameters, and its required scopes are listed per module in the [API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/README.md). The [usage guide](https://github.com/Shahroz/ghl-rs/blob/main/docs/GUIDE.md) covers the meta-tool workflow end to end.
 
+## Transports
+
+**stdio** (default) is what Claude Desktop, Claude Code and most hosts launch.
+
+**Streamable HTTP** serves one shared server for several agents:
+
+```sh
+ghl-mcp --http 127.0.0.1:8000     # MCP endpoint: http://127.0.0.1:8000/mcp
+```
+
+> The HTTP listener has **no authentication of its own** — every caller gets the configured GoHighLevel credentials. Bind it to localhost, or front it with an authenticating proxy. Never expose it to the internet directly.
+
 ## Configuration
 
 Flags win over environment variables.
@@ -91,7 +110,8 @@ Flags win over environment variables.
 | `GHL_ACCESS_TOKEN` | `--access-token` | OAuth access token (alternative) |
 | `GHL_LOCATION_ID` | `--location-id` | Default location for tool calls |
 | `GHL_BASE_URL` | `--base-url` | API base override |
-| `GHL_ALLOW_DESTRUCTIVE` | `--allow-destructive` | Enable deletion tools |
+| `GHL_ALLOW_DESTRUCTIVE` | `--allow-destructive` | Enable write/delete/send tools |
+| `GHL_HTTP_ADDR` | `--http` | Serve Streamable HTTP instead of stdio |
 | `RUST_LOG` | — | Log filter (stderr only; stdout is the MCP channel) |
 
 License: MIT or Apache-2.0. *Not affiliated with HighLevel Inc.*

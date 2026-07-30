@@ -4,79 +4,62 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `social-planner` cargo feature on `ghl-sdk`, then call any of the 45 generated methods on `ghl.v3().social_planner()` (v3):
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features social-planner
-use ghl_models::v2::social_planner::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.5", features = ["social-planner"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "social-planner"
-  }
-}
-```
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/social-media-posting/category/queues` | Create a new category queue | `v3:social-planner.post_social_media_posting_category_queues` |
-| `GET` | `/social-media-posting/category/queues/available-categories` | Get all categories with their queue status | `v3:social-planner.get_social_media_posting_category_queues_available_categories` |
-| `POST` | `/social-media-posting/category/queues/list` | Fetch category queues for a location | `v3:social-planner.post_social_media_posting_category_queues_list` |
-| `POST` | `/social-media-posting/category/queues/list/calendar` | Get scheduled posts calendar view | `v3:social-planner.post_social_media_posting_category_queues_list_calendar` |
-| `DELETE` | `/social-media-posting/category/queues/{postId}/active-post` | Delete an active post and schedule the next one | `v3:social-planner.delete_social_media_posting_category_queues_by_postId_active_post` |
-| `GET` | `/social-media-posting/category/queues/{queueId}` | Fetch a category queue by ID | `v3:social-planner.get_social_media_posting_category_queues_by_queueId` |
-| `PUT` | `/social-media-posting/category/queues/{queueId}` | Update queue settings or status | `v3:social-planner.put_social_media_posting_category_queues_by_queueId` |
-| `POST` | `/social-media-posting/category/queues/{queueId}/create/item` | Create a new item in the queue | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_create_item` |
-| `POST` | `/social-media-posting/category/queues/{queueId}/edit/calendar` | Fetch calendar view for an edit session | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_edit_calendar` |
-| `POST` | `/social-media-posting/category/queues/{queueId}/edit/discard` | Discard edit session changes | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_edit_discard` |
-| `POST` | `/social-media-posting/category/queues/{queueId}/edit/save` | Save edit session changes | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_edit_save` |
-| `POST` | `/social-media-posting/category/queues/{queueId}/edit/start` | Start or resume an edit session | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_edit_start` |
-| `POST` | `/social-media-posting/category/queues/{queueId}/items` | Fetch items from a queue | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_items` |
-| `DELETE` | `/social-media-posting/category/queues/{queueId}/items/{itemId}` | Delete an item from a queue | `v3:social-planner.delete_social_media_posting_category_queues_by_queueId_items_by_itemId` |
-| `PUT` | `/social-media-posting/category/queues/{queueId}/items/{itemId}` | Update an item in a queue | `v3:social-planner.put_social_media_posting_category_queues_by_queueId_items_by_itemId` |
-| `POST` | `/social-media-posting/category/queues/{queueId}/items/{itemId}/clone` | Clone a queue item | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_items_by_itemId_clone` |
-| `PUT` | `/social-media-posting/category/queues/{queueId}/items/{itemId}/reset` | Reset an item in a queue | `v3:social-planner.put_social_media_posting_category_queues_by_queueId_items_by_itemId_reset` |
-| `POST` | `/social-media-posting/category/queues/{queueId}/slots` | Fetch slot information for queue items | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_slots` |
-| `POST` | `/social-media-posting/comments/{platform}` | Create a comment or reply | `v3:social-planner.post_social_media_posting_comments_by_platform` |
-| `POST` | `/social-media-posting/comments/{platform}/list` | List comments for a post or thread | `v3:social-planner.post_social_media_posting_comments_by_platform_list` |
-| `DELETE` | `/social-media-posting/comments/{platform}/{id}/like` | Unlike a comment | `v3:social-planner.delete_social_media_posting_comments_by_platform_by_id_like` |
-| `POST` | `/social-media-posting/comments/{platform}/{id}/like` | Like a comment | `v3:social-planner.post_social_media_posting_comments_by_platform_by_id_like` |
-| `GET` | `/social-media-posting/oauth/{locationId}/{platform}/accounts/{accountId}` | Get Available Accounts (Step 2 of 3) | `v3:social-planner.get_social_media_posting_oauth_by_locationId_by_platform_accounts_by_accountId` |
-| `POST` | `/social-media-posting/oauth/{locationId}/{platform}/accounts/{accountId}` | Connect Account (Step 3 of 3) | `v3:social-planner.post_social_media_posting_oauth_by_locationId_by_platform_accounts_by_accountId` |
-| `GET` | `/social-media-posting/oauth/{platform}/start` | Start OAuth Flow (Step 1 of 3) | `v3:social-planner.get_social_media_posting_oauth_by_platform_start` |
-| `POST` | `/social-media-posting/statistics` | Get Social Media Statistics | `v3:social-planner.post_social_media_posting_statistics` |
-| `GET` | `/social-media-posting/{locationId}/accounts` | Get Accounts | `v3:social-planner.get_social_media_posting_by_locationId_accounts` |
-| `DELETE` | `/social-media-posting/{locationId}/accounts/{id}` | Delete Account | `v3:social-planner.delete_social_media_posting_by_locationId_accounts_by_id` |
-| `GET` | `/social-media-posting/{locationId}/categories` | Get categories by location id | `v3:social-planner.get_social_media_posting_by_locationId_categories` |
-| `GET` | `/social-media-posting/{locationId}/categories/{id}` | Get categories by id | `v3:social-planner.get_social_media_posting_by_locationId_categories_by_id` |
-| `GET` | `/social-media-posting/{locationId}/csv` | Get Upload Status | `v3:social-planner.get_social_media_posting_by_locationId_csv` |
-| `POST` | `/social-media-posting/{locationId}/csv` | Upload CSV | `v3:social-planner.post_social_media_posting_by_locationId_csv` |
-| `DELETE` | `/social-media-posting/{locationId}/csv/{csvId}/post/{postId}` | Delete CSV Post | `v3:social-planner.delete_social_media_posting_by_locationId_csv_by_csvId_post_by_postId` |
-| `DELETE` | `/social-media-posting/{locationId}/csv/{id}` | Delete CSV | `v3:social-planner.delete_social_media_posting_by_locationId_csv_by_id` |
-| `GET` | `/social-media-posting/{locationId}/csv/{id}` | Get CSV Post | `v3:social-planner.get_social_media_posting_by_locationId_csv_by_id` |
-| `PATCH` | `/social-media-posting/{locationId}/csv/{id}` | Start CSV Finalize | `v3:social-planner.patch_social_media_posting_by_locationId_csv_by_id` |
-| `POST` | `/social-media-posting/{locationId}/posts` | Create post | `v3:social-planner.post_social_media_posting_by_locationId_posts` |
-| `POST` | `/social-media-posting/{locationId}/posts/bulk-delete` | Bulk Delete Social Planner Posts | `v3:social-planner.post_social_media_posting_by_locationId_posts_bulk_delete` |
-| `POST` | `/social-media-posting/{locationId}/posts/list` | Get posts | `v3:social-planner.post_social_media_posting_by_locationId_posts_list` |
-| `DELETE` | `/social-media-posting/{locationId}/posts/{id}` | Delete Post | `v3:social-planner.delete_social_media_posting_by_locationId_posts_by_id` |
-| `GET` | `/social-media-posting/{locationId}/posts/{id}` | Get post | `v3:social-planner.get_social_media_posting_by_locationId_posts_by_id` |
-| `PUT` | `/social-media-posting/{locationId}/posts/{id}` | Edit post | `v3:social-planner.put_social_media_posting_by_locationId_posts_by_id` |
-| `POST` | `/social-media-posting/{locationId}/set-accounts` | Set Accounts | `v3:social-planner.post_social_media_posting_by_locationId_set_accounts` |
-| `GET` | `/social-media-posting/{locationId}/tags` | Get tags by location id | `v3:social-planner.get_social_media_posting_by_locationId_tags` |
-| `POST` | `/social-media-posting/{locationId}/tags/details` | Get tags by ids | `v3:social-planner.post_social_media_posting_by_locationId_tags_details` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/social-media-posting/category/queues` | Create a new category queue | `create_a_new_category_queue()` | `v3:social-planner.post_social_media_posting_category_queues` |
+| `GET` | `/social-media-posting/category/queues/available-categories` | Get all categories with their queue status | `get_all_categories_with_their_queue_status()` | `v3:social-planner.get_social_media_posting_category_queues_available_categories` |
+| `POST` | `/social-media-posting/category/queues/list` | Fetch category queues for a location | `fetch_category_queues_for_a_location()` | `v3:social-planner.post_social_media_posting_category_queues_list` |
+| `POST` | `/social-media-posting/category/queues/list/calendar` | Get scheduled posts calendar view | `get_scheduled_posts_calendar_view()` | `v3:social-planner.post_social_media_posting_category_queues_list_calendar` |
+| `DELETE` | `/social-media-posting/category/queues/{postId}/active-post` | Delete an active post and schedule the next one | `delete_an_active_post_and_schedule_the_next_one()` | `v3:social-planner.delete_social_media_posting_category_queues_by_postId_active_post` |
+| `GET` | `/social-media-posting/category/queues/{queueId}` | Fetch a category queue by ID | `fetch_a_category_queue_by_id()` | `v3:social-planner.get_social_media_posting_category_queues_by_queueId` |
+| `PUT` | `/social-media-posting/category/queues/{queueId}` | Update queue settings or status | `update_queue_settings_or_status()` | `v3:social-planner.put_social_media_posting_category_queues_by_queueId` |
+| `POST` | `/social-media-posting/category/queues/{queueId}/create/item` | Create a new item in the queue | `create_a_new_item_in_the_queue()` | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_create_item` |
+| `POST` | `/social-media-posting/category/queues/{queueId}/edit/calendar` | Fetch calendar view for an edit session | `fetch_calendar_view_for_an_edit_session()` | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_edit_calendar` |
+| `POST` | `/social-media-posting/category/queues/{queueId}/edit/discard` | Discard edit session changes | `discard_edit_session_changes()` | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_edit_discard` |
+| `POST` | `/social-media-posting/category/queues/{queueId}/edit/save` | Save edit session changes | `save_edit_session_changes()` | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_edit_save` |
+| `POST` | `/social-media-posting/category/queues/{queueId}/edit/start` | Start or resume an edit session | `start_or_resume_an_edit_session()` | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_edit_start` |
+| `POST` | `/social-media-posting/category/queues/{queueId}/items` | Fetch items from a queue | `fetch_items_from_a_queue()` | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_items` |
+| `DELETE` | `/social-media-posting/category/queues/{queueId}/items/{itemId}` | Delete an item from a queue | `delete_an_item_from_a_queue()` | `v3:social-planner.delete_social_media_posting_category_queues_by_queueId_items_by_itemId` |
+| `PUT` | `/social-media-posting/category/queues/{queueId}/items/{itemId}` | Update an item in a queue | `update_an_item_in_a_queue()` | `v3:social-planner.put_social_media_posting_category_queues_by_queueId_items_by_itemId` |
+| `POST` | `/social-media-posting/category/queues/{queueId}/items/{itemId}/clone` | Clone a queue item | `clone_a_queue_item()` | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_items_by_itemId_clone` |
+| `PUT` | `/social-media-posting/category/queues/{queueId}/items/{itemId}/reset` | Reset an item in a queue | `reset_an_item_in_a_queue()` | `v3:social-planner.put_social_media_posting_category_queues_by_queueId_items_by_itemId_reset` |
+| `POST` | `/social-media-posting/category/queues/{queueId}/slots` | Fetch slot information for queue items | `fetch_slot_information_for_queue_items()` | `v3:social-planner.post_social_media_posting_category_queues_by_queueId_slots` |
+| `POST` | `/social-media-posting/comments/{platform}` | Create a comment or reply | `create_a_comment_or_reply()` | `v3:social-planner.post_social_media_posting_comments_by_platform` |
+| `POST` | `/social-media-posting/comments/{platform}/list` | List comments for a post or thread | `list_comments_for_a_post_or_thread()` | `v3:social-planner.post_social_media_posting_comments_by_platform_list` |
+| `DELETE` | `/social-media-posting/comments/{platform}/{id}/like` | Unlike a comment | `unlike_a_comment()` | `v3:social-planner.delete_social_media_posting_comments_by_platform_by_id_like` |
+| `POST` | `/social-media-posting/comments/{platform}/{id}/like` | Like a comment | `like_a_comment()` | `v3:social-planner.post_social_media_posting_comments_by_platform_by_id_like` |
+| `GET` | `/social-media-posting/oauth/{locationId}/{platform}/accounts/{accountId}` | Get Available Accounts (Step 2 of 3) | `get_available_accounts_step_2_of_3()` | `v3:social-planner.get_social_media_posting_oauth_by_locationId_by_platform_accounts_by_accountId` |
+| `POST` | `/social-media-posting/oauth/{locationId}/{platform}/accounts/{accountId}` | Connect Account (Step 3 of 3) | `connect_account_step_3_of_3()` | `v3:social-planner.post_social_media_posting_oauth_by_locationId_by_platform_accounts_by_accountId` |
+| `GET` | `/social-media-posting/oauth/{platform}/start` | Start OAuth Flow (Step 1 of 3) | `start_o_auth_flow_step_1_of_3()` | `v3:social-planner.get_social_media_posting_oauth_by_platform_start` |
+| `POST` | `/social-media-posting/statistics` | Get Social Media Statistics | `get_social_media_statistics()` | `v3:social-planner.post_social_media_posting_statistics` |
+| `GET` | `/social-media-posting/{locationId}/accounts` | Get Accounts | `get_accounts()` | `v3:social-planner.get_social_media_posting_by_locationId_accounts` |
+| `DELETE` | `/social-media-posting/{locationId}/accounts/{id}` | Delete Account | `delete_account()` | `v3:social-planner.delete_social_media_posting_by_locationId_accounts_by_id` |
+| `GET` | `/social-media-posting/{locationId}/categories` | Get categories by location id | `get_categories_by_location_id()` | `v3:social-planner.get_social_media_posting_by_locationId_categories` |
+| `GET` | `/social-media-posting/{locationId}/categories/{id}` | Get categories by id | `get_categories_by_id()` | `v3:social-planner.get_social_media_posting_by_locationId_categories_by_id` |
+| `GET` | `/social-media-posting/{locationId}/csv` | Get Upload Status | `get_upload_status()` | `v3:social-planner.get_social_media_posting_by_locationId_csv` |
+| `POST` | `/social-media-posting/{locationId}/csv` | Upload CSV | `upload_csv()` | `v3:social-planner.post_social_media_posting_by_locationId_csv` |
+| `DELETE` | `/social-media-posting/{locationId}/csv/{csvId}/post/{postId}` | Delete CSV Post | `delete_csv_post()` | `v3:social-planner.delete_social_media_posting_by_locationId_csv_by_csvId_post_by_postId` |
+| `DELETE` | `/social-media-posting/{locationId}/csv/{id}` | Delete CSV | `delete_csv()` | `v3:social-planner.delete_social_media_posting_by_locationId_csv_by_id` |
+| `GET` | `/social-media-posting/{locationId}/csv/{id}` | Get CSV Post | `get_csv_post()` | `v3:social-planner.get_social_media_posting_by_locationId_csv_by_id` |
+| `PATCH` | `/social-media-posting/{locationId}/csv/{id}` | Start CSV Finalize | `start_csv_finalize()` | `v3:social-planner.patch_social_media_posting_by_locationId_csv_by_id` |
+| `POST` | `/social-media-posting/{locationId}/posts` | Create post | `create_post()` | `v3:social-planner.post_social_media_posting_by_locationId_posts` |
+| `POST` | `/social-media-posting/{locationId}/posts/bulk-delete` | Bulk Delete Social Planner Posts | `bulk_delete_social_planner_posts()` | `v3:social-planner.post_social_media_posting_by_locationId_posts_bulk_delete` |
+| `POST` | `/social-media-posting/{locationId}/posts/list` | Get posts | `get_posts()` | `v3:social-planner.post_social_media_posting_by_locationId_posts_list` |
+| `DELETE` | `/social-media-posting/{locationId}/posts/{id}` | Delete Post | `delete_post()` | `v3:social-planner.delete_social_media_posting_by_locationId_posts_by_id` |
+| `GET` | `/social-media-posting/{locationId}/posts/{id}` | Get post | `get_post()` | `v3:social-planner.get_social_media_posting_by_locationId_posts_by_id` |
+| `PUT` | `/social-media-posting/{locationId}/posts/{id}` | Edit post | `edit_post()` | `v3:social-planner.put_social_media_posting_by_locationId_posts_by_id` |
+| `POST` | `/social-media-posting/{locationId}/set-accounts` | Set Accounts | `set_accounts()` | `v3:social-planner.post_social_media_posting_by_locationId_set_accounts` |
+| `GET` | `/social-media-posting/{locationId}/tags` | Get tags by location id | `get_tags_by_location_id()` | `v3:social-planner.get_social_media_posting_by_locationId_tags` |
+| `POST` | `/social-media-posting/{locationId}/tags/details` | Get tags by ids | `get_tags_by_ids()` | `v3:social-planner.post_social_media_posting_by_locationId_tags_details` |
 
 ### Endpoint details — v3
 
@@ -91,6 +74,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues` · `
 *Request body*: [`CreateCategoryQueueDTO`](#createcategoryqueuedto)
 
 *Response*: [`WrappedCreateCategoryQueueResponseDTO`](#wrappedcreatecategoryqueueresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().create_a_new_category_queue(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -127,6 +116,15 @@ Operation id: `v3:social-planner.get_social_media_posting_category_queues_availa
 
 *Response*: [`WrappedFetchAvailableCategoriesResponseDTO`](#wrappedfetchavailablecategoriesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::GetAllCategoriesWithTheirQueueStatusParams;
+
+let params = GetAllCategoriesWithTheirQueueStatusParams::new("locationId");
+let out = ghl.v3().social_planner().get_all_categories_with_their_queue_status(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -155,6 +153,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues_list`
 
 *Response*: [`WrappedFetchCategoryQueuesResponseDTO`](#wrappedfetchcategoryqueuesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().fetch_category_queues_for_a_location(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -182,6 +186,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues_list_
 *Request body*: [`CalendarListDTO`](#calendarlistdto)
 
 *Response*: [`WrappedFetchCalendarListResponseDTO`](#wrappedfetchcalendarlistresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().get_scheduled_posts_calendar_view(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -220,6 +230,15 @@ Operation id: `v3:social-planner.delete_social_media_posting_category_queues_by_
 | `locationId` | string | **yes** | Location ID |
 
 *Response*: [`WrappedDeleteActivePostResponseDTO`](#wrappeddeleteactivepostresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::DeleteAnActivePostAndScheduleTheNextOneParams;
+
+let params = DeleteAnActivePostAndScheduleTheNextOneParams::new("locationId");
+let out = ghl.v3().social_planner().delete_an_active_post_and_schedule_the_next_one(&postId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -262,6 +281,15 @@ Operation id: `v3:social-planner.get_social_media_posting_category_queues_by_que
 
 *Response*: [`WrappedFetchQueueByIdResponseDTO`](#wrappedfetchqueuebyidresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::FetchACategoryQueueByIdParams;
+
+let params = FetchACategoryQueueByIdParams::new("locationId");
+let out = ghl.v3().social_planner().fetch_a_category_queue_by_id(&queueId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -298,6 +326,12 @@ Operation id: `v3:social-planner.put_social_media_posting_category_queues_by_que
 *Request body*: [`UpdateCategoryQueueDTO`](#updatecategoryqueuedto)
 
 *Response*: [`WrappedUpdateCategoryQueueResponseDTO`](#wrappedupdatecategoryqueueresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().update_queue_settings_or_status(&queueId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -336,6 +370,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues_by_qu
 
 *Response*: [`WrappedCreateQueueItemResponseDTO`](#wrappedcreatequeueitemresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().create_a_new_item_in_the_queue(&queueId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -372,6 +412,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues_by_qu
 *Request body*: [`EditSessionCalendarDTO`](#editsessioncalendardto)
 
 *Response*: [`WrappedEditSessionCalendarResponseDTO`](#wrappededitsessioncalendarresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().fetch_calendar_view_for_an_edit_session(&queueId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -410,6 +456,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues_by_qu
 
 *Response*: [`WrappedDiscardEditSessionResponseDTO`](#wrappeddiscardeditsessionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().discard_edit_session_changes(&queueId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -446,6 +498,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues_by_qu
 *Request body*: [`SaveEditSessionDTO`](#saveeditsessiondto)
 
 *Response*: [`WrappedSaveEditSessionResponseDTO`](#wrappedsaveeditsessionresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().save_edit_session_changes(&queueId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -484,6 +542,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues_by_qu
 
 *Response*: [`WrappedStartEditSessionResponseDTO`](#wrappedstarteditsessionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().start_or_resume_an_edit_session(&queueId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -520,6 +584,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues_by_qu
 *Request body*: [`FetchQueueItemsDTO`](#fetchqueueitemsdto)
 
 *Response*: [`WrappedFetchQueueItemsResponseDTO`](#wrappedfetchqueueitemsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().fetch_items_from_a_queue(&queueId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -564,6 +634,15 @@ Operation id: `v3:social-planner.delete_social_media_posting_category_queues_by_
 
 *Response*: [`WrappedGeneralSuccessResponseDTO`](#wrappedgeneralsuccessresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::DeleteAnItemFromAQueueParams;
+
+let params = DeleteAnItemFromAQueueParams::new("locationId");
+let out = ghl.v3().social_planner().delete_an_item_from_a_queue(&queueId, &itemId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -602,6 +681,12 @@ Operation id: `v3:social-planner.put_social_media_posting_category_queues_by_que
 *Request body*: [`UpdateQueueItemDTO`](#updatequeueitemdto)
 
 *Response*: [`WrappedUpdateQueueItemResponseDTO`](#wrappedupdatequeueitemresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().update_an_item_in_a_queue(&queueId, &itemId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -642,6 +727,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues_by_qu
 
 *Response*: [`WrappedCloneQueueItemResponseDTO`](#wrappedclonequeueitemresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().clone_a_queue_item(&queueId, &itemId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -681,6 +772,12 @@ Operation id: `v3:social-planner.put_social_media_posting_category_queues_by_que
 
 *Response*: [`WrappedResetQueueItemResponseDTO`](#wrappedresetqueueitemresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().reset_an_item_in_a_queue(&queueId, &itemId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -718,6 +815,12 @@ Operation id: `v3:social-planner.post_social_media_posting_category_queues_by_qu
 *Request body*: [`FetchSlotsDTO`](#fetchslotsdto)
 
 *Response*: [`WrappedFetchSlotsResponseDTO`](#wrappedfetchslotsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().fetch_slot_information_for_queue_items(&queueId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -761,6 +864,15 @@ Operation id: `v3:social-planner.post_social_media_posting_comments_by_platform`
 *Request body*: [`CommentsCreateBodyDTO`](#commentscreatebodydto)
 
 *Response*: [`CommentsCreateResponseDTO`](#commentscreateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::CreateACommentOrReplyParams;
+
+let params = CreateACommentOrReplyParams::new("locationId");
+let out = ghl.v3().social_planner().create_a_comment_or_reply(&platform, &params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -808,6 +920,15 @@ Operation id: `v3:social-planner.post_social_media_posting_comments_by_platform_
 
 *Response*: [`CommentsGetListResponseDTO`](#commentsgetlistresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::ListCommentsForAPostOrThreadParams;
+
+let params = ListCommentsForAPostOrThreadParams::new("locationId");
+let out = ghl.v3().social_planner().list_comments_for_a_post_or_thread(&platform, &params, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -853,6 +974,15 @@ Operation id: `v3:social-planner.delete_social_media_posting_comments_by_platfor
 
 *Response*: [`DeleteLikeResponseDTO`](#deletelikeresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::UnlikeACommentParams;
+
+let params = UnlikeACommentParams::new("locationId");
+let out = ghl.v3().social_planner().unlike_a_comment(&platform, &id, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -896,6 +1026,15 @@ Operation id: `v3:social-planner.post_social_media_posting_comments_by_platform_
 
 *Response*: [`CommentsLikeResponseDTO`](#commentslikeresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::LikeACommentParams;
+
+let params = LikeACommentParams::new("locationId");
+let out = ghl.v3().social_planner().like_a_comment(&platform, &id, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -938,6 +1077,15 @@ Operation id: `v3:social-planner.get_social_media_posting_oauth_by_locationId_by
 |---|---|---|---|
 | `search` | string | no | Search term to filter accounts/pages by name. Useful when the user has many pages to choose from. |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::GetAvailableAccountsStep2Of3Params;
+
+let params = GetAvailableAccountsStep2Of3Params::new();
+let out = ghl.v3().social_planner().get_available_accounts_step_2_of_3(&locationId, &platform, &accountId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -971,6 +1119,12 @@ Operation id: `v3:social-planner.post_social_media_posting_oauth_by_locationId_b
 | `locationId` | string | **yes** | The Location ID where you want to connect this social account |
 | `platform` | enum: `google`, `facebook`, `instagram`, `linkedin`, `tiktok`, `youtube`, `pinterest`, `threads`, `bluesky` | **yes** | Social media platform (must match the platform used in Steps 1 and 2) |
 | `accountId` | string | **yes** | The OAuth Account ID received from Step 1 (same as used in Step 2) |
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().connect_account_step_3_of_3(&locationId, &platform, &accountId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1013,6 +1167,15 @@ Operation id: `v3:social-planner.get_social_media_posting_oauth_by_platform_star
 | `page` | string | no | Page |
 | `reconnect` | string | no | Reconnect |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::StartOAuthFlowStep1Of3Params;
+
+let params = StartOAuthFlowStep1Of3Params::new("locationId", "userId");
+let out = ghl.v3().social_planner().start_o_auth_flow_step_1_of_3(&platform, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1049,6 +1212,15 @@ Operation id: `v3:social-planner.post_social_media_posting_statistics` · `Versi
 
 *Request body fields*: `profileIds`**\***, `platforms`, `currentRange`, `prevRange`  (**\*** = required)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::GetSocialMediaStatisticsParams;
+
+let params = GetSocialMediaStatisticsParams::new("locationId");
+let out = ghl.v3().social_planner().get_social_media_statistics(&params, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1083,6 +1255,12 @@ Operation id: `v3:social-planner.get_social_media_posting_by_locationId_accounts
 | `locationId` | string | **yes** | Location Id |
 
 *Response*: [`AccountsListResponseDTO`](#accountslistresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().get_accounts(&locationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1123,6 +1301,15 @@ Operation id: `v3:social-planner.delete_social_media_posting_by_locationId_accou
 | `userId` | string | no | User ID |
 
 *Response*: [`LocationAndAccountDeleteResponseDTO`](#locationandaccountdeleteresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::DeleteAccountParams;
+
+let params = DeleteAccountParams::new();
+let out = ghl.v3().social_planner().delete_account(&locationId, &id, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1165,6 +1352,15 @@ Operation id: `v3:social-planner.get_social_media_posting_by_locationId_categori
 
 *Response*: [`GetByLocationIdResponseDTO`](#getbylocationidresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::GetCategoriesByLocationIdParams;
+
+let params = GetCategoriesByLocationIdParams::new();
+let out = ghl.v3().social_planner().get_categories_by_location_id(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1197,6 +1393,12 @@ Operation id: `v3:social-planner.get_social_media_posting_by_locationId_categori
 | `locationId` | string | **yes** | Location Id |
 
 *Response*: [`GetByIdResponseDTO`](#getbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().get_categories_by_id(&id, &locationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1241,6 +1443,15 @@ Operation id: `v3:social-planner.get_social_media_posting_by_locationId_csv` · 
 
 *Response*: [`GetUploadStatusResponseDTO`](#getuploadstatusresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::GetUploadStatusParams;
+
+let params = GetUploadStatusParams::new("userId");
+let out = ghl.v3().social_planner().get_upload_status(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1276,6 +1487,12 @@ Operation id: `v3:social-planner.post_social_media_posting_by_locationId_csv` ·
 
 *Response*: [`UploadFileResponseDTO`](#uploadfileresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().upload_csv(&locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1309,6 +1526,12 @@ Operation id: `v3:social-planner.delete_social_media_posting_by_locationId_csv_b
 | `csvId` | string | **yes** | CSV Id |
 
 *Response*: [`DeletePostResponseDTO`](#deletepostresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().delete_csv_post(&locationId, &postId, &csvId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1344,6 +1567,12 @@ Operation id: `v3:social-planner.delete_social_media_posting_by_locationId_csv_b
 | `id` | string | **yes** | CSV Id |
 
 *Response*: [`DeleteCsvResponseDTO`](#deletecsvresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().delete_csv(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1386,6 +1615,15 @@ Operation id: `v3:social-planner.get_social_media_posting_by_locationId_csv_by_i
 
 *Response*: [`GetCsvPostResponseDTO`](#getcsvpostresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::GetCsvPostParams;
+
+let params = GetCsvPostParams::new();
+let out = ghl.v3().social_planner().get_csv_post(&locationId, &id, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1421,6 +1659,12 @@ Operation id: `v3:social-planner.patch_social_media_posting_by_locationId_csv_by
 *Request body*: [`CSVDefaultDTO`](#csvdefaultdto)
 
 *Response*: [`CsvPostStatusResponseDTO`](#csvpoststatusresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().start_csv_finalize(&locationId, &id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1460,6 +1704,12 @@ Operation id: `v3:social-planner.post_social_media_posting_by_locationId_posts` 
 
 *Response*: [`CreatePostSuccessfulResponseDTO`](#createpostsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().create_post(&locationId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1490,6 +1740,12 @@ Operation id: `v3:social-planner.post_social_media_posting_by_locationId_posts_b
 *Request body*: [`DeletePostsDto`](#deletepostsdto)
 
 *Response*: [`BulkDeleteResponseDto`](#bulkdeleteresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().bulk_delete_social_planner_posts(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1525,6 +1781,12 @@ Operation id: `v3:social-planner.post_social_media_posting_by_locationId_posts_l
 
 *Response*: [`PostSuccessfulResponseDTO`](#postsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().get_posts(&locationId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1559,6 +1821,12 @@ Operation id: `v3:social-planner.delete_social_media_posting_by_locationId_posts
 
 *Response*: [`DeletePostSuccessfulResponseDTO`](#deletepostsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().delete_post(&locationId, &id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1590,6 +1858,12 @@ Operation id: `v3:social-planner.get_social_media_posting_by_locationId_posts_by
 | `id` | string | **yes** | Post Id |
 
 *Response*: [`GetPostSuccessfulResponseDTO`](#getpostsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().get_post(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1626,6 +1900,12 @@ Operation id: `v3:social-planner.put_social_media_posting_by_locationId_posts_by
 *Request body*: [`CreatePostDTO`](#createpostdto)
 
 *Response*: [`UpdatePostSuccessfulResponseDTO`](#updatepostsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().edit_post(&locationId, &id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1664,6 +1944,12 @@ Operation id: `v3:social-planner.post_social_media_posting_by_locationId_set_acc
 *Request body*: [`SetAccountsDTO`](#setaccountsdto)
 
 *Response*: [`SetAccountsResponseDTO`](#setaccountsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().set_accounts(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1708,6 +1994,15 @@ Operation id: `v3:social-planner.get_social_media_posting_by_locationId_tags` ·
 
 *Response*: [`GetTagsByLocationIdResponseDTO`](#gettagsbylocationidresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::social_planner::GetTagsByLocationIdParams;
+
+let params = GetTagsByLocationIdParams::new();
+let out = ghl.v3().social_planner().get_tags_by_location_id(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1741,6 +2036,12 @@ Operation id: `v3:social-planner.post_social_media_posting_by_locationId_tags_de
 *Request body*: [`UpdateTagDTO`](#updatetagdto)
 
 *Response*: [`GetTagsByIdResponseDTO`](#gettagsbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().social_planner().get_tags_by_ids(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

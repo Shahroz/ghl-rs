@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `courses` cargo feature on `ghl-sdk`, then call any of the 1 generated methods on `ghl.courses()`:
+**Every endpoint has a typed Rust method.** Enable the `courses` cargo feature on `ghl-sdk`, then call any of the 2 generated methods on `ghl.courses()` (v2) or `ghl.v3().courses()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["courses"] }
+ghl-sdk = { version = "0.5", features = ["courses"] }
 ```
 
 
@@ -53,9 +53,9 @@ let out = ghl.courses().import_courses(&body).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/courses/courses-exporter/public/import` | Import Courses | `v3:courses.post_courses_courses_exporter_public_import` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/courses/courses-exporter/public/import` | Import Courses | `import_courses()` | `v3:courses.post_courses_courses_exporter_public_import` |
 
 ### Endpoint details — v3
 
@@ -68,6 +68,12 @@ Import Courses through public channels
 Operation id: `v3:courses.post_courses_courses_exporter_public_import` · `Version: v3`
 
 *Request body*: [`PublicExporterPayload`](#publicexporterpayload)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().courses().import_courses(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 

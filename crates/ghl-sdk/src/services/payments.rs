@@ -2,7 +2,7 @@
 //! `payments` — typed methods for all 23 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::payments`](crate::Ghl::payments)
+//! Access via [`Ghl::payments`](crate::Ghl::payments).
 //!
 //! Request and response types come from [`ghl_models::v2::payments`](https://docs.rs/ghl-models/latest/ghl_models/v2/payments/); every endpoint is also documented in the
 //! [`payments` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/payments.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::payments as models;
 
-/// Typed access to the `payments` API (23 operations). Obtained via
+/// Typed access to the `payments` API v2 surface (23 operations). Obtained via
 /// [`Ghl::payments`](crate::Ghl::payments).
 #[derive(Debug, Clone)]
 pub struct PaymentsService {

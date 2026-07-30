@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `companies` cargo feature on `ghl-sdk`, then call any of the 1 generated methods on `ghl.companies()`:
+**Every endpoint has a typed Rust method.** Enable the `companies` cargo feature on `ghl-sdk`, then call any of the 2 generated methods on `ghl.companies()` (v2) or `ghl.v3().companies()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["companies"] }
+ghl-sdk = { version = "0.5", features = ["companies"] }
 ```
 
 
@@ -59,9 +59,9 @@ let out = ghl.companies().get_company(&companyId).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/companies/{companyId}` | Get Company | `v3:companies.get_companies_by_companyId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/companies/{companyId}` | Get Company | `get_company()` | `v3:companies.get_companies_by_companyId` |
 
 ### Endpoint details — v3
 
@@ -80,6 +80,12 @@ Operation id: `v3:companies.get_companies_by_companyId` · `Version: v3` · Scop
 | `companyId` | string | **yes** | — |
 
 *Response*: [`GetCompanyByIdSuccessfulResponseDto`](#getcompanybyidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().companies().get_company(&companyId).await?;
+```
 
 <details><summary>MCP call</summary>
 

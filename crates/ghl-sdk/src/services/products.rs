@@ -2,7 +2,7 @@
 //! `products` — typed methods for all 27 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::products`](crate::Ghl::products)
+//! Access via [`Ghl::products`](crate::Ghl::products).
 //!
 //! Request and response types come from [`ghl_models::v2::products`](https://docs.rs/ghl-models/latest/ghl_models/v2/products/); every endpoint is also documented in the
 //! [`products` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/products.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::products as models;
 
-/// Typed access to the `products` API (27 operations). Obtained via
+/// Typed access to the `products` API v2 surface (27 operations). Obtained via
 /// [`Ghl::products`](crate::Ghl::products).
 #[derive(Debug, Clone)]
 pub struct ProductsService {

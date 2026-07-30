@@ -2,7 +2,7 @@
 //! `forms` — typed methods for all 3 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::forms`](crate::Ghl::forms)
+//! Access via [`Ghl::forms`](crate::Ghl::forms).
 //!
 //! Request and response types come from [`ghl_models::v2::forms`](https://docs.rs/ghl-models/latest/ghl_models/v2/forms/); every endpoint is also documented in the
 //! [`forms` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/forms.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::forms as models;
 
-/// Typed access to the `forms` API (3 operations). Obtained via
+/// Typed access to the `forms` API v2 surface (3 operations). Obtained via
 /// [`Ghl::forms`](crate::Ghl::forms).
 #[derive(Debug, Clone)]
 pub struct FormsService {

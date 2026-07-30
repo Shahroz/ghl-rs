@@ -1,10 +1,9 @@
 //! Unofficial async Rust SDK for the [GoHighLevel](https://www.gohighlevel.com)
 //! (HighLevel) CRM API.
 //!
-//! **Every API v2 endpoint has a typed Rust method** — 576 operations across 41
-//! modules, each with generated request/response types, so you never have to
-//! leave the library to read HighLevel's docs. API v3 (627 more operations) is
-//! covered by [DTOs](https://docs.rs/ghl-models) plus [`Ghl::request_raw`].
+//! **Every endpoint has a typed Rust method** — 1,203 operations across 45
+//! modules, in API v2 *and* v3, each with generated request/response types, so
+//! you never have to leave the library to read HighLevel's docs.
 //!
 //! ```no_run
 //! use ghl_sdk::{contacts::CreateContact, Ghl};
@@ -44,13 +43,13 @@
 //! - **Forward-compatible types** — unknown response fields are preserved in an
 //!   `extra` map instead of failing deserialization.
 //!
-//! # Generated services — every v2 endpoint, typed
+//! # Generated services — every endpoint, typed
 //!
 //! Enable the cargo feature named after an API module and its whole surface
 //! appears on the client, with generated parameter and body types:
 //!
 //! ```toml
-//! ghl-sdk = { version = "0.4", features = ["invoices"] }
+//! ghl-sdk = { version = "0.5", features = ["invoices"] }
 //! ```
 //!
 //! ```ignore
@@ -77,6 +76,18 @@
 //! - **Bodies** take the generated DTO from [`ghl-models`](https://docs.rs/ghl-models).
 //! - **Returns** the response type the spec names (about 3 in 4 endpoints), else
 //!   [`serde_json::Value`].
+//!
+//! ## API v3
+//!
+//! v3 is a parallel, newer surface (627 operations) reached through [`Ghl::v3`],
+//! which sends `Version: v3` for you:
+//!
+//! ```ignore
+//! let dup = ghl.v3().contacts().get_duplicate_contact(&params).await?;
+//! ```
+//!
+//! It has modules v2 lacks — `ad-publishing`, `social-planner`, `saas`,
+//! `chat-widget` — and renames three others.
 //!
 //! See [`services`] for the module list, and the
 //! [API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/README.md)
@@ -131,6 +142,13 @@
 //! implementation must persist durably — [`MemoryTokenStore`] loses the session
 //! on restart.
 //!
+//! # Webhooks
+//!
+//! With the `webhooks` feature, `webhooks::verify` checks HighLevel's
+//! RSA-SHA256 signature and `webhooks::WebhookEvent` types the envelope its 58
+//! event types share. Verify the raw bytes before parsing. See the [`webhooks`]
+//! module.
+//!
 //! # Errors
 //!
 //! [`Error`] distinguishes [`Error::Api`] (the API said no, with status and
@@ -147,9 +165,10 @@
 //!
 //! | Feature | Effect |
 //! |---|---|
-//! | `<module>` (41 of them, e.g. `invoices`, `payments`, `products`) | That module's generated service + its DTOs |
+//! | `<module>` (45 of them, e.g. `invoices`, `payments`, `products`) | That module's generated services (v2 and v3) plus its DTOs |
 //! | `full` | Every generated service. Convenient, slow to compile |
 //! | `models` | Just the [`ghl-models`](https://docs.rs/ghl-models) re-export, no services |
+//! | `webhooks` | RSA signature verification and typed events ([`webhooks`]) |
 //!
 //! # Further reading
 //!
@@ -193,6 +212,12 @@ mod error;
 pub mod locations;
 pub mod opportunities;
 pub mod services;
+
+// Module docs live in webhooks.rs; a second doc comment here would shadow the
+// intra-doc link resolution inside it.
+#[cfg(feature = "webhooks")]
+#[cfg_attr(docsrs, doc(cfg(feature = "webhooks")))]
+pub mod webhooks;
 
 pub use auth::{Auth, MemoryTokenStore, OAuthConfig, TokenSet, TokenStore, UserType};
 pub use client::{Ghl, GhlBuilder, RateStatus, API_VERSION, DEFAULT_BASE_URL};

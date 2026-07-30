@@ -4,42 +4,25 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `chat-widget` cargo feature on `ghl-sdk`, then call any of the 8 generated methods on `ghl.v3().chat_widget()` (v3):
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features chat-widget
-use ghl_models::v2::chat_widget::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.5", features = ["chat-widget"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "chat-widget"
-  }
-}
-```
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/chat-widget/` | Create Chat Widget | `v3:chat-widget.post_chat_widget` |
-| `POST` | `/chat-widget/clone` | Clone Chat Widget | `v3:chat-widget.post_chat_widget_clone` |
-| `GET` | `/chat-widget/data/{locationId}/{id}` | Get Chat Widget | `v3:chat-widget.get_chat_widget_data_by_locationId_by_id` |
-| `PATCH` | `/chat-widget/data/{locationId}/{id}` | Patch Chat Widget | `v3:chat-widget.patch_chat_widget_data_by_locationId_by_id` |
-| `PUT` | `/chat-widget/data/{locationId}/{id}` | Update Chat Widget | `v3:chat-widget.put_chat_widget_data_by_locationId_by_id` |
-| `GET` | `/chat-widget/list` | List Chat Widgets | `v3:chat-widget.get_chat_widget_list` |
-| `GET` | `/chat-widget/public/config/{id}` | Get Widget Config | `v3:chat-widget.get_chat_widget_public_config_by_id` |
-| `DELETE` | `/chat-widget/{locationId}/{id}` | Delete Chat Widget | `v3:chat-widget.delete_chat_widget_by_locationId_by_id` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/chat-widget/` | Create Chat Widget | `create_chat_widget()` | `v3:chat-widget.post_chat_widget` |
+| `POST` | `/chat-widget/clone` | Clone Chat Widget | `clone_chat_widget()` | `v3:chat-widget.post_chat_widget_clone` |
+| `GET` | `/chat-widget/data/{locationId}/{id}` | Get Chat Widget | `get_chat_widget()` | `v3:chat-widget.get_chat_widget_data_by_locationId_by_id` |
+| `PATCH` | `/chat-widget/data/{locationId}/{id}` | Patch Chat Widget | `patch_chat_widget()` | `v3:chat-widget.patch_chat_widget_data_by_locationId_by_id` |
+| `PUT` | `/chat-widget/data/{locationId}/{id}` | Update Chat Widget | `update_chat_widget()` | `v3:chat-widget.put_chat_widget_data_by_locationId_by_id` |
+| `GET` | `/chat-widget/list` | List Chat Widgets | `list_chat_widgets()` | `v3:chat-widget.get_chat_widget_list` |
+| `GET` | `/chat-widget/public/config/{id}` | Get Widget Config | `get_widget_config()` | `v3:chat-widget.get_chat_widget_public_config_by_id` |
+| `DELETE` | `/chat-widget/{locationId}/{id}` | Delete Chat Widget | `delete_chat_widget()` | `v3:chat-widget.delete_chat_widget_by_locationId_by_id` |
 
 ### Endpoint details — v3
 
@@ -52,6 +35,12 @@ Creates a new chat widget for the given sub-account.
 Operation id: `v3:chat-widget.post_chat_widget` · `Version: v3` · Scopes: `chat-widget.write`
 
 *Request body*: [`CreateWidgetDTO`](#createwidgetdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().chat_widget().create_chat_widget(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -78,6 +67,12 @@ Creates a copy of an existing chat widget in the same sub-account.
 Operation id: `v3:chat-widget.post_chat_widget_clone` · `Version: v3` · Scopes: `chat-widget.write`
 
 *Request body*: [`CloneChatWidgetDTO`](#clonechatwidgetdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().chat_widget().clone_chat_widget(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -109,6 +104,12 @@ Operation id: `v3:chat-widget.get_chat_widget_data_by_locationId_by_id` · `Vers
 |---|---|---|---|
 | `id` | string | **yes** | The chat widget ID |
 | `locationId` | string | **yes** | The location ID |
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().chat_widget().get_chat_widget(&id, &locationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -143,6 +144,12 @@ Operation id: `v3:chat-widget.patch_chat_widget_data_by_locationId_by_id` · `Ve
 | `locationId` | string | **yes** | The location ID |
 
 *Request body*: [`UpdateWidgetDTO`](#updatewidgetdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().chat_widget().patch_chat_widget(&id, &locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -180,6 +187,12 @@ Operation id: `v3:chat-widget.put_chat_widget_data_by_locationId_by_id` · `Vers
 | `locationId` | string | **yes** | The location ID |
 
 *Request body*: [`UpdateWidgetDTO`](#updatewidgetdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().chat_widget().update_chat_widget(&id, &locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -221,6 +234,15 @@ Operation id: `v3:chat-widget.get_chat_widget_list` · `Version: v3` · Scopes: 
 | `voiceAiAgentId` | string | no | The voice AI agent ID |
 | `allInOneChatTypes` | enum: `liveChat`, `waChat`, `emailChat`, `allInOneChat`, `voiceAiChat`, `facebookChat`, `instagramChat`, `webChat` | no | All-in-one chat type to filter by. Only applies when chatType is "allInOneChat". Supports normal ChatType values plus the virtual umbrella "webChat" (maps to fa… |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::chat_widget::ListChatWidgetsParams;
+
+let params = ListChatWidgetsParams::new("locationId", "offset", "limit");
+let out = ghl.v3().chat_widget().list_chat_widgets(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -259,6 +281,15 @@ Operation id: `v3:chat-widget.get_chat_widget_public_config_by_id` · `Version: 
 |---|---|---|---|
 | `version` | string | no | — |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::chat_widget::GetWidgetConfigParams;
+
+let params = GetWidgetConfigParams::new();
+let out = ghl.v3().chat_widget().get_widget_config(&id, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -289,6 +320,12 @@ Operation id: `v3:chat-widget.delete_chat_widget_by_locationId_by_id` · `Versio
 |---|---|---|---|
 | `id` | string | **yes** | The chat widget ID |
 | `locationId` | string | **yes** | The location ID |
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().chat_widget().delete_chat_widget(&id, &locationId).await?;
+```
 
 <details><summary>MCP call</summary>
 

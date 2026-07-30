@@ -2,7 +2,7 @@
 //! `oauth` — typed methods for all 3 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::oauth`](crate::Ghl::oauth)
+//! Access via [`Ghl::oauth`](crate::Ghl::oauth).
 //!
 //! Request and response types come from [`ghl_models::v2::oauth`](https://docs.rs/ghl-models/latest/ghl_models/v2/oauth/); every endpoint is also documented in the
 //! [`oauth` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/oauth.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::oauth as models;
 
-/// Typed access to the `oauth` API (3 operations). Obtained via
+/// Typed access to the `oauth` API v2 surface (3 operations). Obtained via
 /// [`Ghl::oauth`](crate::Ghl::oauth).
 #[derive(Debug, Clone)]
 pub struct OauthService {

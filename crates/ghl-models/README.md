@@ -10,7 +10,7 @@ Every module is behind a cargo feature, because enabling everything means thousa
 
 ```toml
 [dependencies]
-ghl-models = { version = "0.4", features = ["invoices", "payments"] }
+ghl-models = { version = "0.5", features = ["invoices", "payments"] }
 ```
 
 ```rust,ignore

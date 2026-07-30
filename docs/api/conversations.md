@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `conversations` cargo feature on `ghl-sdk`, then call any of the 29 generated methods on `ghl.conversations()`:
+**Every endpoint has a typed Rust method.** Enable the `conversations` cargo feature on `ghl-sdk`, then call any of the 54 generated methods on `ghl.conversations()` (v2) or `ghl.v3().conversations()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["conversations"] }
+ghl-sdk = { version = "0.5", features = ["conversations"] }
 ```
 
 This module also has hand-written ergonomic helpers on the same `ghl.conversations()`: `search()`, `messages()`, `send_message()` (envelope unwrapping, paginated `Stream`s).
@@ -1175,33 +1175,33 @@ let out = ghl.conversations().get_messages_by_conversation_id(&conversationId, &
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/conversations/` | Create Conversation | `v3:conversations.post_conversations` |
-| `GET` | `/conversations/locations/{locationId}/messages/{messageId}/transcription` | Get transcription by Message ID | `v3:conversations.get_conversations_locations_by_locationId_messages_by_messageId_transcription` |
-| `GET` | `/conversations/locations/{locationId}/messages/{messageId}/transcription/download` | Download transcription by Message ID | `v3:conversations.get_conversations_locations_by_locationId_messages_by_messageId_transcription_download` |
-| `POST` | `/conversations/messages` | Send a new message | `v3:conversations.post_conversations_messages` |
-| `DELETE` | `/conversations/messages/email/{emailMessageId}/schedule` | Cancel a scheduled email message. | `v3:conversations.delete_conversations_messages_email_by_emailMessageId_schedule` |
-| `GET` | `/conversations/messages/email/{id}` | Get email by Id | `v3:conversations.get_conversations_messages_email_by_id` |
-| `PUT` | `/conversations/messages/email/{id}/status` | Update email message status | `v3:conversations.put_conversations_messages_email_by_id_status` |
-| `GET` | `/conversations/messages/export` | Export messages by location ID | `v3:conversations.get_conversations_messages_export` |
-| `POST` | `/conversations/messages/inbound` | Add an inbound message | `v3:conversations.post_conversations_messages_inbound` |
-| `POST` | `/conversations/messages/outbound` | Add an external outbound call | `v3:conversations.post_conversations_messages_outbound` |
-| `POST` | `/conversations/messages/review-reply` | Send a review reply to Google My Business | `v3:conversations.post_conversations_messages_review_reply` |
-| `POST` | `/conversations/messages/upload` | Upload file attachments | `v3:conversations.post_conversations_messages_upload` |
-| `POST` | `/conversations/messages/upload/complete` | Complete file upload | `v3:conversations.post_conversations_messages_upload_complete` |
-| `POST` | `/conversations/messages/upload/initiate` | Initiate file upload to GCS | `v3:conversations.post_conversations_messages_upload_initiate` |
-| `GET` | `/conversations/messages/{id}` | Get message by message id | `v3:conversations.get_conversations_messages_by_id` |
-| `PUT` | `/conversations/messages/{messageId}/attachments` | Add message attachments | `v3:conversations.put_conversations_messages_by_messageId_attachments` |
-| `GET` | `/conversations/messages/{messageId}/locations/{locationId}/recording` | Get Recording by Message ID | `v3:conversations.get_conversations_messages_by_messageId_locations_by_locationId_recording` |
-| `DELETE` | `/conversations/messages/{messageId}/schedule` | Cancel a scheduled message. | `v3:conversations.delete_conversations_messages_by_messageId_schedule` |
-| `PUT` | `/conversations/messages/{messageId}/status` | Update message status | `v3:conversations.put_conversations_messages_by_messageId_status` |
-| `POST` | `/conversations/providers/live-chat/typing` | Agent/Ai-Bot is typing a message indicator for live chat | `v3:conversations.post_conversations_providers_live_chat_typing` |
-| `GET` | `/conversations/search` | Search Conversations | `v3:conversations.get_conversations_search` |
-| `DELETE` | `/conversations/{conversationId}` | Delete Conversation | `v3:conversations.delete_conversations_by_conversationId` |
-| `GET` | `/conversations/{conversationId}` | Get Conversation | `v3:conversations.get_conversations_by_conversationId` |
-| `PUT` | `/conversations/{conversationId}` | Update Conversation | `v3:conversations.put_conversations_by_conversationId` |
-| `GET` | `/conversations/{conversationId}/messages` | Get messages by conversation id | `v3:conversations.get_conversations_by_conversationId_messages` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/conversations/` | Create Conversation | `create_conversation()` | `v3:conversations.post_conversations` |
+| `GET` | `/conversations/locations/{locationId}/messages/{messageId}/transcription` | Get transcription by Message ID | `get_transcription_by_message_id()` | `v3:conversations.get_conversations_locations_by_locationId_messages_by_messageId_transcription` |
+| `GET` | `/conversations/locations/{locationId}/messages/{messageId}/transcription/download` | Download transcription by Message ID | `download_transcription_by_message_id()` | `v3:conversations.get_conversations_locations_by_locationId_messages_by_messageId_transcription_download` |
+| `POST` | `/conversations/messages` | Send a new message | `send_a_new_message()` | `v3:conversations.post_conversations_messages` |
+| `DELETE` | `/conversations/messages/email/{emailMessageId}/schedule` | Cancel a scheduled email message. | `cancel_a_scheduled_email_message()` | `v3:conversations.delete_conversations_messages_email_by_emailMessageId_schedule` |
+| `GET` | `/conversations/messages/email/{id}` | Get email by Id | `get_email_by_id()` | `v3:conversations.get_conversations_messages_email_by_id` |
+| `PUT` | `/conversations/messages/email/{id}/status` | Update email message status | `update_email_message_status()` | `v3:conversations.put_conversations_messages_email_by_id_status` |
+| `GET` | `/conversations/messages/export` | Export messages by location ID | `export_messages_by_location_id()` | `v3:conversations.get_conversations_messages_export` |
+| `POST` | `/conversations/messages/inbound` | Add an inbound message | `add_an_inbound_message()` | `v3:conversations.post_conversations_messages_inbound` |
+| `POST` | `/conversations/messages/outbound` | Add an external outbound call | `add_an_external_outbound_call()` | `v3:conversations.post_conversations_messages_outbound` |
+| `POST` | `/conversations/messages/review-reply` | Send a review reply to Google My Business | `send_a_review_reply_to_google_my_business()` | `v3:conversations.post_conversations_messages_review_reply` |
+| `POST` | `/conversations/messages/upload` | Upload file attachments | `upload_file_attachments()` | `v3:conversations.post_conversations_messages_upload` |
+| `POST` | `/conversations/messages/upload/complete` | Complete file upload | `complete_file_upload()` | `v3:conversations.post_conversations_messages_upload_complete` |
+| `POST` | `/conversations/messages/upload/initiate` | Initiate file upload to GCS | `initiate_file_upload_to_gcs()` | `v3:conversations.post_conversations_messages_upload_initiate` |
+| `GET` | `/conversations/messages/{id}` | Get message by message id | `get_message_by_message_id()` | `v3:conversations.get_conversations_messages_by_id` |
+| `PUT` | `/conversations/messages/{messageId}/attachments` | Add message attachments | `add_message_attachments()` | `v3:conversations.put_conversations_messages_by_messageId_attachments` |
+| `GET` | `/conversations/messages/{messageId}/locations/{locationId}/recording` | Get Recording by Message ID | `get_recording_by_message_id()` | `v3:conversations.get_conversations_messages_by_messageId_locations_by_locationId_recording` |
+| `DELETE` | `/conversations/messages/{messageId}/schedule` | Cancel a scheduled message. | `cancel_a_scheduled_message()` | `v3:conversations.delete_conversations_messages_by_messageId_schedule` |
+| `PUT` | `/conversations/messages/{messageId}/status` | Update message status | `update_message_status()` | `v3:conversations.put_conversations_messages_by_messageId_status` |
+| `POST` | `/conversations/providers/live-chat/typing` | Agent/Ai-Bot is typing a message indicator for live chat | `agent_ai_bot_is_typing_a_message_indicator_for_live_chat()` | `v3:conversations.post_conversations_providers_live_chat_typing` |
+| `GET` | `/conversations/search` | Search Conversations | `search_conversations()` | `v3:conversations.get_conversations_search` |
+| `DELETE` | `/conversations/{conversationId}` | Delete Conversation | `delete_conversation()` | `v3:conversations.delete_conversations_by_conversationId` |
+| `GET` | `/conversations/{conversationId}` | Get Conversation | `get_conversation()` | `v3:conversations.get_conversations_by_conversationId` |
+| `PUT` | `/conversations/{conversationId}` | Update Conversation | `update_conversation()` | `v3:conversations.put_conversations_by_conversationId` |
+| `GET` | `/conversations/{conversationId}/messages` | Get messages by conversation id | `get_messages_by_conversation_id()` | `v3:conversations.get_conversations_by_conversationId_messages` |
 
 ### Endpoint details — v3
 
@@ -1216,6 +1216,12 @@ Operation id: `v3:conversations.post_conversations` · `Version: v3` · Scopes: 
 *Request body*: [`CreateConversationDto`](#createconversationdto)
 
 *Response*: [`CreateConversationSuccessResponse`](#createconversationsuccessresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().create_conversation(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1250,6 +1256,12 @@ Operation id: `v3:conversations.get_conversations_locations_by_locationId_messag
 
 *Response*: [`GetMessageTranscriptionResponseDto`](#getmessagetranscriptionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().get_transcription_by_message_id(&locationId, &messageId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1282,6 +1294,12 @@ Operation id: `v3:conversations.get_conversations_locations_by_locationId_messag
 | `locationId` | string | **yes** | Location ID as string |
 | `messageId` | string | **yes** | Message ID as string |
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().download_transcription_by_message_id(&locationId, &messageId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1310,6 +1328,12 @@ Operation id: `v3:conversations.post_conversations_messages` · `Version: v3` ·
 *Request body*: [`SendMessageBodyDto`](#sendmessagebodydto)
 
 *Response*: [`SendMessageResponseDto`](#sendmessageresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().send_a_new_message(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1343,6 +1367,12 @@ Operation id: `v3:conversations.delete_conversations_messages_email_by_emailMess
 
 *Response*: [`CancelScheduledResponseDto`](#cancelscheduledresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().cancel_a_scheduled_email_message(&emailMessageId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1366,6 +1396,12 @@ Operation id: `v3:conversations.delete_conversations_messages_email_by_emailMess
 Operation id: `v3:conversations.get_conversations_messages_email_by_id` · `Version: v3` · Scopes: `conversations/message.readonly`
 
 *Response*: [`GetEmailMessageResponseDto`](#getemailmessageresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().get_email_by_id().await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1397,6 +1433,12 @@ Operation id: `v3:conversations.put_conversations_messages_email_by_id_status` �
 *Request body*: [`UpdateEmailMessageStatusDto`](#updateemailmessagestatusdto)
 
 *Response*: [`UpdateEmailMessageStatusResponseDto`](#updateemailmessagestatusresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().update_email_message_status(&id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1442,6 +1484,15 @@ Operation id: `v3:conversations.get_conversations_messages_export` · `Version: 
 
 *Response*: [`ExportMessagesResponseDto`](#exportmessagesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::conversations::ExportMessagesByLocationIdParams;
+
+let params = ExportMessagesByLocationIdParams::new("locationId");
+let out = ghl.v3().conversations().export_messages_by_location_id(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1469,6 +1520,12 @@ Operation id: `v3:conversations.post_conversations_messages_inbound` · `Version
 *Request body*: [`ProcessMessageBodyDto`](#processmessagebodydto)
 
 *Response*: [`ProcessMessageResponseDto`](#processmessageresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().add_an_inbound_message(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1498,6 +1555,12 @@ Operation id: `v3:conversations.post_conversations_messages_outbound` · `Versio
 
 *Response*: [`ProcessMessageResponseDto`](#processmessageresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().add_an_external_outbound_call(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1526,6 +1589,12 @@ Operation id: `v3:conversations.post_conversations_messages_review_reply` · `Ve
 
 *Response*: [`SendMessageResponseDto`](#sendmessageresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().send_a_review_reply_to_google_my_business(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1552,6 +1621,12 @@ Operation id: `v3:conversations.post_conversations_messages_upload` · `Version:
 
 *Response*: [`UploadFilesResponseDto`](#uploadfilesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().upload_file_attachments().await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1576,6 +1651,12 @@ Operation id: `v3:conversations.post_conversations_messages_upload_complete` · 
 *Request body*: [`CompleteFileUploadDto`](#completefileuploaddto)
 
 *Response*: [`CompleteFileUploadResponseDto`](#completefileuploadresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().complete_file_upload(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1605,6 +1686,12 @@ Operation id: `v3:conversations.post_conversations_messages_upload_initiate` · 
 
 *Response*: [`InitiateFileUploadResponseDto`](#initiatefileuploadresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().initiate_file_upload_to_gcs(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1630,6 +1717,12 @@ Get message by message id.
 Operation id: `v3:conversations.get_conversations_messages_by_id` · `Version: v3` · Scopes: `conversations/message.readonly`
 
 *Response*: [`GetMessageResponseDto`](#getmessageresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().get_message_by_message_id().await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1659,6 +1752,12 @@ Operation id: `v3:conversations.put_conversations_messages_by_messageId_attachme
 | `messageId` | string | **yes** | Message Id |
 
 *Request body*: [`AddMessageAttachmentsDto`](#addmessageattachmentsdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().add_message_attachments(&messageId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1694,6 +1793,12 @@ Operation id: `v3:conversations.get_conversations_messages_by_messageId_location
 | `locationId` | string | **yes** | Location ID as string |
 | `messageId` | string | **yes** | Message ID as string |
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().get_recording_by_message_id(&locationId, &messageId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1726,6 +1831,12 @@ Operation id: `v3:conversations.delete_conversations_messages_by_messageId_sched
 | `messageId` | string | **yes** | Message Id |
 
 *Response*: [`CancelScheduledResponseDto`](#cancelscheduledresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().cancel_a_scheduled_message(&messageId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1761,6 +1872,12 @@ Operation id: `v3:conversations.put_conversations_messages_by_messageId_status` 
 
 *Response*: [`SendMessageResponseDto`](#sendmessageresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().update_message_status(&messageId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1791,6 +1908,12 @@ Operation id: `v3:conversations.post_conversations_providers_live_chat_typing` �
 *Request body*: [`UserTypingBody`](#usertypingbody)
 
 *Response*: [`CreateLiveChatMessageFeedbackResponse`](#createlivechatmessagefeedbackresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().agent_ai_bot_is_typing_a_message_indicator_for_live_chat(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1844,6 +1967,15 @@ Operation id: `v3:conversations.get_conversations_search` · `Version: v3` · Sc
 
 *Response*: [`SendConversationResponseDto`](#sendconversationresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::conversations::SearchConversationsParams;
+
+let params = SearchConversationsParams::new("locationId");
+let out = ghl.v3().conversations().search_conversations(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1876,6 +2008,12 @@ Operation id: `v3:conversations.delete_conversations_by_conversationId` · `Vers
 
 *Response*: [`DeleteConversationSuccessfulResponse`](#deleteconversationsuccessfulresponse)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().delete_conversation(&conversationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1907,6 +2045,12 @@ Operation id: `v3:conversations.get_conversations_by_conversationId` · `Version
 | `conversationId` | string | **yes** | Conversation ID as string |
 
 *Response*: [`GetConversationByIdResponse`](#getconversationbyidresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().get_conversation(&conversationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1941,6 +2085,12 @@ Operation id: `v3:conversations.put_conversations_by_conversationId` · `Version
 *Request body*: [`UpdateConversationDto`](#updateconversationdto)
 
 *Response*: [`GetConversationSuccessfulResponse`](#getconversationsuccessfulresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().conversations().update_conversation(&conversationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1984,6 +2134,15 @@ Operation id: `v3:conversations.get_conversations_by_conversationId_messages` ·
 | `type` | enum: `TYPE_CALL`, `TYPE_SMS`, `TYPE_RCS`, `TYPE_EMAIL`, `TYPE_FACEBOOK`, `TYPE_GMB`, `TYPE_INSTAGRAM`, `TYPE_WHATSAPP`, `TYPE_ACTIVITY_APPOINTMENT`, `TYPE_ACTIVITY_CONTACT`, `TYPE_ACTIVITY_INVOICE`, `TYPE_ACTIVITY_PAYMENT`, `TYPE_ACTIVITY_OPPORTUNITY`, `TYPE_LIVE_CHAT`, `TYPE_INTERNAL_COMMENTS`, `TYPE_ACTIVITY_EMPLOYEE_ACTION_LOG`, `TYPE_TIKTOK`, `TYPE_ACTIVITY_WHATSAPP`, `TYPE_FORM_SUBMISSION` | no | Types of message to fetched separated with comma |
 
 *Response*: [`GetMessagesByConversationResponseDto`](#getmessagesbyconversationresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::conversations::GetMessagesByConversationIdParams;
+
+let params = GetMessagesByConversationIdParams::new();
+let out = ghl.v3().conversations().get_messages_by_conversation_id(&conversationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 

@@ -2,7 +2,7 @@
 //! `phone-system` — typed methods for all 4 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::phone_system`](crate::Ghl::phone_system)
+//! Access via [`Ghl::phone_system`](crate::Ghl::phone_system).
 //!
 //! Request and response types come from [`ghl_models::v2::phone_system`](https://docs.rs/ghl-models/latest/ghl_models/v2/phone_system/); every endpoint is also documented in the
 //! [`phone-system` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/phone-system.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::phone_system as models;
 
-/// Typed access to the `phone-system` API (4 operations). Obtained via
+/// Typed access to the `phone-system` API v2 surface (4 operations). Obtained via
 /// [`Ghl::phone_system`](crate::Ghl::phone_system).
 #[derive(Debug, Clone)]
 pub struct PhoneSystemService {

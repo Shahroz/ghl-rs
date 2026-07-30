@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `social-media-posting` cargo feature on `ghl-sdk`, then call any of the 40 generated methods on `ghl.social_media_posting()`:
+**Every endpoint has a typed Rust method.** Enable the `social-media-posting` cargo feature on `ghl-sdk`, then call any of the 40 generated methods on `ghl.social_media_posting()` (v2):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["social-media-posting"] }
+ghl-sdk = { version = "0.5", features = ["social-media-posting"] }
 ```
 
 

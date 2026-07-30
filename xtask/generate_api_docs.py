@@ -201,14 +201,19 @@ def render_module(md, shared_enums, rust_methods=None):
     out.append("## How to call it")
     out.append("")
     if rust_methods:
-        n = len(rust_methods)
+        n = sum(len(v) for v in rust_methods.values())
         rust_mod = re.sub(r"[^a-z0-9]+", "_", m)
+        recvs = []
+        if rust_methods.get("v2"):
+            recvs.append(f"`ghl.{rust_mod}()` (v2)")
+        if rust_methods.get("v3"):
+            recvs.append(f"`ghl.v3().{rust_mod}()` (v3)")
         out.append(f"**Every endpoint has a typed Rust method.** Enable the `{m}` "
                    f"cargo feature on `ghl-sdk`, then call any of the {n} generated "
-                   f"methods on `ghl.{rust_mod}()`:")
+                   f"methods on " + " or ".join(recvs) + ":")
         out.append("")
         out.append("```toml")
-        out.append(f'ghl-sdk = {{ version = "0.4", features = ["{m}"] }}')
+        out.append(f'ghl-sdk = {{ version = "0.5", features = ["{m}"] }}')
         out.append("```")
         out.append("")
         if m in TYPED_SERVICES:
@@ -253,7 +258,7 @@ def render_module(md, shared_enums, rust_methods=None):
             continue
         out.append(f"## Endpoints — API {api_version}")
         out.append("")
-        show_rust = api_version == "v2" and bool(rust_methods)
+        show_rust = bool(rust_methods.get(api_version))
         if show_rust:
             out.append("| Method | Path | Summary | Rust method | Operation id |")
             out.append("|---|---|---|---|---|")
@@ -263,7 +268,7 @@ def render_module(md, shared_enums, rust_methods=None):
         for op in block["ops"]:
             row = f"| `{op['method']}` | `{op['path']}` | {op['summary'] or '—'} |"
             if show_rust:
-                rmm = rust_methods.get((op["method"], op["path"]))
+                rmm = rust_methods.get(api_version, {}).get((op["method"], op["path"]))
                 row += f" `{rmm[0]}()` |" if rmm else " — |"
             row += f" `{md.op_id(op)}` |"
             out.append(row)
@@ -281,7 +286,7 @@ def render_module(md, shared_enums, rust_methods=None):
             if op["desc"] and op["desc"] != op["summary"]:
                 out.append(op["desc"])
                 out.append("")
-            rm = rust_methods.get((op["method"], op["path"])) if api_version == "v2" else None
+            rm = rust_methods.get(api_version, {}).get((op["method"], op["path"]))
             meta = [f"Operation id: `{oid}`"]
             if op["version"]:
                 meta.append(f"`Version: {op['version']}`")
@@ -343,10 +348,12 @@ def render_module(md, shared_enums, rust_methods=None):
                 if params_ty:
                     req_q = [q for q in query_p if q["required"]]
                     ctor = ", ".join(f"\"{q['name']}\"" for q in req_q)
-                    out.append(f"use ghl_sdk::services::{rust_mod}::{params_ty};")
+                    ns = f"v3::{rust_mod}" if api_version == "v3" else rust_mod
+                    out.append(f"use ghl_sdk::services::{ns}::{params_ty};")
                     out.append("")
                     out.append(f"let params = {params_ty}::new({ctor});")
-                out.append(f"let out = ghl.{rust_mod}().{fn}({', '.join(arg_bits)}).await?;")
+                recv = f"ghl.v3().{rust_mod}()" if api_version == "v3" else f"ghl.{rust_mod}()"
+                out.append(f"let out = {recv}.{fn}({', '.join(arg_bits)}).await?;")
                 out.append("```")
                 out.append("")
             # Ready-to-run MCP call
@@ -425,20 +432,22 @@ def main():
 
     # module -> {(METHOD, path): (rust_fn, params_ty, service, rust_mod)}
     rust_methods = {}
-    for f in sorted((docs_root / "apps").glob("*.json")):
-        spec = json.loads(f.read_text())
-        if not (spec.get("paths") or {}):
-            continue
-        g = ServiceGen(f.stem, spec)
-        rust_methods[f.stem] = {
-            (o["http"], o["path"]): (
-                o["fn"],
-                o["params_ty"] if o["query"] else None,
-                g.svc_name(),
-                g.rust_mod,
-            )
-            for o in g.ops
-        }
+    for version, sub in (("v2", "apps"), ("v3", "apps/v3")):
+        for f in sorted((docs_root / sub).glob("*.json")):
+            spec = json.loads(f.read_text())
+            if not (spec.get("paths") or {}):
+                continue
+            module = f.stem.replace("-v3", "")
+            g = ServiceGen(module, spec, api_version=version)
+            rust_methods.setdefault(module, {})[version] = {
+                (o["http"], o["path"]): (
+                    o["fn"],
+                    o["params_ty"] if o["query"] else None,
+                    g.svc_name(),
+                    g.rust_mod,
+                )
+                for o in g.ops
+            }
 
     mods = {}
     for api_version, sub in (("v2", "apps"), ("v3", "apps/v3")):

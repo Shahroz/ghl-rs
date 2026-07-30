@@ -2,7 +2,7 @@
 //! `campaigns` — typed methods for all 1 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::campaigns`](crate::Ghl::campaigns)
+//! Access via [`Ghl::campaigns`](crate::Ghl::campaigns).
 //!
 //! Request and response types come from [`ghl_models::v2::campaigns`](https://docs.rs/ghl-models/latest/ghl_models/v2/campaigns/); every endpoint is also documented in the
 //! [`campaigns` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/campaigns.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::campaigns as models;
 
-/// Typed access to the `campaigns` API (1 operations). Obtained via
+/// Typed access to the `campaigns` API v2 surface (1 operations). Obtained via
 /// [`Ghl::campaigns`](crate::Ghl::campaigns).
 #[derive(Debug, Clone)]
 pub struct CampaignsService {

@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `campaigns` cargo feature on `ghl-sdk`, then call any of the 1 generated methods on `ghl.campaigns()`:
+**Every endpoint has a typed Rust method.** Enable the `campaigns` cargo feature on `ghl-sdk`, then call any of the 2 generated methods on `ghl.campaigns()` (v2) or `ghl.v3().campaigns()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["campaigns"] }
+ghl-sdk = { version = "0.5", features = ["campaigns"] }
 ```
 
 
@@ -61,9 +61,9 @@ let out = ghl.campaigns().get_campaigns(&params).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/campaigns/` | Get Campaigns | `v3:campaigns.get_campaigns` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/campaigns/` | Get Campaigns | `get_campaigns()` | `v3:campaigns.get_campaigns` |
 
 ### Endpoint details — v3
 
@@ -81,6 +81,15 @@ Operation id: `v3:campaigns.get_campaigns` · `Version: v3` · Scopes: `campaign
 | `status` | string | no | — |
 
 *Response*: [`CampaignsSuccessfulResponseDto`](#campaignssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::campaigns::GetCampaignsParams;
+
+let params = GetCampaignsParams::new("locationId");
+let out = ghl.v3().campaigns().get_campaigns(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

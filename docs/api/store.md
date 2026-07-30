@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `store` cargo feature on `ghl-sdk`, then call any of the 18 generated methods on `ghl.store()`:
+**Every endpoint has a typed Rust method.** Enable the `store` cargo feature on `ghl-sdk`, then call any of the 36 generated methods on `ghl.store()` (v2) or `ghl.v3().store()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["store"] }
+ghl-sdk = { version = "0.5", features = ["store"] }
 ```
 
 
@@ -851,26 +851,26 @@ let out = ghl.store().create_update_store_settings(&body).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/store/shipping-carrier` | List Shipping Carriers | `v3:store.get_store_shipping_carrier` |
-| `POST` | `/store/shipping-carrier` | Create Shipping Carrier | `v3:store.post_store_shipping_carrier` |
-| `DELETE` | `/store/shipping-carrier/{shippingCarrierId}` | Delete shipping carrier | `v3:store.delete_store_shipping_carrier_by_shippingCarrierId` |
-| `GET` | `/store/shipping-carrier/{shippingCarrierId}` | Get Shipping Carrier | `v3:store.get_store_shipping_carrier_by_shippingCarrierId` |
-| `PUT` | `/store/shipping-carrier/{shippingCarrierId}` | Update Shipping Carrier | `v3:store.put_store_shipping_carrier_by_shippingCarrierId` |
-| `GET` | `/store/shipping-zone` | List Shipping Zones | `v3:store.get_store_shipping_zone` |
-| `POST` | `/store/shipping-zone` | Create Shipping Zone | `v3:store.post_store_shipping_zone` |
-| `POST` | `/store/shipping-zone/shipping-rates` | Get available shipping rates | `v3:store.post_store_shipping_zone_shipping_rates` |
-| `DELETE` | `/store/shipping-zone/{shippingZoneId}` | Delete shipping zone | `v3:store.delete_store_shipping_zone_by_shippingZoneId` |
-| `GET` | `/store/shipping-zone/{shippingZoneId}` | Get Shipping Zone | `v3:store.get_store_shipping_zone_by_shippingZoneId` |
-| `PUT` | `/store/shipping-zone/{shippingZoneId}` | Update Shipping Zone | `v3:store.put_store_shipping_zone_by_shippingZoneId` |
-| `GET` | `/store/shipping-zone/{shippingZoneId}/shipping-rate` | List Shipping Rates | `v3:store.get_store_shipping_zone_by_shippingZoneId_shipping_rate` |
-| `POST` | `/store/shipping-zone/{shippingZoneId}/shipping-rate` | Create Shipping Rate | `v3:store.post_store_shipping_zone_by_shippingZoneId_shipping_rate` |
-| `DELETE` | `/store/shipping-zone/{shippingZoneId}/shipping-rate/{shippingRateId}` | Delete shipping rate | `v3:store.delete_store_shipping_zone_by_shippingZoneId_shipping_rate_by_shippingRateId` |
-| `GET` | `/store/shipping-zone/{shippingZoneId}/shipping-rate/{shippingRateId}` | Get Shipping Rate | `v3:store.get_store_shipping_zone_by_shippingZoneId_shipping_rate_by_shippingRateId` |
-| `PUT` | `/store/shipping-zone/{shippingZoneId}/shipping-rate/{shippingRateId}` | Update Shipping Rate | `v3:store.put_store_shipping_zone_by_shippingZoneId_shipping_rate_by_shippingRateId` |
-| `GET` | `/store/store-setting` | Get Store Settings | `v3:store.get_store_store_setting` |
-| `POST` | `/store/store-setting` | Create/Update Store Settings | `v3:store.post_store_store_setting` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/store/shipping-carrier` | List Shipping Carriers | `list_shipping_carriers()` | `v3:store.get_store_shipping_carrier` |
+| `POST` | `/store/shipping-carrier` | Create Shipping Carrier | `create_shipping_carrier()` | `v3:store.post_store_shipping_carrier` |
+| `DELETE` | `/store/shipping-carrier/{shippingCarrierId}` | Delete shipping carrier | `delete_shipping_carrier()` | `v3:store.delete_store_shipping_carrier_by_shippingCarrierId` |
+| `GET` | `/store/shipping-carrier/{shippingCarrierId}` | Get Shipping Carrier | `get_shipping_carrier()` | `v3:store.get_store_shipping_carrier_by_shippingCarrierId` |
+| `PUT` | `/store/shipping-carrier/{shippingCarrierId}` | Update Shipping Carrier | `update_shipping_carrier()` | `v3:store.put_store_shipping_carrier_by_shippingCarrierId` |
+| `GET` | `/store/shipping-zone` | List Shipping Zones | `list_shipping_zones()` | `v3:store.get_store_shipping_zone` |
+| `POST` | `/store/shipping-zone` | Create Shipping Zone | `create_shipping_zone()` | `v3:store.post_store_shipping_zone` |
+| `POST` | `/store/shipping-zone/shipping-rates` | Get available shipping rates | `get_available_shipping_rates()` | `v3:store.post_store_shipping_zone_shipping_rates` |
+| `DELETE` | `/store/shipping-zone/{shippingZoneId}` | Delete shipping zone | `delete_shipping_zone()` | `v3:store.delete_store_shipping_zone_by_shippingZoneId` |
+| `GET` | `/store/shipping-zone/{shippingZoneId}` | Get Shipping Zone | `get_shipping_zone()` | `v3:store.get_store_shipping_zone_by_shippingZoneId` |
+| `PUT` | `/store/shipping-zone/{shippingZoneId}` | Update Shipping Zone | `update_shipping_zone()` | `v3:store.put_store_shipping_zone_by_shippingZoneId` |
+| `GET` | `/store/shipping-zone/{shippingZoneId}/shipping-rate` | List Shipping Rates | `list_shipping_rates()` | `v3:store.get_store_shipping_zone_by_shippingZoneId_shipping_rate` |
+| `POST` | `/store/shipping-zone/{shippingZoneId}/shipping-rate` | Create Shipping Rate | `create_shipping_rate()` | `v3:store.post_store_shipping_zone_by_shippingZoneId_shipping_rate` |
+| `DELETE` | `/store/shipping-zone/{shippingZoneId}/shipping-rate/{shippingRateId}` | Delete shipping rate | `delete_shipping_rate()` | `v3:store.delete_store_shipping_zone_by_shippingZoneId_shipping_rate_by_shippingRateId` |
+| `GET` | `/store/shipping-zone/{shippingZoneId}/shipping-rate/{shippingRateId}` | Get Shipping Rate | `get_shipping_rate()` | `v3:store.get_store_shipping_zone_by_shippingZoneId_shipping_rate_by_shippingRateId` |
+| `PUT` | `/store/shipping-zone/{shippingZoneId}/shipping-rate/{shippingRateId}` | Update Shipping Rate | `update_shipping_rate()` | `v3:store.put_store_shipping_zone_by_shippingZoneId_shipping_rate_by_shippingRateId` |
+| `GET` | `/store/store-setting` | Get Store Settings | `get_store_settings()` | `v3:store.get_store_store_setting` |
+| `POST` | `/store/store-setting` | Create/Update Store Settings | `create_update_store_settings()` | `v3:store.post_store_store_setting` |
 
 ### Endpoint details — v3
 
@@ -890,6 +890,15 @@ Operation id: `v3:store.get_store_shipping_carrier` · `Version: v3`
 | `altType` | enum: `location` | **yes** | — |
 
 *Response*: [`ListShippingCarrierResponseDto`](#listshippingcarrierresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::store::ListShippingCarriersParams;
+
+let params = ListShippingCarriersParams::new("altId", "altType");
+let out = ghl.v3().store().list_shipping_carriers(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -919,6 +928,12 @@ Operation id: `v3:store.post_store_shipping_carrier` · `Version: v3`
 *Request body*: [`CreateShippingCarrierDto`](#createshippingcarrierdto)
 
 *Response*: [`CreateShippingCarrierResponseDto`](#createshippingcarrierresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().store().create_shipping_carrier(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -958,6 +973,15 @@ Operation id: `v3:store.delete_store_shipping_carrier_by_shippingCarrierId` · `
 | `altType` | enum: `location` | **yes** | — |
 
 *Response*: [`DeleteShippingCarrierResponseDto`](#deleteshippingcarrierresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::store::DeleteShippingCarrierParams;
+
+let params = DeleteShippingCarrierParams::new("altId", "altType");
+let out = ghl.v3().store().delete_shipping_carrier(&shippingCarrierId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1002,6 +1026,15 @@ Operation id: `v3:store.get_store_shipping_carrier_by_shippingCarrierId` · `Ver
 
 *Response*: [`GetShippingCarrierResponseDto`](#getshippingcarrierresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::store::GetShippingCarrierParams;
+
+let params = GetShippingCarrierParams::new("altId", "altType");
+let out = ghl.v3().store().get_shipping_carrier(&shippingCarrierId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1039,6 +1072,12 @@ Operation id: `v3:store.put_store_shipping_carrier_by_shippingCarrierId` · `Ver
 *Request body*: [`UpdateShippingCarrierDto`](#updateshippingcarrierdto)
 
 *Response*: [`UpdateShippingCarrierResponseDto`](#updateshippingcarrierresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().store().update_shipping_carrier(&shippingCarrierId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1079,6 +1118,15 @@ Operation id: `v3:store.get_store_shipping_zone` · `Version: v3`
 
 *Response*: [`ListShippingZoneResponseDto`](#listshippingzoneresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::store::ListShippingZonesParams;
+
+let params = ListShippingZonesParams::new("altId", "altType");
+let out = ghl.v3().store().list_shipping_zones(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1108,6 +1156,12 @@ Operation id: `v3:store.post_store_shipping_zone` · `Version: v3`
 
 *Response*: [`CreateShippingZoneResponseDto`](#createshippingzoneresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().store().create_shipping_zone(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1135,6 +1189,12 @@ Operation id: `v3:store.post_store_shipping_zone_shipping_rates` · `Version: v3
 *Request body*: [`GetAvailableShippingRates`](#getavailableshippingrates)
 
 *Response*: [`GetAvailableShippingRatesResponseDto`](#getavailableshippingratesresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().store().get_available_shipping_rates(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1174,6 +1234,15 @@ Operation id: `v3:store.delete_store_shipping_zone_by_shippingZoneId` · `Versio
 | `altType` | enum: `location` | **yes** | — |
 
 *Response*: [`DeleteShippingZoneResponseDto`](#deleteshippingzoneresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::store::DeleteShippingZoneParams;
+
+let params = DeleteShippingZoneParams::new("altId", "altType");
+let out = ghl.v3().store().delete_shipping_zone(&shippingZoneId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1219,6 +1288,15 @@ Operation id: `v3:store.get_store_shipping_zone_by_shippingZoneId` · `Version: 
 
 *Response*: [`GetShippingZoneResponseDto`](#getshippingzoneresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::store::GetShippingZoneParams;
+
+let params = GetShippingZoneParams::new("altId", "altType");
+let out = ghl.v3().store().get_shipping_zone(&shippingZoneId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1256,6 +1334,12 @@ Operation id: `v3:store.put_store_shipping_zone_by_shippingZoneId` · `Version: 
 *Request body*: [`UpdateShippingZoneDto`](#updateshippingzonedto)
 
 *Response*: [`UpdateShippingZoneResponseDto`](#updateshippingzoneresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().store().update_shipping_zone(&shippingZoneId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1301,6 +1385,15 @@ Operation id: `v3:store.get_store_shipping_zone_by_shippingZoneId_shipping_rate`
 
 *Response*: [`ListShippingRateResponseDto`](#listshippingrateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::store::ListShippingRatesParams;
+
+let params = ListShippingRatesParams::new("altId", "altType");
+let out = ghl.v3().store().list_shipping_rates(&shippingZoneId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1338,6 +1431,12 @@ Operation id: `v3:store.post_store_shipping_zone_by_shippingZoneId_shipping_rate
 *Request body*: [`CreateShippingRateDto`](#createshippingratedto)
 
 *Response*: [`CreateShippingRateResponseDto`](#createshippingrateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().store().create_shipping_rate(&shippingZoneId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1381,6 +1480,15 @@ Operation id: `v3:store.delete_store_shipping_zone_by_shippingZoneId_shipping_ra
 | `altType` | enum: `location` | **yes** | — |
 
 *Response*: [`DeleteShippingRateResponseDto`](#deleteshippingrateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::store::DeleteShippingRateParams;
+
+let params = DeleteShippingRateParams::new("altId", "altType");
+let out = ghl.v3().store().delete_shipping_rate(&shippingZoneId, &shippingRateId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1427,6 +1535,15 @@ Operation id: `v3:store.get_store_shipping_zone_by_shippingZoneId_shipping_rate_
 
 *Response*: [`GetShippingRateResponseDto`](#getshippingrateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::store::GetShippingRateParams;
+
+let params = GetShippingRateParams::new("altId", "altType");
+let out = ghl.v3().store().get_shipping_rate(&shippingZoneId, &shippingRateId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1467,6 +1584,12 @@ Operation id: `v3:store.put_store_shipping_zone_by_shippingZoneId_shipping_rate_
 
 *Response*: [`UpdateShippingRateResponseDto`](#updateshippingrateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().store().update_shipping_rate(&shippingZoneId, &shippingRateId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1504,6 +1627,15 @@ Operation id: `v3:store.get_store_store_setting` · `Version: v3`
 
 *Response*: [`GetStoreSettingResponseDto`](#getstoresettingresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::store::GetStoreSettingsParams;
+
+let params = GetStoreSettingsParams::new("altId", "altType");
+let out = ghl.v3().store().get_store_settings(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1532,6 +1664,12 @@ Operation id: `v3:store.post_store_store_setting` · `Version: v3`
 *Request body*: [`CreateStoreSettingDto`](#createstoresettingdto)
 
 *Response*: [`CreateStoreSettingResponseDto`](#createstoresettingresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().store().create_update_store_settings(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 

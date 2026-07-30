@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `voice-ai` cargo feature on `ghl-sdk`, then call any of the 11 generated methods on `ghl.voice_ai()`:
+**Every endpoint has a typed Rust method.** Enable the `voice-ai` cargo feature on `ghl-sdk`, then call any of the 22 generated methods on `ghl.voice_ai()` (v2) or `ghl.v3().voice_ai()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["voice-ai"] }
+ghl-sdk = { version = "0.5", features = ["voice-ai"] }
 ```
 
 
@@ -540,19 +540,19 @@ let out = ghl.voice_ai().get_call_log(&callId, &params).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/voice-ai/actions` | Create Agent Action | `v3:voice-ai.post_voice_ai_actions` |
-| `DELETE` | `/voice-ai/actions/{actionId}` | Delete Agent Action | `v3:voice-ai.delete_voice_ai_actions_by_actionId` |
-| `GET` | `/voice-ai/actions/{actionId}` | Get Agent Action | `v3:voice-ai.get_voice_ai_actions_by_actionId` |
-| `PUT` | `/voice-ai/actions/{actionId}` | Update Agent Action | `v3:voice-ai.put_voice_ai_actions_by_actionId` |
-| `GET` | `/voice-ai/agents` | List Agents | `v3:voice-ai.get_voice_ai_agents` |
-| `POST` | `/voice-ai/agents` | Create Agent | `v3:voice-ai.post_voice_ai_agents` |
-| `DELETE` | `/voice-ai/agents/{agentId}` | Delete Agent | `v3:voice-ai.delete_voice_ai_agents_by_agentId` |
-| `GET` | `/voice-ai/agents/{agentId}` | Get Agent | `v3:voice-ai.get_voice_ai_agents_by_agentId` |
-| `PATCH` | `/voice-ai/agents/{agentId}` | Patch Agent | `v3:voice-ai.patch_voice_ai_agents_by_agentId` |
-| `GET` | `/voice-ai/dashboard/call-logs` | List Call Logs | `v3:voice-ai.get_voice_ai_dashboard_call_logs` |
-| `GET` | `/voice-ai/dashboard/call-logs/{callId}` | Get Call Log | `v3:voice-ai.get_voice_ai_dashboard_call_logs_by_callId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/voice-ai/actions` | Create Agent Action | `create_agent_action()` | `v3:voice-ai.post_voice_ai_actions` |
+| `DELETE` | `/voice-ai/actions/{actionId}` | Delete Agent Action | `delete_agent_action()` | `v3:voice-ai.delete_voice_ai_actions_by_actionId` |
+| `GET` | `/voice-ai/actions/{actionId}` | Get Agent Action | `get_agent_action()` | `v3:voice-ai.get_voice_ai_actions_by_actionId` |
+| `PUT` | `/voice-ai/actions/{actionId}` | Update Agent Action | `update_agent_action()` | `v3:voice-ai.put_voice_ai_actions_by_actionId` |
+| `GET` | `/voice-ai/agents` | List Agents | `list_agents()` | `v3:voice-ai.get_voice_ai_agents` |
+| `POST` | `/voice-ai/agents` | Create Agent | `create_agent()` | `v3:voice-ai.post_voice_ai_agents` |
+| `DELETE` | `/voice-ai/agents/{agentId}` | Delete Agent | `delete_agent()` | `v3:voice-ai.delete_voice_ai_agents_by_agentId` |
+| `GET` | `/voice-ai/agents/{agentId}` | Get Agent | `get_agent()` | `v3:voice-ai.get_voice_ai_agents_by_agentId` |
+| `PATCH` | `/voice-ai/agents/{agentId}` | Patch Agent | `patch_agent()` | `v3:voice-ai.patch_voice_ai_agents_by_agentId` |
+| `GET` | `/voice-ai/dashboard/call-logs` | List Call Logs | `list_call_logs()` | `v3:voice-ai.get_voice_ai_dashboard_call_logs` |
+| `GET` | `/voice-ai/dashboard/call-logs/{callId}` | Get Call Log | `get_call_log()` | `v3:voice-ai.get_voice_ai_dashboard_call_logs_by_callId` |
 
 ### Endpoint details — v3
 
@@ -567,6 +567,12 @@ Operation id: `v3:voice-ai.post_voice_ai_actions` · `Version: v3` · Scopes: `v
 *Request body*: [`CreateSingleActionDTO`](#createsingleactiondto)
 
 *Response*: [`CreateActionResponseDTO`](#createactionresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().voice_ai().create_agent_action(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -604,6 +610,15 @@ Operation id: `v3:voice-ai.delete_voice_ai_actions_by_actionId` · `Version: v3`
 |---|---|---|---|
 | `locationId` | string | **yes** | Location ID |
 | `agentId` | string | **yes** | Agent ID the action is attached to |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::voice_ai::DeleteAgentActionParams;
+
+let params = DeleteAgentActionParams::new("locationId", "agentId");
+let out = ghl.v3().voice_ai().delete_agent_action(&actionId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -647,6 +662,15 @@ Operation id: `v3:voice-ai.get_voice_ai_actions_by_actionId` · `Version: v3` ·
 
 *Response*: [`GetActionResponseDTO`](#getactionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::voice_ai::GetAgentActionParams;
+
+let params = GetAgentActionParams::new("locationId");
+let out = ghl.v3().voice_ai().get_agent_action(&actionId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -683,6 +707,12 @@ Operation id: `v3:voice-ai.put_voice_ai_actions_by_actionId` · `Version: v3` ·
 *Request body*: [`UpdateSingleActionDTO`](#updatesingleactiondto)
 
 *Response*: [`UpdateActionResponseDTO`](#updateactionresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().voice_ai().update_agent_action(&actionId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -722,6 +752,15 @@ Operation id: `v3:voice-ai.get_voice_ai_agents` · `Version: v3` · Scopes: `voi
 
 *Response*: [`GetAgentsResponseDTO`](#getagentsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::voice_ai::ListAgentsParams;
+
+let params = ListAgentsParams::new("locationId");
+let out = ghl.v3().voice_ai().list_agents(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -749,6 +788,12 @@ Operation id: `v3:voice-ai.post_voice_ai_agents` · `Version: v3` · Scopes: `vo
 *Request body*: [`AgentCreationRequestDTO`](#agentcreationrequestdto)
 
 *Response*: [`CreateAgentResponseDTO`](#createagentresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().voice_ai().create_agent(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -785,6 +830,15 @@ Operation id: `v3:voice-ai.delete_voice_ai_agents_by_agentId` · `Version: v3` �
 | Name | Type | Required | Description |
 |---|---|---|---|
 | `locationId` | string | **yes** | Location ID |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::voice_ai::DeleteAgentParams;
+
+let params = DeleteAgentParams::new("locationId");
+let out = ghl.v3().voice_ai().delete_agent(&agentId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -826,6 +880,15 @@ Operation id: `v3:voice-ai.get_voice_ai_agents_by_agentId` · `Version: v3` · S
 | `locationId` | string | **yes** | Location ID |
 
 *Response*: [`GetAgentResponseDTO`](#getagentresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::voice_ai::GetAgentParams;
+
+let params = GetAgentParams::new("locationId");
+let out = ghl.v3().voice_ai().get_agent(&agentId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -869,6 +932,15 @@ Operation id: `v3:voice-ai.patch_voice_ai_agents_by_agentId` · `Version: v3` ·
 *Request body*: [`PatchAgentDTO`](#patchagentdto)
 
 *Response*: [`PatchAgentResponseDTO`](#patchagentresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::voice_ai::PatchAgentParams;
+
+let params = PatchAgentParams::new("locationId");
+let out = ghl.v3().voice_ai().patch_agent(&agentId, &params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -918,6 +990,15 @@ Operation id: `v3:voice-ai.get_voice_ai_dashboard_call_logs` · `Version: v3` ·
 
 *Response*: [`CallLogsResponseDTO`](#calllogsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::voice_ai::ListCallLogsParams;
+
+let params = ListCallLogsParams::new("locationId");
+let out = ghl.v3().voice_ai().list_call_logs(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -955,6 +1036,15 @@ Operation id: `v3:voice-ai.get_voice_ai_dashboard_call_logs_by_callId` · `Versi
 | `locationId` | string | **yes** | Location ID |
 
 *Response*: [`CallLogDTO`](#calllogdto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::voice_ai::GetCallLogParams;
+
+let params = GetCallLogParams::new("locationId");
+let out = ghl.v3().voice_ai().get_call_log(&callId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 

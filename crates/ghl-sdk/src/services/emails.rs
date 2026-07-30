@@ -2,7 +2,7 @@
 //! `emails` — typed methods for all 5 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::emails`](crate::Ghl::emails)
+//! Access via [`Ghl::emails`](crate::Ghl::emails).
 //!
 //! Request and response types come from [`ghl_models::v2::emails`](https://docs.rs/ghl-models/latest/ghl_models/v2/emails/); every endpoint is also documented in the
 //! [`emails` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/emails.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::emails as models;
 
-/// Typed access to the `emails` API (5 operations). Obtained via
+/// Typed access to the `emails` API v2 surface (5 operations). Obtained via
 /// [`Ghl::emails`](crate::Ghl::emails).
 #[derive(Debug, Clone)]
 pub struct EmailsService {

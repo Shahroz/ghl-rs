@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `custom-menus` cargo feature on `ghl-sdk`, then call any of the 5 generated methods on `ghl.custom_menus()`:
+**Every endpoint has a typed Rust method.** Enable the `custom-menus` cargo feature on `ghl-sdk`, then call any of the 10 generated methods on `ghl.custom_menus()` (v2) or `ghl.v3().custom_menus()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["custom-menus"] }
+ghl-sdk = { version = "0.5", features = ["custom-menus"] }
 ```
 
 
@@ -220,13 +220,13 @@ let out = ghl.custom_menus().update_custom_menu_link(&customMenuId, &body).await
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/custom-menus/` | Get Custom Menu Links | `v3:custom-menus.get_custom_menus` |
-| `POST` | `/custom-menus/` | Create Custom Menu Link | `v3:custom-menus.post_custom_menus` |
-| `DELETE` | `/custom-menus/{customMenuId}` | Delete Custom Menu Link | `v3:custom-menus.delete_custom_menus_by_customMenuId` |
-| `GET` | `/custom-menus/{customMenuId}` | Get Custom Menu Link | `v3:custom-menus.get_custom_menus_by_customMenuId` |
-| `PUT` | `/custom-menus/{customMenuId}` | Update Custom Menu Link | `v3:custom-menus.put_custom_menus_by_customMenuId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/custom-menus/` | Get Custom Menu Links | `get_custom_menu_links()` | `v3:custom-menus.get_custom_menus` |
+| `POST` | `/custom-menus/` | Create Custom Menu Link | `create_custom_menu_link()` | `v3:custom-menus.post_custom_menus` |
+| `DELETE` | `/custom-menus/{customMenuId}` | Delete Custom Menu Link | `delete_custom_menu_link()` | `v3:custom-menus.delete_custom_menus_by_customMenuId` |
+| `GET` | `/custom-menus/{customMenuId}` | Get Custom Menu Link | `get_custom_menu_link()` | `v3:custom-menus.get_custom_menus_by_customMenuId` |
+| `PUT` | `/custom-menus/{customMenuId}` | Update Custom Menu Link | `update_custom_menu_link()` | `v3:custom-menus.put_custom_menus_by_customMenuId` |
 
 ### Endpoint details — v3
 
@@ -249,6 +249,15 @@ Operation id: `v3:custom-menus.get_custom_menus` · `Version: v3` · Scopes: `cu
 | `showOnCompany` | boolean | no | Filter to show only agency-level menu links. When omitted, fetches both agency and sub-account menu links. Ignored if locationId is provided |
 
 *Response*: [`GetCustomMenusResponseDTO`](#getcustommenusresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::custom_menus::GetCustomMenuLinksParams;
+
+let params = GetCustomMenuLinksParams::new();
+let out = ghl.v3().custom_menus().get_custom_menu_links(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -274,6 +283,12 @@ Operation id: `v3:custom-menus.post_custom_menus` · `Version: v3` · Scopes: `c
 *Request body*: [`CreateCustomMenuDTO`](#createcustommenudto)
 
 *Response*: [`GetSingleCustomMenusSuccessfulResponseDTO`](#getsinglecustommenussuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().custom_menus().create_custom_menu_link(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -307,6 +322,12 @@ Operation id: `v3:custom-menus.delete_custom_menus_by_customMenuId` · `Version:
 
 *Response*: [`DeleteCustomMenuSuccessfulResponseDTO`](#deletecustommenusuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().custom_menus().delete_custom_menu_link(&customMenuId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -338,6 +359,12 @@ Operation id: `v3:custom-menus.get_custom_menus_by_customMenuId` · `Version: v3
 | `customMenuId` | string | **yes** | Unique identifier of the custom menu |
 
 *Response*: [`GetSingleCustomMenusSuccessfulResponseDTO`](#getsinglecustommenussuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().custom_menus().get_custom_menu_link(&customMenuId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -372,6 +399,12 @@ Operation id: `v3:custom-menus.put_custom_menus_by_customMenuId` · `Version: v3
 *Request body*: [`UpdateCustomMenuDTO`](#updatecustommenudto)
 
 *Response*: [`UpdateCustomMenuLinkResponseDTO`](#updatecustommenulinkresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().custom_menus().update_custom_menu_link(&customMenuId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

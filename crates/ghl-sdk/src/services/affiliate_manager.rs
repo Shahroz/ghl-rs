@@ -2,7 +2,7 @@
 //! `affiliate-manager` — typed methods for all 4 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::affiliate_manager`](crate::Ghl::affiliate_manager)
+//! Access via [`Ghl::affiliate_manager`](crate::Ghl::affiliate_manager).
 //!
 //! Request and response types come from [`ghl_models::v2::affiliate_manager`](https://docs.rs/ghl-models/latest/ghl_models/v2/affiliate_manager/); every endpoint is also documented in the
 //! [`affiliate-manager` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/affiliate-manager.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::affiliate_manager as models;
 
-/// Typed access to the `affiliate-manager` API (4 operations). Obtained via
+/// Typed access to the `affiliate-manager` API v2 surface (4 operations). Obtained via
 /// [`Ghl::affiliate_manager`](crate::Ghl::affiliate_manager).
 #[derive(Debug, Clone)]
 pub struct AffiliateManagerService {

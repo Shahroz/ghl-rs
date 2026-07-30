@@ -18,19 +18,20 @@ One typed SDK. One static-binary MCP server. Every location in your agency — n
 
 | | Count |
 |---|---|
-| **Typed Rust methods** | **576** — one per API v2 endpoint, across all 41 v2 modules |
+| **Typed Rust methods** | **1,203** — one per endpoint, API v2 **and** v3 |
 | Typed data models (DTOs) | **2,417** (v2 + v3) |
-| API operations reachable | **1,203** (576 v2 + 627 v3) |
 | API modules covered | **45** across both versions |
 | MCP tools | 21 (16 typed + 3 meta-tools + 2 utility) |
 
-**You never have to leave the library.** Every v2 endpoint is a real method with typed parameters and a typed response — invoices, payments, ad manager, social planner, voice AI, SaaS, custom objects, workflows, all of it. Five busy modules also get hand-written helpers (envelope unwrapping, paginated `Stream`s) on the same services.
+**You never have to leave the library.** Every endpoint in both API versions is a real method with typed parameters and a typed response — invoices, payments, ad manager, social planner, voice AI, SaaS, custom objects, workflows, all of it. Five busy modules also get hand-written helpers (envelope unwrapping, paginated `Stream`s) on the same services.
 
 ```rust
 use ghl_sdk::services::invoices::ListInvoicesParams;
 
 let params = ListInvoicesParams::new(&location_id, "location", "20", "0").status("draft");
-let page = ghl.invoices().list_invoices(&params).await?;
+let page = ghl.invoices().list_invoices(&params).await?;      // API v2
+
+let dup = ghl.v3().contacts().get_duplicate_contact(&p).await?;   // API v3
 ```
 
 ## Documentation
@@ -55,7 +56,7 @@ GoHighLevel powers **60k+ agencies and ~2M businesses**, but its developer stack
 
 |  | Official MCP server | Community Node servers | **ghl-mcp** |
 |---|---|---|---|
-| API coverage | ~36 curated tools | varies, often stale | ✅ **576 typed Rust methods** + all 1,203 operations via meta-tools |
+| API coverage | ~36 curated tools | varies, often stale | ✅ **1,203 typed Rust methods** + all of them via meta-tools |
 | API v3 support | ❌ | ❌ | ✅ v2 and v3 side by side |
 | Typed data models | — | ❌ | ✅ 2,417 generated DTOs |
 | Agency (multi-location) access | ❌ one location per connection | ⚠️ varies | ✅ agency token → per-location routing |
@@ -69,7 +70,7 @@ GoHighLevel powers **60k+ agencies and ~2M businesses**, but its developer stack
 
 ```toml
 [dependencies]
-ghl-sdk = { version = "0.4", features = ["contacts", "invoices"] }
+ghl-sdk = { version = "0.5", features = ["contacts", "invoices"] }
 tokio = { version = "1", features = ["full"] }
 ```
 
@@ -132,7 +133,7 @@ while let Some(c) = contacts.try_next().await? {
 ## Quickstart — MCP server
 
 ```sh
-cargo install ghl-mcp
+cargo install ghl-mcp        # or: npx ghl-mcp   ·   docker run ghcr.io/shahroz/ghl-mcp
 ```
 
 Claude Desktop / Claude Code config:
@@ -153,6 +154,14 @@ Claude Desktop / Claude Code config:
 
 Then ask your agent things like *"find every contact tagged `hot-lead` added this week and summarize them"* — the server handles auth, retries, rate limits, and pagination.
 
+To share one server between several agents, serve **Streamable HTTP** instead of stdio:
+
+```sh
+ghl-mcp --http 127.0.0.1:8000     # MCP endpoint: http://127.0.0.1:8000/mcp
+```
+
+That listener has no authentication of its own — bind it to localhost or put an authenticating proxy in front.
+
 ## Configuration
 
 Everything is configurable **by environment variable or explicitly as a parameter** — env vars are the zero-code path, builder/CLI parameters always win when both are set.
@@ -163,7 +172,8 @@ Everything is configurable **by environment variable or explicitly as a paramete
 | `GHL_ACCESS_TOKEN` | `--access-token` | `.access_token(…)` | OAuth access token (bring your own flow) |
 | `GHL_LOCATION_ID` | `--location-id` | — | Default sub-account for MCP tools |
 | `GHL_BASE_URL` | `--base-url` | `.base_url(…)` | API base (default `https://services.leadconnectorhq.com`) |
-| `GHL_ALLOW_DESTRUCTIVE` | `--allow-destructive` | — | Enable delete/cancel tools (off by default) |
+| `GHL_ALLOW_DESTRUCTIVE` | `--allow-destructive` | — | Enable write/delete/send tools (off by default) |
+| `GHL_HTTP_ADDR` | `--http` | — | Serve Streamable HTTP instead of stdio |
 | `RUST_LOG` | — | — | Log filter (logs go to stderr, MCP-safe) |
 
 Secrets are held in [`secrecy`](https://docs.rs/secrecy) types — they never appear in `Debug` output or logs.
@@ -181,11 +191,12 @@ The MCP server reaches the **entire** API today; typed SDK services cover the bu
 - [x] MCP server: 21 tools over stdio, write/destructive gating
 - [x] Meta-tools reaching all **1,203 operations / 45 modules**, v2 **and** v3
 - [x] **2,417 generated DTOs** in `ghl-models`, feature-gated per module
-- [x] **576 generated typed service methods** — every API v2 endpoint
-- [ ] Generated services for API v3 (v3 DTOs and `request_raw` cover it today)
-- [ ] Streamable HTTP transport (hosted multi-tenant gateway)
-- [ ] Webhook signature validation + typed events
-- [ ] `npx ghl-mcp` wrapper, Homebrew tap, Docker image
+- [x] **1,203 generated typed service methods** — every endpoint in API v2 and v3
+- [x] Webhook RSA signature verification + typed events (`webhooks` feature)
+- [x] Streamable HTTP transport for the MCP server (`--http`)
+- [x] `npx ghl-mcp` wrapper, Docker image, prebuilt release binaries
+- [ ] Homebrew tap, MCP registry listings
+- [ ] Hosted multi-tenant gateway (auth, per-location rate pooling, audit)
 
 ## License
 

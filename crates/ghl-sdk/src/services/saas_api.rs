@@ -2,7 +2,7 @@
 //! `saas-api` — typed methods for all 22 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::saas_api`](crate::Ghl::saas_api)
+//! Access via [`Ghl::saas_api`](crate::Ghl::saas_api).
 //!
 //! Request and response types come from [`ghl_models::v2::saas_api`](https://docs.rs/ghl-models/latest/ghl_models/v2/saas_api/); every endpoint is also documented in the
 //! [`saas-api` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/saas-api.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::saas_api as models;
 
-/// Typed access to the `saas-api` API (22 operations). Obtained via
+/// Typed access to the `saas-api` API v2 surface (22 operations). Obtained via
 /// [`Ghl::saas_api`](crate::Ghl::saas_api).
 #[derive(Debug, Clone)]
 pub struct SaasApiService {

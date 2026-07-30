@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `links` cargo feature on `ghl-sdk`, then call any of the 6 generated methods on `ghl.links()`:
+**Every endpoint has a typed Rust method.** Enable the `links` cargo feature on `ghl-sdk`, then call any of the 12 generated methods on `ghl.links()` (v2) or `ghl.v3().links()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["links"] }
+ghl-sdk = { version = "0.5", features = ["links"] }
 ```
 
 
@@ -268,14 +268,14 @@ let out = ghl.links().update_link(&linkId, &body).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/links/` | Get Links | `v3:links.get_links` |
-| `POST` | `/links/` | Create Link | `v3:links.post_links` |
-| `GET` | `/links/id/{linkId}` | Get Link by ID | `v3:links.get_links_id_by_linkId` |
-| `GET` | `/links/search` | Search Trigger Links | `v3:links.get_links_search` |
-| `DELETE` | `/links/{linkId}` | Delete Link | `v3:links.delete_links_by_linkId` |
-| `PUT` | `/links/{linkId}` | Update Link | `v3:links.put_links_by_linkId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/links/` | Get Links | `get_links()` | `v3:links.get_links` |
+| `POST` | `/links/` | Create Link | `create_link()` | `v3:links.post_links` |
+| `GET` | `/links/id/{linkId}` | Get Link by ID | `get_link_by_id()` | `v3:links.get_links_id_by_linkId` |
+| `GET` | `/links/search` | Search Trigger Links | `search_trigger_links()` | `v3:links.get_links_search` |
+| `DELETE` | `/links/{linkId}` | Delete Link | `delete_link()` | `v3:links.delete_links_by_linkId` |
+| `PUT` | `/links/{linkId}` | Update Link | `update_link()` | `v3:links.put_links_by_linkId` |
 
 ### Endpoint details — v3
 
@@ -292,6 +292,15 @@ Operation id: `v3:links.get_links` · `Version: v3` · Scopes: `links.readonly`
 | `locationId` | string | **yes** | Location ID of the business profile |
 
 *Response*: [`GetLinksSuccessfulResponseDto`](#getlinkssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::links::GetLinksParams;
+
+let params = GetLinksParams::new("locationId");
+let out = ghl.v3().links().get_links(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -318,6 +327,12 @@ Operation id: `v3:links.post_links` · `Version: v3` · Scopes: `links.write`
 *Request body*: [`LinksDto`](#linksdto)
 
 *Response*: [`GetLinkSuccessfulResponseDto`](#getlinksuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().links().create_link(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -357,6 +372,15 @@ Operation id: `v3:links.get_links_id_by_linkId` · `Version: v3` · Scopes: `lin
 
 *Response*: [`GetLinkSuccessfulResponseDto`](#getlinksuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::links::GetLinkByIdParams;
+
+let params = GetLinkByIdParams::new("locationId");
+let out = ghl.v3().links().get_link_by_id(&linkId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -395,6 +419,15 @@ Operation id: `v3:links.get_links_search` · `Version: v3` · Scopes: `links.rea
 
 *Response*: [`GetLinksSuccessfulResponseDto`](#getlinkssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::links::SearchTriggerLinksParams;
+
+let params = SearchTriggerLinksParams::new("locationId");
+let out = ghl.v3().links().search_trigger_links(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -424,6 +457,12 @@ Operation id: `v3:links.delete_links_by_linkId` · `Version: v3` · Scopes: `lin
 | `linkId` | string | **yes** | Link Id |
 
 *Response*: [`DeleteLinksSuccessfulResponseDto`](#deletelinkssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().links().delete_link(&linkId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -456,6 +495,12 @@ Operation id: `v3:links.put_links_by_linkId` · `Version: v3` · Scopes: `links.
 *Request body*: [`LinkUpdateDto`](#linkupdatedto)
 
 *Response*: [`GetLinkSuccessfulResponseDto`](#getlinksuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().links().update_link(&linkId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

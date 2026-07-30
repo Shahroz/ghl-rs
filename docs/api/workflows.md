@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `workflows` cargo feature on `ghl-sdk`, then call any of the 1 generated methods on `ghl.workflows()`:
+**Every endpoint has a typed Rust method.** Enable the `workflows` cargo feature on `ghl-sdk`, then call any of the 2 generated methods on `ghl.workflows()` (v2) or `ghl.v3().workflows()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["workflows"] }
+ghl-sdk = { version = "0.5", features = ["workflows"] }
 ```
 
 
@@ -60,9 +60,9 @@ let out = ghl.workflows().get_workflow(&params).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/workflows/` | Get Workflow | `v3:workflows.get_workflows` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/workflows/` | Get Workflow | `get_workflow()` | `v3:workflows.get_workflows` |
 
 ### Endpoint details — v3
 
@@ -79,6 +79,15 @@ Operation id: `v3:workflows.get_workflows` · `Version: v3` · Scopes: `workflow
 | `locationId` | string | **yes** | — |
 
 *Response*: [`GetWorkflowSuccessfulResponseDto`](#getworkflowsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::workflows::GetWorkflowParams;
+
+let params = GetWorkflowParams::new("locationId");
+let out = ghl.v3().workflows().get_workflow(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

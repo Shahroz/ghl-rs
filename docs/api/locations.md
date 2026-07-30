@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `locations` cargo feature on `ghl-sdk`, then call any of the 29 generated methods on `ghl.locations()`:
+**Every endpoint has a typed Rust method.** Enable the `locations` cargo feature on `ghl-sdk`, then call any of the 61 generated methods on `ghl.locations()` (v2) or `ghl.v3().locations()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["locations"] }
+ghl-sdk = { version = "0.5", features = ["locations"] }
 ```
 
 This module also has hand-written ergonomic helpers on the same `ghl.locations()`: `get()`, `search()` (envelope unwrapping, paginated `Stream`s).
@@ -1215,40 +1215,40 @@ let out = ghl.locations().fetch_timezones().await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/locations/` | Create Sub-Account (Formerly Location) | `v3:locations.post_locations` |
-| `GET` | `/locations/search` | Search | `v3:locations.get_locations_search` |
-| `DELETE` | `/locations/{locationId}` | Delete Sub-Account (Formerly Location) | `v3:locations.delete_locations_by_locationId` |
-| `GET` | `/locations/{locationId}` | Get Sub-Account (Formerly Location) | `v3:locations.get_locations_by_locationId` |
-| `PUT` | `/locations/{locationId}` | Put Sub-Account (Formerly Location) | `v3:locations.put_locations_by_locationId` |
-| `GET` | `/locations/{locationId}/conversationChannels/{type}` | Get Conversation Channel | `v3:locations.get_locations_by_locationId_conversationChannels_by_type` |
-| `GET` | `/locations/{locationId}/customFields` | Get Custom Fields | `v3:locations.get_locations_by_locationId_customFields` |
-| `POST` | `/locations/{locationId}/customFields` | Create Custom Field | `v3:locations.post_locations_by_locationId_customFields` |
-| `POST` | `/locations/{locationId}/customFields/upload` | Uploads File to customFields | `v3:locations.post_locations_by_locationId_customFields_upload` |
-| `DELETE` | `/locations/{locationId}/customFields/{id}` | Delete Custom Field | `v3:locations.delete_locations_by_locationId_customFields_by_id` |
-| `GET` | `/locations/{locationId}/customFields/{id}` | Get Custom Field | `v3:locations.get_locations_by_locationId_customFields_by_id` |
-| `PUT` | `/locations/{locationId}/customFields/{id}` | Update Custom Field | `v3:locations.put_locations_by_locationId_customFields_by_id` |
-| `GET` | `/locations/{locationId}/customValues` | Get Custom Values | `v3:locations.get_locations_by_locationId_customValues` |
-| `POST` | `/locations/{locationId}/customValues` | Create Custom Value | `v3:locations.post_locations_by_locationId_customValues` |
-| `DELETE` | `/locations/{locationId}/customValues/{id}` | Delete Custom Value | `v3:locations.delete_locations_by_locationId_customValues_by_id` |
-| `GET` | `/locations/{locationId}/customValues/{id}` | Get Custom Value | `v3:locations.get_locations_by_locationId_customValues_by_id` |
-| `PUT` | `/locations/{locationId}/customValues/{id}` | Update Custom Value | `v3:locations.put_locations_by_locationId_customValues_by_id` |
-| `GET` | `/locations/{locationId}/permissions` | Get Permissions | `v3:locations.get_locations_by_locationId_permissions` |
-| `PUT` | `/locations/{locationId}/permissions` | Update Permissions | `v3:locations.put_locations_by_locationId_permissions` |
-| `POST` | `/locations/{locationId}/recurring-tasks` | Create Recurring Task | `v3:locations.post_locations_by_locationId_recurring_tasks` |
-| `DELETE` | `/locations/{locationId}/recurring-tasks/{id}` | Delete Recurring Task | `v3:locations.delete_locations_by_locationId_recurring_tasks_by_id` |
-| `GET` | `/locations/{locationId}/recurring-tasks/{id}` | Get Recurring Task By Id | `v3:locations.get_locations_by_locationId_recurring_tasks_by_id` |
-| `PUT` | `/locations/{locationId}/recurring-tasks/{id}` | Update Recurring Task | `v3:locations.put_locations_by_locationId_recurring_tasks_by_id` |
-| `GET` | `/locations/{locationId}/tags` | Get Tags | `v3:locations.get_locations_by_locationId_tags` |
-| `POST` | `/locations/{locationId}/tags` | Create Tag | `v3:locations.post_locations_by_locationId_tags` |
-| `DELETE` | `/locations/{locationId}/tags/{tagId}` | Delete tag | `v3:locations.delete_locations_by_locationId_tags_by_tagId` |
-| `GET` | `/locations/{locationId}/tags/{tagId}` | Get tag by id | `v3:locations.get_locations_by_locationId_tags_by_tagId` |
-| `PUT` | `/locations/{locationId}/tags/{tagId}` | Update tag | `v3:locations.put_locations_by_locationId_tags_by_tagId` |
-| `POST` | `/locations/{locationId}/tasks/search` | Task Search Filter | `v3:locations.post_locations_by_locationId_tasks_search` |
-| `GET` | `/locations/{locationId}/templates` | GET all or email/sms templates | `v3:locations.get_locations_by_locationId_templates` |
-| `DELETE` | `/locations/{locationId}/templates/{id}` | DELETE an email/sms template | `v3:locations.delete_locations_by_locationId_templates_by_id` |
-| `GET` | `/locations/{locationId}/timezones` | Fetch Timezones | `v3:locations.get_locations_by_locationId_timezones` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/locations/` | Create Sub-Account (Formerly Location) | `create_sub_account_formerly_location()` | `v3:locations.post_locations` |
+| `GET` | `/locations/search` | Search | `search()` | `v3:locations.get_locations_search` |
+| `DELETE` | `/locations/{locationId}` | Delete Sub-Account (Formerly Location) | `delete_sub_account_formerly_location()` | `v3:locations.delete_locations_by_locationId` |
+| `GET` | `/locations/{locationId}` | Get Sub-Account (Formerly Location) | `get_sub_account_formerly_location()` | `v3:locations.get_locations_by_locationId` |
+| `PUT` | `/locations/{locationId}` | Put Sub-Account (Formerly Location) | `put_sub_account_formerly_location()` | `v3:locations.put_locations_by_locationId` |
+| `GET` | `/locations/{locationId}/conversationChannels/{type}` | Get Conversation Channel | `get_conversation_channel()` | `v3:locations.get_locations_by_locationId_conversationChannels_by_type` |
+| `GET` | `/locations/{locationId}/customFields` | Get Custom Fields | `get_custom_fields()` | `v3:locations.get_locations_by_locationId_customFields` |
+| `POST` | `/locations/{locationId}/customFields` | Create Custom Field | `create_custom_field()` | `v3:locations.post_locations_by_locationId_customFields` |
+| `POST` | `/locations/{locationId}/customFields/upload` | Uploads File to customFields | `uploads_file_to_custom_fields()` | `v3:locations.post_locations_by_locationId_customFields_upload` |
+| `DELETE` | `/locations/{locationId}/customFields/{id}` | Delete Custom Field | `delete_custom_field()` | `v3:locations.delete_locations_by_locationId_customFields_by_id` |
+| `GET` | `/locations/{locationId}/customFields/{id}` | Get Custom Field | `get_custom_field()` | `v3:locations.get_locations_by_locationId_customFields_by_id` |
+| `PUT` | `/locations/{locationId}/customFields/{id}` | Update Custom Field | `update_custom_field()` | `v3:locations.put_locations_by_locationId_customFields_by_id` |
+| `GET` | `/locations/{locationId}/customValues` | Get Custom Values | `get_custom_values()` | `v3:locations.get_locations_by_locationId_customValues` |
+| `POST` | `/locations/{locationId}/customValues` | Create Custom Value | `create_custom_value()` | `v3:locations.post_locations_by_locationId_customValues` |
+| `DELETE` | `/locations/{locationId}/customValues/{id}` | Delete Custom Value | `delete_custom_value()` | `v3:locations.delete_locations_by_locationId_customValues_by_id` |
+| `GET` | `/locations/{locationId}/customValues/{id}` | Get Custom Value | `get_custom_value()` | `v3:locations.get_locations_by_locationId_customValues_by_id` |
+| `PUT` | `/locations/{locationId}/customValues/{id}` | Update Custom Value | `update_custom_value()` | `v3:locations.put_locations_by_locationId_customValues_by_id` |
+| `GET` | `/locations/{locationId}/permissions` | Get Permissions | `get_permissions()` | `v3:locations.get_locations_by_locationId_permissions` |
+| `PUT` | `/locations/{locationId}/permissions` | Update Permissions | `update_permissions()` | `v3:locations.put_locations_by_locationId_permissions` |
+| `POST` | `/locations/{locationId}/recurring-tasks` | Create Recurring Task | `create_recurring_task()` | `v3:locations.post_locations_by_locationId_recurring_tasks` |
+| `DELETE` | `/locations/{locationId}/recurring-tasks/{id}` | Delete Recurring Task | `delete_recurring_task()` | `v3:locations.delete_locations_by_locationId_recurring_tasks_by_id` |
+| `GET` | `/locations/{locationId}/recurring-tasks/{id}` | Get Recurring Task By Id | `get_recurring_task_by_id()` | `v3:locations.get_locations_by_locationId_recurring_tasks_by_id` |
+| `PUT` | `/locations/{locationId}/recurring-tasks/{id}` | Update Recurring Task | `update_recurring_task()` | `v3:locations.put_locations_by_locationId_recurring_tasks_by_id` |
+| `GET` | `/locations/{locationId}/tags` | Get Tags | `get_tags()` | `v3:locations.get_locations_by_locationId_tags` |
+| `POST` | `/locations/{locationId}/tags` | Create Tag | `create_tag()` | `v3:locations.post_locations_by_locationId_tags` |
+| `DELETE` | `/locations/{locationId}/tags/{tagId}` | Delete tag | `delete_tag()` | `v3:locations.delete_locations_by_locationId_tags_by_tagId` |
+| `GET` | `/locations/{locationId}/tags/{tagId}` | Get tag by id | `get_tag_by_id()` | `v3:locations.get_locations_by_locationId_tags_by_tagId` |
+| `PUT` | `/locations/{locationId}/tags/{tagId}` | Update tag | `update_tag()` | `v3:locations.put_locations_by_locationId_tags_by_tagId` |
+| `POST` | `/locations/{locationId}/tasks/search` | Task Search Filter | `task_search_filter()` | `v3:locations.post_locations_by_locationId_tasks_search` |
+| `GET` | `/locations/{locationId}/templates` | GET all or email/sms templates | `get_all_or_email_sms_templates()` | `v3:locations.get_locations_by_locationId_templates` |
+| `DELETE` | `/locations/{locationId}/templates/{id}` | DELETE an email/sms template | `delete_an_email_sms_template()` | `v3:locations.delete_locations_by_locationId_templates_by_id` |
+| `GET` | `/locations/{locationId}/timezones` | Fetch Timezones | `fetch_timezones()` | `v3:locations.get_locations_by_locationId_timezones` |
 
 ### Endpoint details — v3
 
@@ -1263,6 +1263,12 @@ Operation id: `v3:locations.post_locations` · `Version: v3` · Scopes: `locatio
 *Request body*: [`CreateLocationDto`](#createlocationdto)
 
 *Response*: [`CreateLocationSuccessfulResponseDto`](#createlocationsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().create_sub_account_formerly_location(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1300,6 +1306,15 @@ Operation id: `v3:locations.get_locations_search` · `Version: v3` · Scopes: `l
 
 *Response*: [`SearchSuccessfulResponseDto`](#searchsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::locations::SearchParams;
+
+let params = SearchParams::new();
+let out = ghl.v3().locations().search(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1334,6 +1349,15 @@ Operation id: `v3:locations.delete_locations_by_locationId` · `Version: v3` · 
 | `deleteTwilioAccount` | boolean | **yes** | Boolean value to indicate whether to delete Twilio Account or not |
 
 *Response*: [`LocationDeletedSuccessfulResponseDto`](#locationdeletedsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::locations::DeleteSubAccountFormerlyLocationParams;
+
+let params = DeleteSubAccountFormerlyLocationParams::new("deleteTwilioAccount");
+let out = ghl.v3().locations().delete_sub_account_formerly_location(&locationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1370,6 +1394,12 @@ Operation id: `v3:locations.get_locations_by_locationId` · `Version: v3` · Sco
 
 *Response*: [`GetLocationByIdSuccessfulResponseDto`](#getlocationbyidsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().get_sub_account_formerly_location(&locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1403,6 +1433,12 @@ Operation id: `v3:locations.put_locations_by_locationId` · `Version: v3` · Sco
 *Request body*: [`UpdateLocationDto`](#updatelocationdto)
 
 *Response*: [`CreateLocationSuccessfulResponseDto`](#createlocationsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().put_sub_account_formerly_location(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1439,6 +1475,12 @@ Operation id: `v3:locations.get_locations_by_locationId_conversationChannels_by_
 | `type` | enum: `SMS`, `Email` | **yes** | Channel type to retrieve providers for |
 
 *Response*: [`GetConversationChannelListSuccessfulResponseDto`](#getconversationchannellistsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().get_conversation_channel(&locationId, &type).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1477,6 +1519,15 @@ Operation id: `v3:locations.get_locations_by_locationId_customFields` · `Versio
 
 *Response*: [`CustomFieldsListSuccessfulResponseDto`](#customfieldslistsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::locations::GetCustomFieldsParams;
+
+let params = GetCustomFieldsParams::new();
+let out = ghl.v3().locations().get_custom_fields(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1508,6 +1559,12 @@ Operation id: `v3:locations.post_locations_by_locationId_customFields` · `Versi
 *Request body*: [`CreateCustomFieldsDTO`](#createcustomfieldsdto)
 
 *Response*: [`CustomFieldSuccessfulResponseDto`](#customfieldsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().create_custom_field(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1542,6 +1599,12 @@ Operation id: `v3:locations.post_locations_by_locationId_customFields_upload` ·
 
 *Response*: [`FileUploadResponseDto`](#fileuploadresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().uploads_file_to_custom_fields(&locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1572,6 +1635,12 @@ Operation id: `v3:locations.delete_locations_by_locationId_customFields_by_id` �
 | `id` | string | **yes** | Custom Field Id |
 
 *Response*: [`CustomFieldDeleteSuccessfulResponseDto`](#customfielddeletesuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().delete_custom_field(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1604,6 +1673,12 @@ Operation id: `v3:locations.get_locations_by_locationId_customFields_by_id` · `
 | `id` | string | **yes** | Custom Field Id or Field Key (e.g. "contact.first_name" or "opportunity.pipeline_id") |
 
 *Response*: [`CustomFieldSuccessfulResponseDto`](#customfieldsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().get_custom_field(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1639,6 +1714,12 @@ Operation id: `v3:locations.put_locations_by_locationId_customFields_by_id` · `
 
 *Response*: [`CustomFieldSuccessfulResponseDto`](#customfieldsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().update_custom_field(&locationId, &id, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1673,6 +1754,12 @@ Operation id: `v3:locations.get_locations_by_locationId_customValues` · `Versio
 
 *Response*: [`CustomValuesListSuccessfulResponseDto`](#customvalueslistsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().get_custom_values(&locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1704,6 +1791,12 @@ Operation id: `v3:locations.post_locations_by_locationId_customValues` · `Versi
 *Request body*: [`customValuesDTO`](#customvaluesdto)
 
 *Response*: [`CustomValueIdSuccessfulResponseDto`](#customvalueidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().create_custom_value(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1739,6 +1832,12 @@ Operation id: `v3:locations.delete_locations_by_locationId_customValues_by_id` �
 
 *Response*: [`CustomValueDeleteSuccessfulResponseDto`](#customvaluedeletesuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().delete_custom_value(&locationId, &id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1770,6 +1869,12 @@ Operation id: `v3:locations.get_locations_by_locationId_customValues_by_id` · `
 | `id` | string | **yes** | Custom Value Id |
 
 *Response*: [`CustomValueIdSuccessfulResponseDto`](#customvalueidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().get_custom_value(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1804,6 +1909,12 @@ Operation id: `v3:locations.put_locations_by_locationId_customValues_by_id` · `
 *Request body*: [`customValuesDTO`](#customvaluesdto)
 
 *Response*: [`CustomValueIdSuccessfulResponseDto`](#customvalueidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().update_custom_value(&locationId, &id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1841,6 +1952,12 @@ Operation id: `v3:locations.get_locations_by_locationId_permissions` · `Version
 
 *Response*: [`PermissionsResponseDto`](#permissionsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().get_permissions(&locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1874,6 +1991,12 @@ Operation id: `v3:locations.put_locations_by_locationId_permissions` · `Version
 *Request body*: [`UpdatePermissionsDto`](#updatepermissionsdto)
 
 *Response*: [`PermissionsResponseDto`](#permissionsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().update_permissions(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1910,6 +2033,12 @@ Operation id: `v3:locations.post_locations_by_locationId_recurring_tasks` · `Ve
 
 *Response*: [`RecurringTaskSingleResponseDTO`](#recurringtasksingleresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().create_recurring_task(&locationId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1944,6 +2073,12 @@ Operation id: `v3:locations.delete_locations_by_locationId_recurring_tasks_by_id
 
 *Response*: [`DeleteRecurringTaskResponseDTO`](#deleterecurringtaskresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().delete_recurring_task(&id, &locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1975,6 +2110,12 @@ Operation id: `v3:locations.get_locations_by_locationId_recurring_tasks_by_id` �
 | `locationId` | string | **yes** | Location Id |
 
 *Response*: [`RecurringTaskSingleResponseDTO`](#recurringtasksingleresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().get_recurring_task_by_id(&id, &locationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2009,6 +2150,12 @@ Operation id: `v3:locations.put_locations_by_locationId_recurring_tasks_by_id` �
 *Request body*: [`RecurringTaskUpdateDTO`](#recurringtaskupdatedto)
 
 *Response*: [`RecurringTaskSingleResponseDTO`](#recurringtasksingleresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().update_recurring_task(&id, &locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2046,6 +2193,12 @@ Operation id: `v3:locations.get_locations_by_locationId_tags` · `Version: v3` �
 
 *Response*: [`LocationTagsSuccessfulResponseDto`](#locationtagssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().get_tags(&locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2079,6 +2232,12 @@ Operation id: `v3:locations.post_locations_by_locationId_tags` · `Version: v3` 
 *Request body*: [`tagBody`](#tagbody)
 
 *Response*: [`LocationTagSuccessfulResponseDto`](#locationtagsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().create_tag(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2114,6 +2273,12 @@ Operation id: `v3:locations.delete_locations_by_locationId_tags_by_tagId` · `Ve
 
 *Response*: [`LocationTagDeleteSuccessfulResponseDto`](#locationtagdeletesuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().delete_tag(&locationId, &tagId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2145,6 +2310,12 @@ Operation id: `v3:locations.get_locations_by_locationId_tags_by_tagId` · `Versi
 | `tagId` | string | **yes** | Tag Id |
 
 *Response*: [`LocationTagSuccessfulResponseDto`](#locationtagsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().get_tag_by_id(&locationId, &tagId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2179,6 +2350,12 @@ Operation id: `v3:locations.put_locations_by_locationId_tags_by_tagId` · `Versi
 *Request body*: [`tagBody`](#tagbody)
 
 *Response*: [`LocationTagSuccessfulResponseDto`](#locationtagsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().update_tag(&locationId, &tagId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2217,6 +2394,12 @@ Operation id: `v3:locations.post_locations_by_locationId_tasks_search` · `Versi
 *Request body*: [`TaskSearchParamsDto`](#tasksearchparamsdto)
 
 *Response*: [`LocationTaskListSuccessfulResponseDto`](#locationtasklistsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().task_search_filter(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2261,6 +2444,15 @@ Operation id: `v3:locations.get_locations_by_locationId_templates` · `Version: 
 
 *Response*: [`GetTemplatesSuccessfulResponseDto`](#gettemplatessuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::locations::GetAllOrEmailSmsTemplatesParams;
+
+let params = GetAllOrEmailSmsTemplatesParams::new("originId");
+let out = ghl.v3().locations().get_all_or_email_sms_templates(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2293,6 +2485,12 @@ Operation id: `v3:locations.delete_locations_by_locationId_templates_by_id` · `
 | `locationId` | string | **yes** | Location Id |
 | `id` | string | **yes** | Template Id |
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().delete_an_email_sms_template(&locationId, &id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2317,6 +2515,12 @@ Operation id: `v3:locations.delete_locations_by_locationId_templates_by_id` · `
 Fetch the available timezones
 
 Operation id: `v3:locations.get_locations_by_locationId_timezones` · `Version: v3` · Scopes: `locations.readonly`
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().locations().fetch_timezones().await?;
+```
 
 <details><summary>MCP call</summary>
 

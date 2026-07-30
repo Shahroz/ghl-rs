@@ -24,9 +24,14 @@ tracing = { workspace = true }
 fastrand = { workspace = true }
 async-trait = "0.1"
 ghl-models = { workspace = true, optional = true }
+# webhooks feature: RSA-SHA256 signature verification
+rsa = { version = "0.9", optional = true, features = ["sha2"] }
+sha2 = { version = "0.10", optional = true }
+base64 = { version = "0.22", optional = true }
 
 [dev-dependencies]
 wiremock = { workspace = true }
+rand = "0.8"
 tokio = { version = "1", features = ["full"] }
 
 [package.metadata.docs.rs]
@@ -35,12 +40,15 @@ rustdoc-args = ["--cfg", "docsrs"]
 
 [features]
 default = []
-# Re-export generated DTOs for the whole API under `ghl_sdk::models`.
+# Just the generated DTOs, no services.
 models = ["dep:ghl-models"]
+# Webhook signature verification and typed events.
+webhooks = ["dep:rsa", "dep:sha2", "dep:base64"]
 
-# One feature per API module: enables that module's generated typed service
-# (every operation it exposes) plus the DTOs those methods use.
+# One feature per API module: enables that module's generated typed services
+# (v2 and, where it exists, v3) plus the DTOs those methods use.
 ad-manager = ["models", "ghl-models/ad-manager"]
+ad-publishing = ["models", "ghl-models/ad-publishing"]
 affiliate-manager = ["models", "ghl-models/affiliate-manager"]
 agent-studio = ["models", "ghl-models/agent-studio"]
 associations = ["models", "ghl-models/associations"]
@@ -49,6 +57,7 @@ brand-boards = ["models", "ghl-models/brand-boards"]
 businesses = ["models", "ghl-models/businesses"]
 calendars = ["models", "ghl-models/calendars"]
 campaigns = ["models", "ghl-models/campaigns"]
+chat-widget = ["models", "ghl-models/chat-widget"]
 companies = ["models", "ghl-models/companies"]
 contacts = ["models", "ghl-models/contacts"]
 conversation-ai = ["models", "ghl-models/conversation-ai"]
@@ -73,17 +82,20 @@ payments = ["models", "ghl-models/payments"]
 phone-system = ["models", "ghl-models/phone-system"]
 products = ["models", "ghl-models/products"]
 proposals = ["models", "ghl-models/proposals"]
+saas = ["models", "ghl-models/saas"]
 saas-api = ["models", "ghl-models/saas-api"]
 snapshots = ["models", "ghl-models/snapshots"]
 social-media-posting = ["models", "ghl-models/social-media-posting"]
+social-planner = ["models", "ghl-models/social-planner"]
 store = ["models", "ghl-models/store"]
 surveys = ["models", "ghl-models/surveys"]
 users = ["models", "ghl-models/users"]
 voice-ai = ["models", "ghl-models/voice-ai"]
 workflows = ["models", "ghl-models/workflows"]
 
-# Every generated service. Slow to compile — prefer naming the modules you use.
-full = ["ad-manager", "affiliate-manager", "agent-studio", "associations", "blogs", "brand-boards", "businesses", "calendars", "campaigns", "companies", "contacts", "conversation-ai", "conversations", "courses", "custom-fields", "custom-menus", "email-isv", "emails", "forms", "funnels", "invoices", "knowledge-base", "links", "locations", "marketplace", "medias", "oauth", "objects", "opportunities", "payments", "phone-system", "products", "proposals", "saas-api", "snapshots", "social-media-posting", "store", "surveys", "users", "voice-ai", "workflows"]
+# Every generated service, both API versions. Slow to compile — prefer naming
+# the modules you actually use.
+full = ["ad-manager", "ad-publishing", "affiliate-manager", "agent-studio", "associations", "blogs", "brand-boards", "businesses", "calendars", "campaigns", "chat-widget", "companies", "contacts", "conversation-ai", "conversations", "courses", "custom-fields", "custom-menus", "email-isv", "emails", "forms", "funnels", "invoices", "knowledge-base", "links", "locations", "marketplace", "medias", "oauth", "objects", "opportunities", "payments", "phone-system", "products", "proposals", "saas", "saas-api", "snapshots", "social-media-posting", "social-planner", "store", "surveys", "users", "voice-ai", "workflows"]
 
-# docs.rs only: render everything.
-_docs = ["full"]
+# docs.rs only.
+_docs = ["full", "webhooks"]

@@ -2,7 +2,7 @@
 //! `custom-menus` — typed methods for all 5 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::custom_menus`](crate::Ghl::custom_menus)
+//! Access via [`Ghl::custom_menus`](crate::Ghl::custom_menus).
 //!
 //! Request and response types come from [`ghl_models::v2::custom_menus`](https://docs.rs/ghl-models/latest/ghl_models/v2/custom_menus/); every endpoint is also documented in the
 //! [`custom-menus` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/custom-menus.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::custom_menus as models;
 
-/// Typed access to the `custom-menus` API (5 operations). Obtained via
+/// Typed access to the `custom-menus` API v2 surface (5 operations). Obtained via
 /// [`Ghl::custom_menus`](crate::Ghl::custom_menus).
 #[derive(Debug, Clone)]
 pub struct CustomMenusService {

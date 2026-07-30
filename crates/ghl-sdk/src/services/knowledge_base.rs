@@ -2,7 +2,7 @@
 //! `knowledge-base` — typed methods for all 14 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::knowledge_base`](crate::Ghl::knowledge_base)
+//! Access via [`Ghl::knowledge_base`](crate::Ghl::knowledge_base).
 //!
 //! Request and response types come from [`ghl_models::v2::knowledge_base`](https://docs.rs/ghl-models/latest/ghl_models/v2/knowledge_base/); every endpoint is also documented in the
 //! [`knowledge-base` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/knowledge-base.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::knowledge_base as models;
 
-/// Typed access to the `knowledge-base` API (14 operations). Obtained via
+/// Typed access to the `knowledge-base` API v2 surface (14 operations). Obtained via
 /// [`Ghl::knowledge_base`](crate::Ghl::knowledge_base).
 #[derive(Debug, Clone)]
 pub struct KnowledgeBaseService {

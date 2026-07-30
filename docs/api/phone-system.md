@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `phone-system` cargo feature on `ghl-sdk`, then call any of the 4 generated methods on `ghl.phone_system()`:
+**Every endpoint has a typed Rust method.** Enable the `phone-system` cargo feature on `ghl-sdk`, then call any of the 8 generated methods on `ghl.phone_system()` (v2) or `ghl.v3().phone_system()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["phone-system"] }
+ghl-sdk = { version = "0.5", features = ["phone-system"] }
 ```
 
 
@@ -208,12 +208,12 @@ let out = ghl.phone_system().purchase_a_phone_number(&locationId, &body).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/phone-system/number-pools` | List number pools | `v3:phone-system.get_phone_system_number_pools` |
-| `GET` | `/phone-system/numbers/location/{locationId}` | List active numbers | `v3:phone-system.get_phone_system_numbers_location_by_locationId` |
-| `GET` | `/phone-system/numbers/location/{locationId}/available` | List available phone numbers | `v3:phone-system.get_phone_system_numbers_location_by_locationId_available` |
-| `POST` | `/phone-system/numbers/location/{locationId}/purchase` | Purchase number for location | `v3:phone-system.post_phone_system_numbers_location_by_locationId_purchase` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/phone-system/number-pools` | List number pools | `list_number_pools()` | `v3:phone-system.get_phone_system_number_pools` |
+| `GET` | `/phone-system/numbers/location/{locationId}` | List active numbers | `list_active_numbers()` | `v3:phone-system.get_phone_system_numbers_location_by_locationId` |
+| `GET` | `/phone-system/numbers/location/{locationId}/available` | List available phone numbers | `list_available_phone_numbers()` | `v3:phone-system.get_phone_system_numbers_location_by_locationId_available` |
+| `POST` | `/phone-system/numbers/location/{locationId}/purchase` | Purchase number for location | `purchase_number_for_location()` | `v3:phone-system.post_phone_system_numbers_location_by_locationId_purchase` |
 
 ### Endpoint details — v3
 
@@ -230,6 +230,15 @@ Operation id: `v3:phone-system.get_phone_system_number_pools` · `Version: v3` �
 | Name | Type | Required | Description |
 |---|---|---|---|
 | `locationId` | string | **yes** | Location ID to scope the number pool list |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::phone_system::ListNumberPoolsParams;
+
+let params = ListNumberPoolsParams::new("locationId");
+let out = ghl.v3().phone_system().list_number_pools(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -272,6 +281,15 @@ Operation id: `v3:phone-system.get_phone_system_numbers_location_by_locationId` 
 | `includeRcsSenderIds` | boolean | no | Include RCS Sender IDs |
 
 *Response*: [`ListNumbersV3Http200ResponseDto`](#listnumbersv3http200responsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::phone_system::ListActiveNumbersParams;
+
+let params = ListActiveNumbersParams::new();
+let out = ghl.v3().phone_system().list_active_numbers(&locationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -316,6 +334,15 @@ Operation id: `v3:phone-system.get_phone_system_numbers_location_by_locationId_a
 | `voiceEnabled` | boolean | **yes** | requested phone numbers should have voice functionality |
 | `countryCode` | string | **yes** | country for which the phone numbers are being requested |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::phone_system::ListAvailablePhoneNumbersParams;
+
+let params = ListAvailablePhoneNumbersParams::new("firstPart", "lastPart", "anywhere", "numberTypes", "smsEnabled", "mmsEnabled", "voiceEnabled", "countryCode");
+let out = ghl.v3().phone_system().list_available_phone_numbers(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -359,6 +386,12 @@ Operation id: `v3:phone-system.post_phone_system_numbers_location_by_locationId_
 *Request body*: [`PurchasePhoneNumberBodyDto`](#purchasephonenumberbodydto)
 
 *Response*: [`PurchaseNumberForLocationV3Http201ResponseDto`](#purchasenumberforlocationv3http201responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().phone_system().purchase_number_for_location(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

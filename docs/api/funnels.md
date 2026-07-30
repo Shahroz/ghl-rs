@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `funnels` cargo feature on `ghl-sdk`, then call any of the 7 generated methods on `ghl.funnels()`:
+**Every endpoint has a typed Rust method.** Enable the `funnels` cargo feature on `ghl-sdk`, then call any of the 14 generated methods on `ghl.funnels()` (v2) or `ghl.v3().funnels()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["funnels"] }
+ghl-sdk = { version = "0.5", features = ["funnels"] }
 ```
 
 
@@ -339,15 +339,15 @@ let out = ghl.funnels().fetch_count_of_funnel_pages(&params).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/funnels/funnel/list` | Fetch List of Funnels | `v3:funnels.get_funnels_funnel_list` |
-| `POST` | `/funnels/lookup/redirect` | Create Redirect | `v3:funnels.post_funnels_lookup_redirect` |
-| `GET` | `/funnels/lookup/redirect/list` | Fetch List of Redirects | `v3:funnels.get_funnels_lookup_redirect_list` |
-| `DELETE` | `/funnels/lookup/redirect/{id}` | Delete Redirect By Id | `v3:funnels.delete_funnels_lookup_redirect_by_id` |
-| `PATCH` | `/funnels/lookup/redirect/{id}` | Update Redirect By Id | `v3:funnels.patch_funnels_lookup_redirect_by_id` |
-| `GET` | `/funnels/page` | Fetch list of funnel pages | `v3:funnels.get_funnels_page` |
-| `GET` | `/funnels/page/count` | Fetch count of funnel pages | `v3:funnels.get_funnels_page_count` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/funnels/funnel/list` | Fetch List of Funnels | `fetch_list_of_funnels()` | `v3:funnels.get_funnels_funnel_list` |
+| `POST` | `/funnels/lookup/redirect` | Create Redirect | `create_redirect()` | `v3:funnels.post_funnels_lookup_redirect` |
+| `GET` | `/funnels/lookup/redirect/list` | Fetch List of Redirects | `fetch_list_of_redirects()` | `v3:funnels.get_funnels_lookup_redirect_list` |
+| `DELETE` | `/funnels/lookup/redirect/{id}` | Delete Redirect By Id | `delete_redirect_by_id()` | `v3:funnels.delete_funnels_lookup_redirect_by_id` |
+| `PATCH` | `/funnels/lookup/redirect/{id}` | Update Redirect By Id | `update_redirect_by_id()` | `v3:funnels.patch_funnels_lookup_redirect_by_id` |
+| `GET` | `/funnels/page` | Fetch list of funnel pages | `fetch_list_of_funnel_pages()` | `v3:funnels.get_funnels_page` |
+| `GET` | `/funnels/page/count` | Fetch count of funnel pages | `fetch_count_of_funnel_pages()` | `v3:funnels.get_funnels_page_count` |
 
 ### Endpoint details — v3
 
@@ -372,6 +372,15 @@ Operation id: `v3:funnels.get_funnels_funnel_list` · `Version: v3`
 | `name` | string | no | — |
 
 *Response*: [`FunnelListResponseDTO`](#funnellistresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::funnels::FetchListOfFunnelsParams;
+
+let params = FetchListOfFunnelsParams::new("locationId");
+let out = ghl.v3().funnels().fetch_list_of_funnels(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -400,6 +409,12 @@ Operation id: `v3:funnels.post_funnels_lookup_redirect` · `Version: v3` · Scop
 *Request body*: [`CreateRedirectParams`](#createredirectparams)
 
 *Response*: [`CreateRedirectResponseDTO`](#createredirectresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().funnels().create_redirect(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -435,6 +450,15 @@ Operation id: `v3:funnels.get_funnels_lookup_redirect_list` · `Version: v3` · 
 | `search` | string | no | — |
 
 *Response*: [`RedirectListResponseDTO`](#redirectlistresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::funnels::FetchListOfRedirectsParams;
+
+let params = FetchListOfRedirectsParams::new("locationId", "limit", "offset");
+let out = ghl.v3().funnels().fetch_list_of_redirects(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -476,6 +500,15 @@ Operation id: `v3:funnels.delete_funnels_lookup_redirect_by_id` · `Version: v3`
 
 *Response*: [`DeleteRedirectResponseDTO`](#deleteredirectresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::funnels::DeleteRedirectByIdParams;
+
+let params = DeleteRedirectByIdParams::new("locationId");
+let out = ghl.v3().funnels().delete_redirect_by_id(&id, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -512,6 +545,12 @@ Operation id: `v3:funnels.patch_funnels_lookup_redirect_by_id` · `Version: v3` 
 *Request body*: [`UpdateRedirectParams`](#updateredirectparams)
 
 *Response*: [`UpdateRedirectResponseDTO`](#updateredirectresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().funnels().update_redirect_by_id(&id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -552,6 +591,15 @@ Operation id: `v3:funnels.get_funnels_page` · `Version: v3`
 
 *Response*: [`FunnelPageResponseDTO`](#funnelpageresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::funnels::FetchListOfFunnelPagesParams;
+
+let params = FetchListOfFunnelPagesParams::new("locationId", "funnelId", "limit", "offset");
+let out = ghl.v3().funnels().fetch_list_of_funnel_pages(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -588,6 +636,15 @@ Operation id: `v3:funnels.get_funnels_page_count` · `Version: v3`
 | `name` | string | no | — |
 
 *Response*: [`FunnelPageCountResponseDTO`](#funnelpagecountresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::funnels::FetchCountOfFunnelPagesParams;
+
+let params = FetchCountOfFunnelPagesParams::new("locationId", "funnelId");
+let out = ghl.v3().funnels().fetch_count_of_funnel_pages(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

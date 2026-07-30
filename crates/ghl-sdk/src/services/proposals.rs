@@ -2,7 +2,7 @@
 //! `proposals` — typed methods for all 4 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::proposals`](crate::Ghl::proposals)
+//! Access via [`Ghl::proposals`](crate::Ghl::proposals).
 //!
 //! Request and response types come from [`ghl_models::v2::proposals`](https://docs.rs/ghl-models/latest/ghl_models/v2/proposals/); every endpoint is also documented in the
 //! [`proposals` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/proposals.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::proposals as models;
 
-/// Typed access to the `proposals` API (4 operations). Obtained via
+/// Typed access to the `proposals` API v2 surface (4 operations). Obtained via
 /// [`Ghl::proposals`](crate::Ghl::proposals).
 #[derive(Debug, Clone)]
 pub struct ProposalsService {

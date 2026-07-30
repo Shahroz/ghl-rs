@@ -2,7 +2,7 @@
 //! `store` — typed methods for all 18 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::store`](crate::Ghl::store)
+//! Access via [`Ghl::store`](crate::Ghl::store).
 //!
 //! Request and response types come from [`ghl_models::v2::store`](https://docs.rs/ghl-models/latest/ghl_models/v2/store/); every endpoint is also documented in the
 //! [`store` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/store.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::store as models;
 
-/// Typed access to the `store` API (18 operations). Obtained via
+/// Typed access to the `store` API v2 surface (18 operations). Obtained via
 /// [`Ghl::store`](crate::Ghl::store).
 #[derive(Debug, Clone)]
 pub struct StoreService {

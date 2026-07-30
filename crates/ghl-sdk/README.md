@@ -31,12 +31,12 @@ async fn main() -> Result<(), ghl_sdk::Error> {
 }
 ```
 
-## Every v2 endpoint is a typed method
+## Every endpoint is a typed method
 
-576 generated methods across all 41 API v2 modules. Enable the feature named after the module:
+**1,203 generated methods** — 576 in API v2, 627 in v3 — across all 45 modules. Enable the feature named after the module:
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["invoices"] }
+ghl-sdk = { version = "0.5", features = ["invoices"] }
 ```
 
 ```rust,ignore
@@ -49,7 +49,28 @@ let page = ghl.invoices().list_invoices(&params).await?;   // typed response
 
 One module compiles in a second or two; `features = ["full"]` (all 41) takes closer to a minute.
 
-API v3 (627 more operations) is reachable via `ghl.request_raw(…, Some("v3"))` with [`ghl-models`](https://crates.io/crates/ghl-models) v3 DTOs.
+API v3 lives behind `ghl.v3()` and sends `Version: v3` for you:
+
+```rust,ignore
+let dup = ghl.v3().contacts().get_duplicate_contact(&params).await?;
+```
+
+v3 also has modules v2 doesn't: `ad-publishing`, `social-planner`, `saas`, `chat-widget`.
+
+## Webhooks
+
+```toml
+ghl-sdk = { version = "0.5", features = ["webhooks"] }
+```
+
+GoHighLevel signs webhooks with RSA-SHA256 over the raw body. Verify the raw bytes, then parse:
+
+```rust,ignore
+ghl_sdk::webhooks::verify(raw_body, signature_header)?;
+let event: ghl_sdk::webhooks::WebhookEvent = serde_json::from_slice(raw_body)?;
+if event.is_stale(std::time::Duration::from_secs(300)) { return; }  // replay guard
+match event.event_type() { "ContactCreate" => {}, _ => {} }
+```
 
 **Strict on send, lenient on receive:** request types keep the spec's required fields non-`Option`; response types make everything optional, because GoHighLevel sometimes omits fields its own spec marks required and a strict type would make that unrecoverable.
 

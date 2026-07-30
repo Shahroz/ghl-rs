@@ -2,7 +2,7 @@
 //! `ad-manager` — typed methods for all 94 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::ad_manager`](crate::Ghl::ad_manager)
+//! Access via [`Ghl::ad_manager`](crate::Ghl::ad_manager).
 //!
 //! Request and response types come from [`ghl_models::v2::ad_manager`](https://docs.rs/ghl-models/latest/ghl_models/v2/ad_manager/); every endpoint is also documented in the
 //! [`ad-manager` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/ad-manager.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::ad_manager as models;
 
-/// Typed access to the `ad-manager` API (94 operations). Obtained via
+/// Typed access to the `ad-manager` API v2 surface (94 operations). Obtained via
 /// [`Ghl::ad_manager`](crate::Ghl::ad_manager).
 #[derive(Debug, Clone)]
 pub struct AdManagerService {

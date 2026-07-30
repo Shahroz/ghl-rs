@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `blogs` cargo feature on `ghl-sdk`, then call any of the 7 generated methods on `ghl.blogs()`:
+**Every endpoint has a typed Rust method.** Enable the `blogs` cargo feature on `ghl-sdk`, then call any of the 14 generated methods on `ghl.blogs()` (v2) or `ghl.v3().blogs()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["blogs"] }
+ghl-sdk = { version = "0.5", features = ["blogs"] }
 ```
 
 
@@ -324,15 +324,15 @@ let out = ghl.blogs().get_blogs_by_location_id(&params).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/blogs/authors` | Get all authors | `v3:blogs.get_blogs_authors` |
-| `GET` | `/blogs/categories` | Get all categories | `v3:blogs.get_blogs_categories` |
-| `POST` | `/blogs/posts` | Create Blog Post | `v3:blogs.post_blogs_posts` |
-| `GET` | `/blogs/posts/all` | Get Blog posts by Blog ID | `v3:blogs.get_blogs_posts_all` |
-| `GET` | `/blogs/posts/url-slug-exists` | Check url slug | `v3:blogs.get_blogs_posts_url_slug_exists` |
-| `PUT` | `/blogs/posts/{postId}` | Update Blog Post | `v3:blogs.put_blogs_posts_by_postId` |
-| `GET` | `/blogs/site/all` | Get Blogs by Location ID | `v3:blogs.get_blogs_site_all` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/blogs/authors` | Get all authors | `get_all_authors()` | `v3:blogs.get_blogs_authors` |
+| `GET` | `/blogs/categories` | Get all categories | `get_all_categories()` | `v3:blogs.get_blogs_categories` |
+| `POST` | `/blogs/posts` | Create Blog Post | `create_blog_post()` | `v3:blogs.post_blogs_posts` |
+| `GET` | `/blogs/posts/all` | Get Blog posts by Blog ID | `get_blog_posts_by_blog_id()` | `v3:blogs.get_blogs_posts_all` |
+| `GET` | `/blogs/posts/url-slug-exists` | Check url slug | `check_url_slug()` | `v3:blogs.get_blogs_posts_url_slug_exists` |
+| `PUT` | `/blogs/posts/{postId}` | Update Blog Post | `update_blog_post()` | `v3:blogs.put_blogs_posts_by_postId` |
+| `GET` | `/blogs/site/all` | Get Blogs by Location ID | `get_blogs_by_location_id()` | `v3:blogs.get_blogs_site_all` |
 
 ### Endpoint details — v3
 
@@ -353,6 +353,15 @@ Operation id: `v3:blogs.get_blogs_authors` · `Version: v3` · Scopes: `blogs/au
 | `offset` | number | **yes** | Number of authors to skip in listing |
 
 *Response*: [`AuthorsResponseDTO`](#authorsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::blogs::GetAllAuthorsParams;
+
+let params = GetAllAuthorsParams::new("locationId", "limit", "offset");
+let out = ghl.v3().blogs().get_all_authors(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -390,6 +399,15 @@ Operation id: `v3:blogs.get_blogs_categories` · `Version: v3` · Scopes: `blogs
 
 *Response*: [`CategoriesResponseDTO`](#categoriesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::blogs::GetAllCategoriesParams;
+
+let params = GetAllCategoriesParams::new("locationId", "limit", "offset");
+let out = ghl.v3().blogs().get_all_categories(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -419,6 +437,12 @@ Operation id: `v3:blogs.post_blogs_posts` · `Version: v3` · Scopes: `blogs/pos
 *Request body*: [`CreateBlogPostParams`](#createblogpostparams)
 
 *Response*: [`BlogPostCreateResponseWrapperDTO`](#blogpostcreateresponsewrapperdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().blogs().create_blog_post(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -457,6 +481,15 @@ Operation id: `v3:blogs.get_blogs_posts_all` · `Version: v3` · Scopes: `blogs/
 
 *Response*: [`BlogPostGetResponseWrapperDTO`](#blogpostgetresponsewrapperdto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::blogs::GetBlogPostsByBlogIdParams;
+
+let params = GetBlogPostsByBlogIdParams::new("locationId", "blogId", "limit", "offset");
+let out = ghl.v3().blogs().get_blog_posts_by_blog_id(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -494,6 +527,15 @@ Operation id: `v3:blogs.get_blogs_posts_url_slug_exists` · `Version: v3` · Sco
 
 *Response*: [`UrlSlugCheckResponseDTO`](#urlslugcheckresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::blogs::CheckUrlSlugParams;
+
+let params = CheckUrlSlugParams::new("urlSlug", "locationId");
+let out = ghl.v3().blogs().check_url_slug(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -522,6 +564,12 @@ Operation id: `v3:blogs.put_blogs_posts_by_postId` · `Version: v3` · Scopes: `
 *Request body*: [`UpdateBlogPostParams`](#updateblogpostparams)
 
 *Response*: [`BlogPostUpdateResponseWrapperDTO`](#blogpostupdateresponsewrapperdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().blogs().update_blog_post(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -557,6 +605,15 @@ Operation id: `v3:blogs.get_blogs_site_all` · `Version: v3` · Scopes: `blogs/l
 | `searchTerm` | string | no | search for any post by name |
 
 *Response*: [`BlogGetResponseWrapperDTO`](#bloggetresponsewrapperdto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::blogs::GetBlogsByLocationIdParams;
+
+let params = GetBlogsByLocationIdParams::new("locationId", "skip", "limit");
+let out = ghl.v3().blogs().get_blogs_by_location_id(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

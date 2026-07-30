@@ -4,59 +4,42 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `saas` cargo feature on `ghl-sdk`, then call any of the 25 generated methods on `ghl.v3().saas()` (v3):
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features saas
-use ghl_models::v2::saas::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.5", features = ["saas"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "saas"
-  }
-}
-```
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/saas-api/public-api/agency-plans/{companyId}` | Get Agency Plans | `v3:saas.get_saas_api_public_api_agency_plans_by_companyId` |
-| `POST` | `/saas-api/public-api/bulk-disable-saas/{companyId}` | Disable SaaS for locations | `v3:saas.post_saas_api_public_api_bulk_disable_saas_by_companyId` |
-| `POST` | `/saas-api/public-api/bulk-enable-saas/{companyId}` | Bulk Enable SaaS | `v3:saas.post_saas_api_public_api_bulk_enable_saas_by_companyId` |
-| `GET` | `/saas-api/public-api/companies/{companyId}/locations/{locationId}/wallet-balance` | Get Location Wallet Balance | `v3:saas.get_saas_api_public_api_companies_by_companyId_locations_by_locationId_wallet_balance` |
-| `POST` | `/saas-api/public-api/companies/{companyId}/locations/{locationId}/wallet-balance/complimentary-credits` | Update Location Wallet Balance | `v3:saas.post_saas_api_public_api_companies_by_companyId_locations_by_locationId_wallet_balance_complimentary_credits` |
-| `POST` | `/saas-api/public-api/enable-saas/{locationId}` | Enable SaaS for Sub-Account (Formerly Location) | `v3:saas.post_saas_api_public_api_enable_saas_by_locationId` |
-| `GET` | `/saas-api/public-api/get-saas-subscription/{locationId}` | Get Location Subscription Details | `v3:saas.get_saas_api_public_api_get_saas_subscription_by_locationId` |
-| `GET` | `/saas-api/public-api/locations` | Get locations by stripeId with companyId | `v3:saas.get_saas_api_public_api_locations` |
-| `POST` | `/saas-api/public-api/pause/{locationId}` | Pause location | `v3:saas.post_saas_api_public_api_pause_by_locationId` |
-| `GET` | `/saas-api/public-api/saas-locations/{companyId}` | Get SaaS Locations | `v3:saas.get_saas_api_public_api_saas_locations_by_companyId` |
-| `GET` | `/saas-api/public-api/saas-plan/{planId}` | Get SaaS Plan | `v3:saas.get_saas_api_public_api_saas_plan_by_planId` |
-| `POST` | `/saas-api/public-api/update-rebilling/{companyId}` | Update Rebilling | `v3:saas.post_saas_api_public_api_update_rebilling_by_companyId` |
-| `PUT` | `/saas-api/public-api/update-saas-subscription/{locationId}` | Update SaaS subscription | `v3:saas.put_saas_api_public_api_update_saas_subscription_by_locationId` |
-| `GET` | `/saas/agency-plans/{companyId}` | Get Agency Plans | `v3:saas.get_saas_agency_plans_by_companyId` |
-| `POST` | `/saas/allow-attach-rebilling/{locationId}` | Allow Attach Rebilling | `v3:saas.post_saas_allow_attach_rebilling_by_locationId` |
-| `POST` | `/saas/bulk-disable-saas/{companyId}` | Disable SaaS for locations | `v3:saas.post_saas_bulk_disable_saas_by_companyId` |
-| `POST` | `/saas/bulk-enable-saas/{companyId}` | Bulk Enable SaaS | `v3:saas.post_saas_bulk_enable_saas_by_companyId` |
-| `POST` | `/saas/enable-saas/{locationId}` | Enable SaaS for Sub-Account (Formerly Location) | `v3:saas.post_saas_enable_saas_by_locationId` |
-| `GET` | `/saas/get-saas-subscription/{locationId}` | Get Location Subscription Details | `v3:saas.get_saas_get_saas_subscription_by_locationId` |
-| `GET` | `/saas/locations` | Get locations by stripeId with companyId | `v3:saas.get_saas_locations` |
-| `POST` | `/saas/pause/{locationId}` | Pause location | `v3:saas.post_saas_pause_by_locationId` |
-| `GET` | `/saas/saas-locations/{companyId}` | Get SaaS Locations | `v3:saas.get_saas_saas_locations_by_companyId` |
-| `GET` | `/saas/saas-plan/{planId}` | Get SaaS Plan | `v3:saas.get_saas_saas_plan_by_planId` |
-| `POST` | `/saas/update-rebilling/{companyId}` | Update Rebilling | `v3:saas.post_saas_update_rebilling_by_companyId` |
-| `PUT` | `/saas/update-saas-subscription/{locationId}` | Update SaaS subscription | `v3:saas.put_saas_update_saas_subscription_by_locationId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/saas-api/public-api/agency-plans/{companyId}` | Get Agency Plans | `get_agency_plans()` | `v3:saas.get_saas_api_public_api_agency_plans_by_companyId` |
+| `POST` | `/saas-api/public-api/bulk-disable-saas/{companyId}` | Disable SaaS for locations | `disable_saa_s_for_locations()` | `v3:saas.post_saas_api_public_api_bulk_disable_saas_by_companyId` |
+| `POST` | `/saas-api/public-api/bulk-enable-saas/{companyId}` | Bulk Enable SaaS | `bulk_enable_saa_s()` | `v3:saas.post_saas_api_public_api_bulk_enable_saas_by_companyId` |
+| `GET` | `/saas-api/public-api/companies/{companyId}/locations/{locationId}/wallet-balance` | Get Location Wallet Balance | `get_location_wallet_balance()` | `v3:saas.get_saas_api_public_api_companies_by_companyId_locations_by_locationId_wallet_balance` |
+| `POST` | `/saas-api/public-api/companies/{companyId}/locations/{locationId}/wallet-balance/complimentary-credits` | Update Location Wallet Balance | `update_location_wallet_balance()` | `v3:saas.post_saas_api_public_api_companies_by_companyId_locations_by_locationId_wallet_balance_complimentary_credits` |
+| `POST` | `/saas-api/public-api/enable-saas/{locationId}` | Enable SaaS for Sub-Account (Formerly Location) | `enable_saa_s_for_sub_account_formerly_location()` | `v3:saas.post_saas_api_public_api_enable_saas_by_locationId` |
+| `GET` | `/saas-api/public-api/get-saas-subscription/{locationId}` | Get Location Subscription Details | `get_location_subscription_details()` | `v3:saas.get_saas_api_public_api_get_saas_subscription_by_locationId` |
+| `GET` | `/saas-api/public-api/locations` | Get locations by stripeId with companyId | `get_locations_by_stripe_id_with_company_id()` | `v3:saas.get_saas_api_public_api_locations` |
+| `POST` | `/saas-api/public-api/pause/{locationId}` | Pause location | `pause_location()` | `v3:saas.post_saas_api_public_api_pause_by_locationId` |
+| `GET` | `/saas-api/public-api/saas-locations/{companyId}` | Get SaaS Locations | `get_saa_s_locations()` | `v3:saas.get_saas_api_public_api_saas_locations_by_companyId` |
+| `GET` | `/saas-api/public-api/saas-plan/{planId}` | Get SaaS Plan | `get_saa_s_plan()` | `v3:saas.get_saas_api_public_api_saas_plan_by_planId` |
+| `POST` | `/saas-api/public-api/update-rebilling/{companyId}` | Update Rebilling | `update_rebilling()` | `v3:saas.post_saas_api_public_api_update_rebilling_by_companyId` |
+| `PUT` | `/saas-api/public-api/update-saas-subscription/{locationId}` | Update SaaS subscription | `update_saa_s_subscription()` | `v3:saas.put_saas_api_public_api_update_saas_subscription_by_locationId` |
+| `GET` | `/saas/agency-plans/{companyId}` | Get Agency Plans | `get_agency_plans_op()` | `v3:saas.get_saas_agency_plans_by_companyId` |
+| `POST` | `/saas/allow-attach-rebilling/{locationId}` | Allow Attach Rebilling | `allow_attach_rebilling()` | `v3:saas.post_saas_allow_attach_rebilling_by_locationId` |
+| `POST` | `/saas/bulk-disable-saas/{companyId}` | Disable SaaS for locations | `disable_saa_s_for_locations_op()` | `v3:saas.post_saas_bulk_disable_saas_by_companyId` |
+| `POST` | `/saas/bulk-enable-saas/{companyId}` | Bulk Enable SaaS | `bulk_enable_saa_s_op()` | `v3:saas.post_saas_bulk_enable_saas_by_companyId` |
+| `POST` | `/saas/enable-saas/{locationId}` | Enable SaaS for Sub-Account (Formerly Location) | `enable_saa_s_for_sub_account_formerly_location_op()` | `v3:saas.post_saas_enable_saas_by_locationId` |
+| `GET` | `/saas/get-saas-subscription/{locationId}` | Get Location Subscription Details | `get_location_subscription_details_op()` | `v3:saas.get_saas_get_saas_subscription_by_locationId` |
+| `GET` | `/saas/locations` | Get locations by stripeId with companyId | `get_locations_by_stripe_id_with_company_id_op()` | `v3:saas.get_saas_locations` |
+| `POST` | `/saas/pause/{locationId}` | Pause location | `pause_location_op()` | `v3:saas.post_saas_pause_by_locationId` |
+| `GET` | `/saas/saas-locations/{companyId}` | Get SaaS Locations | `get_saa_s_locations_op()` | `v3:saas.get_saas_saas_locations_by_companyId` |
+| `GET` | `/saas/saas-plan/{planId}` | Get SaaS Plan | `get_saa_s_plan_op()` | `v3:saas.get_saas_saas_plan_by_planId` |
+| `POST` | `/saas/update-rebilling/{companyId}` | Update Rebilling | `update_rebilling_op()` | `v3:saas.post_saas_update_rebilling_by_companyId` |
+| `PUT` | `/saas/update-saas-subscription/{locationId}` | Update SaaS subscription | `update_saa_s_subscription_op()` | `v3:saas.put_saas_update_saas_subscription_by_locationId` |
 
 ### Endpoint details — v3
 
@@ -73,6 +56,12 @@ Operation id: `v3:saas.get_saas_api_public_api_agency_plans_by_companyId` · `Ve
 | Name | Type | Required | Description |
 |---|---|---|---|
 | `companyId` | string | **yes** | Company ID to get agency plans for |
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().get_agency_plans(&companyId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -107,6 +96,12 @@ Operation id: `v3:saas.post_saas_api_public_api_bulk_disable_saas_by_companyId` 
 *Request body*: [`BulkDisableSaasDto`](#bulkdisablesaasdto)
 
 *Response*: [`BulkDisableSaasResponseDto`](#bulkdisablesaasresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().disable_saa_s_for_locations(&companyId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -145,6 +140,12 @@ Operation id: `v3:saas.post_saas_api_public_api_bulk_enable_saas_by_companyId` �
 
 *Response*: [`BulkEnableSaasResponseDto`](#bulkenablesaasresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().bulk_enable_saa_s(&companyId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -181,6 +182,12 @@ Operation id: `v3:saas.get_saas_api_public_api_companies_by_companyId_locations_
 
 *Response*: [`LocationWalletBalanceDto`](#locationwalletbalancedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().get_location_wallet_balance(&companyId, &locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -216,6 +223,12 @@ Operation id: `v3:saas.post_saas_api_public_api_companies_by_companyId_locations
 *Request body*: [`ComplimentaryCreditDTO`](#complimentarycreditdto)
 
 *Response*: [`LocationWalletBalanceDto`](#locationwalletbalancedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().update_location_wallet_balance(&companyId, &locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -254,6 +267,12 @@ Operation id: `v3:saas.post_saas_api_public_api_enable_saas_by_locationId` · `V
 *Request body*: [`EnableSaasDto`](#enablesaasdto)
 
 *Response*: [`EnableSaasResponseDto`](#enablesaasresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().enable_saa_s_for_sub_account_formerly_location(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -296,6 +315,15 @@ Operation id: `v3:saas.get_saas_api_public_api_get_saas_subscription_by_location
 
 *Response*: [`LocationSubscriptionResponseDto`](#locationsubscriptionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::saas::GetLocationSubscriptionDetailsParams;
+
+let params = GetLocationSubscriptionDetailsParams::new("companyId");
+let out = ghl.v3().saas().get_location_subscription_details(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -331,6 +359,15 @@ Operation id: `v3:saas.get_saas_api_public_api_locations` · `Version: v3`
 | `subscriptionId` | string | no | Stripe subscription ID to find locations for |
 | `companyId` | string | **yes** | Company ID to filter locations |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::saas::GetLocationsByStripeIdWithCompanyIdParams;
+
+let params = GetLocationsByStripeIdWithCompanyIdParams::new("companyId");
+let out = ghl.v3().saas().get_locations_by_stripe_id_with_company_id(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -362,6 +399,12 @@ Operation id: `v3:saas.post_saas_api_public_api_pause_by_locationId` · `Version
 | `locationId` | string | **yes** | Location ID to pause/unpause |
 
 *Request body*: [`PauseLocationDto`](#pauselocationdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().pause_location(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -404,6 +447,15 @@ Operation id: `v3:saas.get_saas_api_public_api_saas_locations_by_companyId` · `
 
 *Response*: [`GetSaasLocationsResponseDto`](#getsaaslocationsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::saas::GetSaaSLocationsParams;
+
+let params = GetSaaSLocationsParams::new();
+let out = ghl.v3().saas().get_saa_s_locations(&companyId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -442,6 +494,15 @@ Operation id: `v3:saas.get_saas_api_public_api_saas_plan_by_planId` · `Version:
 
 *Response*: [`SaasPlanResponseDto`](#saasplanresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::saas::GetSaaSPlanParams;
+
+let params = GetSaaSPlanParams::new("companyId");
+let out = ghl.v3().saas().get_saa_s_plan(&planId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -479,6 +540,12 @@ Operation id: `v3:saas.post_saas_api_public_api_update_rebilling_by_companyId` �
 
 *Response*: [`UpdateRebillingResponseDto`](#updaterebillingresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().update_rebilling(&companyId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -514,6 +581,12 @@ Operation id: `v3:saas.put_saas_api_public_api_update_saas_subscription_by_locat
 
 *Request body*: [`UpdateSubscriptionDto`](#updatesubscriptiondto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().update_saa_s_subscription(&locationId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -546,6 +619,12 @@ Operation id: `v3:saas.get_saas_agency_plans_by_companyId` · `Version: v3`
 | Name | Type | Required | Description |
 |---|---|---|---|
 | `companyId` | string | **yes** | — |
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().get_agency_plans_op(&companyId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -580,6 +659,12 @@ Operation id: `v3:saas.post_saas_allow_attach_rebilling_by_locationId` · `Versi
 *Request body*: [`AllowAttachRebillingDto`](#allowattachrebillingdto)
 
 *Response*: [`AllowAttachRebillingResponseDto`](#allowattachrebillingresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().allow_attach_rebilling(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -616,6 +701,12 @@ Operation id: `v3:saas.post_saas_bulk_disable_saas_by_companyId` · `Version: v3
 
 *Request body*: [`BulkDisableSaasDto`](#bulkdisablesaasdto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().disable_saa_s_for_locations_op(&companyId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -651,6 +742,12 @@ Operation id: `v3:saas.post_saas_bulk_enable_saas_by_companyId` · `Version: v3`
 
 *Request body*: [`BulkEnableSaasRequestDto`](#bulkenablesaasrequestdto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().bulk_enable_saa_s_op(&companyId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -685,6 +782,12 @@ Operation id: `v3:saas.post_saas_enable_saas_by_locationId` · `Version: v3`
 | `locationId` | string | **yes** | — |
 
 *Request body*: [`EnableSaasDto`](#enablesaasdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().enable_saa_s_for_sub_account_formerly_location_op(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -725,6 +828,15 @@ Operation id: `v3:saas.get_saas_get_saas_subscription_by_locationId` · `Version
 |---|---|---|---|
 | `companyId` | string | **yes** | — |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::saas::GetLocationSubscriptionDetailsOpParams;
+
+let params = GetLocationSubscriptionDetailsOpParams::new("companyId");
+let out = ghl.v3().saas().get_location_subscription_details_op(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -760,6 +872,15 @@ Operation id: `v3:saas.get_saas_locations` · `Version: v3`
 | `subscriptionId` | string | **yes** | — |
 | `companyId` | string | **yes** | — |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::saas::GetLocationsByStripeIdWithCompanyIdOpParams;
+
+let params = GetLocationsByStripeIdWithCompanyIdOpParams::new("customerId", "subscriptionId", "companyId");
+let out = ghl.v3().saas().get_locations_by_stripe_id_with_company_id_op(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -793,6 +914,12 @@ Operation id: `v3:saas.post_saas_pause_by_locationId` · `Version: v3`
 | `locationId` | string | **yes** | — |
 
 *Request body*: [`PauseLocationDto`](#pauselocationdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().pause_location_op(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -833,6 +960,15 @@ Operation id: `v3:saas.get_saas_saas_locations_by_companyId` · `Version: v3`
 |---|---|---|---|
 | `page` | number | **yes** | — |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::saas::GetSaaSLocationsOpParams;
+
+let params = GetSaaSLocationsOpParams::new("page");
+let out = ghl.v3().saas().get_saa_s_locations_op(&companyId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -872,6 +1008,15 @@ Operation id: `v3:saas.get_saas_saas_plan_by_planId` · `Version: v3`
 |---|---|---|---|
 | `companyId` | string | **yes** | — |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::saas::GetSaaSPlanOpParams;
+
+let params = GetSaaSPlanOpParams::new("companyId");
+let out = ghl.v3().saas().get_saa_s_plan_op(&planId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -907,6 +1052,12 @@ Operation id: `v3:saas.post_saas_update_rebilling_by_companyId` · `Version: v3`
 
 *Request body*: [`UpdateRebillingDto`](#updaterebillingdto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().update_rebilling_op(&companyId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -941,6 +1092,12 @@ Operation id: `v3:saas.put_saas_update_saas_subscription_by_locationId` · `Vers
 | `locationId` | string | **yes** | — |
 
 *Request body*: [`UpdateSubscriptionDto`](#updatesubscriptiondto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().saas().update_saa_s_subscription_op(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

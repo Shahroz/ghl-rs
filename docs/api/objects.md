@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `objects` cargo feature on `ghl-sdk`, then call any of the 9 generated methods on `ghl.objects()`:
+**Every endpoint has a typed Rust method.** Enable the `objects` cargo feature on `ghl-sdk`, then call any of the 18 generated methods on `ghl.objects()` (v2) or `ghl.v3().objects()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["objects"] }
+ghl-sdk = { version = "0.5", features = ["objects"] }
 ```
 
 
@@ -421,17 +421,17 @@ let out = ghl.objects().update_record(&schemaKey, &id, &params, &body).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/objects/` | Get all objects for a location | `v3:objects.get_objects` |
-| `POST` | `/objects/` | Create Custom Object | `v3:objects.post_objects` |
-| `GET` | `/objects/{key}` | Get Object Schema by key / id | `v3:objects.get_objects_by_key` |
-| `PUT` | `/objects/{key}` | Update Object Schema By Key / Id | `v3:objects.put_objects_by_key` |
-| `POST` | `/objects/{schemaKey}/records` | Create Record | `v3:objects.post_objects_by_schemaKey_records` |
-| `POST` | `/objects/{schemaKey}/records/search` | Search Object Records | `v3:objects.post_objects_by_schemaKey_records_search` |
-| `DELETE` | `/objects/{schemaKey}/records/{id}` | Delete Record | `v3:objects.delete_objects_by_schemaKey_records_by_id` |
-| `GET` | `/objects/{schemaKey}/records/{id}` | Get Record By Id | `v3:objects.get_objects_by_schemaKey_records_by_id` |
-| `PUT` | `/objects/{schemaKey}/records/{id}` | Update Record | `v3:objects.put_objects_by_schemaKey_records_by_id` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/objects/` | Get all objects for a location | `get_all_objects_for_a_location()` | `v3:objects.get_objects` |
+| `POST` | `/objects/` | Create Custom Object | `create_custom_object()` | `v3:objects.post_objects` |
+| `GET` | `/objects/{key}` | Get Object Schema by key / id | `get_object_schema_by_key_id()` | `v3:objects.get_objects_by_key` |
+| `PUT` | `/objects/{key}` | Update Object Schema By Key / Id | `update_object_schema_by_key_id()` | `v3:objects.put_objects_by_key` |
+| `POST` | `/objects/{schemaKey}/records` | Create Record | `create_record()` | `v3:objects.post_objects_by_schemaKey_records` |
+| `POST` | `/objects/{schemaKey}/records/search` | Search Object Records | `search_object_records()` | `v3:objects.post_objects_by_schemaKey_records_search` |
+| `DELETE` | `/objects/{schemaKey}/records/{id}` | Delete Record | `delete_record()` | `v3:objects.delete_objects_by_schemaKey_records_by_id` |
+| `GET` | `/objects/{schemaKey}/records/{id}` | Get Record By Id | `get_record_by_id()` | `v3:objects.get_objects_by_schemaKey_records_by_id` |
+| `PUT` | `/objects/{schemaKey}/records/{id}` | Update Record | `update_record()` | `v3:objects.put_objects_by_schemaKey_records_by_id` |
 
 ### Endpoint details — v3
 
@@ -450,6 +450,15 @@ Operation id: `v3:objects.get_objects` · `Version: v3` · Scopes: `objects/sche
 | `locationId` | string | **yes** | location id |
 
 *Response*: [`CustomObjectListResponseDTO`](#customobjectlistresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::objects::GetAllObjectsForALocationParams;
+
+let params = GetAllObjectsForALocationParams::new("locationId");
+let out = ghl.v3().objects().get_all_objects_for_a_location(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -478,6 +487,12 @@ Operation id: `v3:objects.post_objects` · `Version: v3` · Scopes: `objects/sch
 *Request body*: [`CreateCustomObjectSchemaDTO`](#createcustomobjectschemadto)
 
 *Response*: [`CustomObjectResponseDTO`](#customobjectresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().objects().create_custom_object(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -518,6 +533,15 @@ Operation id: `v3:objects.get_objects_by_key` · `Version: v3` · Scopes: `objec
 
 *Response*: [`CustomObjectByIdResponseDTO`](#customobjectbyidresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::objects::GetObjectSchemaByKeyIdParams;
+
+let params = GetObjectSchemaByKeyIdParams::new("locationId");
+let out = ghl.v3().objects().get_object_schema_by_key_id(&key, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -554,6 +578,12 @@ Operation id: `v3:objects.put_objects_by_key` · `Version: v3` · Scopes: `objec
 *Request body*: [`UpdateCustomObjectSchemaDTO`](#updatecustomobjectschemadto)
 
 *Response*: [`CustomObjectResponseDTO`](#customobjectresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().objects().update_object_schema_by_key_id(&key, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -592,6 +622,12 @@ Operation id: `v3:objects.post_objects_by_schemaKey_records` · `Version: v3` ·
 
 *Response*: [`RecordByIdResponseDTO`](#recordbyidresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().objects().create_record(&schemaKey, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -629,6 +665,12 @@ Operation id: `v3:objects.post_objects_by_schemaKey_records_search` · `Version:
 
 *Response*: [`SearchRecordResponseDTO`](#searchrecordresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().objects().search_object_records(&schemaKey, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -665,6 +707,12 @@ Operation id: `v3:objects.delete_objects_by_schemaKey_records_by_id` · `Version
 
 *Response*: [`ObjectRecordDeleteResponseDTO`](#objectrecorddeleteresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().objects().delete_record(&schemaKey, &id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -698,6 +746,12 @@ Operation id: `v3:objects.get_objects_by_schemaKey_records_by_id` · `Version: v
 | `id` | string | **yes** | id of the record to be updated. Available on the Record details page under the 3 dots or in the url |
 
 *Response*: [`RecordByIdResponseDTO`](#recordbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().objects().get_record_by_id(&schemaKey, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -740,6 +794,15 @@ Operation id: `v3:objects.put_objects_by_schemaKey_records_by_id` · `Version: v
 *Request body*: [`UpdateCustomObjectRecordDto`](#updatecustomobjectrecorddto)
 
 *Response*: [`RecordByIdResponseDTO`](#recordbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::objects::UpdateRecordParams;
+
+let params = UpdateRecordParams::new("locationId");
+let out = ghl.v3().objects().update_record(&schemaKey, &id, &params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

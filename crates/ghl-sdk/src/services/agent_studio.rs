@@ -2,7 +2,7 @@
 //! `agent-studio` — typed methods for all 11 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::agent_studio`](crate::Ghl::agent_studio)
+//! Access via [`Ghl::agent_studio`](crate::Ghl::agent_studio).
 //!
 //! Request and response types come from [`ghl_models::v2::agent_studio`](https://docs.rs/ghl-models/latest/ghl_models/v2/agent_studio/); every endpoint is also documented in the
 //! [`agent-studio` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/agent-studio.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::agent_studio as models;
 
-/// Typed access to the `agent-studio` API (11 operations). Obtained via
+/// Typed access to the `agent-studio` API v2 surface (11 operations). Obtained via
 /// [`Ghl::agent_studio`](crate::Ghl::agent_studio).
 #[derive(Debug, Clone)]
 pub struct AgentStudioService {

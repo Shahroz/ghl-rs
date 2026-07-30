@@ -42,9 +42,11 @@ HighLevel adds or renames a module, since each one is its own cargo feature.
 python3 xtask/generate_services.py ../highlevel-api-docs crates/ghl-sdk
 ```
 
-Writes `crates/ghl-sdk/src/services/<module>.rs` — one service per API v2 module
-with a typed method per endpoint (576 total), plus a params struct per endpoint
-that has query parameters. **Also update `crates/ghl-sdk/Cargo.toml`** if
+Writes `crates/ghl-sdk/src/services/<module>.rs` (API v2) and
+`crates/ghl-sdk/src/services/v3/<module>.rs` (API v3) — one service per module
+with a typed method per endpoint (1,203 total), plus a params struct per endpoint
+that has query parameters. v3 services are reached via `ghl.v3()` and send
+`Version: v3`. **Also update `crates/ghl-sdk/Cargo.toml`** if
 HighLevel adds or renames a module: each one is a cargo feature that forwards to
 the matching `ghl-models` feature. Modules with a hand-written service
 (contacts, opportunities, conversations, calendars, locations) get a second

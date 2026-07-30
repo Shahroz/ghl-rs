@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `surveys` cargo feature on `ghl-sdk`, then call any of the 2 generated methods on `ghl.surveys()`:
+**Every endpoint has a typed Rust method.** Enable the `surveys` cargo feature on `ghl-sdk`, then call any of the 4 generated methods on `ghl.surveys()` (v2) or `ghl.v3().surveys()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["surveys"] }
+ghl-sdk = { version = "0.5", features = ["surveys"] }
 ```
 
 
@@ -109,10 +109,10 @@ let out = ghl.surveys().get_surveys_submissions(&params).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/surveys/` | Get Surveys | `v3:surveys.get_surveys` |
-| `GET` | `/surveys/submissions` | Get Surveys Submissions | `v3:surveys.get_surveys_submissions` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/surveys/` | Get Surveys | `get_surveys()` | `v3:surveys.get_surveys` |
+| `GET` | `/surveys/submissions` | Get Surveys Submissions | `get_surveys_submissions()` | `v3:surveys.get_surveys_submissions` |
 
 ### Endpoint details — v3
 
@@ -132,6 +132,15 @@ Operation id: `v3:surveys.get_surveys` · `Version: v3` · Scopes: `surveys.read
 | `type` | string | no | — |
 
 *Response*: [`GetSurveysSuccessfulResponseDto`](#getsurveyssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::surveys::GetSurveysParams;
+
+let params = GetSurveysParams::new("locationId");
+let out = ghl.v3().surveys().get_surveys(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -168,6 +177,15 @@ Operation id: `v3:surveys.get_surveys_submissions` · `Version: v3` · Scopes: `
 | `endAt` | string | no | Get submission by ending of this date. By default it will be current date(YYYY-MM-DD). |
 
 *Response*: [`GetSurveysSubmissionSuccessfulResponseDto`](#getsurveyssubmissionsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::surveys::GetSurveysSubmissionsParams;
+
+let params = GetSurveysSubmissionsParams::new("locationId");
+let out = ghl.v3().surveys().get_surveys_submissions(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

@@ -4,129 +4,112 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `ad-publishing` cargo feature on `ghl-sdk`, then call any of the 95 generated methods on `ghl.v3().ad_publishing()` (v3):
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features ad-publishing
-use ghl_models::v2::ad_publishing::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.5", features = ["ad-publishing"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "ad-publishing"
-  }
-}
-```
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/ad-publishing/facebook/ad-accounts` | Get ad accounts | `v3:ad-publishing.get_ad_publishing_facebook_ad_accounts` |
-| `DELETE` | `/ad-publishing/facebook/ad-accounts/{adAccountId}` | Delete ad account | `v3:ad-publishing.delete_ad_publishing_facebook_ad_accounts_by_adAccountId` |
-| `GET` | `/ad-publishing/facebook/ad-accounts/{adAccountId}` | Get ad account details | `v3:ad-publishing.get_ad_publishing_facebook_ad_accounts_by_adAccountId` |
-| `PUT` | `/ad-publishing/facebook/ads` | Upsert ad | `v3:ad-publishing.put_ad_publishing_facebook_ads` |
-| `DELETE` | `/ad-publishing/facebook/ads/{adId}` | Delete ad | `v3:ad-publishing.delete_ad_publishing_facebook_ads_by_adId` |
-| `POST` | `/ad-publishing/facebook/ads/{adId}/duplicate` | Duplicate ad | `v3:ad-publishing.post_ad_publishing_facebook_ads_by_adId_duplicate` |
-| `POST` | `/ad-publishing/facebook/ads/{adId}/pause` | Pause ad | `v3:ad-publishing.post_ad_publishing_facebook_ads_by_adId_pause` |
-| `POST` | `/ad-publishing/facebook/ads/{adId}/resume` | Resume ad | `v3:ad-publishing.post_ad_publishing_facebook_ads_by_adId_resume` |
-| `PUT` | `/ad-publishing/facebook/adsets` | Upsert adset | `v3:ad-publishing.put_ad_publishing_facebook_adsets` |
-| `DELETE` | `/ad-publishing/facebook/adsets/{adSetId}` | Delete ad set | `v3:ad-publishing.delete_ad_publishing_facebook_adsets_by_adSetId` |
-| `POST` | `/ad-publishing/facebook/adsets/{adSetId}/duplicate` | Duplicate ad set | `v3:ad-publishing.post_ad_publishing_facebook_adsets_by_adSetId_duplicate` |
-| `POST` | `/ad-publishing/facebook/adsets/{adSetId}/pause` | Pause ad set | `v3:ad-publishing.post_ad_publishing_facebook_adsets_by_adSetId_pause` |
-| `POST` | `/ad-publishing/facebook/adsets/{adSetId}/resume` | Resume ad set | `v3:ad-publishing.post_ad_publishing_facebook_adsets_by_adSetId_resume` |
-| `GET` | `/ad-publishing/facebook/campaign/{campaignId}` | Get campaign with linked entities | `v3:ad-publishing.get_ad_publishing_facebook_campaign_by_campaignId` |
-| `PUT` | `/ad-publishing/facebook/campaigns` | Upsert campaign | `v3:ad-publishing.put_ad_publishing_facebook_campaigns` |
-| `DELETE` | `/ad-publishing/facebook/campaigns/{campaignId}` | Delete campaign | `v3:ad-publishing.delete_ad_publishing_facebook_campaigns_by_campaignId` |
-| `POST` | `/ad-publishing/facebook/campaigns/{campaignId}/duplicate` | Duplicate campaign | `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaignId_duplicate` |
-| `POST` | `/ad-publishing/facebook/campaigns/{campaignId}/pause` | Pause campaign | `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaignId_pause` |
-| `POST` | `/ad-publishing/facebook/campaigns/{campaignId}/publish` | Publish campaign | `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaignId_publish` |
-| `GET` | `/ad-publishing/facebook/campaigns/{campaignId}/publishing-progress` | Get campaign publishing progress | `v3:ad-publishing.get_ad_publishing_facebook_campaigns_by_campaignId_publishing_progress` |
-| `POST` | `/ad-publishing/facebook/campaigns/{campaignId}/resume` | Resume campaign | `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaignId_resume` |
-| `GET` | `/ad-publishing/facebook/conversation-forms` | Get conversation forms | `v3:ad-publishing.get_ad_publishing_facebook_conversation_forms` |
-| `POST` | `/ad-publishing/facebook/conversation-forms` | Create conversation form | `v3:ad-publishing.post_ad_publishing_facebook_conversation_forms` |
-| `GET` | `/ad-publishing/facebook/custom-audience` | Get custom audiences | `v3:ad-publishing.get_ad_publishing_facebook_custom_audience` |
-| `DELETE` | `/ad-publishing/facebook/custom-audience/{audienceId}` | Delete custom audience | `v3:ad-publishing.delete_ad_publishing_facebook_custom_audience_by_audienceId` |
-| `GET` | `/ad-publishing/facebook/custom-audience/{audienceId}` | Get custom audience by ID | `v3:ad-publishing.get_ad_publishing_facebook_custom_audience_by_audienceId` |
-| `PUT` | `/ad-publishing/facebook/custom-audience/{audienceId}` | Update custom audience | `v3:ad-publishing.put_ad_publishing_facebook_custom_audience_by_audienceId` |
-| `DELETE` | `/ad-publishing/facebook/custom-audience/{audienceId}/member` | Remove custom audience member | `v3:ad-publishing.delete_ad_publishing_facebook_custom_audience_by_audienceId_member` |
-| `PUT` | `/ad-publishing/facebook/custom-audience/{audienceId}/member` | Add custom audience member | `v3:ad-publishing.put_ad_publishing_facebook_custom_audience_by_audienceId_member` |
-| `PUT` | `/ad-publishing/facebook/custom-audience/{audienceId}/member/batch` | Batch update audience members | `v3:ad-publishing.put_ad_publishing_facebook_custom_audience_by_audienceId_member_batch` |
-| `GET` | `/ad-publishing/facebook/entity` | Get entities | `v3:ad-publishing.get_ad_publishing_facebook_entity` |
-| `DELETE` | `/ad-publishing/facebook/integration` | Delete Facebook integration | `v3:ad-publishing.delete_ad_publishing_facebook_integration` |
-| `GET` | `/ad-publishing/facebook/integration` | Get Facebook integration | `v3:ad-publishing.get_ad_publishing_facebook_integration` |
-| `POST` | `/ad-publishing/facebook/integration` | Create Facebook integration | `v3:ad-publishing.post_ad_publishing_facebook_integration` |
-| `GET` | `/ad-publishing/facebook/lead-form/{leadFormId}` | Get lead form by ID | `v3:ad-publishing.get_ad_publishing_facebook_lead_form_by_leadFormId` |
-| `GET` | `/ad-publishing/facebook/me` | Get current Facebook user | `v3:ad-publishing.get_ad_publishing_facebook_me` |
-| `DELETE` | `/ad-publishing/facebook/page` | Delete page connection | `v3:ad-publishing.delete_ad_publishing_facebook_page` |
-| `PUT` | `/ad-publishing/facebook/page/default` | Set default page | `v3:ad-publishing.put_ad_publishing_facebook_page_default` |
-| `GET` | `/ad-publishing/facebook/page/{pageId}/forms` | Get page lead forms | `v3:ad-publishing.get_ad_publishing_facebook_page_by_pageId_forms` |
-| `POST` | `/ad-publishing/facebook/page/{pageId}/forms` | Create page lead form | `v3:ad-publishing.post_ad_publishing_facebook_page_by_pageId_forms` |
-| `GET` | `/ad-publishing/facebook/page/{pageId}/instagram` | Get Instagram accounts for page | `v3:ad-publishing.get_ad_publishing_facebook_page_by_pageId_instagram` |
-| `GET` | `/ad-publishing/facebook/pages` | Get Facebook pages | `v3:ad-publishing.get_ad_publishing_facebook_pages` |
-| `GET` | `/ad-publishing/facebook/pixels` | Get conversion pixels | `v3:ad-publishing.get_ad_publishing_facebook_pixels` |
-| `PUT` | `/ad-publishing/facebook/pixels` | Upsert conversion pixel | `v3:ad-publishing.put_ad_publishing_facebook_pixels` |
-| `GET` | `/ad-publishing/facebook/reporting` | Get reporting data | `v3:ad-publishing.get_ad_publishing_facebook_reporting` |
-| `GET` | `/ad-publishing/facebook/reporting/campaign/{campaignId}` | Get campaign reporting | `v3:ad-publishing.get_ad_publishing_facebook_reporting_campaign_by_campaignId` |
-| `GET` | `/ad-publishing/facebook/reporting/list` | Get reporting list | `v3:ad-publishing.get_ad_publishing_facebook_reporting_list` |
-| `GET` | `/ad-publishing/facebook/targeting/search` | Search targeting options | `v3:ad-publishing.get_ad_publishing_facebook_targeting_search` |
-| `GET` | `/ad-publishing/google/ad-accounts` | Get Google ad accounts | `v3:ad-publishing.get_ad_publishing_google_ad_accounts` |
-| `DELETE` | `/ad-publishing/google/ad-accounts/{adAccountId}` | Delete ad account | `v3:ad-publishing.delete_ad_publishing_google_ad_accounts_by_adAccountId` |
-| `GET` | `/ad-publishing/google/ad-accounts/{adAccountId}` | Get ad account details | `v3:ad-publishing.get_ad_publishing_google_ad_accounts_by_adAccountId` |
-| `PUT` | `/ad-publishing/google/ads` | Upsert Google campaign | `v3:ad-publishing.put_ad_publishing_google_ads` |
-| `GET` | `/ad-publishing/google/ads/{adId}` | Get Google campaign by ID | `v3:ad-publishing.get_ad_publishing_google_ads_by_adId` |
-| `POST` | `/ad-publishing/google/ads/{adId}/publish` | Publish ad | `v3:ad-publishing.post_ad_publishing_google_ads_by_adId_publish` |
-| `GET` | `/ad-publishing/google/assets` | Get assets | `v3:ad-publishing.get_ad_publishing_google_assets` |
-| `POST` | `/ad-publishing/google/assets` | Upsert assets | `v3:ad-publishing.post_ad_publishing_google_assets` |
-| `GET` | `/ad-publishing/google/audiences` | Get audiences | `v3:ad-publishing.get_ad_publishing_google_audiences` |
-| `PUT` | `/ad-publishing/google/audiences` | Upsert audience | `v3:ad-publishing.put_ad_publishing_google_audiences` |
-| `GET` | `/ad-publishing/google/audiences/{audienceId}` | Get audience by ID | `v3:ad-publishing.get_ad_publishing_google_audiences_by_audienceId` |
-| `GET` | `/ad-publishing/google/conversion-goals` | Get conversion goals | `v3:ad-publishing.get_ad_publishing_google_conversion_goals` |
-| `GET` | `/ad-publishing/google/conversions` | Get conversions | `v3:ad-publishing.get_ad_publishing_google_conversions` |
-| `PUT` | `/ad-publishing/google/conversions` | Upsert conversion | `v3:ad-publishing.put_ad_publishing_google_conversions` |
-| `DELETE` | `/ad-publishing/google/conversions/{conversionId}` | Delete conversion | `v3:ad-publishing.delete_ad_publishing_google_conversions_by_conversionId` |
-| `GET` | `/ad-publishing/google/conversions/{conversionId}` | Get conversion by ID | `v3:ad-publishing.get_ad_publishing_google_conversions_by_conversionId` |
-| `GET` | `/ad-publishing/google/entity` | Get entities | `v3:ad-publishing.get_ad_publishing_google_entity` |
-| `GET` | `/ad-publishing/google/integration` | Get Google integration | `v3:ad-publishing.get_ad_publishing_google_integration` |
-| `POST` | `/ad-publishing/google/integration` | Create Google integration | `v3:ad-publishing.post_ad_publishing_google_integration` |
-| `POST` | `/ad-publishing/google/keyword-ideas` | Get keyword ideas | `v3:ad-publishing.post_ad_publishing_google_keyword_ideas` |
-| `GET` | `/ad-publishing/google/me` | Get current Google user | `v3:ad-publishing.get_ad_publishing_google_me` |
-| `GET` | `/ad-publishing/google/reporting` | Get reporting data | `v3:ad-publishing.get_ad_publishing_google_reporting` |
-| `GET` | `/ad-publishing/google/reporting/campaign/{campaignId}` | Get campaign reporting | `v3:ad-publishing.get_ad_publishing_google_reporting_campaign_by_campaignId` |
-| `GET` | `/ad-publishing/google/reporting/list` | Get reporting list | `v3:ad-publishing.get_ad_publishing_google_reporting_list` |
-| `GET` | `/ad-publishing/google/segments` | Get segments | `v3:ad-publishing.get_ad_publishing_google_segments` |
-| `PUT` | `/ad-publishing/google/segments` | Upsert segment | `v3:ad-publishing.put_ad_publishing_google_segments` |
-| `POST` | `/ad-publishing/google/segments/offline-user-list-job` | Create offline user list job | `v3:ad-publishing.post_ad_publishing_google_segments_offline_user_list_job` |
-| `DELETE` | `/ad-publishing/google/segments/{segmentId}` | Delete segment | `v3:ad-publishing.delete_ad_publishing_google_segments_by_segmentId` |
-| `GET` | `/ad-publishing/google/segments/{segmentId}` | Get segment by ID | `v3:ad-publishing.get_ad_publishing_google_segments_by_segmentId` |
-| `GET` | `/ad-publishing/google/target-interests` | Get target interests | `v3:ad-publishing.get_ad_publishing_google_target_interests` |
-| `GET` | `/ad-publishing/google/targeting/search` | Search targeting options | `v3:ad-publishing.get_ad_publishing_google_targeting_search` |
-| `DELETE` | `/ad-publishing/linkedin/ad-account` | Delete ad account | `v3:ad-publishing.delete_ad_publishing_linkedin_ad_account` |
-| `GET` | `/ad-publishing/linkedin/ad-account` | Get ad account details | `v3:ad-publishing.get_ad_publishing_linkedin_ad_account` |
-| `GET` | `/ad-publishing/linkedin/ad-accounts` | Get LinkedIn ad accounts | `v3:ad-publishing.get_ad_publishing_linkedin_ad_accounts` |
-| `PUT` | `/ad-publishing/linkedin/ads` | Upsert ad campaign group | `v3:ad-publishing.put_ad_publishing_linkedin_ads` |
-| `GET` | `/ad-publishing/linkedin/ads/{adId}` | Get ad campaign group | `v3:ad-publishing.get_ad_publishing_linkedin_ads_by_adId` |
-| `POST` | `/ad-publishing/linkedin/ads/{adId}/publish` | Publish ad campaign group | `v3:ad-publishing.post_ad_publishing_linkedin_ads_by_adId_publish` |
-| `GET` | `/ad-publishing/linkedin/integration` | Get LinkedIn integration | `v3:ad-publishing.get_ad_publishing_linkedin_integration` |
-| `POST` | `/ad-publishing/linkedin/integration` | Create LinkedIn integration | `v3:ad-publishing.post_ad_publishing_linkedin_integration` |
-| `GET` | `/ad-publishing/linkedin/me` | Get current LinkedIn user | `v3:ad-publishing.get_ad_publishing_linkedin_me` |
-| `GET` | `/ad-publishing/linkedin/reporting` | Get ad analytics | `v3:ad-publishing.get_ad_publishing_linkedin_reporting` |
-| `GET` | `/ad-publishing/linkedin/reporting/campaign-group/{campaignGroupId}` | Get campaign group reporting | `v3:ad-publishing.get_ad_publishing_linkedin_reporting_campaign_group_by_campaignGroupId` |
-| `GET` | `/ad-publishing/linkedin/reporting/list` | Get reporting list | `v3:ad-publishing.get_ad_publishing_linkedin_reporting_list` |
-| `GET` | `/ad-publishing/linkedin/targeting/search` | Search targeting options | `v3:ad-publishing.get_ad_publishing_linkedin_targeting_search` |
-| `POST` | `/ad-publishing/linkedin/{accountId}/form` | Create lead form | `v3:ad-publishing.post_ad_publishing_linkedin_by_accountId_form` |
-| `GET` | `/ad-publishing/linkedin/{accountId}/forms` | Get lead forms | `v3:ad-publishing.get_ad_publishing_linkedin_by_accountId_forms` |
-| `PATCH` | `/ad-publishing/linkedin/{adId}/status` | Update ad status | `v3:ad-publishing.patch_ad_publishing_linkedin_by_adId_status` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/ad-publishing/facebook/ad-accounts` | Get ad accounts | `get_ad_accounts()` | `v3:ad-publishing.get_ad_publishing_facebook_ad_accounts` |
+| `DELETE` | `/ad-publishing/facebook/ad-accounts/{adAccountId}` | Delete ad account | `delete_ad_account()` | `v3:ad-publishing.delete_ad_publishing_facebook_ad_accounts_by_adAccountId` |
+| `GET` | `/ad-publishing/facebook/ad-accounts/{adAccountId}` | Get ad account details | `get_ad_account_details()` | `v3:ad-publishing.get_ad_publishing_facebook_ad_accounts_by_adAccountId` |
+| `PUT` | `/ad-publishing/facebook/ads` | Upsert ad | `upsert_ad()` | `v3:ad-publishing.put_ad_publishing_facebook_ads` |
+| `DELETE` | `/ad-publishing/facebook/ads/{adId}` | Delete ad | `delete_ad()` | `v3:ad-publishing.delete_ad_publishing_facebook_ads_by_adId` |
+| `POST` | `/ad-publishing/facebook/ads/{adId}/duplicate` | Duplicate ad | `duplicate_ad()` | `v3:ad-publishing.post_ad_publishing_facebook_ads_by_adId_duplicate` |
+| `POST` | `/ad-publishing/facebook/ads/{adId}/pause` | Pause ad | `pause_ad()` | `v3:ad-publishing.post_ad_publishing_facebook_ads_by_adId_pause` |
+| `POST` | `/ad-publishing/facebook/ads/{adId}/resume` | Resume ad | `resume_ad()` | `v3:ad-publishing.post_ad_publishing_facebook_ads_by_adId_resume` |
+| `PUT` | `/ad-publishing/facebook/adsets` | Upsert adset | `upsert_adset()` | `v3:ad-publishing.put_ad_publishing_facebook_adsets` |
+| `DELETE` | `/ad-publishing/facebook/adsets/{adSetId}` | Delete ad set | `delete_ad_set()` | `v3:ad-publishing.delete_ad_publishing_facebook_adsets_by_adSetId` |
+| `POST` | `/ad-publishing/facebook/adsets/{adSetId}/duplicate` | Duplicate ad set | `duplicate_ad_set()` | `v3:ad-publishing.post_ad_publishing_facebook_adsets_by_adSetId_duplicate` |
+| `POST` | `/ad-publishing/facebook/adsets/{adSetId}/pause` | Pause ad set | `pause_ad_set()` | `v3:ad-publishing.post_ad_publishing_facebook_adsets_by_adSetId_pause` |
+| `POST` | `/ad-publishing/facebook/adsets/{adSetId}/resume` | Resume ad set | `resume_ad_set()` | `v3:ad-publishing.post_ad_publishing_facebook_adsets_by_adSetId_resume` |
+| `GET` | `/ad-publishing/facebook/campaign/{campaignId}` | Get campaign with linked entities | `get_campaign_with_linked_entities()` | `v3:ad-publishing.get_ad_publishing_facebook_campaign_by_campaignId` |
+| `PUT` | `/ad-publishing/facebook/campaigns` | Upsert campaign | `upsert_campaign()` | `v3:ad-publishing.put_ad_publishing_facebook_campaigns` |
+| `DELETE` | `/ad-publishing/facebook/campaigns/{campaignId}` | Delete campaign | `delete_campaign()` | `v3:ad-publishing.delete_ad_publishing_facebook_campaigns_by_campaignId` |
+| `POST` | `/ad-publishing/facebook/campaigns/{campaignId}/duplicate` | Duplicate campaign | `duplicate_campaign()` | `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaignId_duplicate` |
+| `POST` | `/ad-publishing/facebook/campaigns/{campaignId}/pause` | Pause campaign | `pause_campaign()` | `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaignId_pause` |
+| `POST` | `/ad-publishing/facebook/campaigns/{campaignId}/publish` | Publish campaign | `publish_campaign()` | `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaignId_publish` |
+| `GET` | `/ad-publishing/facebook/campaigns/{campaignId}/publishing-progress` | Get campaign publishing progress | `get_campaign_publishing_progress()` | `v3:ad-publishing.get_ad_publishing_facebook_campaigns_by_campaignId_publishing_progress` |
+| `POST` | `/ad-publishing/facebook/campaigns/{campaignId}/resume` | Resume campaign | `resume_campaign()` | `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaignId_resume` |
+| `GET` | `/ad-publishing/facebook/conversation-forms` | Get conversation forms | `get_conversation_forms()` | `v3:ad-publishing.get_ad_publishing_facebook_conversation_forms` |
+| `POST` | `/ad-publishing/facebook/conversation-forms` | Create conversation form | `create_conversation_form()` | `v3:ad-publishing.post_ad_publishing_facebook_conversation_forms` |
+| `GET` | `/ad-publishing/facebook/custom-audience` | Get custom audiences | `get_custom_audiences()` | `v3:ad-publishing.get_ad_publishing_facebook_custom_audience` |
+| `DELETE` | `/ad-publishing/facebook/custom-audience/{audienceId}` | Delete custom audience | `delete_custom_audience()` | `v3:ad-publishing.delete_ad_publishing_facebook_custom_audience_by_audienceId` |
+| `GET` | `/ad-publishing/facebook/custom-audience/{audienceId}` | Get custom audience by ID | `get_custom_audience_by_id()` | `v3:ad-publishing.get_ad_publishing_facebook_custom_audience_by_audienceId` |
+| `PUT` | `/ad-publishing/facebook/custom-audience/{audienceId}` | Update custom audience | `update_custom_audience()` | `v3:ad-publishing.put_ad_publishing_facebook_custom_audience_by_audienceId` |
+| `DELETE` | `/ad-publishing/facebook/custom-audience/{audienceId}/member` | Remove custom audience member | `remove_custom_audience_member()` | `v3:ad-publishing.delete_ad_publishing_facebook_custom_audience_by_audienceId_member` |
+| `PUT` | `/ad-publishing/facebook/custom-audience/{audienceId}/member` | Add custom audience member | `add_custom_audience_member()` | `v3:ad-publishing.put_ad_publishing_facebook_custom_audience_by_audienceId_member` |
+| `PUT` | `/ad-publishing/facebook/custom-audience/{audienceId}/member/batch` | Batch update audience members | `batch_update_audience_members()` | `v3:ad-publishing.put_ad_publishing_facebook_custom_audience_by_audienceId_member_batch` |
+| `GET` | `/ad-publishing/facebook/entity` | Get entities | `get_entities()` | `v3:ad-publishing.get_ad_publishing_facebook_entity` |
+| `DELETE` | `/ad-publishing/facebook/integration` | Delete Facebook integration | `delete_facebook_integration()` | `v3:ad-publishing.delete_ad_publishing_facebook_integration` |
+| `GET` | `/ad-publishing/facebook/integration` | Get Facebook integration | `get_facebook_integration()` | `v3:ad-publishing.get_ad_publishing_facebook_integration` |
+| `POST` | `/ad-publishing/facebook/integration` | Create Facebook integration | `create_facebook_integration()` | `v3:ad-publishing.post_ad_publishing_facebook_integration` |
+| `GET` | `/ad-publishing/facebook/lead-form/{leadFormId}` | Get lead form by ID | `get_lead_form_by_id()` | `v3:ad-publishing.get_ad_publishing_facebook_lead_form_by_leadFormId` |
+| `GET` | `/ad-publishing/facebook/me` | Get current Facebook user | `get_current_facebook_user()` | `v3:ad-publishing.get_ad_publishing_facebook_me` |
+| `DELETE` | `/ad-publishing/facebook/page` | Delete page connection | `delete_page_connection()` | `v3:ad-publishing.delete_ad_publishing_facebook_page` |
+| `PUT` | `/ad-publishing/facebook/page/default` | Set default page | `set_default_page()` | `v3:ad-publishing.put_ad_publishing_facebook_page_default` |
+| `GET` | `/ad-publishing/facebook/page/{pageId}/forms` | Get page lead forms | `get_page_lead_forms()` | `v3:ad-publishing.get_ad_publishing_facebook_page_by_pageId_forms` |
+| `POST` | `/ad-publishing/facebook/page/{pageId}/forms` | Create page lead form | `create_page_lead_form()` | `v3:ad-publishing.post_ad_publishing_facebook_page_by_pageId_forms` |
+| `GET` | `/ad-publishing/facebook/page/{pageId}/instagram` | Get Instagram accounts for page | `get_instagram_accounts_for_page()` | `v3:ad-publishing.get_ad_publishing_facebook_page_by_pageId_instagram` |
+| `GET` | `/ad-publishing/facebook/pages` | Get Facebook pages | `get_facebook_pages()` | `v3:ad-publishing.get_ad_publishing_facebook_pages` |
+| `GET` | `/ad-publishing/facebook/pixels` | Get conversion pixels | `get_conversion_pixels()` | `v3:ad-publishing.get_ad_publishing_facebook_pixels` |
+| `PUT` | `/ad-publishing/facebook/pixels` | Upsert conversion pixel | `upsert_conversion_pixel()` | `v3:ad-publishing.put_ad_publishing_facebook_pixels` |
+| `GET` | `/ad-publishing/facebook/reporting` | Get reporting data | `get_reporting_data()` | `v3:ad-publishing.get_ad_publishing_facebook_reporting` |
+| `GET` | `/ad-publishing/facebook/reporting/campaign/{campaignId}` | Get campaign reporting | `get_campaign_reporting()` | `v3:ad-publishing.get_ad_publishing_facebook_reporting_campaign_by_campaignId` |
+| `GET` | `/ad-publishing/facebook/reporting/list` | Get reporting list | `get_reporting_list()` | `v3:ad-publishing.get_ad_publishing_facebook_reporting_list` |
+| `GET` | `/ad-publishing/facebook/targeting/search` | Search targeting options | `search_targeting_options()` | `v3:ad-publishing.get_ad_publishing_facebook_targeting_search` |
+| `GET` | `/ad-publishing/google/ad-accounts` | Get Google ad accounts | `get_google_ad_accounts()` | `v3:ad-publishing.get_ad_publishing_google_ad_accounts` |
+| `DELETE` | `/ad-publishing/google/ad-accounts/{adAccountId}` | Delete ad account | `delete_ad_account_op()` | `v3:ad-publishing.delete_ad_publishing_google_ad_accounts_by_adAccountId` |
+| `GET` | `/ad-publishing/google/ad-accounts/{adAccountId}` | Get ad account details | `get_ad_account_details_op()` | `v3:ad-publishing.get_ad_publishing_google_ad_accounts_by_adAccountId` |
+| `PUT` | `/ad-publishing/google/ads` | Upsert Google campaign | `upsert_google_campaign()` | `v3:ad-publishing.put_ad_publishing_google_ads` |
+| `GET` | `/ad-publishing/google/ads/{adId}` | Get Google campaign by ID | `get_google_campaign_by_id()` | `v3:ad-publishing.get_ad_publishing_google_ads_by_adId` |
+| `POST` | `/ad-publishing/google/ads/{adId}/publish` | Publish ad | `publish_ad()` | `v3:ad-publishing.post_ad_publishing_google_ads_by_adId_publish` |
+| `GET` | `/ad-publishing/google/assets` | Get assets | `get_assets()` | `v3:ad-publishing.get_ad_publishing_google_assets` |
+| `POST` | `/ad-publishing/google/assets` | Upsert assets | `upsert_assets()` | `v3:ad-publishing.post_ad_publishing_google_assets` |
+| `GET` | `/ad-publishing/google/audiences` | Get audiences | `get_audiences()` | `v3:ad-publishing.get_ad_publishing_google_audiences` |
+| `PUT` | `/ad-publishing/google/audiences` | Upsert audience | `upsert_audience()` | `v3:ad-publishing.put_ad_publishing_google_audiences` |
+| `GET` | `/ad-publishing/google/audiences/{audienceId}` | Get audience by ID | `get_audience_by_id()` | `v3:ad-publishing.get_ad_publishing_google_audiences_by_audienceId` |
+| `GET` | `/ad-publishing/google/conversion-goals` | Get conversion goals | `get_conversion_goals()` | `v3:ad-publishing.get_ad_publishing_google_conversion_goals` |
+| `GET` | `/ad-publishing/google/conversions` | Get conversions | `get_conversions()` | `v3:ad-publishing.get_ad_publishing_google_conversions` |
+| `PUT` | `/ad-publishing/google/conversions` | Upsert conversion | `upsert_conversion()` | `v3:ad-publishing.put_ad_publishing_google_conversions` |
+| `DELETE` | `/ad-publishing/google/conversions/{conversionId}` | Delete conversion | `delete_conversion()` | `v3:ad-publishing.delete_ad_publishing_google_conversions_by_conversionId` |
+| `GET` | `/ad-publishing/google/conversions/{conversionId}` | Get conversion by ID | `get_conversion_by_id()` | `v3:ad-publishing.get_ad_publishing_google_conversions_by_conversionId` |
+| `GET` | `/ad-publishing/google/entity` | Get entities | `get_entities_op()` | `v3:ad-publishing.get_ad_publishing_google_entity` |
+| `GET` | `/ad-publishing/google/integration` | Get Google integration | `get_google_integration()` | `v3:ad-publishing.get_ad_publishing_google_integration` |
+| `POST` | `/ad-publishing/google/integration` | Create Google integration | `create_google_integration()` | `v3:ad-publishing.post_ad_publishing_google_integration` |
+| `POST` | `/ad-publishing/google/keyword-ideas` | Get keyword ideas | `get_keyword_ideas()` | `v3:ad-publishing.post_ad_publishing_google_keyword_ideas` |
+| `GET` | `/ad-publishing/google/me` | Get current Google user | `get_current_google_user()` | `v3:ad-publishing.get_ad_publishing_google_me` |
+| `GET` | `/ad-publishing/google/reporting` | Get reporting data | `get_reporting_data_op()` | `v3:ad-publishing.get_ad_publishing_google_reporting` |
+| `GET` | `/ad-publishing/google/reporting/campaign/{campaignId}` | Get campaign reporting | `get_campaign_reporting_op()` | `v3:ad-publishing.get_ad_publishing_google_reporting_campaign_by_campaignId` |
+| `GET` | `/ad-publishing/google/reporting/list` | Get reporting list | `get_reporting_list_op()` | `v3:ad-publishing.get_ad_publishing_google_reporting_list` |
+| `GET` | `/ad-publishing/google/segments` | Get segments | `get_segments()` | `v3:ad-publishing.get_ad_publishing_google_segments` |
+| `PUT` | `/ad-publishing/google/segments` | Upsert segment | `upsert_segment()` | `v3:ad-publishing.put_ad_publishing_google_segments` |
+| `POST` | `/ad-publishing/google/segments/offline-user-list-job` | Create offline user list job | `create_offline_user_list_job()` | `v3:ad-publishing.post_ad_publishing_google_segments_offline_user_list_job` |
+| `DELETE` | `/ad-publishing/google/segments/{segmentId}` | Delete segment | `delete_segment()` | `v3:ad-publishing.delete_ad_publishing_google_segments_by_segmentId` |
+| `GET` | `/ad-publishing/google/segments/{segmentId}` | Get segment by ID | `get_segment_by_id()` | `v3:ad-publishing.get_ad_publishing_google_segments_by_segmentId` |
+| `GET` | `/ad-publishing/google/target-interests` | Get target interests | `get_target_interests()` | `v3:ad-publishing.get_ad_publishing_google_target_interests` |
+| `GET` | `/ad-publishing/google/targeting/search` | Search targeting options | `search_targeting_options_op()` | `v3:ad-publishing.get_ad_publishing_google_targeting_search` |
+| `DELETE` | `/ad-publishing/linkedin/ad-account` | Delete ad account | `delete_ad_account_op2()` | `v3:ad-publishing.delete_ad_publishing_linkedin_ad_account` |
+| `GET` | `/ad-publishing/linkedin/ad-account` | Get ad account details | `get_ad_account_details_op2()` | `v3:ad-publishing.get_ad_publishing_linkedin_ad_account` |
+| `GET` | `/ad-publishing/linkedin/ad-accounts` | Get LinkedIn ad accounts | `get_linked_in_ad_accounts()` | `v3:ad-publishing.get_ad_publishing_linkedin_ad_accounts` |
+| `PUT` | `/ad-publishing/linkedin/ads` | Upsert ad campaign group | `upsert_ad_campaign_group()` | `v3:ad-publishing.put_ad_publishing_linkedin_ads` |
+| `GET` | `/ad-publishing/linkedin/ads/{adId}` | Get ad campaign group | `get_ad_campaign_group()` | `v3:ad-publishing.get_ad_publishing_linkedin_ads_by_adId` |
+| `POST` | `/ad-publishing/linkedin/ads/{adId}/publish` | Publish ad campaign group | `publish_ad_campaign_group()` | `v3:ad-publishing.post_ad_publishing_linkedin_ads_by_adId_publish` |
+| `GET` | `/ad-publishing/linkedin/integration` | Get LinkedIn integration | `get_linked_in_integration()` | `v3:ad-publishing.get_ad_publishing_linkedin_integration` |
+| `POST` | `/ad-publishing/linkedin/integration` | Create LinkedIn integration | `create_linked_in_integration()` | `v3:ad-publishing.post_ad_publishing_linkedin_integration` |
+| `GET` | `/ad-publishing/linkedin/me` | Get current LinkedIn user | `get_current_linked_in_user()` | `v3:ad-publishing.get_ad_publishing_linkedin_me` |
+| `GET` | `/ad-publishing/linkedin/reporting` | Get ad analytics | `get_ad_analytics()` | `v3:ad-publishing.get_ad_publishing_linkedin_reporting` |
+| `GET` | `/ad-publishing/linkedin/reporting/campaign-group/{campaignGroupId}` | Get campaign group reporting | `get_campaign_group_reporting()` | `v3:ad-publishing.get_ad_publishing_linkedin_reporting_campaign_group_by_campaignGroupId` |
+| `GET` | `/ad-publishing/linkedin/reporting/list` | Get reporting list | `get_reporting_list_op2()` | `v3:ad-publishing.get_ad_publishing_linkedin_reporting_list` |
+| `GET` | `/ad-publishing/linkedin/targeting/search` | Search targeting options | `search_targeting_options_op2()` | `v3:ad-publishing.get_ad_publishing_linkedin_targeting_search` |
+| `POST` | `/ad-publishing/linkedin/{accountId}/form` | Create lead form | `create_lead_form()` | `v3:ad-publishing.post_ad_publishing_linkedin_by_accountId_form` |
+| `GET` | `/ad-publishing/linkedin/{accountId}/forms` | Get lead forms | `get_lead_forms()` | `v3:ad-publishing.get_ad_publishing_linkedin_by_accountId_forms` |
+| `PATCH` | `/ad-publishing/linkedin/{adId}/status` | Update ad status | `update_ad_status()` | `v3:ad-publishing.patch_ad_publishing_linkedin_by_adId_status` |
 
 ### Endpoint details — v3
 
@@ -147,6 +130,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_ad_accounts` · `Vers
 | `next` | string | no | Pagination cursor |
 | `fetchAll` | string | no | Fetch all accounts |
 | `limit` | string | no | Results page limit |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetAdAccountsParams;
+
+let params = GetAdAccountsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_ad_accounts(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -179,6 +171,12 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_facebook_ad_accounts_by_adA
 | `adAccountId` | string | **yes** | Ad account identifier |
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().delete_ad_account(&adAccountId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -220,6 +218,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_ad_accounts_by_adAcco
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetAdAccountDetailsParams;
+
+let params = GetAdAccountDetailsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_ad_account_details(&adAccountId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -248,6 +255,12 @@ Create or update a Facebook ad
 Operation id: `v3:ad-publishing.put_ad_publishing_facebook_ads` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`UpsertAdDTO`](#upsertaddto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().upsert_ad(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -280,6 +293,12 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_facebook_ads_by_adId` · `V
 | `adId` | string | **yes** | Ad identifier |
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().delete_ad(&adId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -314,6 +333,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_ads_by_adId_duplicat
 |---|---|---|---|
 | `adId` | string | **yes** | Ad identifier |
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().duplicate_ad(&adId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -345,6 +370,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_ads_by_adId_pause` �
 | `adId` | string | **yes** | Ad identifier |
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().pause_ad(&adId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -381,6 +412,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_ads_by_adId_resume` 
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().resume_ad(&adId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -409,6 +446,12 @@ Create or update a Facebook ad set
 Operation id: `v3:ad-publishing.put_ad_publishing_facebook_adsets` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`UpsertAdsetDTO`](#upsertadsetdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().upsert_adset(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -441,6 +484,12 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_facebook_adsets_by_adSetId`
 | `adSetId` | string | **yes** | Ad set identifier |
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().delete_ad_set(&adSetId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -475,6 +524,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_adsets_by_adSetId_du
 |---|---|---|---|
 | `adSetId` | string | **yes** | Ad set identifier |
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().duplicate_ad_set(&adSetId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -506,6 +561,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_adsets_by_adSetId_pa
 | `adSetId` | string | **yes** | Ad set identifier |
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().pause_ad_set(&adSetId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -541,6 +602,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_adsets_by_adSetId_re
 | `adSetId` | string | **yes** | Ad set identifier |
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().resume_ad_set(&adSetId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -583,6 +650,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_campaign_by_campaignI
 | `fields` | string | no | Comma-separated field names |
 | `source` | string | no | Campaign data source |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetCampaignWithLinkedEntitiesParams;
+
+let params = GetCampaignWithLinkedEntitiesParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_campaign_with_linked_entities(&campaignId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -611,6 +687,12 @@ Create or update a Facebook campaign
 Operation id: `v3:ad-publishing.put_ad_publishing_facebook_campaigns` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`UpsertCampaignDTO`](#upsertcampaigndto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().upsert_campaign(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -643,6 +725,12 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_facebook_campaigns_by_campa
 | `campaignId` | string | **yes** | Campaign identifier |
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().delete_campaign(&campaignId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -679,6 +767,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaig
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().duplicate_campaign(&campaignId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -714,6 +808,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaig
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().pause_campaign(&campaignId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -748,6 +848,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaig
 | `campaignId` | string | **yes** | Campaign identifier |
 
 *Request body*: [`PublishAdDTO`](#publishaddto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().publish_campaign(&campaignId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -791,6 +897,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_campaigns_by_campaign
 
 *Response*: [`PublishingProgressResponseDTO`](#publishingprogressresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetCampaignPublishingProgressParams;
+
+let params = GetCampaignPublishingProgressParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_campaign_publishing_progress(&campaignId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -826,6 +941,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_campaigns_by_campaig
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().resume_campaign(&campaignId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -860,6 +981,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_conversation_forms` �
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetConversationFormsParams;
+
+let params = GetConversationFormsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_conversation_forms(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -885,6 +1015,12 @@ Create a new Facebook conversation lead form
 Operation id: `v3:ad-publishing.post_ad_publishing_facebook_conversation_forms` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`CreateConversationFormDTO`](#createconversationformdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().create_conversation_form(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -918,6 +1054,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_custom_audience` · `
 | `type` | enum: `lookalike`, `custom`, `all` | **yes** | Audience list type |
 | `source` | enum: `ad_manager`, `integration` | no | Audience data source |
 | `adAccountId` | string | **yes** | Ad account identifier |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetCustomAudiencesParams;
+
+let params = GetCustomAudiencesParams::new("locationId", "type", "adAccountId");
+let out = ghl.v3().ad_publishing().get_custom_audiences(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -957,6 +1102,15 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_facebook_custom_audience_by
 |---|---|---|---|
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::DeleteCustomAudienceParams;
+
+let params = DeleteCustomAudienceParams::new("locationId");
+let out = ghl.v3().ad_publishing().delete_custom_audience(&audienceId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -998,6 +1152,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_custom_audience_by_au
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetCustomAudienceByIdParams;
+
+let params = GetCustomAudienceByIdParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_custom_audience_by_id(&audienceId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1032,6 +1195,12 @@ Operation id: `v3:ad-publishing.put_ad_publishing_facebook_custom_audience_by_au
 | `audienceId` | string | **yes** | Custom audience identifier |
 
 *Request body*: [`FbUpdateAudienceBodyDTO`](#fbupdateaudiencebodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().update_custom_audience(&audienceId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1068,6 +1237,12 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_facebook_custom_audience_by
 
 *Request body*: [`UpdateCustomAudienceDTO`](#updatecustomaudiencedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().remove_custom_audience_member(&audienceId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1103,6 +1278,12 @@ Operation id: `v3:ad-publishing.put_ad_publishing_facebook_custom_audience_by_au
 
 *Request body*: [`UpdateCustomAudienceDTO`](#updatecustomaudiencedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().add_custom_audience_member(&audienceId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1137,6 +1318,12 @@ Operation id: `v3:ad-publishing.put_ad_publishing_facebook_custom_audience_by_au
 | `audienceId` | string | **yes** | Custom audience identifier |
 
 *Request body*: [`UpdateCustomAudienceBatchDTO`](#updatecustomaudiencebatchdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().batch_update_audience_members(&audienceId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1179,6 +1366,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_entity` · `Version: 
 | `searchId` | string | no | Search identifier |
 | `selectedAdAccountId` | string | no | Selected ad account ID |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetEntitiesParams;
+
+let params = GetEntitiesParams::new("locationId", "type", "entityType");
+let out = ghl.v3().ad_publishing().get_entities(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1206,6 +1402,12 @@ Remove the Facebook ad integration from a location
 Operation id: `v3:ad-publishing.delete_ad_publishing_facebook_integration` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().delete_facebook_integration(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1238,6 +1440,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_integration` · `Vers
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetFacebookIntegrationParams;
+
+let params = GetFacebookIntegrationParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_facebook_integration(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1263,6 +1474,12 @@ Create a Facebook ad integration for a location with page and ad account
 Operation id: `v3:ad-publishing.post_ad_publishing_facebook_integration` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`CreateIntegrationDTO`](#createintegrationdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().create_facebook_integration(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1301,6 +1518,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_lead_form_by_leadForm
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetLeadFormByIdParams;
+
+let params = GetLeadFormByIdParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_lead_form_by_id(&leadFormId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1335,6 +1561,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_me` · `Version: 2021
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetCurrentFacebookUserParams;
+
+let params = GetCurrentFacebookUserParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_current_facebook_user(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1365,6 +1600,15 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_facebook_page` · `Version:
 |---|---|---|---|
 | `locationId` | string | **yes** | Location identifier |
 | `pageId` | string | **yes** | Facebook page ID |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::DeletePageConnectionParams;
+
+let params = DeletePageConnectionParams::new("locationId", "pageId");
+let out = ghl.v3().ad_publishing().delete_page_connection(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1399,6 +1643,15 @@ Operation id: `v3:ad-publishing.put_ad_publishing_facebook_page_default` · `Ver
 | `isDraft` | boolean | no | Is draft |
 
 *Request body*: [`FbSetDefaultPageBodyDTO`](#fbsetdefaultpagebodydto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::SetDefaultPageParams;
+
+let params = SetDefaultPageParams::new("locationId");
+let out = ghl.v3().ad_publishing().set_default_page(&params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1440,6 +1693,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_page_by_pageId_forms`
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetPageLeadFormsParams;
+
+let params = GetPageLeadFormsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_page_lead_forms(&pageId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1474,6 +1736,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_facebook_page_by_pageId_forms
 | `pageId` | string | **yes** | Facebook page identifier |
 
 *Request body*: [`CreateLeadFormDTO`](#createleadformdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().create_page_lead_form(&pageId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1515,6 +1783,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_page_by_pageId_instag
 | `locationId` | string | **yes** | Location identifier |
 | `type` | enum: `INTEGRATION`, `AD_MANAGER` | no | Integration type |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetInstagramAccountsForPageParams;
+
+let params = GetInstagramAccountsForPageParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_instagram_accounts_for_page(&pageId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1549,6 +1826,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_pages` · `Version: 2
 | `locationId` | string | **yes** | Location identifier |
 | `fetchExisting` | string | no | Fetch existing pages flag |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetFacebookPagesParams;
+
+let params = GetFacebookPagesParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_facebook_pages(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1582,6 +1868,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_pixels` · `Version: 
 | `pageId` | string | no | Facebook page ID |
 | `igUserId` | string | no | Instagram user ID |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetConversionPixelsParams;
+
+let params = GetConversionPixelsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_conversion_pixels(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1607,6 +1902,12 @@ Create or update a Facebook conversion pixel configuration
 Operation id: `v3:ad-publishing.put_ad_publishing_facebook_pixels` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`UpsertConversionPixelDTO`](#upsertconversionpixeldto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().upsert_conversion_pixel(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1642,6 +1943,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_reporting` · `Versio
 | `startDate` | string | **yes** | Report start date |
 | `endDate` | string | **yes** | Report end date |
 | `type` | enum: `AD_MANAGER`, `INTEGRATION` | **yes** | Integration source type |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetReportingDataParams;
+
+let params = GetReportingDataParams::new("locationId", "fields", "groupBy", "startDate", "endDate", "type");
+let out = ghl.v3().ad_publishing().get_reporting_data(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1686,6 +1996,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_reporting_campaign_by
 | `startDate` | string | **yes** | Report start date |
 | `endDate` | string | **yes** | Report end date |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetCampaignReportingParams;
+
+let params = GetCampaignReportingParams::new("locationId", "startDate", "endDate");
+let out = ghl.v3().ad_publishing().get_campaign_reporting(&campaignId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1726,6 +2045,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_reporting_list` · `V
 | `campaignId` | string | no | Campaign identifier (required when listType is adsets or ads) |
 | `type` | enum: `AD_MANAGER`, `INTEGRATION` | **yes** | Integration source type |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetReportingListParams;
+
+let params = GetReportingListParams::new("locationId", "listType", "startDate", "endDate", "type");
+let out = ghl.v3().ad_publishing().get_reporting_list(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1763,6 +2091,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_facebook_targeting_search` · 
 | `query` | string | **yes** | Search query string |
 | `searchType` | string | no | Specific search subtype |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::SearchTargetingOptionsParams;
+
+let params = SearchTargetingOptionsParams::new("type", "query");
+let out = ghl.v3().ad_publishing().search_targeting_options(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1795,6 +2132,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_ad_accounts` · `Versio
 | `locationId` | string | **yes** | Location identifier |
 | `type` | enum: `INTEGRATION`, `AD_MANAGER` | no | Account type |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetGoogleAdAccountsParams;
+
+let params = GetGoogleAdAccountsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_google_ad_accounts(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1826,6 +2172,12 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_google_ad_accounts_by_adAcc
 | `adAccountId` | string | **yes** | Ad account identifier |
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().delete_ad_account_op(&adAccountId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1867,6 +2219,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_ad_accounts_by_adAccoun
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetAdAccountDetailsOpParams;
+
+let params = GetAdAccountDetailsOpParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_ad_account_details_op(&adAccountId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1895,6 +2256,12 @@ Create or update a full Google Ads campaign structure
 Operation id: `v3:ad-publishing.put_ad_publishing_google_ads` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`CampaignDTO`](#campaigndto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().upsert_google_campaign(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1933,6 +2300,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_ads_by_adId` · `Versio
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetGoogleCampaignByIdParams;
+
+let params = GetGoogleCampaignByIdParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_google_campaign_by_id(&adId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1965,6 +2341,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_google_ads_by_adId_publish` �
 | Name | Type | Required | Description |
 |---|---|---|---|
 | `adId` | string | **yes** | Ad identifier |
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().publish_ad(&adId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1999,6 +2381,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_assets` · `Version: 20
 | `id` | string | no | Asset identifier |
 | `advertiserOnly` | string | no | Advertiser only flag |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetAssetsParams;
+
+let params = GetAssetsParams::new("locationId", "type");
+let out = ghl.v3().ad_publishing().get_assets(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2025,6 +2416,12 @@ Create or update Google Ads creative assets
 Operation id: `v3:ad-publishing.post_ad_publishing_google_assets` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`UpsertAssetsDTO`](#upsertassetsdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().upsert_assets(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2057,6 +2454,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_audiences` · `Version:
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetAudiencesParams;
+
+let params = GetAudiencesParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_audiences(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2082,6 +2488,12 @@ Create or update a Google Ads combined audience
 Operation id: `v3:ad-publishing.put_ad_publishing_google_audiences` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`UpsertAudienceDTO`](#upsertaudiencedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().upsert_audience(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2120,6 +2532,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_audiences_by_audienceId
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetAudienceByIdParams;
+
+let params = GetAudienceByIdParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_audience_by_id(&audienceId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2153,6 +2574,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_conversion_goals` · `V
 |---|---|---|---|
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetConversionGoalsParams;
+
+let params = GetConversionGoalsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_conversion_goals(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2189,6 +2619,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_conversions` · `Versio
 | `startDate` | string | no | Filter start date |
 | `endDate` | string | no | Filter end date |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetConversionsParams;
+
+let params = GetConversionsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_conversions(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2214,6 +2653,12 @@ Create or update a Google Ads conversion action
 Operation id: `v3:ad-publishing.put_ad_publishing_google_conversions` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`UpsertConversionDTO`](#upsertconversiondto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().upsert_conversion(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2251,6 +2696,15 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_google_conversions_by_conve
 |---|---|---|---|
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::DeleteConversionParams;
+
+let params = DeleteConversionParams::new("locationId");
+let out = ghl.v3().ad_publishing().delete_conversion(&conversionId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2291,6 +2745,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_conversions_by_conversi
 |---|---|---|---|
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetConversionByIdParams;
+
+let params = GetConversionByIdParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_conversion_by_id(&conversionId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2333,6 +2796,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_entity` · `Version: 20
 | `endDate` | string | no | Filter end date |
 | `selectedAdAccountId` | string | no | Selected ad account ID |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetEntitiesOpParams;
+
+let params = GetEntitiesOpParams::new("locationId", "type", "entityType");
+let out = ghl.v3().ad_publishing().get_entities_op(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2366,6 +2838,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_integration` · `Versio
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetGoogleIntegrationParams;
+
+let params = GetGoogleIntegrationParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_google_integration(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2391,6 +2872,12 @@ Create a Google Ads integration for a location
 Operation id: `v3:ad-publishing.post_ad_publishing_google_integration` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`CreateGoogleIntegrationDTO`](#creategoogleintegrationdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().create_google_integration(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2424,6 +2911,15 @@ Operation id: `v3:ad-publishing.post_ad_publishing_google_keyword_ideas` · `Ver
 | `isDraft` | boolean | no | Is draft |
 
 *Request body*: [`KeywordSuggestionDTO`](#keywordsuggestiondto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetKeywordIdeasParams;
+
+let params = GetKeywordIdeasParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_keyword_ideas(&params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2459,6 +2955,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_me` · `Version: 2021-0
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetCurrentGoogleUserParams;
+
+let params = GetCurrentGoogleUserParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_current_google_user(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2493,6 +2998,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_reporting` · `Version:
 | `startDate` | string | **yes** | Report start date |
 | `endDate` | string | **yes** | Report end date |
 | `type` | enum: `AD_MANAGER`, `INTEGRATION` | **yes** | Integration type |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetReportingDataOpParams;
+
+let params = GetReportingDataOpParams::new("locationId", "fields", "startDate", "endDate", "type");
+let out = ghl.v3().ad_publishing().get_reporting_data_op(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2536,6 +3050,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_reporting_campaign_by_c
 | `startDate` | string | **yes** | Report start date |
 | `endDate` | string | **yes** | Report end date |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetCampaignReportingOpParams;
+
+let params = GetCampaignReportingOpParams::new("locationId", "startDate", "endDate");
+let out = ghl.v3().ad_publishing().get_campaign_reporting_op(&campaignId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2576,6 +3099,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_reporting_list` · `Ver
 | `campaignId` | string | no | Campaign identifier (required when listType is adGroups, ads, or keywords) |
 | `type` | enum: `AD_MANAGER`, `INTEGRATION` | **yes** | Integration type |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetReportingListOpParams;
+
+let params = GetReportingListOpParams::new("locationId", "listType", "startDate", "endDate", "type");
+let out = ghl.v3().ad_publishing().get_reporting_list_op(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2611,6 +3143,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_segments` · `Version: 
 | `locationId` | string | **yes** | Location identifier |
 | `type` | string | no | Segment type |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetSegmentsParams;
+
+let params = GetSegmentsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_segments(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2644,6 +3185,15 @@ Operation id: `v3:ad-publishing.put_ad_publishing_google_segments` · `Version: 
 
 *Request body*: [`UpsertSegmentDTO`](#upsertsegmentdto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::UpsertSegmentParams;
+
+let params = UpsertSegmentParams::new("locationId", "type");
+let out = ghl.v3().ad_publishing().upsert_segment(&params, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2673,6 +3223,12 @@ Create a job to upload users to a Google customer match list
 Operation id: `v3:ad-publishing.post_ad_publishing_google_segments_offline_user_list_job` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`CreateOfflineUserListJobDTO`](#createofflineuserlistjobdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().create_offline_user_list_job(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2710,6 +3266,15 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_google_segments_by_segmentI
 |---|---|---|---|
 | `locationId` | string | **yes** | Location identifier |
 | `type` | enum: `CUSTOM_SEGMENTS`, `DATA_SEGMENTS` | **yes** | Segment type |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::DeleteSegmentParams;
+
+let params = DeleteSegmentParams::new("locationId", "type");
+let out = ghl.v3().ad_publishing().delete_segment(&segmentId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2752,6 +3317,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_segments_by_segmentId` 
 | `locationId` | string | **yes** | Location identifier |
 | `type` | enum: `CUSTOM_SEGMENTS`, `DATA_SEGMENTS` | **yes** | Segment type |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetSegmentByIdParams;
+
+let params = GetSegmentByIdParams::new("locationId", "type");
+let out = ghl.v3().ad_publishing().get_segment_by_id(&segmentId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2788,6 +3362,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_target_interests` · `V
 | `type` | enum: `AFFINITY`, `IN_MARKET` | **yes** | Interest type |
 | `advertisingChannelType` | string | **yes** | Channel type |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetTargetInterestsParams;
+
+let params = GetTargetInterestsParams::new("locationId", "type", "advertisingChannelType");
+let out = ghl.v3().ad_publishing().get_target_interests(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2822,6 +3405,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_google_targeting_search` · `V
 | `query` | string | no | Search query |
 | `locationId` | string | **yes** | Location identifier |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::SearchTargetingOptionsOpParams;
+
+let params = SearchTargetingOptionsOpParams::new("type", "locationId");
+let out = ghl.v3().ad_publishing().search_targeting_options_op(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2853,6 +3445,15 @@ Operation id: `v3:ad-publishing.delete_ad_publishing_linkedin_ad_account` · `Ve
 |---|---|---|---|
 | `locationId` | string | **yes** | Location identifier |
 | `adAccountId` | string | **yes** | Ad account identifier |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::DeleteAdAccountOp2Params;
+
+let params = DeleteAdAccountOp2Params::new("locationId", "adAccountId");
+let out = ghl.v3().ad_publishing().delete_ad_account_op2(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2886,6 +3487,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_linkedin_ad_account` · `Versi
 | `locationId` | string | **yes** | Location identifier |
 | `adAccountId` | string | **yes** | Ad account identifier |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetAdAccountDetailsOp2Params;
+
+let params = GetAdAccountDetailsOp2Params::new("locationId", "adAccountId");
+let out = ghl.v3().ad_publishing().get_ad_account_details_op2(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2918,6 +3528,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_linkedin_ad_accounts` · `Vers
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetLinkedInAdAccountsParams;
+
+let params = GetLinkedInAdAccountsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_linked_in_ad_accounts(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -2943,6 +3562,12 @@ Create or update a LinkedIn ad campaign group with campaigns and ads
 Operation id: `v3:ad-publishing.put_ad_publishing_linkedin_ads` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`AdCampaignGroupDataDTO`](#adcampaigngroupdatadto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().upsert_ad_campaign_group(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -2981,6 +3606,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_linkedin_ads_by_adId` · `Vers
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetAdCampaignGroupParams;
+
+let params = GetAdCampaignGroupParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_ad_campaign_group(&adId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -3016,6 +3650,12 @@ Operation id: `v3:ad-publishing.post_ad_publishing_linkedin_ads_by_adId_publish`
 
 *Request body*: [`LocationIdBodyDTO`](#locationidbodydto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().publish_ad_campaign_group(&adId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -3050,6 +3690,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_linkedin_integration` · `Vers
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetLinkedInIntegrationParams;
+
+let params = GetLinkedInIntegrationParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_linked_in_integration(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -3075,6 +3724,12 @@ Create a LinkedIn Ads integration for a location with ad account details
 Operation id: `v3:ad-publishing.post_ad_publishing_linkedin_integration` · `Version: 2021-07-28` · Scopes: `adPublishing.write`
 
 *Request body*: [`CreateLinkedinIntegrationDTO`](#createlinkedinintegrationdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().ad_publishing().create_linked_in_integration(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -3106,6 +3761,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_linkedin_me` · `Version: 2021
 |---|---|---|---|
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetCurrentLinkedInUserParams;
+
+let params = GetCurrentLinkedInUserParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_current_linked_in_user(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -3142,6 +3806,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_linkedin_reporting` · `Versio
 | `endDate` | string | **yes** | End date in yyyy-mm-dd format |
 | `entityUrns` | string | no | Comma-separated list of entity URNs |
 | `fields` | array | no | Reporting fields. Pass as comma-separated values on the wire (e.g. ?fields=impressions,clicks). |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetAdAnalyticsParams;
+
+let params = GetAdAnalyticsParams::new("locationId", "startDate", "endDate");
+let out = ghl.v3().ad_publishing().get_ad_analytics(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -3185,6 +3858,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_linkedin_reporting_campaign_gr
 | `fields` | array | no | Reporting fields. Pass as comma-separated values on the wire (e.g. ?fields=impressions,clicks). |
 | `campaignGroupId` | string | no | Campaign group ID |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetCampaignGroupReportingParams;
+
+let params = GetCampaignGroupReportingParams::new("locationId", "startDate", "endDate");
+let out = ghl.v3().ad_publishing().get_campaign_group_reporting(&campaignGroupId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -3226,6 +3908,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_linkedin_reporting_list` · `V
 | `endDate` | string | **yes** | End date in yyyy-mm-dd format |
 | `fields` | array | no | Reporting fields. Pass as comma-separated values on the wire (e.g. ?fields=impressions,clicks). |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetReportingListOp2Params;
+
+let params = GetReportingListOp2Params::new("locationId", "listType", "campaignId", "campaignGroupId", "startDate", "endDate");
+let out = ghl.v3().ad_publishing().get_reporting_list_op2(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -3264,6 +3955,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_linkedin_targeting_search` · 
 | `query` | string | no | Search query |
 | `q` | string | no | Query parameter |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::SearchTargetingOptionsOp2Params;
+
+let params = SearchTargetingOptionsOp2Params::new("locationId", "facet");
+let out = ghl.v3().ad_publishing().search_targeting_options_op2(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -3297,6 +3997,15 @@ Operation id: `v3:ad-publishing.post_ad_publishing_linkedin_by_accountId_form` �
 | `isDraft` | boolean | no | Is draft |
 
 *Request body*: [`LinkedInCreateLeadFormBodyDTO`](#linkedincreateleadformbodydto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::CreateLeadFormParams;
+
+let params = CreateLeadFormParams::new("locationId");
+let out = ghl.v3().ad_publishing().create_lead_form(&params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -3337,6 +4046,15 @@ Operation id: `v3:ad-publishing.get_ad_publishing_linkedin_by_accountId_forms` �
 |---|---|---|---|
 | `locationId` | string | **yes** | Location identifier |
 | `isDraft` | boolean | no | Is draft |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::GetLeadFormsParams;
+
+let params = GetLeadFormsParams::new("locationId");
+let out = ghl.v3().ad_publishing().get_lead_forms(&accountId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -3379,6 +4097,15 @@ Operation id: `v3:ad-publishing.patch_ad_publishing_linkedin_by_adId_status` · 
 | `isDraft` | boolean | no | Is draft |
 
 *Request body*: [`LinkedInUpdateAdStatusBodyDTO`](#linkedinupdateadstatusbodydto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::ad_publishing::UpdateAdStatusParams;
+
+let params = UpdateAdStatusParams::new("locationId");
+let out = ghl.v3().ad_publishing().update_ad_status(&adId, &params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

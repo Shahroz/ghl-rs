@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `saas-api` cargo feature on `ghl-sdk`, then call any of the 22 generated methods on `ghl.saas_api()`:
+**Every endpoint has a typed Rust method.** Enable the `saas-api` cargo feature on `ghl-sdk`, then call any of the 22 generated methods on `ghl.saas_api()` (v2):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["saas-api"] }
+ghl-sdk = { version = "0.5", features = ["saas-api"] }
 ```
 
 

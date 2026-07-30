@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `custom-fields` cargo feature on `ghl-sdk`, then call any of the 8 generated methods on `ghl.custom_fields()`:
+**Every endpoint has a typed Rust method.** Enable the `custom-fields` cargo feature on `ghl-sdk`, then call any of the 16 generated methods on `ghl.custom_fields()` (v2) or `ghl.v3().custom_fields()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["custom-fields"] }
+ghl-sdk = { version = "0.5", features = ["custom-fields"] }
 ```
 
 
@@ -358,16 +358,16 @@ let out = ghl.custom_fields().update_custom_field_by_id(&id, &body).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/custom-fields/` | Create Custom Field | `v3:custom-fields.post_custom_fields` |
-| `POST` | `/custom-fields/folder` | Create Custom Field Folder | `v3:custom-fields.post_custom_fields_folder` |
-| `DELETE` | `/custom-fields/folder/{id}` | Delete Custom Field Folder | `v3:custom-fields.delete_custom_fields_folder_by_id` |
-| `PUT` | `/custom-fields/folder/{id}` | Update Custom Field Folder Name | `v3:custom-fields.put_custom_fields_folder_by_id` |
-| `GET` | `/custom-fields/object-key/{objectKey}` | Get Custom Fields By Object Key | `v3:custom-fields.get_custom_fields_object_key_by_objectKey` |
-| `DELETE` | `/custom-fields/{id}` | Delete Custom Field By Id | `v3:custom-fields.delete_custom_fields_by_id` |
-| `GET` | `/custom-fields/{id}` | Get Custom Field / Folder By Id | `v3:custom-fields.get_custom_fields_by_id` |
-| `PUT` | `/custom-fields/{id}` | Update Custom Field By Id | `v3:custom-fields.put_custom_fields_by_id` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/custom-fields/` | Create Custom Field | `create_custom_field()` | `v3:custom-fields.post_custom_fields` |
+| `POST` | `/custom-fields/folder` | Create Custom Field Folder | `create_custom_field_folder()` | `v3:custom-fields.post_custom_fields_folder` |
+| `DELETE` | `/custom-fields/folder/{id}` | Delete Custom Field Folder | `delete_custom_field_folder()` | `v3:custom-fields.delete_custom_fields_folder_by_id` |
+| `PUT` | `/custom-fields/folder/{id}` | Update Custom Field Folder Name | `update_custom_field_folder_name()` | `v3:custom-fields.put_custom_fields_folder_by_id` |
+| `GET` | `/custom-fields/object-key/{objectKey}` | Get Custom Fields By Object Key | `get_custom_fields_by_object_key()` | `v3:custom-fields.get_custom_fields_object_key_by_objectKey` |
+| `DELETE` | `/custom-fields/{id}` | Delete Custom Field By Id | `delete_custom_field_by_id()` | `v3:custom-fields.delete_custom_fields_by_id` |
+| `GET` | `/custom-fields/{id}` | Get Custom Field / Folder By Id | `get_custom_field_folder_by_id()` | `v3:custom-fields.get_custom_fields_by_id` |
+| `PUT` | `/custom-fields/{id}` | Update Custom Field By Id | `update_custom_field_by_id()` | `v3:custom-fields.put_custom_fields_by_id` |
 
 ### Endpoint details — v3
 
@@ -382,6 +382,12 @@ Operation id: `v3:custom-fields.post_custom_fields` · `Version: v3` · Scopes: 
 *Request body*: [`CreateCustomFieldsDTO`](#createcustomfieldsdto)
 
 *Response*: [`CustomFieldSuccessfulResponseDto`](#customfieldsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().custom_fields().create_custom_field(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -410,6 +416,12 @@ Operation id: `v3:custom-fields.post_custom_fields_folder` · `Version: v3` · S
 *Request body*: [`CreateFolder`](#createfolder)
 
 *Response*: [`ICustomFieldFolder`](#icustomfieldfolder)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().custom_fields().create_custom_field_folder(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -449,6 +461,15 @@ Operation id: `v3:custom-fields.delete_custom_fields_folder_by_id` · `Version: 
 
 *Response*: [`CustomFolderDeleteResponseDto`](#customfolderdeleteresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::custom_fields::DeleteCustomFieldFolderParams;
+
+let params = DeleteCustomFieldFolderParams::new("locationId");
+let out = ghl.v3().custom_fields().delete_custom_field_folder(&id, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -485,6 +506,12 @@ Operation id: `v3:custom-fields.put_custom_fields_folder_by_id` · `Version: v3`
 *Request body*: [`UpdateFolder`](#updatefolder)
 
 *Response*: [`ICustomFieldFolder`](#icustomfieldfolder)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().custom_fields().update_custom_field_folder_name(&id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -527,6 +554,15 @@ Operation id: `v3:custom-fields.get_custom_fields_object_key_by_objectKey` · `V
 
 *Response*: [`CustomFieldsResponseDTO`](#customfieldsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::custom_fields::GetCustomFieldsByObjectKeyParams;
+
+let params = GetCustomFieldsByObjectKeyParams::new("locationId");
+let out = ghl.v3().custom_fields().get_custom_fields_by_object_key(&objectKey, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -562,6 +598,12 @@ Operation id: `v3:custom-fields.delete_custom_fields_by_id` · `Version: v3` · 
 
 *Response*: [`CustomFolderDeleteResponseDto`](#customfolderdeleteresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().custom_fields().delete_custom_field_by_id(&id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -593,6 +635,12 @@ Operation id: `v3:custom-fields.get_custom_fields_by_id` · `Version: v3` · Sco
 | `id` | string | **yes** | — |
 
 *Response*: [`CustomFieldSuccessfulResponseDto`](#customfieldsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().custom_fields().get_custom_field_folder_by_id(&id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -627,6 +675,12 @@ Operation id: `v3:custom-fields.put_custom_fields_by_id` · `Version: v3` · Sco
 *Request body*: [`UpdateCustomFieldsDTO`](#updatecustomfieldsdto)
 
 *Response*: [`CustomFieldSuccessfulResponseDto`](#customfieldsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().custom_fields().update_custom_field_by_id(&id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

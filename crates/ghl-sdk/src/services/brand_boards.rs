@@ -2,7 +2,7 @@
 //! `brand-boards` — typed methods for all 5 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::brand_boards`](crate::Ghl::brand_boards)
+//! Access via [`Ghl::brand_boards`](crate::Ghl::brand_boards).
 //!
 //! Request and response types come from [`ghl_models::v2::brand_boards`](https://docs.rs/ghl-models/latest/ghl_models/v2/brand_boards/); every endpoint is also documented in the
 //! [`brand-boards` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/brand-boards.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::brand_boards as models;
 
-/// Typed access to the `brand-boards` API (5 operations). Obtained via
+/// Typed access to the `brand-boards` API v2 surface (5 operations). Obtained via
 /// [`Ghl::brand_boards`](crate::Ghl::brand_boards).
 #[derive(Debug, Clone)]
 pub struct BrandBoardsService {

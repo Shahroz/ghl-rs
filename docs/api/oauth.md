@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `oauth` cargo feature on `ghl-sdk`, then call any of the 3 generated methods on `ghl.oauth()`:
+**Every endpoint has a typed Rust method.** Enable the `oauth` cargo feature on `ghl-sdk`, then call any of the 6 generated methods on `ghl.oauth()` (v2) or `ghl.v3().oauth()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["oauth"] }
+ghl-sdk = { version = "0.5", features = ["oauth"] }
 ```
 
 
@@ -132,11 +132,11 @@ let out = ghl.oauth().get_access_token().await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/oauth/installed-locations` | Get Location where app is installed | `v3:oauth.get_oauth_installed_locations` |
-| `POST` | `/oauth/location-token` | Get Location Access Token from Agency Token | `v3:oauth.post_oauth_location_token` |
-| `POST` | `/oauth/token` | Get Access Token | `v3:oauth.post_oauth_token` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/oauth/installed-locations` | Get Location where app is installed | `get_location_where_app_is_installed()` | `v3:oauth.get_oauth_installed_locations` |
+| `POST` | `/oauth/location-token` | Get Location Access Token from Agency Token | `get_location_access_token_from_agency_token()` | `v3:oauth.post_oauth_location_token` |
+| `POST` | `/oauth/token` | Get Access Token | `get_access_token()` | `v3:oauth.post_oauth_token` |
 
 ### Endpoint details — v3
 
@@ -166,6 +166,15 @@ Operation id: `v3:oauth.get_oauth_installed_locations` · `Version: v3` · Scope
 
 *Response*: [`GetInstalledLocationsV3SuccessfulResponseDto`](#getinstalledlocationsv3successfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::oauth::GetLocationWhereAppIsInstalledParams;
+
+let params = GetLocationWhereAppIsInstalledParams::new("companyId", "appId");
+let out = ghl.v3().oauth().get_location_where_app_is_installed(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -193,6 +202,12 @@ Operation id: `v3:oauth.post_oauth_location_token` · `Version: v3` · Scopes: `
 
 *Response*: [`GetLocationAccessTokenV3SuccessfulResponseDto`](#getlocationaccesstokenv3successfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().oauth().get_location_access_token_from_agency_token().await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -217,6 +232,12 @@ Operation id: `v3:oauth.post_oauth_token` · `Version: v3`
 *Request body*: [`GetAccessTokenBodyDto`](#getaccesstokenbodydto)
 
 *Response*: [`GetAccessTokenSuccessfulResponseDto`](#getaccesstokensuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().oauth().get_access_token(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 

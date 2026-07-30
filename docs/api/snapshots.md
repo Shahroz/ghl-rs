@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `snapshots` cargo feature on `ghl-sdk`, then call any of the 4 generated methods on `ghl.snapshots()`:
+**Every endpoint has a typed Rust method.** Enable the `snapshots` cargo feature on `ghl-sdk`, then call any of the 8 generated methods on `ghl.snapshots()` (v2) or `ghl.v3().snapshots()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["snapshots"] }
+ghl-sdk = { version = "0.5", features = ["snapshots"] }
 ```
 
 
@@ -221,12 +221,12 @@ let out = ghl.snapshots().get_last_snapshot_push(&snapshotId, &locationId, &para
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/snapshots/` | Get Snapshots | `v3:snapshots.get_snapshots` |
-| `POST` | `/snapshots/share/link` | Create Snapshot Share Link | `v3:snapshots.post_snapshots_share_link` |
-| `GET` | `/snapshots/snapshot-status/{snapshotId}` | Get Snapshot Push between Dates | `v3:snapshots.get_snapshots_snapshot_status_by_snapshotId` |
-| `GET` | `/snapshots/snapshot-status/{snapshotId}/location/{locationId}` | Get Last Snapshot Push | `v3:snapshots.get_snapshots_snapshot_status_by_snapshotId_location_by_locationId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/snapshots/` | Get Snapshots | `get_snapshots()` | `v3:snapshots.get_snapshots` |
+| `POST` | `/snapshots/share/link` | Create Snapshot Share Link | `create_snapshot_share_link()` | `v3:snapshots.post_snapshots_share_link` |
+| `GET` | `/snapshots/snapshot-status/{snapshotId}` | Get Snapshot Push between Dates | `get_snapshot_push_between_dates()` | `v3:snapshots.get_snapshots_snapshot_status_by_snapshotId` |
+| `GET` | `/snapshots/snapshot-status/{snapshotId}/location/{locationId}` | Get Last Snapshot Push | `get_last_snapshot_push()` | `v3:snapshots.get_snapshots_snapshot_status_by_snapshotId_location_by_locationId` |
 
 ### Endpoint details — v3
 
@@ -245,6 +245,15 @@ Operation id: `v3:snapshots.get_snapshots` · `Version: v3`
 | `companyId` | string | **yes** | Company Id |
 
 *Response*: [`GetSnapshotsSuccessfulResponseDto`](#getsnapshotssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::snapshots::GetSnapshotsParams;
+
+let params = GetSnapshotsParams::new("companyId");
+let out = ghl.v3().snapshots().get_snapshots(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -279,6 +288,15 @@ Operation id: `v3:snapshots.post_snapshots_share_link` · `Version: v3`
 *Request body*: [`CreateSnapshotShareLinkRequestDTO`](#createsnapshotsharelinkrequestdto)
 
 *Response*: [`CreateSnapshotShareLinkSuccessfulResponseDTO`](#createsnapshotsharelinksuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::snapshots::CreateSnapshotShareLinkParams;
+
+let params = CreateSnapshotShareLinkParams::new("companyId");
+let out = ghl.v3().snapshots().create_snapshot_share_link(&params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -325,6 +343,15 @@ Operation id: `v3:snapshots.get_snapshots_snapshot_status_by_snapshotId` · `Ver
 
 *Response*: [`GetSnapshotPushStatusSuccessfulResponseDTO`](#getsnapshotpushstatussuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::snapshots::GetSnapshotPushBetweenDatesParams;
+
+let params = GetSnapshotPushBetweenDatesParams::new("companyId", "from", "to", "lastDoc");
+let out = ghl.v3().snapshots().get_snapshot_push_between_dates(&snapshotId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -369,6 +396,15 @@ Operation id: `v3:snapshots.get_snapshots_snapshot_status_by_snapshotId_location
 | `companyId` | string | **yes** | — |
 
 *Response*: [`GetLatestSnapshotPushStatusSuccessfulResponseDTO`](#getlatestsnapshotpushstatussuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::snapshots::GetLastSnapshotPushParams;
+
+let params = GetLastSnapshotPushParams::new("companyId");
+let out = ghl.v3().snapshots().get_last_snapshot_push(&snapshotId, &locationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 

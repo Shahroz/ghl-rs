@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `knowledge-base` cargo feature on `ghl-sdk`, then call any of the 14 generated methods on `ghl.knowledge_base()`:
+**Every endpoint has a typed Rust method.** Enable the `knowledge-base` cargo feature on `ghl-sdk`, then call any of the 28 generated methods on `ghl.knowledge_base()` (v2) or `ghl.v3().knowledge_base()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["knowledge-base"] }
+ghl-sdk = { version = "0.5", features = ["knowledge-base"] }
 ```
 
 
@@ -558,22 +558,22 @@ let out = ghl.knowledge_base().get_knowledge_base_by_id(&knowledgeBaseId).await?
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/knowledge-bases/` | Get all knowledge bases for a location by location Id (paginated) | `v3:knowledge-base.get_knowledge_bases` |
-| `POST` | `/knowledge-bases/` | Create a new knowledge base (max 15 knowledge bases per location) | `v3:knowledge-base.post_knowledge_bases` |
-| `DELETE` | `/knowledge-bases/crawler` | Delete trained pages | `v3:knowledge-base.delete_knowledge_bases_crawler` |
-| `GET` | `/knowledge-bases/crawler` | Get all trained page links by knowledge base | `v3:knowledge-base.get_knowledge_bases_crawler` |
-| `POST` | `/knowledge-bases/crawler` | Start crawling and discover pages for training | `v3:knowledge-base.post_knowledge_bases_crawler` |
-| `GET` | `/knowledge-bases/crawler/status` | Get crawling status for the latest operation | `v3:knowledge-base.get_knowledge_bases_crawler_status` |
-| `POST` | `/knowledge-bases/crawler/train` | Train discovered website pages and ingest into the knowledge base | `v3:knowledge-base.post_knowledge_bases_crawler_train` |
-| `GET` | `/knowledge-bases/faqs` | Get all FAQs by knowledge base with pagination support | `v3:knowledge-base.get_knowledge_bases_faqs` |
-| `POST` | `/knowledge-bases/faqs` | Create a new FAQ inside knowledge base | `v3:knowledge-base.post_knowledge_bases_faqs` |
-| `DELETE` | `/knowledge-bases/faqs/{id}` | Delete an existing knowledge base FAQ | `v3:knowledge-base.delete_knowledge_bases_faqs_by_id` |
-| `PUT` | `/knowledge-bases/faqs/{id}` | Update an existing knowledge base FAQ | `v3:knowledge-base.put_knowledge_bases_faqs_by_id` |
-| `PUT` | `/knowledge-bases/{id}` | Update a knowledge base | `v3:knowledge-base.put_knowledge_bases_by_id` |
-| `DELETE` | `/knowledge-bases/{knowledgeBaseId}` | Delete a knowledge base | `v3:knowledge-base.delete_knowledge_bases_by_knowledgeBaseId` |
-| `GET` | `/knowledge-bases/{knowledgeBaseId}` | Get knowledge base by ID | `v3:knowledge-base.get_knowledge_bases_by_knowledgeBaseId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/knowledge-bases/` | Get all knowledge bases for a location by location Id (paginated) | `get_knowledge_bases()` | `v3:knowledge-base.get_knowledge_bases` |
+| `POST` | `/knowledge-bases/` | Create a new knowledge base (max 15 knowledge bases per location) | `post_knowledge_bases()` | `v3:knowledge-base.post_knowledge_bases` |
+| `DELETE` | `/knowledge-bases/crawler` | Delete trained pages | `delete_trained_pages()` | `v3:knowledge-base.delete_knowledge_bases_crawler` |
+| `GET` | `/knowledge-bases/crawler` | Get all trained page links by knowledge base | `get_all_trained_page_links_by_knowledge_base()` | `v3:knowledge-base.get_knowledge_bases_crawler` |
+| `POST` | `/knowledge-bases/crawler` | Start crawling and discover pages for training | `start_crawling_and_discover_pages_for_training()` | `v3:knowledge-base.post_knowledge_bases_crawler` |
+| `GET` | `/knowledge-bases/crawler/status` | Get crawling status for the latest operation | `get_crawling_status_for_the_latest_operation()` | `v3:knowledge-base.get_knowledge_bases_crawler_status` |
+| `POST` | `/knowledge-bases/crawler/train` | Train discovered website pages and ingest into the knowledge base | `post_knowledge_bases_crawler_train()` | `v3:knowledge-base.post_knowledge_bases_crawler_train` |
+| `GET` | `/knowledge-bases/faqs` | Get all FAQs by knowledge base with pagination support | `get_all_fa_qs_by_knowledge_base_with_pagination_support()` | `v3:knowledge-base.get_knowledge_bases_faqs` |
+| `POST` | `/knowledge-bases/faqs` | Create a new FAQ inside knowledge base | `create_a_new_faq_inside_knowledge_base()` | `v3:knowledge-base.post_knowledge_bases_faqs` |
+| `DELETE` | `/knowledge-bases/faqs/{id}` | Delete an existing knowledge base FAQ | `delete_an_existing_knowledge_base_faq()` | `v3:knowledge-base.delete_knowledge_bases_faqs_by_id` |
+| `PUT` | `/knowledge-bases/faqs/{id}` | Update an existing knowledge base FAQ | `update_an_existing_knowledge_base_faq()` | `v3:knowledge-base.put_knowledge_bases_faqs_by_id` |
+| `PUT` | `/knowledge-bases/{id}` | Update a knowledge base | `update_a_knowledge_base()` | `v3:knowledge-base.put_knowledge_bases_by_id` |
+| `DELETE` | `/knowledge-bases/{knowledgeBaseId}` | Delete a knowledge base | `delete_a_knowledge_base()` | `v3:knowledge-base.delete_knowledge_bases_by_knowledgeBaseId` |
+| `GET` | `/knowledge-bases/{knowledgeBaseId}` | Get knowledge base by ID | `get_knowledge_base_by_id()` | `v3:knowledge-base.get_knowledge_bases_by_knowledgeBaseId` |
 
 ### Endpoint details — v3
 
@@ -593,6 +593,15 @@ Operation id: `v3:knowledge-base.get_knowledge_bases` · `Version: v3`
 | `lastKnowledgeBaseId` | string | no | ID of the last knowledge base from the previous page (for pagination) |
 
 *Response*: [`GetAllKnowledgeBasesPaginatedResponseDTO`](#getallknowledgebasespaginatedresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::knowledge_base::GetKnowledgeBasesParams;
+
+let params = GetKnowledgeBasesParams::new("locationId");
+let out = ghl.v3().knowledge_base().get_knowledge_bases(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -620,6 +629,12 @@ Operation id: `v3:knowledge-base.post_knowledge_bases` · `Version: v3`
 
 *Response*: [`CreateKnowledgeBaseResponseDTO`](#createknowledgebaseresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().knowledge_base().post_knowledge_bases(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -645,6 +660,12 @@ Operation id: `v3:knowledge-base.delete_knowledge_bases_crawler` · `Version: v3
 *Request body*: [`DeleteWebsiteUrlRequestDTO`](#deletewebsiteurlrequestdto)
 
 *Response*: [`DeleteWebsiteUrlResponseDTO`](#deletewebsiteurlresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().knowledge_base().delete_trained_pages(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -680,6 +701,15 @@ Operation id: `v3:knowledge-base.get_knowledge_bases_crawler` · `Version: v3`
 
 *Response*: [`GetAllUrlsByKnowledgeBaseResponseDTO`](#getallurlsbyknowledgebaseresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::knowledge_base::GetAllTrainedPageLinksByKnowledgeBaseParams;
+
+let params = GetAllTrainedPageLinksByKnowledgeBaseParams::new("knowledgeBaseId", "locationId");
+let out = ghl.v3().knowledge_base().get_all_trained_page_links_by_knowledge_base(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -706,6 +736,12 @@ Operation id: `v3:knowledge-base.post_knowledge_bases_crawler` · `Version: v3`
 *Request body*: [`DiscoverWebsiteRequestDTO`](#discoverwebsiterequestdto)
 
 *Response*: [`DiscoverWebsiteResponseDTO`](#discoverwebsiteresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().knowledge_base().start_crawling_and_discover_pages_for_training(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -739,6 +775,15 @@ Operation id: `v3:knowledge-base.get_knowledge_bases_crawler_status` · `Version
 
 *Response*: [`CrawlingStatusResponseDTO`](#crawlingstatusresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::knowledge_base::GetCrawlingStatusForTheLatestOperationParams;
+
+let params = GetCrawlingStatusForTheLatestOperationParams::new("locationId", "operationId", "knowledgeBaseId");
+let out = ghl.v3().knowledge_base().get_crawling_status_for_the_latest_operation(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -766,6 +811,12 @@ Operation id: `v3:knowledge-base.post_knowledge_bases_crawler_train` · `Version
 *Request body*: [`TrainDiscoveredUrlsDTO`](#traindiscoveredurlsdto)
 
 *Response*: [`TrainDiscoveredUrlsResponseDTO`](#traindiscoveredurlsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().knowledge_base().post_knowledge_bases_crawler_train(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -802,6 +853,15 @@ Operation id: `v3:knowledge-base.get_knowledge_bases_faqs` · `Version: v3`
 
 *Response*: [`ListFaqsResponseDTO`](#listfaqsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::knowledge_base::GetAllFaQsByKnowledgeBaseWithPaginationSupportParams;
+
+let params = GetAllFaQsByKnowledgeBaseWithPaginationSupportParams::new("knowledgeBaseId", "locationId");
+let out = ghl.v3().knowledge_base().get_all_fa_qs_by_knowledge_base_with_pagination_support(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -828,6 +888,12 @@ Operation id: `v3:knowledge-base.post_knowledge_bases_faqs` · `Version: v3`
 *Request body*: [`AddFaqDTO`](#addfaqdto)
 
 *Response*: [`CreateFaqResponseDTO`](#createfaqresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().knowledge_base().create_a_new_faq_inside_knowledge_base(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -858,6 +924,12 @@ Operation id: `v3:knowledge-base.delete_knowledge_bases_faqs_by_id` · `Version:
 | `id` | string | **yes** | faq ID as string |
 
 *Response*: [`DeleteFaqResponseDTO`](#deletefaqresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().knowledge_base().delete_an_existing_knowledge_base_faq(&id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -890,6 +962,12 @@ Operation id: `v3:knowledge-base.put_knowledge_bases_faqs_by_id` · `Version: v3
 *Request body*: [`UpdateFaqBodyDTO`](#updatefaqbodydto)
 
 *Response*: [`UpdateFaqResponseDTO`](#updatefaqresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().knowledge_base().update_an_existing_knowledge_base_faq(&id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -926,6 +1004,12 @@ Operation id: `v3:knowledge-base.put_knowledge_bases_by_id` · `Version: v3`
 
 *Response*: [`UpdateKnowledgeBaseResponseDTO`](#updateknowledgebaseresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().knowledge_base().update_a_knowledge_base(&id, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -959,6 +1043,12 @@ Operation id: `v3:knowledge-base.delete_knowledge_bases_by_knowledgeBaseId` · `
 
 *Response*: [`DeleteKnowledgeBaseResponseDTO`](#deleteknowledgebaseresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().knowledge_base().delete_a_knowledge_base(&knowledgeBaseId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -988,6 +1078,12 @@ Operation id: `v3:knowledge-base.get_knowledge_bases_by_knowledgeBaseId` · `Ver
 | `knowledgeBaseId` | string | **yes** | — |
 
 *Response*: [`GetKnowledgeBaseByIdResponseDTO`](#getknowledgebasebyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().knowledge_base().get_knowledge_base_by_id(&knowledgeBaseId).await?;
+```
 
 <details><summary>MCP call</summary>
 

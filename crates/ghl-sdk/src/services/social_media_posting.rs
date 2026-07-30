@@ -2,7 +2,7 @@
 //! `social-media-posting` — typed methods for all 40 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::social_media_posting`](crate::Ghl::social_media_posting)
+//! Access via [`Ghl::social_media_posting`](crate::Ghl::social_media_posting).
 //!
 //! Request and response types come from [`ghl_models::v2::social_media_posting`](https://docs.rs/ghl-models/latest/ghl_models/v2/social_media_posting/); every endpoint is also documented in the
 //! [`social-media-posting` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/social-media-posting.md).
@@ -15,8 +15,8 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::social_media_posting as models;
 
-/// Typed access to the `social-media-posting` API (40 operations). Obtained via
-/// [`Ghl::social_media_posting`](crate::Ghl::social_media_posting).
+/// Typed access to the `social-media-posting` API v2 surface (40 operations). Obtained
+/// via [`Ghl::social_media_posting`](crate::Ghl::social_media_posting).
 #[derive(Debug, Clone)]
 pub struct SocialMediaPostingService {
     pub(crate) client: Ghl,

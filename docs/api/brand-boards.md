@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `brand-boards` cargo feature on `ghl-sdk`, then call any of the 5 generated methods on `ghl.brand_boards()`:
+**Every endpoint has a typed Rust method.** Enable the `brand-boards` cargo feature on `ghl-sdk`, then call any of the 16 generated methods on `ghl.brand_boards()` (v2) or `ghl.v3().brand_boards()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["brand-boards"] }
+ghl-sdk = { version = "0.5", features = ["brand-boards"] }
 ```
 
 
@@ -234,19 +234,19 @@ let out = ghl.brand_boards().update_a_brand_board(&locationId, &id, &body).await
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/brand-boards/` | Create a new brand board | `v3:brand-boards.post_brand_boards` |
-| `GET` | `/brand-boards/locations/{locationId}/brand-voices` | List Brand Voices | `v3:brand-boards.get_brand_boards_locations_by_locationId_brand_voices` |
-| `POST` | `/brand-boards/locations/{locationId}/brand-voices` | Create Brand Voice | `v3:brand-boards.post_brand_boards_locations_by_locationId_brand_voices` |
-| `DELETE` | `/brand-boards/locations/{locationId}/brand-voices/{brandVoiceId}` | Delete Brand Voice | `v3:brand-boards.delete_brand_boards_locations_by_locationId_brand_voices_by_brandVoiceId` |
-| `GET` | `/brand-boards/locations/{locationId}/brand-voices/{brandVoiceId}` | Get Brand Voice | `v3:brand-boards.get_brand_boards_locations_by_locationId_brand_voices_by_brandVoiceId` |
-| `PATCH` | `/brand-boards/locations/{locationId}/brand-voices/{brandVoiceId}` | Update Brand Voice | `v3:brand-boards.patch_brand_boards_locations_by_locationId_brand_voices_by_brandVoiceId` |
-| `POST` | `/brand-boards/locations/{locationId}/brand-voices/{brandVoiceId}/default` | Set Default Brand Voice | `v3:brand-boards.post_brand_boards_locations_by_locationId_brand_voices_by_brandVoiceId_default` |
-| `GET` | `/brand-boards/{locationId}` | Get Brand Boards | `v3:brand-boards.get_brand_boards_by_locationId` |
-| `DELETE` | `/brand-boards/{locationId}/{id}` | Delete a Brand Board | `v3:brand-boards.delete_brand_boards_by_locationId_by_id` |
-| `GET` | `/brand-boards/{locationId}/{id}` | Get Brand Board | `v3:brand-boards.get_brand_boards_by_locationId_by_id` |
-| `PATCH` | `/brand-boards/{locationId}/{id}` | Update a Brand Board | `v3:brand-boards.patch_brand_boards_by_locationId_by_id` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/brand-boards/` | Create a new brand board | `create_a_new_brand_board()` | `v3:brand-boards.post_brand_boards` |
+| `GET` | `/brand-boards/locations/{locationId}/brand-voices` | List Brand Voices | `list_brand_voices()` | `v3:brand-boards.get_brand_boards_locations_by_locationId_brand_voices` |
+| `POST` | `/brand-boards/locations/{locationId}/brand-voices` | Create Brand Voice | `create_brand_voice()` | `v3:brand-boards.post_brand_boards_locations_by_locationId_brand_voices` |
+| `DELETE` | `/brand-boards/locations/{locationId}/brand-voices/{brandVoiceId}` | Delete Brand Voice | `delete_brand_voice()` | `v3:brand-boards.delete_brand_boards_locations_by_locationId_brand_voices_by_brandVoiceId` |
+| `GET` | `/brand-boards/locations/{locationId}/brand-voices/{brandVoiceId}` | Get Brand Voice | `get_brand_voice()` | `v3:brand-boards.get_brand_boards_locations_by_locationId_brand_voices_by_brandVoiceId` |
+| `PATCH` | `/brand-boards/locations/{locationId}/brand-voices/{brandVoiceId}` | Update Brand Voice | `update_brand_voice()` | `v3:brand-boards.patch_brand_boards_locations_by_locationId_brand_voices_by_brandVoiceId` |
+| `POST` | `/brand-boards/locations/{locationId}/brand-voices/{brandVoiceId}/default` | Set Default Brand Voice | `set_default_brand_voice()` | `v3:brand-boards.post_brand_boards_locations_by_locationId_brand_voices_by_brandVoiceId_default` |
+| `GET` | `/brand-boards/{locationId}` | Get Brand Boards | `get_brand_boards()` | `v3:brand-boards.get_brand_boards_by_locationId` |
+| `DELETE` | `/brand-boards/{locationId}/{id}` | Delete a Brand Board | `delete_a_brand_board()` | `v3:brand-boards.delete_brand_boards_by_locationId_by_id` |
+| `GET` | `/brand-boards/{locationId}/{id}` | Get Brand Board | `get_brand_board()` | `v3:brand-boards.get_brand_boards_by_locationId_by_id` |
+| `PATCH` | `/brand-boards/{locationId}/{id}` | Update a Brand Board | `update_a_brand_board()` | `v3:brand-boards.patch_brand_boards_by_locationId_by_id` |
 
 ### Endpoint details — v3
 
@@ -261,6 +261,12 @@ Operation id: `v3:brand-boards.post_brand_boards` · `Version: v3` · Scopes: `b
 *Request body*: [`CreateBrandBoardParam`](#createbrandboardparam)
 
 *Response*: [`GetBrandBoardSuccessDTO`](#getbrandboardsuccessdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().brand_boards().create_a_new_brand_board(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -303,6 +309,15 @@ Operation id: `v3:brand-boards.get_brand_boards_locations_by_locationId_brand_vo
 
 *Response*: [`ListBrandVoicesPublicV1ResponseDto`](#listbrandvoicespublicv1responsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::brand_boards::ListBrandVoicesParams;
+
+let params = ListBrandVoicesParams::new();
+let out = ghl.v3().brand_boards().list_brand_voices(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -336,6 +351,12 @@ Operation id: `v3:brand-boards.post_brand_boards_locations_by_locationId_brand_v
 *Request body*: [`CreateBrandVoicePublicV1BodyDto`](#createbrandvoicepublicv1bodydto)
 
 *Response*: [`CreateBrandVoicePublicV1ResponseDto`](#createbrandvoicepublicv1responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().brand_boards().create_brand_voice(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -373,6 +394,12 @@ Operation id: `v3:brand-boards.delete_brand_boards_locations_by_locationId_brand
 
 *Response*: [`DeleteBrandVoicePublicV1ResponseDto`](#deletebrandvoicepublicv1responsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().brand_boards().delete_brand_voice(&locationId, &brandVoiceId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -406,6 +433,12 @@ Operation id: `v3:brand-boards.get_brand_boards_locations_by_locationId_brand_vo
 | `brandVoiceId` | string | **yes** | Brand voice ID |
 
 *Response*: [`GetBrandVoicePublicV1ResponseDto`](#getbrandvoicepublicv1responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().brand_boards().get_brand_voice(&locationId, &brandVoiceId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -443,6 +476,12 @@ Operation id: `v3:brand-boards.patch_brand_boards_locations_by_locationId_brand_
 
 *Response*: [`UpdateBrandVoicePublicV1ResponseDto`](#updatebrandvoicepublicv1responsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().brand_boards().update_brand_voice(&locationId, &brandVoiceId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -479,6 +518,12 @@ Operation id: `v3:brand-boards.post_brand_boards_locations_by_locationId_brand_v
 | `brandVoiceId` | string | **yes** | Brand voice ID |
 
 *Response*: [`SetDefaultBrandVoicePublicV1ResponseDto`](#setdefaultbrandvoicepublicv1responsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().brand_boards().set_default_brand_voice(&locationId, &brandVoiceId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -522,6 +567,15 @@ Operation id: `v3:brand-boards.get_brand_boards_by_locationId` · `Version: v3` 
 
 *Response*: [`GetBrandBoardsByLocationSuccessDTO`](#getbrandboardsbylocationsuccessdto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::brand_boards::GetBrandBoardsParams;
+
+let params = GetBrandBoardsParams::new();
+let out = ghl.v3().brand_boards().get_brand_boards(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -554,6 +608,12 @@ Operation id: `v3:brand-boards.delete_brand_boards_by_locationId_by_id` · `Vers
 | `id` | string | **yes** | Brand board ID to update, retrieve, or delete |
 
 *Response*: [`GetBrandBoardSuccessDTO`](#getbrandboardsuccessdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().brand_boards().delete_a_brand_board(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -588,6 +648,12 @@ Operation id: `v3:brand-boards.get_brand_boards_by_locationId_by_id` · `Version
 | `id` | string | **yes** | Brand board ID to update, retrieve, or delete |
 
 *Response*: [`GetBrandBoardSuccessDTO`](#getbrandboardsuccessdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().brand_boards().get_brand_board(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -624,6 +690,12 @@ Operation id: `v3:brand-boards.patch_brand_boards_by_locationId_by_id` · `Versi
 *Request body*: [`UpdateBrandBoardBody`](#updatebrandboardbody)
 
 *Response*: [`GetBrandBoardSuccessDTO`](#getbrandboardsuccessdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().brand_boards().update_a_brand_board(&locationId, &id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

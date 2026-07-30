@@ -2,7 +2,7 @@
 //! `surveys` — typed methods for all 2 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::surveys`](crate::Ghl::surveys)
+//! Access via [`Ghl::surveys`](crate::Ghl::surveys).
 //!
 //! Request and response types come from [`ghl_models::v2::surveys`](https://docs.rs/ghl-models/latest/ghl_models/v2/surveys/); every endpoint is also documented in the
 //! [`surveys` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/surveys.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::surveys as models;
 
-/// Typed access to the `surveys` API (2 operations). Obtained via
+/// Typed access to the `surveys` API v2 surface (2 operations). Obtained via
 /// [`Ghl::surveys`](crate::Ghl::surveys).
 #[derive(Debug, Clone)]
 pub struct SurveysService {

@@ -2,7 +2,7 @@
 //! `voice-ai` — typed methods for all 11 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::voice_ai`](crate::Ghl::voice_ai)
+//! Access via [`Ghl::voice_ai`](crate::Ghl::voice_ai).
 //!
 //! Request and response types come from [`ghl_models::v2::voice_ai`](https://docs.rs/ghl-models/latest/ghl_models/v2/voice_ai/); every endpoint is also documented in the
 //! [`voice-ai` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/voice-ai.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::voice_ai as models;
 
-/// Typed access to the `voice-ai` API (11 operations). Obtained via
+/// Typed access to the `voice-ai` API v2 surface (11 operations). Obtained via
 /// [`Ghl::voice_ai`](crate::Ghl::voice_ai).
 #[derive(Debug, Clone)]
 pub struct VoiceAiService {

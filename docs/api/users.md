@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `users` cargo feature on `ghl-sdk`, then call any of the 7 generated methods on `ghl.users()`:
+**Every endpoint has a typed Rust method.** Enable the `users` cargo feature on `ghl-sdk`, then call any of the 13 generated methods on `ghl.users()` (v2) or `ghl.v3().users()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["users"] }
+ghl-sdk = { version = "0.5", features = ["users"] }
 ```
 
 
@@ -278,14 +278,14 @@ let out = ghl.users().update_user(&body).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/users/` | Create User | `v3:users.post_users` |
-| `GET` | `/users/search` | Search Users | `v3:users.get_users_search` |
-| `POST` | `/users/search/filter-by-email` | Filter Users by Email | `v3:users.post_users_search_filter_by_email` |
-| `DELETE` | `/users/{userId}` | Delete User | `v3:users.delete_users_by_userId` |
-| `GET` | `/users/{userId}` | Get User | `v3:users.get_users_by_userId` |
-| `PUT` | `/users/{userId}` | Update User | `v3:users.put_users_by_userId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/users/` | Create User | `create_user()` | `v3:users.post_users` |
+| `GET` | `/users/search` | Search Users | `search_users()` | `v3:users.get_users_search` |
+| `POST` | `/users/search/filter-by-email` | Filter Users by Email | `filter_users_by_email()` | `v3:users.post_users_search_filter_by_email` |
+| `DELETE` | `/users/{userId}` | Delete User | `delete_user()` | `v3:users.delete_users_by_userId` |
+| `GET` | `/users/{userId}` | Get User | `get_user()` | `v3:users.get_users_by_userId` |
+| `PUT` | `/users/{userId}` | Update User | `update_user()` | `v3:users.put_users_by_userId` |
 
 ### Endpoint details — v3
 
@@ -298,6 +298,12 @@ Operation id: `v3:users.post_users` · `Version: v3` · Scopes: `users.write`
 *Request body*: [`CreateUserDto`](#createuserdto)
 
 *Response*: [`UserSuccessfulResponseDto`](#usersuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().users().create_user(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -339,6 +345,15 @@ Operation id: `v3:users.get_users_search` · `Version: v3` · Scopes: `users.rea
 
 *Response*: [`SearchUserSuccessfulResponseDto`](#searchusersuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::users::SearchUsersParams;
+
+let params = SearchUsersParams::new("companyId");
+let out = ghl.v3().users().search_users(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -367,6 +382,12 @@ Operation id: `v3:users.post_users_search_filter_by_email` · `Version: v3` · S
 
 *Response*: [`SearchUserSuccessfulResponseDto`](#searchusersuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().users().filter_users_by_email(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -390,6 +411,12 @@ Operation id: `v3:users.post_users_search_filter_by_email` · `Version: v3` · S
 Operation id: `v3:users.delete_users_by_userId` · `Version: v3` · Scopes: `users.write`
 
 *Response*: [`DeleteUserSuccessfulResponseV3Dto`](#deleteusersuccessfulresponsev3dto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().users().delete_user().await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -418,6 +445,12 @@ Operation id: `v3:users.get_users_by_userId` · `Version: v3` · Scopes: `users.
 
 *Response*: [`UserSuccessfulResponseDto`](#usersuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().users().get_user(&userId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -443,6 +476,12 @@ Operation id: `v3:users.put_users_by_userId` · `Version: v3` · Scopes: `users.
 *Request body*: [`UpdateUserDto`](#updateuserdto)
 
 *Response*: [`UserSuccessfulResponseDto`](#usersuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().users().update_user(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 

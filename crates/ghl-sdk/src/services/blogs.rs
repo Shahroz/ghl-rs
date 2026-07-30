@@ -2,7 +2,7 @@
 //! `blogs` — typed methods for all 7 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::blogs`](crate::Ghl::blogs)
+//! Access via [`Ghl::blogs`](crate::Ghl::blogs).
 //!
 //! Request and response types come from [`ghl_models::v2::blogs`](https://docs.rs/ghl-models/latest/ghl_models/v2/blogs/); every endpoint is also documented in the
 //! [`blogs` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/blogs.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::blogs as models;
 
-/// Typed access to the `blogs` API (7 operations). Obtained via
+/// Typed access to the `blogs` API v2 surface (7 operations). Obtained via
 /// [`Ghl::blogs`](crate::Ghl::blogs).
 #[derive(Debug, Clone)]
 pub struct BlogsService {

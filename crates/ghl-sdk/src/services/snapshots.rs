@@ -2,7 +2,7 @@
 //! `snapshots` — typed methods for all 4 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::snapshots`](crate::Ghl::snapshots)
+//! Access via [`Ghl::snapshots`](crate::Ghl::snapshots).
 //!
 //! Request and response types come from [`ghl_models::v2::snapshots`](https://docs.rs/ghl-models/latest/ghl_models/v2/snapshots/); every endpoint is also documented in the
 //! [`snapshots` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/snapshots.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::snapshots as models;
 
-/// Typed access to the `snapshots` API (4 operations). Obtained via
+/// Typed access to the `snapshots` API v2 surface (4 operations). Obtained via
 /// [`Ghl::snapshots`](crate::Ghl::snapshots).
 #[derive(Debug, Clone)]
 pub struct SnapshotsService {

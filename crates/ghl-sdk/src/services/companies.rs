@@ -2,7 +2,7 @@
 //! `companies` — typed methods for all 1 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::companies`](crate::Ghl::companies)
+//! Access via [`Ghl::companies`](crate::Ghl::companies).
 //!
 //! Request and response types come from [`ghl_models::v2::companies`](https://docs.rs/ghl-models/latest/ghl_models/v2/companies/); every endpoint is also documented in the
 //! [`companies` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/companies.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::companies as models;
 
-/// Typed access to the `companies` API (1 operations). Obtained via
+/// Typed access to the `companies` API v2 surface (1 operations). Obtained via
 /// [`Ghl::companies`](crate::Ghl::companies).
 #[derive(Debug, Clone)]
 pub struct CompaniesService {

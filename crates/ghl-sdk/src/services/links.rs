@@ -2,7 +2,7 @@
 //! `links` — typed methods for all 6 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::links`](crate::Ghl::links)
+//! Access via [`Ghl::links`](crate::Ghl::links).
 //!
 //! Request and response types come from [`ghl_models::v2::links`](https://docs.rs/ghl-models/latest/ghl_models/v2/links/); every endpoint is also documented in the
 //! [`links` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/links.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::links as models;
 
-/// Typed access to the `links` API (6 operations). Obtained via
+/// Typed access to the `links` API v2 surface (6 operations). Obtained via
 /// [`Ghl::links`](crate::Ghl::links).
 #[derive(Debug, Clone)]
 pub struct LinksService {

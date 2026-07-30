@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `affiliate-manager` cargo feature on `ghl-sdk`, then call any of the 4 generated methods on `ghl.affiliate_manager()`:
+**Every endpoint has a typed Rust method.** Enable the `affiliate-manager` cargo feature on `ghl-sdk`, then call any of the 8 generated methods on `ghl.affiliate_manager()` (v2) or `ghl.v3().affiliate_manager()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["affiliate-manager"] }
+ghl-sdk = { version = "0.5", features = ["affiliate-manager"] }
 ```
 
 
@@ -225,12 +225,12 @@ let out = ghl.affiliate_manager().list_payouts(&locationId, &params).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/affiliate-manager/{locationId}/affiliates` | List Affiliates | `v3:affiliate-manager.get_affiliate_manager_by_locationId_affiliates` |
-| `GET` | `/affiliate-manager/{locationId}/affiliates/{affiliateId}` | Get Affiliate | `v3:affiliate-manager.get_affiliate_manager_by_locationId_affiliates_by_affiliateId` |
-| `GET` | `/affiliate-manager/{locationId}/commissions` | List Commissions | `v3:affiliate-manager.get_affiliate_manager_by_locationId_commissions` |
-| `GET` | `/affiliate-manager/{locationId}/payouts` | List Payouts | `v3:affiliate-manager.get_affiliate_manager_by_locationId_payouts` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/affiliate-manager/{locationId}/affiliates` | List Affiliates | `list_affiliates()` | `v3:affiliate-manager.get_affiliate_manager_by_locationId_affiliates` |
+| `GET` | `/affiliate-manager/{locationId}/affiliates/{affiliateId}` | Get Affiliate | `get_affiliate()` | `v3:affiliate-manager.get_affiliate_manager_by_locationId_affiliates_by_affiliateId` |
+| `GET` | `/affiliate-manager/{locationId}/commissions` | List Commissions | `list_commissions()` | `v3:affiliate-manager.get_affiliate_manager_by_locationId_commissions` |
+| `GET` | `/affiliate-manager/{locationId}/payouts` | List Payouts | `list_payouts()` | `v3:affiliate-manager.get_affiliate_manager_by_locationId_payouts` |
 
 ### Endpoint details — v3
 
@@ -261,6 +261,15 @@ Operation id: `v3:affiliate-manager.get_affiliate_manager_by_locationId_affiliat
 | `toDate` | string | no | — |
 
 *Response*: [`ListAffiliatesResponseDto`](#listaffiliatesresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::affiliate_manager::ListAffiliatesParams;
+
+let params = ListAffiliatesParams::new();
+let out = ghl.v3().affiliate_manager().list_affiliates(&locationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -294,6 +303,12 @@ Operation id: `v3:affiliate-manager.get_affiliate_manager_by_locationId_affiliat
 | `affiliateId` | string | **yes** | Affiliate Id |
 
 *Response*: [`GetAffiliateResponseDto`](#getaffiliateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().affiliate_manager().get_affiliate(&locationId, &affiliateId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -341,6 +356,15 @@ Operation id: `v3:affiliate-manager.get_affiliate_manager_by_locationId_commissi
 
 *Response*: [`GetCommissionListResponseDto`](#getcommissionlistresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::affiliate_manager::ListCommissionsParams;
+
+let params = ListCommissionsParams::new();
+let out = ghl.v3().affiliate_manager().list_commissions(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -385,6 +409,15 @@ Operation id: `v3:affiliate-manager.get_affiliate_manager_by_locationId_payouts`
 | `end` | string | no | — |
 
 *Response*: [`GetPayoutListResponseDto`](#getpayoutlistresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::affiliate_manager::ListPayoutsParams;
+
+let params = ListPayoutsParams::new();
+let out = ghl.v3().affiliate_manager().list_payouts(&locationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 

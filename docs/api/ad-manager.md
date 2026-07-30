@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `ad-manager` cargo feature on `ghl-sdk`, then call any of the 94 generated methods on `ghl.ad_manager()`:
+**Every endpoint has a typed Rust method.** Enable the `ad-manager` cargo feature on `ghl-sdk`, then call any of the 94 generated methods on `ghl.ad_manager()` (v2):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["ad-manager"] }
+ghl-sdk = { version = "0.5", features = ["ad-manager"] }
 ```
 
 

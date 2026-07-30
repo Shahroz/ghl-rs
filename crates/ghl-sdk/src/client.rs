@@ -208,7 +208,7 @@ impl Ghl {
         CalendarsService::new(self.clone())
     }
 
-    /// Typed access to the `ad-manager` API.
+    /// Typed access to the `ad-manager` API v2 surface.
     ///
     /// Requires the `ad-manager` cargo feature.
     #[cfg(feature = "ad-manager")]
@@ -216,7 +216,8 @@ impl Ghl {
     pub fn ad_manager(&self) -> crate::services::ad_manager::AdManagerService {
         crate::services::ad_manager::AdManagerService::new(self.clone())
     }
-    /// Typed access to the `affiliate-manager` API.
+
+    /// Typed access to the `affiliate-manager` API v2 surface.
     ///
     /// Requires the `affiliate-manager` cargo feature.
     #[cfg(feature = "affiliate-manager")]
@@ -224,7 +225,8 @@ impl Ghl {
     pub fn affiliate_manager(&self) -> crate::services::affiliate_manager::AffiliateManagerService {
         crate::services::affiliate_manager::AffiliateManagerService::new(self.clone())
     }
-    /// Typed access to the `agent-studio` API.
+
+    /// Typed access to the `agent-studio` API v2 surface.
     ///
     /// Requires the `agent-studio` cargo feature.
     #[cfg(feature = "agent-studio")]
@@ -232,7 +234,8 @@ impl Ghl {
     pub fn agent_studio(&self) -> crate::services::agent_studio::AgentStudioService {
         crate::services::agent_studio::AgentStudioService::new(self.clone())
     }
-    /// Typed access to the `associations` API.
+
+    /// Typed access to the `associations` API v2 surface.
     ///
     /// Requires the `associations` cargo feature.
     #[cfg(feature = "associations")]
@@ -240,7 +243,8 @@ impl Ghl {
     pub fn associations(&self) -> crate::services::associations::AssociationsService {
         crate::services::associations::AssociationsService::new(self.clone())
     }
-    /// Typed access to the `blogs` API.
+
+    /// Typed access to the `blogs` API v2 surface.
     ///
     /// Requires the `blogs` cargo feature.
     #[cfg(feature = "blogs")]
@@ -248,7 +252,8 @@ impl Ghl {
     pub fn blogs(&self) -> crate::services::blogs::BlogsService {
         crate::services::blogs::BlogsService::new(self.clone())
     }
-    /// Typed access to the `brand-boards` API.
+
+    /// Typed access to the `brand-boards` API v2 surface.
     ///
     /// Requires the `brand-boards` cargo feature.
     #[cfg(feature = "brand-boards")]
@@ -256,7 +261,8 @@ impl Ghl {
     pub fn brand_boards(&self) -> crate::services::brand_boards::BrandBoardsService {
         crate::services::brand_boards::BrandBoardsService::new(self.clone())
     }
-    /// Typed access to the `businesses` API.
+
+    /// Typed access to the `businesses` API v2 surface.
     ///
     /// Requires the `businesses` cargo feature.
     #[cfg(feature = "businesses")]
@@ -264,7 +270,8 @@ impl Ghl {
     pub fn businesses(&self) -> crate::services::businesses::BusinessesService {
         crate::services::businesses::BusinessesService::new(self.clone())
     }
-    /// Typed access to the `campaigns` API.
+
+    /// Typed access to the `campaigns` API v2 surface.
     ///
     /// Requires the `campaigns` cargo feature.
     #[cfg(feature = "campaigns")]
@@ -272,7 +279,8 @@ impl Ghl {
     pub fn campaigns(&self) -> crate::services::campaigns::CampaignsService {
         crate::services::campaigns::CampaignsService::new(self.clone())
     }
-    /// Typed access to the `companies` API.
+
+    /// Typed access to the `companies` API v2 surface.
     ///
     /// Requires the `companies` cargo feature.
     #[cfg(feature = "companies")]
@@ -280,7 +288,8 @@ impl Ghl {
     pub fn companies(&self) -> crate::services::companies::CompaniesService {
         crate::services::companies::CompaniesService::new(self.clone())
     }
-    /// Typed access to the `conversation-ai` API.
+
+    /// Typed access to the `conversation-ai` API v2 surface.
     ///
     /// Requires the `conversation-ai` cargo feature.
     #[cfg(feature = "conversation-ai")]
@@ -288,7 +297,8 @@ impl Ghl {
     pub fn conversation_ai(&self) -> crate::services::conversation_ai::ConversationAiService {
         crate::services::conversation_ai::ConversationAiService::new(self.clone())
     }
-    /// Typed access to the `courses` API.
+
+    /// Typed access to the `courses` API v2 surface.
     ///
     /// Requires the `courses` cargo feature.
     #[cfg(feature = "courses")]
@@ -296,7 +306,8 @@ impl Ghl {
     pub fn courses(&self) -> crate::services::courses::CoursesService {
         crate::services::courses::CoursesService::new(self.clone())
     }
-    /// Typed access to the `custom-fields` API.
+
+    /// Typed access to the `custom-fields` API v2 surface.
     ///
     /// Requires the `custom-fields` cargo feature.
     #[cfg(feature = "custom-fields")]
@@ -304,7 +315,8 @@ impl Ghl {
     pub fn custom_fields(&self) -> crate::services::custom_fields::CustomFieldsService {
         crate::services::custom_fields::CustomFieldsService::new(self.clone())
     }
-    /// Typed access to the `custom-menus` API.
+
+    /// Typed access to the `custom-menus` API v2 surface.
     ///
     /// Requires the `custom-menus` cargo feature.
     #[cfg(feature = "custom-menus")]
@@ -312,7 +324,8 @@ impl Ghl {
     pub fn custom_menus(&self) -> crate::services::custom_menus::CustomMenusService {
         crate::services::custom_menus::CustomMenusService::new(self.clone())
     }
-    /// Typed access to the `email-isv` API.
+
+    /// Typed access to the `email-isv` API v2 surface.
     ///
     /// Requires the `email-isv` cargo feature.
     #[cfg(feature = "email-isv")]
@@ -320,7 +333,8 @@ impl Ghl {
     pub fn email_isv(&self) -> crate::services::email_isv::EmailIsvService {
         crate::services::email_isv::EmailIsvService::new(self.clone())
     }
-    /// Typed access to the `emails` API.
+
+    /// Typed access to the `emails` API v2 surface.
     ///
     /// Requires the `emails` cargo feature.
     #[cfg(feature = "emails")]
@@ -328,7 +342,8 @@ impl Ghl {
     pub fn emails(&self) -> crate::services::emails::EmailsService {
         crate::services::emails::EmailsService::new(self.clone())
     }
-    /// Typed access to the `forms` API.
+
+    /// Typed access to the `forms` API v2 surface.
     ///
     /// Requires the `forms` cargo feature.
     #[cfg(feature = "forms")]
@@ -336,7 +351,8 @@ impl Ghl {
     pub fn forms(&self) -> crate::services::forms::FormsService {
         crate::services::forms::FormsService::new(self.clone())
     }
-    /// Typed access to the `funnels` API.
+
+    /// Typed access to the `funnels` API v2 surface.
     ///
     /// Requires the `funnels` cargo feature.
     #[cfg(feature = "funnels")]
@@ -344,7 +360,8 @@ impl Ghl {
     pub fn funnels(&self) -> crate::services::funnels::FunnelsService {
         crate::services::funnels::FunnelsService::new(self.clone())
     }
-    /// Typed access to the `invoices` API.
+
+    /// Typed access to the `invoices` API v2 surface.
     ///
     /// Requires the `invoices` cargo feature.
     #[cfg(feature = "invoices")]
@@ -352,7 +369,8 @@ impl Ghl {
     pub fn invoices(&self) -> crate::services::invoices::InvoicesService {
         crate::services::invoices::InvoicesService::new(self.clone())
     }
-    /// Typed access to the `knowledge-base` API.
+
+    /// Typed access to the `knowledge-base` API v2 surface.
     ///
     /// Requires the `knowledge-base` cargo feature.
     #[cfg(feature = "knowledge-base")]
@@ -360,7 +378,8 @@ impl Ghl {
     pub fn knowledge_base(&self) -> crate::services::knowledge_base::KnowledgeBaseService {
         crate::services::knowledge_base::KnowledgeBaseService::new(self.clone())
     }
-    /// Typed access to the `links` API.
+
+    /// Typed access to the `links` API v2 surface.
     ///
     /// Requires the `links` cargo feature.
     #[cfg(feature = "links")]
@@ -368,7 +387,8 @@ impl Ghl {
     pub fn links(&self) -> crate::services::links::LinksService {
         crate::services::links::LinksService::new(self.clone())
     }
-    /// Typed access to the `marketplace` API.
+
+    /// Typed access to the `marketplace` API v2 surface.
     ///
     /// Requires the `marketplace` cargo feature.
     #[cfg(feature = "marketplace")]
@@ -376,7 +396,8 @@ impl Ghl {
     pub fn marketplace(&self) -> crate::services::marketplace::MarketplaceService {
         crate::services::marketplace::MarketplaceService::new(self.clone())
     }
-    /// Typed access to the `medias` API.
+
+    /// Typed access to the `medias` API v2 surface.
     ///
     /// Requires the `medias` cargo feature.
     #[cfg(feature = "medias")]
@@ -384,7 +405,8 @@ impl Ghl {
     pub fn medias(&self) -> crate::services::medias::MediasService {
         crate::services::medias::MediasService::new(self.clone())
     }
-    /// Typed access to the `oauth` API.
+
+    /// Typed access to the `oauth` API v2 surface.
     ///
     /// Requires the `oauth` cargo feature.
     #[cfg(feature = "oauth")]
@@ -392,7 +414,8 @@ impl Ghl {
     pub fn oauth(&self) -> crate::services::oauth::OauthService {
         crate::services::oauth::OauthService::new(self.clone())
     }
-    /// Typed access to the `objects` API.
+
+    /// Typed access to the `objects` API v2 surface.
     ///
     /// Requires the `objects` cargo feature.
     #[cfg(feature = "objects")]
@@ -400,7 +423,8 @@ impl Ghl {
     pub fn objects(&self) -> crate::services::objects::ObjectsService {
         crate::services::objects::ObjectsService::new(self.clone())
     }
-    /// Typed access to the `payments` API.
+
+    /// Typed access to the `payments` API v2 surface.
     ///
     /// Requires the `payments` cargo feature.
     #[cfg(feature = "payments")]
@@ -408,7 +432,8 @@ impl Ghl {
     pub fn payments(&self) -> crate::services::payments::PaymentsService {
         crate::services::payments::PaymentsService::new(self.clone())
     }
-    /// Typed access to the `phone-system` API.
+
+    /// Typed access to the `phone-system` API v2 surface.
     ///
     /// Requires the `phone-system` cargo feature.
     #[cfg(feature = "phone-system")]
@@ -416,7 +441,8 @@ impl Ghl {
     pub fn phone_system(&self) -> crate::services::phone_system::PhoneSystemService {
         crate::services::phone_system::PhoneSystemService::new(self.clone())
     }
-    /// Typed access to the `products` API.
+
+    /// Typed access to the `products` API v2 surface.
     ///
     /// Requires the `products` cargo feature.
     #[cfg(feature = "products")]
@@ -424,7 +450,8 @@ impl Ghl {
     pub fn products(&self) -> crate::services::products::ProductsService {
         crate::services::products::ProductsService::new(self.clone())
     }
-    /// Typed access to the `proposals` API.
+
+    /// Typed access to the `proposals` API v2 surface.
     ///
     /// Requires the `proposals` cargo feature.
     #[cfg(feature = "proposals")]
@@ -432,7 +459,8 @@ impl Ghl {
     pub fn proposals(&self) -> crate::services::proposals::ProposalsService {
         crate::services::proposals::ProposalsService::new(self.clone())
     }
-    /// Typed access to the `saas-api` API.
+
+    /// Typed access to the `saas-api` API v2 surface.
     ///
     /// Requires the `saas-api` cargo feature.
     #[cfg(feature = "saas-api")]
@@ -440,7 +468,8 @@ impl Ghl {
     pub fn saas_api(&self) -> crate::services::saas_api::SaasApiService {
         crate::services::saas_api::SaasApiService::new(self.clone())
     }
-    /// Typed access to the `snapshots` API.
+
+    /// Typed access to the `snapshots` API v2 surface.
     ///
     /// Requires the `snapshots` cargo feature.
     #[cfg(feature = "snapshots")]
@@ -448,7 +477,8 @@ impl Ghl {
     pub fn snapshots(&self) -> crate::services::snapshots::SnapshotsService {
         crate::services::snapshots::SnapshotsService::new(self.clone())
     }
-    /// Typed access to the `social-media-posting` API.
+
+    /// Typed access to the `social-media-posting` API v2 surface.
     ///
     /// Requires the `social-media-posting` cargo feature.
     #[cfg(feature = "social-media-posting")]
@@ -458,7 +488,8 @@ impl Ghl {
     ) -> crate::services::social_media_posting::SocialMediaPostingService {
         crate::services::social_media_posting::SocialMediaPostingService::new(self.clone())
     }
-    /// Typed access to the `store` API.
+
+    /// Typed access to the `store` API v2 surface.
     ///
     /// Requires the `store` cargo feature.
     #[cfg(feature = "store")]
@@ -466,7 +497,8 @@ impl Ghl {
     pub fn store(&self) -> crate::services::store::StoreService {
         crate::services::store::StoreService::new(self.clone())
     }
-    /// Typed access to the `surveys` API.
+
+    /// Typed access to the `surveys` API v2 surface.
     ///
     /// Requires the `surveys` cargo feature.
     #[cfg(feature = "surveys")]
@@ -474,7 +506,8 @@ impl Ghl {
     pub fn surveys(&self) -> crate::services::surveys::SurveysService {
         crate::services::surveys::SurveysService::new(self.clone())
     }
-    /// Typed access to the `users` API.
+
+    /// Typed access to the `users` API v2 surface.
     ///
     /// Requires the `users` cargo feature.
     #[cfg(feature = "users")]
@@ -482,7 +515,8 @@ impl Ghl {
     pub fn users(&self) -> crate::services::users::UsersService {
         crate::services::users::UsersService::new(self.clone())
     }
-    /// Typed access to the `voice-ai` API.
+
+    /// Typed access to the `voice-ai` API v2 surface.
     ///
     /// Requires the `voice-ai` cargo feature.
     #[cfg(feature = "voice-ai")]
@@ -490,7 +524,8 @@ impl Ghl {
     pub fn voice_ai(&self) -> crate::services::voice_ai::VoiceAiService {
         crate::services::voice_ai::VoiceAiService::new(self.clone())
     }
-    /// Typed access to the `workflows` API.
+
+    /// Typed access to the `workflows` API v2 surface.
     ///
     /// Requires the `workflows` cargo feature.
     #[cfg(feature = "workflows")]
@@ -499,6 +534,20 @@ impl Ghl {
         crate::services::workflows::WorkflowsService::new(self.clone())
     }
 
+    /// The **API v3** services.
+    ///
+    /// v3 is a parallel, newer surface: 627 operations, including modules that
+    /// only exist there (`ad-publishing`, `social-planner`, `saas`,
+    /// `chat-widget`). Calls made through it send `Version: v3`.
+    ///
+    /// ```ignore
+    /// let dup = ghl.v3().contacts().get_duplicate_contact(&params).await?;
+    /// ```
+    pub fn v3(&self) -> crate::services::v3::V3 {
+        crate::services::v3::V3 {
+            client: self.clone(),
+        }
+    }
     /// The most recently observed rate-limit headroom.
     pub fn rate_status(&self) -> RateStatus {
         let read = |a: &AtomicI64| {

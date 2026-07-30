@@ -2,7 +2,7 @@
 //! `associations` — typed methods for all 10 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::associations`](crate::Ghl::associations)
+//! Access via [`Ghl::associations`](crate::Ghl::associations).
 //!
 //! Request and response types come from [`ghl_models::v2::associations`](https://docs.rs/ghl-models/latest/ghl_models/v2/associations/); every endpoint is also documented in the
 //! [`associations` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/associations.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::associations as models;
 
-/// Typed access to the `associations` API (10 operations). Obtained via
+/// Typed access to the `associations` API v2 surface (10 operations). Obtained via
 /// [`Ghl::associations`](crate::Ghl::associations).
 #[derive(Debug, Clone)]
 pub struct AssociationsService {

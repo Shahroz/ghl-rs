@@ -2,7 +2,7 @@
 //! `email-isv` — typed methods for all 1 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::email_isv`](crate::Ghl::email_isv)
+//! Access via [`Ghl::email_isv`](crate::Ghl::email_isv).
 //!
 //! Request and response types come from [`ghl_models::v2::email_isv`](https://docs.rs/ghl-models/latest/ghl_models/v2/email_isv/); every endpoint is also documented in the
 //! [`email-isv` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/email-isv.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::email_isv as models;
 
-/// Typed access to the `email-isv` API (1 operations). Obtained via
+/// Typed access to the `email-isv` API v2 surface (1 operations). Obtained via
 /// [`Ghl::email_isv`](crate::Ghl::email_isv).
 #[derive(Debug, Clone)]
 pub struct EmailIsvService {

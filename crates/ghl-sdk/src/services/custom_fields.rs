@@ -2,7 +2,7 @@
 //! `custom-fields` — typed methods for all 8 API v2 operations
 //! in this module.
 //!
-//! Access via [`Ghl::custom_fields`](crate::Ghl::custom_fields)
+//! Access via [`Ghl::custom_fields`](crate::Ghl::custom_fields).
 //!
 //! Request and response types come from [`ghl_models::v2::custom_fields`](https://docs.rs/ghl-models/latest/ghl_models/v2/custom_fields/); every endpoint is also documented in the
 //! [`custom-fields` API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/custom-fields.md).
@@ -15,7 +15,7 @@ use crate::client::Ghl;
 use crate::error::Result;
 use ghl_models::v2::custom_fields as models;
 
-/// Typed access to the `custom-fields` API (8 operations). Obtained via
+/// Typed access to the `custom-fields` API v2 surface (8 operations). Obtained via
 /// [`Ghl::custom_fields`](crate::Ghl::custom_fields).
 #[derive(Debug, Clone)]
 pub struct CustomFieldsService {

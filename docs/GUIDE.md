@@ -20,7 +20,9 @@ Everything you need to call GoHighLevel from Rust or from an AI agent. **Every A
 11. [Multi-location (agency) usage](#11-multi-location-agency-usage)
 12. [API v2 vs v3](#12-api-v2-vs-v3)
 13. [Using it from an AI agent (MCP)](#13-using-it-from-an-ai-agent-mcp)
-14. [Troubleshooting](#14-troubleshooting)
+14. [Webhooks](#14-webhooks)
+15. [Running the MCP server over HTTP](#15-running-the-mcp-server-over-http)
+16. [Troubleshooting](#16-troubleshooting)
 
 ---
 
@@ -36,11 +38,11 @@ Everything you need to call GoHighLevel from Rust or from an AI agent. **Every A
 
 ```toml
 # Generated services + their DTOs, per module:
-ghl-sdk = { version = "0.4", features = ["invoices", "contacts"] }
+ghl-sdk = { version = "0.5", features = ["invoices", "contacts"] }
 
 # Or just the DTOs, no services:
-ghl-sdk = { version = "0.4", features = ["models"] }
-ghl-models = { version = "0.4", features = ["invoices"] }
+ghl-sdk = { version = "0.5", features = ["models"] }
+ghl-models = { version = "0.5", features = ["invoices"] }
 ```
 
 Everything is feature-gated per module for a real reason: one module compiles in about a second, all 41 take closer to a minute.
@@ -148,19 +150,19 @@ Builder options:
 
 ## 4. Coverage
 
-**Every API v2 endpoint has a typed Rust method** — 576 operations across 41 modules, generated from HighLevel's specs with typed parameters and responses. You should never need to open HighLevel's API docs to make a call.
+**Every endpoint has a typed Rust method** — 1,203 operations across 45 modules in both API versions, generated from HighLevel's specs with typed parameters and responses. You should never need to open HighLevel's API docs to make a call.
 
 | What | Covers | You get |
 |---|---|---|
-| **Generated services** | **all 41 v2 modules, 576 methods** | Typed params + response structs, one method per endpoint |
+| **Generated services** | **all 45 modules, 1,203 methods** (v2 + v3) | Typed params + response structs, one method per endpoint |
 | **Hand-written helpers** | 5 modules, 21 methods | Envelope unwrapping, paginated `Stream`s — on the same services |
-| **`request_raw`** | anything, incl. all 627 v3 operations | You supply path/query/body; same auth, retry, rate limiting |
+| **`request_raw`** | any path you like | Escape hatch; same auth, retry, rate limiting |
 | **MCP meta-tools** | all 1,203 operations | For AI agents |
 
 Enable a module by cargo feature:
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["invoices", "payments"] }
+ghl-sdk = { version = "0.5", features = ["invoices", "payments"] }
 ```
 
 ```rust,ignore
@@ -171,7 +173,13 @@ let page = ghl.invoices().list_invoices(&params).await?;
 println!("{:?} invoices", page.total);
 ```
 
-Features matter for compile time: one module is a second or two, all 41 (`features = ["full"]`) is closer to a minute.
+**API v3** lives behind `ghl.v3()` and sends `Version: v3` automatically:
+
+```rust,ignore
+let dup = ghl.v3().contacts().get_duplicate_contact(&params).await?;
+```
+
+Features matter for compile time: one module is a second or two, all 45 (`features = ["full"]`) is closer to a minute.
 
 ### The generated method shape
 
@@ -371,7 +379,7 @@ Look up the exact path, params, and required scopes for any endpoint in the **[A
 `ghl-models` ships **2,417 structs** — 1,074 for v2, 1,329 for v3 — across 45 modules.
 
 ```toml
-ghl-models = { version = "0.4", features = ["invoices", "payments", "products"] }
+ghl-models = { version = "0.5", features = ["invoices", "payments", "products"] }
 ```
 
 ```rust,ignore
@@ -518,7 +526,8 @@ Both are live, on the same host, distinguished by the `Version` header.
 | Modules | 41 | 42 |
 | Operations | 576 | 627 |
 | Models | 1,074 | 1,329 |
-| Rust path | `ghl_models::v2::*` | `ghl_models::v3::*` |
+| Rust service | `ghl.invoices()` | `ghl.v3().invoices()` |
+| Rust DTOs | `ghl_models::v2::*` | `ghl_models::v3::*` |
 | MCP operation id | `invoices.get_invoices` | `v3:invoices.get_invoices` |
 
 v3 renames three modules and adds one:
@@ -583,7 +592,58 @@ Convenience: required `locationId`/`altId` params default to your configured loc
 
 ---
 
-## 14. Troubleshooting
+## 14. Webhooks
+
+```toml
+ghl-sdk = { version = "0.5", features = ["webhooks"] }
+```
+
+GoHighLevel signs every webhook with **RSA-SHA256** (PKCS#1 v1.5) over the raw body and puts the base64 signature in the `x-wh-signature` header. Verify the **raw bytes** — re-serializing parsed JSON can reorder keys and invalidate the signature.
+
+```rust,ignore
+use ghl_sdk::webhooks::{self, WebhookEvent};
+
+webhooks::verify(raw_body, signature_header)?;      // uses HighLevel's published key
+let event: WebhookEvent = serde_json::from_slice(raw_body)?;
+
+// HighLevel's recommended replay guard: bound the age, and reject repeat ids.
+if event.is_stale(std::time::Duration::from_secs(300)) { return; }
+if already_seen(event.webhook_id.as_deref()) { return; }
+
+match event.event_type() {
+    "ContactCreate" => { /* … */ }
+    "InvoicePaid"   => { /* … */ }
+    _ => {}
+}
+```
+
+`WebhookEvent` types the envelope HighLevel's 58 event types share (`type`, `timestamp`, `webhookId`, `locationId`, `companyId`) and keeps everything else in `event.data`, so a new upstream event never breaks your handler. Use `event.parse_as::<T>()` to re-deserialize into a concrete DTO once you know the type.
+
+HighLevel rotates the signing key occasionally and announces it by email and in the developer Slack. If verification starts failing across the board, check for a rotation notice and pass the new key to `verify_with_key` until this crate ships an update.
+
+---
+
+## 15. Running the MCP server over HTTP
+
+stdio is the default and what most MCP hosts launch. To share one server between several agents:
+
+```sh
+ghl-mcp --http 127.0.0.1:8000      # MCP endpoint: http://127.0.0.1:8000/mcp
+```
+
+Or in a container:
+
+```sh
+docker run -p 8000:8000 -e GHL_PIT_TOKEN=pit-… -e GHL_LOCATION_ID=… ghcr.io/shahroz/ghl-mcp
+```
+
+> **The HTTP listener has no authentication of its own.** Every caller gets whatever GoHighLevel credentials the server was started with. Bind it to localhost, or put an authenticating proxy in front. Never expose it to the internet directly.
+
+The transport is stateless (MCP `2026-07-28`), so it scales horizontally behind a load balancer with no shared session store.
+
+---
+
+## 16. Troubleshooting
 
 | Symptom | Cause & fix |
 |---|---|
@@ -594,6 +654,7 @@ Convenience: required `locationId`/`altId` params default to your configured loc
 | Agent says "destructive tools are disabled" | Intended. Restart with `--allow-destructive` |
 | `no credentials configured` | Set `GHL_PIT_TOKEN`, or pass `.private_integration_token(…)` |
 | OAuth works then fails after restart | `MemoryTokenStore` isn't durable and GHL rotates refresh tokens — implement `TokenStore` |
+| Webhook verification always fails | Verify the **raw** body bytes, not re-serialized JSON; check for a key-rotation notice |
 | MCP server shows no output | Logs go to **stderr** (stdout is the protocol channel). Set `RUST_LOG=debug` |
 | Deserialization error on a response | Please [open an issue](https://github.com/Shahroz/ghl-rs/issues) with the endpoint — the typed structs tolerate unknown fields, so this means a type mismatch |
 

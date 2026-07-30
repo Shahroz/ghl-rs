@@ -4,10 +4,10 @@
 
 ## How to call it
 
-**Every endpoint has a typed Rust method.** Enable the `businesses` cargo feature on `ghl-sdk`, then call any of the 5 generated methods on `ghl.businesses()`:
+**Every endpoint has a typed Rust method.** Enable the `businesses` cargo feature on `ghl-sdk`, then call any of the 10 generated methods on `ghl.businesses()` (v2) or `ghl.v3().businesses()` (v3):
 
 ```toml
-ghl-sdk = { version = "0.4", features = ["businesses"] }
+ghl-sdk = { version = "0.5", features = ["businesses"] }
 ```
 
 
@@ -211,13 +211,13 @@ let out = ghl.businesses().update_business(&businessId, &body).await?;
 
 ## Endpoints — API v3
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/businesses/` | Get Businesses by Location | `v3:businesses.get_businesses` |
-| `POST` | `/businesses/` | Create Business | `v3:businesses.post_businesses` |
-| `DELETE` | `/businesses/{businessId}` | Delete Business | `v3:businesses.delete_businesses_by_businessId` |
-| `GET` | `/businesses/{businessId}` | Get Business | `v3:businesses.get_businesses_by_businessId` |
-| `PUT` | `/businesses/{businessId}` | Update Business | `v3:businesses.put_businesses_by_businessId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/businesses/` | Get Businesses by Location | `get_businesses_by_location()` | `v3:businesses.get_businesses` |
+| `POST` | `/businesses/` | Create Business | `create_business()` | `v3:businesses.post_businesses` |
+| `DELETE` | `/businesses/{businessId}` | Delete Business | `delete_business()` | `v3:businesses.delete_businesses_by_businessId` |
+| `GET` | `/businesses/{businessId}` | Get Business | `get_business()` | `v3:businesses.get_businesses_by_businessId` |
+| `PUT` | `/businesses/{businessId}` | Update Business | `update_business()` | `v3:businesses.put_businesses_by_businessId` |
 
 ### Endpoint details — v3
 
@@ -236,6 +236,15 @@ Operation id: `v3:businesses.get_businesses` · `Version: v3` · Scopes: `busine
 | `skip` | string | no | — |
 
 *Response*: [`GetBusinessByLocationResponseDto`](#getbusinessbylocationresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::v3::businesses::GetBusinessesByLocationParams;
+
+let params = GetBusinessesByLocationParams::new("locationId");
+let out = ghl.v3().businesses().get_businesses_by_location(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -262,6 +271,12 @@ Operation id: `v3:businesses.post_businesses` · `Version: v3` · Scopes: `busin
 *Request body*: [`CreateBusinessDto`](#createbusinessdto)
 
 *Response*: [`UpdateBusinessResponseDto`](#updatebusinessresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().businesses().create_business(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -293,6 +308,12 @@ Operation id: `v3:businesses.delete_businesses_by_businessId` · `Version: v3` �
 
 *Response*: [`DeleteBusinessResponseDto`](#deletebusinessresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().businesses().delete_business(&businessId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -322,6 +343,12 @@ Operation id: `v3:businesses.get_businesses_by_businessId` · `Version: v3` · S
 | `businessId` | string | **yes** | — |
 
 *Response*: [`GetBusinessByIdResponseDto`](#getbusinessbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().businesses().get_business(&businessId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -354,6 +381,12 @@ Operation id: `v3:businesses.put_businesses_by_businessId` · `Version: v3` · S
 *Request body*: [`UpdateBusinessDto`](#updatebusinessdto)
 
 *Response*: [`UpdateBusinessResponseDto`](#updatebusinessresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.v3().businesses().update_business(&businessId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
