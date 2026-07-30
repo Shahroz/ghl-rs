@@ -10,7 +10,7 @@ One typed SDK. One static-binary MCP server. Every location in your agency — n
 
 | Crate | What it is |
 |---|---|
-| [`ghl-sdk`](crates/ghl-sdk) | Async, typed Rust client for the GoHighLevel API — OAuth 2.0 + Private Integration Tokens, automatic token refresh, rate-limit-aware retries, pagination as `Stream`s |
+| [`ghl-sdk`](crates/ghl-sdk) | Async, typed Rust client for the GoHighLevel API — OAuth 2.0 + Private Integration Tokens, automatic token refresh, rate-limit-aware retries, pagination as `Stream`s, webhook signature verification |
 | [`ghl-models`](crates/ghl-models) | **2,417 generated DTOs** for every API module, both API versions, feature-gated per module |
 | [`ghl-mcp`](crates/ghl-mcp) | [MCP](https://modelcontextprotocol.io) server exposing GoHighLevel to Claude, ChatGPT, Gemini, and any MCP host — built on the official `rmcp` SDK, ships as a single binary |
 
@@ -44,6 +44,7 @@ let dup = ghl.v3().contacts().get_duplicate_contact(&p).await?;   // API v3
 | [docs.rs/ghl-models](https://docs.rs/ghl-models) | All 2,417 DTOs, field by field |
 | [Design proposal](docs/PROPOSAL.md) | Research and architecture rationale |
 | [Release & distribution](docs/DISTRIBUTION.md) | Tagging, crates.io, Homebrew, npm, Docker, MCP registries |
+| [Changelog](CHANGELOG.md) | What changed in every release, including the breaking ones |
 
 ## Why this exists
 
@@ -118,6 +119,18 @@ let body = serde_json::to_value(CreateInvoiceDto {
     ..Default::default()
 })?;
 let created = ghl.request_raw("POST", "/invoices/", &[], Some(&body), None).await?;
+```
+
+Receiving webhooks? Verify HighLevel's RSA signature before trusting a payload:
+
+```toml
+ghl-sdk = { version = "0.5", features = ["webhooks"] }
+```
+
+```rust,ignore
+ghl_sdk::webhooks::verify(raw_body, signature_header)?;   // raw bytes, not re-serialized
+let event: ghl_sdk::webhooks::WebhookEvent = serde_json::from_slice(raw_body)?;
+if event.is_stale(std::time::Duration::from_secs(300)) { return; }   // replay guard
 ```
 
 Pagination is a `Stream` — the SDK handles GoHighLevel's cursor scheme (`startAfterId`) for you:

@@ -160,7 +160,7 @@
 //! # Cargo features
 //!
 //! Nothing is on by default. Each API module is its own feature so you compile
-//! only the surface you use — one module is a second or two, all 41 is closer to
+//! only the surface you use — one module is a second or two, all 45 is closer to
 //! a minute.
 //!
 //! | Feature | Effect |
@@ -190,12 +190,13 @@
 /// Generated data models (DTOs) for the whole GoHighLevel API, re-exported from
 /// the [`ghl-models`](https://docs.rs/ghl-models) crate.
 ///
-/// Enable the `models` feature, then pick the API modules you need through
-/// `ghl-models`' own per-module features:
+/// Most callers don't need this directly: enabling a module feature (e.g.
+/// `invoices`) already brings in that module's generated service *and* its DTOs.
+/// Reach for `models` when you want the types without the services:
 ///
 /// ```toml
-/// ghl-sdk = { version = "0.3", features = ["models"] }
-/// ghl-models = { version = "0.3", features = ["invoices", "payments"] }
+/// ghl-sdk = { version = "0.5", features = ["models"] }
+/// ghl-models = { version = "0.5", features = ["invoices", "payments"] }
 /// ```
 ///
 /// Types live under `models::v2::*` and `models::v3::*`.

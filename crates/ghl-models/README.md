@@ -2,7 +2,7 @@
 
 Rust data models (DTOs) for the [GoHighLevel](https://www.gohighlevel.com) (HighLevel) API, generated from [HighLevel's official OpenAPI specifications](https://github.com/GoHighLevel/highlevel-api-docs).
 
-**2,417 structs covering both API versions** — `v2` (2,417 total: 1,074 V2 + 1,329 V3 structs and 14 documented string-enum aliases) across **45 API modules**, from `contacts` and `invoices` to `ad-publishing`, `social-planner`, `voice-ai`, and `saas`.
+**2,417 types across 45 API modules and both API versions** — 1,074 structs for `v2`, 1,329 for `v3`, plus 14 documented string-enum aliases. Everything from `contacts` and `invoices` to `ad-publishing`, `social-planner`, `voice-ai` and `saas`.
 
 ## Usage
 
@@ -61,5 +61,7 @@ Every model, field, and enum value is documented per module in the [API referenc
 
 - [`ghl-sdk`](https://crates.io/crates/ghl-sdk) — the async API client. Its per-module features give you **generated typed methods for every v2 endpoint**, wired to these DTOs, so you rarely construct requests by hand.
 - [`ghl-mcp`](https://crates.io/crates/ghl-mcp) — MCP server exposing GoHighLevel to AI agents.
+
+Changes per release: [CHANGELOG](https://github.com/Shahroz/ghl-rs/blob/main/CHANGELOG.md).
 
 License: MIT or Apache-2.0. *Not affiliated with HighLevel Inc.*

@@ -1,7 +1,23 @@
 # GoHighLevel Rust SDK + MCP Server — Research & Design Proposal
 
-**Status:** Draft v1 · **Author:** Shahroz Allauddin · **Date:** 2026-07-29
-**Working names:** `ghl-sdk` (library) + `ghl-mcp` (server) — both names verified available on crates.io as of today
+**Status:** Historical — this is the original research and design record, kept as
+written on 2026-07-29 so the reasoning behind the architecture stays legible.
+**Author:** Shahroz Allauddin
+
+> **What actually shipped diverges from this document in a few places.** For the
+> current state see the [README](../README.md), the [usage guide](GUIDE.md) and
+> the [API reference](api/README.md). The notable differences:
+>
+> | This proposal planned | What shipped |
+> |---|---|
+> | 5 typed modules, ~21 methods; meta-tools for the rest | **1,203 typed methods** — every endpoint in API v2 *and* v3, across all 45 modules |
+> | Types-only codegen, hand-written client surface | Both: generated DTOs (`ghl-models`) *and* generated services, plus hand-written helpers on 5 busy modules |
+> | ~413 operations (third-party estimate) | **1,203** operations, counted from the official specs (576 v2 + 627 v3) |
+> | API v3 as a future risk to plan around | v3 shipped as a first-class parallel surface via `ghl.v3()` |
+> | Webhooks "later" | Shipped: RSA-SHA256 verification + typed events |
+>
+> The market analysis, the strict-on-send/lenient-on-receive reasoning, the
+> feature-gating rationale and the trade-off tables all still hold.
 
 ---
 

@@ -129,4 +129,6 @@ Flags win over environment variables.
 | `GHL_HTTP_AUTH_TOKEN` | `--http-auth-token` | Require `Authorization: Bearer` on the HTTP endpoint |
 | `RUST_LOG` | — | Log filter (stderr only; stdout is the MCP channel) |
 
+Changes per release: [CHANGELOG](https://github.com/Shahroz/ghl-rs/blob/main/CHANGELOG.md).
+
 License: MIT or Apache-2.0. *Not affiliated with HighLevel Inc.*

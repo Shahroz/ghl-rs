@@ -1,6 +1,6 @@
 {
   "name": "ghl-mcp",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "MCP server for GoHighLevel CRM \u2014 a single static binary, no Node runtime needed at run time",
   "keywords": [
     "mcp",

@@ -9,13 +9,13 @@
     "source": "github",
     "subfolder": "crates/ghl-mcp"
   },
-  "version": "0.5.1",
+  "version": "0.5.2",
   "packages": [
     {
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "ghl-mcp",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "transport": {
         "type": "stdio"
       },
@@ -56,7 +56,7 @@
       "registryType": "oci",
       "registryBaseUrl": "https://ghcr.io",
       "identifier": "shahroz/ghl-mcp",
-      "version": "0.5.1",
+      "version": "0.5.2",
       "transport": {
         "type": "streamable-http",
         "url": "http://localhost:8000/mcp"

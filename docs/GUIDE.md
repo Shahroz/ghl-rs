@@ -4,6 +4,7 @@ Everything you need to call GoHighLevel from Rust or from an AI agent. **Every A
 
 - **[Full API reference](api/README.md)** — every module, endpoint, struct, and enum
 - [docs.rs/ghl-sdk](https://docs.rs/ghl-sdk) · [docs.rs/ghl-models](https://docs.rs/ghl-models)
+- [Release & distribution](DISTRIBUTION.md) — publishing to crates.io, Homebrew, npm, Docker, MCP registries
 
 **Contents**
 

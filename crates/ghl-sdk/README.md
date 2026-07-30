@@ -78,4 +78,6 @@ match event.event_type() { "ContactCreate" => {}, _ => {} }
 
 Looking for the AI-agent side? See [`ghl-mcp`](https://crates.io/crates/ghl-mcp), the MCP server built on this SDK.
 
+Changes per release: [CHANGELOG](https://github.com/Shahroz/ghl-rs/blob/main/CHANGELOG.md).
+
 License: MIT or Apache-2.0. *Not affiliated with HighLevel Inc.*
