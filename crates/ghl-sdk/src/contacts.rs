@@ -1,4 +1,63 @@
-//! Contacts API: CRUD plus cursor-paginated listing (`startAfterId` scheme).
+//! Contacts — create, read, update, delete, and stream contact records.
+//!
+//! Access via [`Ghl::contacts`](crate::Ghl::contacts). This is the busiest module
+//! in most integrations; the [full contacts reference][ref] documents all 32 v2
+//! endpoints, of which the five below are typed.
+//!
+//! | Method | Endpoint | Scope |
+//! |---|---|---|
+//! | [`ContactsService::create`] | `POST /contacts/` | `contacts.write` |
+//! | [`ContactsService::get`] | `GET /contacts/{id}` | `contacts.readonly` |
+//! | [`ContactsService::update`] | `PUT /contacts/{id}` | `contacts.write` |
+//! | [`ContactsService::delete`] | `DELETE /contacts/{id}` | `contacts.write` |
+//! | [`ContactsService::list`] | `GET /contacts/` | `contacts.readonly` |
+//!
+//! # Examples
+//!
+//! Create a contact (at least an email or phone is required by the API):
+//!
+//! ```no_run
+//! # use ghl_sdk::{Ghl, contacts::CreateContact};
+//! # async fn demo(ghl: Ghl, loc: String) -> Result<(), ghl_sdk::Error> {
+//! let contact = ghl.contacts().create(CreateContact {
+//!     location_id: loc,
+//!     email: Some("ada@example.com".into()),
+//!     phone: Some("+15551234567".into()),
+//!     first_name: Some("Ada".into()),
+//!     tags: vec!["newsletter".into()],
+//!     ..Default::default()
+//! }).await?;
+//! # Ok(()) }
+//! ```
+//!
+//! Update only the fields you set — omitted fields are left untouched:
+//!
+//! ```no_run
+//! # use ghl_sdk::{Ghl, contacts::UpdateContact};
+//! # async fn demo(ghl: Ghl, id: &str) -> Result<(), ghl_sdk::Error> {
+//! ghl.contacts().update(id, UpdateContact {
+//!     last_name: Some("Lovelace".into()),
+//!     ..Default::default()
+//! }).await?;
+//! # Ok(()) }
+//! ```
+//!
+//! Stream every contact, following GoHighLevel's `startAfterId` cursor
+//! automatically:
+//!
+//! ```no_run
+//! # use ghl_sdk::Ghl;
+//! use futures_util::TryStreamExt;
+//!
+//! # async fn demo(ghl: Ghl, loc: &str) -> Result<(), ghl_sdk::Error> {
+//! let mut stream = ghl.contacts().list(loc).limit(100).stream();
+//! while let Some(contact) = stream.try_next().await? {
+//!     println!("{} {:?}", contact.id, contact.email);
+//! }
+//! # Ok(()) }
+//! ```
+//!
+//! [ref]: https://github.com/Shahroz/ghl-rs/blob/main/docs/api/contacts.md
 
 use futures_util::stream::{self, Stream, StreamExt, TryStreamExt};
 use reqwest::Method;

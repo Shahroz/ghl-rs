@@ -40,6 +40,8 @@ jobs:
       - run: cargo fmt --all --check
       - run: cargo clippy --workspace --all-targets
       - run: cargo test --workspace
-      - run: cargo doc --workspace --no-deps
+      # Docs are built with every feature on, matching how docs.rs renders them:
+      # ghl-models' module-index links only resolve when those modules are compiled.
+      - run: cargo doc --workspace --all-features --no-deps
         env:
           RUSTDOCFLAGS: -D warnings

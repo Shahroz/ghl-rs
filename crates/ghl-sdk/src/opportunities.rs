@@ -1,8 +1,66 @@
-//! Opportunities API: pipelines, search, CRUD, and stage/status changes.
+//! Opportunities — pipeline deals, their stages, and status transitions.
 //!
-//! Note the wire-format quirk: opportunity *search* uses `location_id`
-//! (snake_case) query params, unlike the camelCase used elsewhere — one of the
-//! per-module inconsistencies this SDK absorbs for you.
+//! Access via [`Ghl::opportunities`](crate::Ghl::opportunities). See the
+//! [full opportunities reference][ref] for all 12 v2 endpoints.
+//!
+//! | Method | Endpoint | Scope |
+//! |---|---|---|
+//! | [`OpportunitiesService::pipelines`] | `GET /opportunities/pipelines` | `opportunities.readonly` |
+//! | [`OpportunitiesService::search`] | `GET /opportunities/search` | `opportunities.readonly` |
+//! | [`OpportunitiesService::get`] | `GET /opportunities/{id}` | `opportunities.readonly` |
+//! | [`OpportunitiesService::create`] | `POST /opportunities/` | `opportunities.write` |
+//! | [`OpportunitiesService::update`] | `PUT /opportunities/{id}` | `opportunities.write` |
+//! | [`OpportunitiesService::update_status`] | `PUT /opportunities/{id}/status` | `opportunities.write` |
+//! | [`OpportunitiesService::delete`] | `DELETE /opportunities/{id}` | `opportunities.write` |
+//!
+//! Statuses are `open`, `won`, `lost`, and `abandoned`.
+//!
+//! # Examples
+//!
+//! Stage ids live on the pipeline, so fetch it first:
+//!
+//! ```no_run
+//! # use ghl_sdk::{Ghl, opportunities::CreateOpportunity};
+//! # async fn demo(ghl: Ghl, loc: String, contact_id: String) -> Result<(), ghl_sdk::Error> {
+//! let pipelines = ghl.opportunities().pipelines(&loc).await?;
+//! let pipeline = &pipelines[0];
+//!
+//! let deal = ghl.opportunities().create(CreateOpportunity {
+//!     location_id: loc,
+//!     pipeline_id: pipeline.id.clone(),
+//!     name: "Acme — annual plan".into(),
+//!     pipeline_stage_id: Some(pipeline.stages[0].id.clone()),
+//!     monetary_value: Some(12_000.0),
+//!     contact_id: Some(contact_id),
+//!     ..Default::default()
+//! }).await?;
+//!
+//! // Mark it won
+//! ghl.opportunities().update_status(&deal.id, "won").await?;
+//! # Ok(()) }
+//! ```
+//!
+//! Search with filters, then page or stream:
+//!
+//! ```no_run
+//! # use ghl_sdk::Ghl;
+//! # async fn demo(ghl: Ghl, loc: &str) -> Result<(), ghl_sdk::Error> {
+//! let page = ghl.opportunities().search(loc)
+//!     .status("open")
+//!     .limit(50)
+//!     .page()
+//!     .await?;
+//! println!("{} open deals", page.opportunities.len());
+//! # Ok(()) }
+//! ```
+//!
+//! # A wire-format quirk
+//!
+//! Unlike the rest of the API, `GET /opportunities/search` takes **snake_case**
+//! query parameters (`location_id`, `pipeline_id`). This module absorbs that for
+//! you — [`SearchOpportunities`] sends the right names.
+//!
+//! [ref]: https://github.com/Shahroz/ghl-rs/blob/main/docs/api/opportunities.md
 
 use futures_util::stream::{self, Stream, StreamExt, TryStreamExt};
 use reqwest::Method;

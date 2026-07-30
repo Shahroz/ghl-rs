@@ -1,4 +1,55 @@
-//! Conversations API: search threads, read messages, send SMS/email.
+//! Conversations — search threads, read messages, and send SMS/email.
+//!
+//! Access via [`Ghl::conversations`](crate::Ghl::conversations). See the
+//! [full conversations reference][ref] for all 29 v2 endpoints.
+//!
+//! | Method | Endpoint | Scope |
+//! |---|---|---|
+//! | [`ConversationsService::search`] | `GET /conversations/search` | `conversations.readonly` |
+//! | [`ConversationsService::messages`] | `GET /conversations/{id}/messages` | `conversations/message.readonly` |
+//! | [`ConversationsService::send_message`] | `POST /conversations/messages` | `conversations/message.write` |
+//!
+//! Channels accepted by [`SendMessage::message_type`]: `SMS`, `Email`,
+//! `WhatsApp`, `IG`, `FB`, `Custom`, `Live_Chat`.
+//!
+//! # Examples
+//!
+//! ```no_run
+//! # use ghl_sdk::{Ghl, conversations::SendMessage};
+//! # async fn demo(ghl: Ghl, loc: &str, contact_id: String) -> Result<(), ghl_sdk::Error> {
+//! // Find a thread, then read it (newest message first)
+//! let threads = ghl.conversations().search(loc, Some("ada"), 20).await?;
+//! let msgs = ghl.conversations().messages(&threads.conversations[0].id, 50).await?;
+//! for m in &msgs.messages {
+//!     println!("[{:?}] {:?}", m.direction, m.body);
+//! }
+//!
+//! // Send an SMS
+//! ghl.conversations().send_message(SendMessage {
+//!     message_type: "SMS".into(),
+//!     contact_id,
+//!     message: Some("Thanks for reaching out!".into()),
+//!     ..Default::default()
+//! }).await?;
+//! # Ok(()) }
+//! ```
+//!
+//! Email needs a `subject` and usually `html`:
+//!
+//! ```no_run
+//! # use ghl_sdk::{Ghl, conversations::SendMessage};
+//! # async fn demo(ghl: Ghl, contact_id: String) -> Result<(), ghl_sdk::Error> {
+//! ghl.conversations().send_message(SendMessage {
+//!     message_type: "Email".into(),
+//!     contact_id,
+//!     subject: Some("Your August invoice".into()),
+//!     html: Some("<p>Attached.</p>".into()),
+//!     ..Default::default()
+//! }).await?;
+//! # Ok(()) }
+//! ```
+//!
+//! [ref]: https://github.com/Shahroz/ghl-rs/blob/main/docs/api/conversations.md
 
 use reqwest::Method;
 use serde::{Deserialize, Serialize};

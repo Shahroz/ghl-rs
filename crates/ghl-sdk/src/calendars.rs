@@ -1,4 +1,52 @@
-//! Calendars API: calendars, free slots, and appointments.
+//! Calendars — list calendars, find free slots, and book appointments.
+//!
+//! Access via [`Ghl::calendars`](crate::Ghl::calendars). See the
+//! [full calendars reference][ref] for all 41 v2 endpoints (59 in v3).
+//!
+//! | Method | Endpoint | Scope |
+//! |---|---|---|
+//! | [`CalendarsService::list`] | `GET /calendars/` | `calendars.readonly` |
+//! | [`CalendarsService::free_slots`] | `GET /calendars/{id}/free-slots` | `calendars.readonly` |
+//! | [`CalendarsService::create_appointment`] | `POST /calendars/events/appointments` | `calendars/events.write` |
+//! | [`CalendarsService::get_appointment`] | `GET /calendars/events/appointments/{id}` | `calendars/events.readonly` |
+//!
+//! # Two time formats to keep straight
+//!
+//! - [`CalendarsService::free_slots`] takes **epoch milliseconds**.
+//! - [`CreateAppointment::start_time`] takes **ISO-8601 with an offset**, e.g.
+//!   `2026-08-01T14:00:00+05:00`.
+//!
+//! # Examples
+//!
+//! ```no_run
+//! # use ghl_sdk::{Ghl, calendars::CreateAppointment};
+//! # async fn demo(ghl: Ghl, loc: String, contact_id: String,
+//! #               start_ms: i64, end_ms: i64) -> Result<(), ghl_sdk::Error> {
+//! let calendars = ghl.calendars().list(&loc).await?;
+//! let cal = &calendars[0];
+//!
+//! // Slots come back grouped by date
+//! let slots = ghl.calendars()
+//!     .free_slots(&cal.id, start_ms, end_ms, Some("America/New_York"))
+//!     .await?;
+//! println!("{} slots over {} days", slots.all().len(), slots.by_date.len());
+//!
+//! let appt = ghl.calendars().create_appointment(CreateAppointment {
+//!     calendar_id: cal.id.clone(),
+//!     location_id: loc,
+//!     contact_id,
+//!     start_time: "2026-08-01T14:00:00+05:00".into(),
+//!     title: Some("Discovery call".into()),
+//!     to_notify: Some(true),
+//!     ..Default::default()
+//! }).await?;
+//! println!("booked {}", appt.id);
+//! # Ok(()) }
+//! ```
+//!
+//! Appointment statuses: `confirmed`, `cancelled`, `showed`, `noshow`, `invalid`.
+//!
+//! [ref]: https://github.com/Shahroz/ghl-rs/blob/main/docs/api/calendars.md
 
 use reqwest::Method;
 use serde::{Deserialize, Serialize};
