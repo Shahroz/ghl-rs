@@ -75,7 +75,7 @@ The operations catalog is generated from [HighLevel's official OpenAPI specs](ht
 
 **Both API versions.** v2 operation ids look like `invoices.get_invoices`; v3 ids are prefixed `v3:` (e.g. `v3:social-planner.post_posts`). Each carries its own `Version` header, so the right one is always sent — including the V3 `ad-publishing` module, which unusually declares `2021-07-28` rather than `v3`. Pass `api_version` to `ghl_search_operations` to filter; v2 wins ties by default since it's the stable API.
 
-For typed request/response structs in your own Rust code, see [`ghl-models`](https://crates.io/crates/ghl-models) (2,417 generated DTOs).
+Writing Rust rather than driving an agent? [`ghl-sdk`](https://crates.io/crates/ghl-sdk) has a typed method for every API v2 endpoint (576 of them), and [`ghl-models`](https://crates.io/crates/ghl-models) has all 2,417 DTOs.
 
 ## Full endpoint reference
 

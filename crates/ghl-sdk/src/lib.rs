@@ -1,6 +1,10 @@
 //! Unofficial async Rust SDK for the [GoHighLevel](https://www.gohighlevel.com)
-//! (HighLevel) CRM API — covering **1,203 operations across 45 API modules** in
-//! both API v2 and v3.
+//! (HighLevel) CRM API.
+//!
+//! **Every API v2 endpoint has a typed Rust method** — 576 operations across 41
+//! modules, each with generated request/response types, so you never have to
+//! leave the library to read HighLevel's docs. API v3 (627 more operations) is
+//! covered by [DTOs](https://docs.rs/ghl-models) plus [`Ghl::request_raw`].
 //!
 //! ```no_run
 //! use ghl_sdk::{contacts::CreateContact, Ghl};
@@ -40,55 +44,79 @@
 //! - **Forward-compatible types** — unknown response fields are preserved in an
 //!   `extra` map instead of failing deserialization.
 //!
-//! # Three coverage tiers
+//! # Generated services — every v2 endpoint, typed
 //!
-//! The guarantees differ by tier — know which one you're using:
+//! Enable the cargo feature named after an API module and its whole surface
+//! appears on the client, with generated parameter and body types:
 //!
-//! | Tier | Covers | What you get |
-//! |---|---|---|
-//! | **1.** Typed services (below) | 5 modules, 21 methods | Real Rust types, compile-time field checks, parsed responses, paginated `Stream`s |
-//! | **2.** [`Ghl::request_raw`] + [`ghl-models`](https://docs.rs/ghl-models) DTOs | all 45 modules, 2,417 structs | Typed bodies you serialize; you supply the path |
-//! | **3.** [`ghl-mcp`](https://crates.io/crates/ghl-mcp) meta-tools | all 1,203 operations | For AI agents; params validated, body passed through |
-//!
-//! ## Tier 1 — typed service modules
-//!
-//! | Module | Service | Methods |
-//! |---|---|---|
-//! | [`contacts`] | [`Ghl::contacts`] | `create`, `get`, `update`, `delete`, `list` (streaming) |
-//! | [`opportunities`] | [`Ghl::opportunities`] | `pipelines`, `create`, `get`, `update`, `update_status`, `delete`, `search` (streaming) |
-//! | [`conversations`] | [`Ghl::conversations`] | `search`, `messages`, `send_message` |
-//! | [`calendars`] | [`Ghl::calendars`] | `list`, `free_slots`, `create_appointment`, `get_appointment` |
-//! | [`locations`] | [`Ghl::locations`] | `get`, `search` |
-//!
-//! ## Tier 2 — every other endpoint
-//!
-//! [`Ghl::request_raw`] reaches any endpoint with the same auth, retry, and
-//! rate-limit handling. Pair it with a generated DTO for a typed body:
-//!
-//! ```ignore
-//! use ghl_models::v2::invoices::CreateInvoiceDto;
-//!
-//! let body = serde_json::to_value(CreateInvoiceDto {
-//!     alt_id: location_id.clone(),
-//!     alt_type: "location".into(),      // the only legal value
-//!     name: "August retainer".into(),
-//!     currency: "USD".into(),
-//!     ..Default::default()
-//! })?;
-//!
-//! let created = ghl.request_raw("POST", "/invoices/", &[], Some(&body), None).await?;
+//! ```toml
+//! ghl-sdk = { version = "0.4", features = ["invoices"] }
 //! ```
 //!
-//! To call an **API v3** endpoint, pass the version override:
+//! ```ignore
+//! use ghl_sdk::services::invoices::ListInvoicesParams;
+//!
+//! // Required query params are constructor arguments; optional ones are setters.
+//! let params = ListInvoicesParams::new(&location_id, "location", "20", "0")
+//!     .status("draft");
+//!
+//! let page = ghl.invoices().list_invoices(&params).await?;   // typed response
+//! println!("{:?} invoices", page.total);
+//! ```
+//!
+//! Every generated method has the same predictable shape:
+//!
+//! ```text
+//! async fn <name>(&self, <path params…>, params: &XParams, body: &Dto) -> Result<Response>
+//! ```
+//!
+//! - **Path parameters** are positional `&str` arguments, in URL order.
+//! - **Query parameters** collapse into one `XParams` struct — required fields
+//!   are `new()` arguments, optional ones are chainable setters. The argument is
+//!   absent entirely when an endpoint takes no query parameters.
+//! - **Bodies** take the generated DTO from [`ghl-models`](https://docs.rs/ghl-models).
+//! - **Returns** the response type the spec names (about 3 in 4 endpoints), else
+//!   [`serde_json::Value`].
+//!
+//! See [`services`] for the module list, and the
+//! [API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/README.md)
+//! for the Rust method behind every endpoint.
+//!
+//! ## Hand-written helpers
+//!
+//! Five modules also carry curated helpers that go beyond a 1:1 endpoint
+//! mapping — they unwrap response envelopes and turn cursor pagination into
+//! [`futures_util::Stream`]s. They live on the same services, so both styles are
+//! available together:
+//!
+//! | Module | Helpers |
+//! |---|---|
+//! | [`contacts`] | `create`, `get`, `update`, `delete`, `list` (streaming) |
+//! | [`opportunities`] | `pipelines`, `create`, `get`, `update`, `update_status`, `delete`, `search` (streaming) |
+//! | [`conversations`] | `search`, `messages`, `send_message` |
+//! | [`calendars`] | `list`, `free_slots`, `create_appointment`, `get_appointment` |
+//! | [`locations`] | `get`, `search` |
+//!
+//! ## Anything not generated
+//!
+//! [`Ghl::request_raw`] reaches any endpoint — including all of API v3 — with
+//! the same auth, retry, and rate-limit handling:
 //!
 //! ```ignore
 //! let dup = ghl.request_raw(
 //!     "GET", "/contacts/search/duplicate",
 //!     &[("locationId".into(), loc), ("email".into(), email)],
 //!     None,
-//!     Some("v3"),
+//!     Some("v3"),          // v3 endpoints need their own Version header
 //! ).await?;
 //! ```
+//!
+//! # Strict on send, lenient on receive
+//!
+//! Request types keep the spec's required fields non-`Option`, so a missing
+//! mandatory field is a compile error. Response types make everything optional:
+//! GoHighLevel sometimes omits fields its own spec marks required, and a strict
+//! response type would turn that into an unrecoverable deserialization failure.
 //!
 //! # Authentication at a glance
 //!
@@ -113,9 +141,15 @@
 //!
 //! # Cargo features
 //!
-//! | Feature | Default | Effect |
-//! |---|---|---|
-//! | `models` | no | Re-exports [`ghl-models`](https://docs.rs/ghl-models) as [`models`], giving typed DTOs for every API module |
+//! Nothing is on by default. Each API module is its own feature so you compile
+//! only the surface you use — one module is a second or two, all 41 is closer to
+//! a minute.
+//!
+//! | Feature | Effect |
+//! |---|---|
+//! | `<module>` (41 of them, e.g. `invoices`, `payments`, `products`) | That module's generated service + its DTOs |
+//! | `full` | Every generated service. Convenient, slow to compile |
+//! | `models` | Just the [`ghl-models`](https://docs.rs/ghl-models) re-export, no services |
 //!
 //! # Further reading
 //!
@@ -158,6 +192,7 @@ pub mod conversations;
 mod error;
 pub mod locations;
 pub mod opportunities;
+pub mod services;
 
 pub use auth::{Auth, MemoryTokenStore, OAuthConfig, TokenSet, TokenStore, UserType};
 pub use client::{Ghl, GhlBuilder, RateStatus, API_VERSION, DEFAULT_BASE_URL};

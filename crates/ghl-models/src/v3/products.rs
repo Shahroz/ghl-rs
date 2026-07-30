@@ -195,14 +195,23 @@ pub struct BulkEditRequestDto {
 pub struct BulkEditResponseDto {
     /// Success message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Operation status
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Number of products updated
     /// Required by the API.
-    #[serde(rename = "updatedCount")]
-    pub updated_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "updatedCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub updated_count: Option<f64>,
 }
 
 /// `BulkUpdateDto` from the GoHighLevel OpenAPI spec.
@@ -288,7 +297,9 @@ pub struct BulkUpdateFilters {
 pub struct BulkUpdateResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -310,29 +321,40 @@ pub struct CollectionSEODto {
 pub struct CollectionSchema {
     /// The unique identifier for the collection
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Location Id to which the collection is associated
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Name of the collection
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Slug of the collection with which navigation is established. Special Characters and
     /// spacing is not allowed and should be unique
     /// Required by the API.
-    pub slug: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub slug: Option<String>,
     /// The URL of the image that is going to be displayed as the collection Thumbnail
     /// Required by the API.
-    pub image: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub image: Option<String>,
     /// The information which will be displayed in SEO previews
     /// Required by the API.
-    pub seo: CollectionSEODto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub seo: Option<CollectionSEODto>,
     /// Date at which the collection was created
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
 }
 
 /// `CountReviewsByStatusResponseDto` from the GoHighLevel OpenAPI spec.
@@ -340,6 +362,7 @@ pub struct CollectionSchema {
 pub struct CountReviewsByStatusResponseDto {
     /// Array of review status counts
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<Vec<serde_json::Value>>,
 }
@@ -349,7 +372,9 @@ pub struct CountReviewsByStatusResponseDto {
 pub struct CreateCollectionResponseDto {
     /// created Collection
     /// Required by the API.
-    pub data: CollectionSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<CollectionSchema>,
 }
 
 /// `CreatePriceDto` from the GoHighLevel OpenAPI spec.
@@ -475,8 +500,9 @@ pub struct CreatePriceDto {
 pub struct CreatePriceResponseDto {
     /// The unique identifier for the price.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// An array of membership offers associated with the price.
     #[serde(
         rename = "membershipOffers",
@@ -506,18 +532,25 @@ pub struct CreatePriceResponseDto {
     pub user_id: Option<String>,
     /// The name of the price.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The type of the price (e.g., one_time).
     /// Allowed values: `one_time`, `recurring`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// The currency code for the price.
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// The amount of the price.
     /// Required by the API.
-    pub amount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub amount: Option<f64>,
     /// The recurring details of the price (if type is recurring).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub recurring: Option<RecurringDto>,
@@ -688,8 +721,9 @@ pub struct CreateProductDto {
 pub struct CreateProductResponseDto {
     /// The unique identifier for the product.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// product description
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -698,15 +732,27 @@ pub struct CreateProductResponseDto {
     pub variants: Vec<ProductVariantDto>,
     /// The unique identifier for the location.
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// The name of the product.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The type of the product (e.g., PHYSICAL).
     /// Required by the API.
-    #[serde(rename = "productType")]
-    pub product_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "productType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub product_type: Option<String>,
     /// Indicates whether the product is available in-store.
     #[serde(
         rename = "availableInStore",
@@ -717,13 +763,15 @@ pub struct CreateProductResponseDto {
     /// The creation timestamp of the product.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the product.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// The statement descriptor for the product.
     #[serde(
         rename = "statementDescriptor",
@@ -773,10 +821,14 @@ pub struct CreateProductResponseDto {
 pub struct DefaultCollectionResponseDto {
     /// Collection Data
     /// Required by the API.
-    pub data: ProductCategories,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ProductCategories>,
     /// Status of the operation
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
 }
 
 /// `DefaultPriceResponseDto` from the GoHighLevel OpenAPI spec.
@@ -784,8 +836,9 @@ pub struct DefaultCollectionResponseDto {
 pub struct DefaultPriceResponseDto {
     /// The unique identifier for the price.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// An array of membership offers associated with the price.
     #[serde(
         rename = "membershipOffers",
@@ -815,18 +868,25 @@ pub struct DefaultPriceResponseDto {
     pub user_id: Option<String>,
     /// The name of the price.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The type of the price (e.g., one_time).
     /// Allowed values: `one_time`, `recurring`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// The currency code for the price.
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// The amount of the price.
     /// Required by the API.
-    pub amount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub amount: Option<f64>,
     /// The recurring details of the price (if type is recurring).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub recurring: Option<RecurringDto>,
@@ -873,8 +933,9 @@ pub struct DefaultPriceResponseDto {
 pub struct DefaultProductResponseDto {
     /// The unique identifier for the product.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// product description
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -883,15 +944,27 @@ pub struct DefaultProductResponseDto {
     pub variants: Vec<ProductVariantDto>,
     /// The unique identifier for the location.
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// The name of the product.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The type of the product (e.g., PHYSICAL).
     /// Required by the API.
-    #[serde(rename = "productType")]
-    pub product_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "productType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub product_type: Option<String>,
     /// Indicates whether the product is available in-store.
     #[serde(
         rename = "availableInStore",
@@ -902,13 +975,15 @@ pub struct DefaultProductResponseDto {
     /// The creation timestamp of the product.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the product.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// The statement descriptor for the product.
     #[serde(
         rename = "statementDescriptor",
@@ -958,7 +1033,9 @@ pub struct DefaultProductResponseDto {
 pub struct DeletePriceResponseDto {
     /// returns true if the price is successfully deleted
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
 }
 
 /// `DeleteProductCollectionResponseDto` from the GoHighLevel OpenAPI spec.
@@ -966,7 +1043,9 @@ pub struct DeletePriceResponseDto {
 pub struct DeleteProductCollectionResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -977,7 +1056,9 @@ pub struct DeleteProductCollectionResponseDto {
 pub struct DeleteProductResponseDto {
     /// returns true if the product is successfully deleted
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
 }
 
 /// `DeleteProductReviewResponseDto` from the GoHighLevel OpenAPI spec.
@@ -985,7 +1066,9 @@ pub struct DeleteProductResponseDto {
 pub struct DeleteProductReviewResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -996,11 +1079,14 @@ pub struct DeleteProductReviewResponseDto {
 pub struct GetInventoryResponseDto {
     /// List of inventory items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub inventory: Vec<InventoryItemDto>,
     /// Total count of inventory items
     /// Required by the API.
-    pub total: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<serde_json::Value>,
 }
 
 /// `GetPriceResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1008,8 +1094,9 @@ pub struct GetInventoryResponseDto {
 pub struct GetPriceResponseDto {
     /// The unique identifier for the price.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// An array of membership offers associated with the price.
     #[serde(
         rename = "membershipOffers",
@@ -1039,18 +1126,25 @@ pub struct GetPriceResponseDto {
     pub user_id: Option<String>,
     /// The name of the price.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The type of the price (e.g., one_time).
     /// Allowed values: `one_time`, `recurring`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// The currency code for the price.
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// The amount of the price.
     /// Required by the API.
-    pub amount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub amount: Option<f64>,
     /// The recurring details of the price (if type is recurring).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub recurring: Option<RecurringDto>,
@@ -1097,8 +1191,9 @@ pub struct GetPriceResponseDto {
 pub struct GetProductResponseDto {
     /// The unique identifier for the product.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// product description
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -1107,15 +1202,27 @@ pub struct GetProductResponseDto {
     pub variants: Vec<ProductVariantDto>,
     /// The unique identifier for the location.
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// The name of the product.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The type of the product (e.g., PHYSICAL).
     /// Required by the API.
-    #[serde(rename = "productType")]
-    pub product_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "productType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub product_type: Option<String>,
     /// Indicates whether the product is available in-store.
     #[serde(
         rename = "availableInStore",
@@ -1126,13 +1233,15 @@ pub struct GetProductResponseDto {
     /// The creation timestamp of the product.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the product.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// The statement descriptor for the product.
     #[serde(
         rename = "statementDescriptor",
@@ -1182,16 +1291,31 @@ pub struct GetProductResponseDto {
 pub struct GetProductStatsResponseDto {
     /// Total number of products
     /// Required by the API.
-    #[serde(rename = "totalProducts")]
-    pub total_products: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalProducts",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_products: Option<f64>,
     /// Number of products included in the store
     /// Required by the API.
-    #[serde(rename = "includedInStore")]
-    pub included_in_store: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "includedInStore",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub included_in_store: Option<f64>,
     /// Number of products excluded from the store
     /// Required by the API.
-    #[serde(rename = "excludedFromStore")]
-    pub excluded_from_store: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "excludedFromStore",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub excluded_from_store: Option<f64>,
 }
 
 /// `InventoryItemDto` from the GoHighLevel OpenAPI spec.
@@ -1199,29 +1323,47 @@ pub struct GetProductStatsResponseDto {
 pub struct InventoryItemDto {
     /// The unique identifier for the price
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Name of the price/variant
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Available quantity in inventory
     /// Required by the API.
-    #[serde(rename = "availableQuantity")]
-    pub available_quantity: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "availableQuantity",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub available_quantity: Option<f64>,
     /// SKU for the product variant
     /// Required by the API.
-    pub sku: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sku: Option<String>,
     /// Whether out of stock purchases are allowed
     /// Required by the API.
-    #[serde(rename = "allowOutOfStockPurchases")]
-    pub allow_out_of_stock_purchases: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "allowOutOfStockPurchases",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub allow_out_of_stock_purchases: Option<bool>,
     /// Product ID this price belongs to
     /// Required by the API.
-    pub product: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub product: Option<String>,
     /// Last update timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Product image URL
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub image: Option<String>,
@@ -1239,11 +1381,14 @@ pub struct InventoryItemDto {
 pub struct ListCollectionResponseDto {
     /// Array of Collections
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<Vec<serde_json::Value>>,
     /// The total count of the collections present, which is useful to calculate the pagination
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
 }
 
 /// `ListPricesResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1251,10 +1396,13 @@ pub struct ListCollectionResponseDto {
 pub struct ListPricesResponseDto {
     /// An array of prices
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub prices: Vec<DefaultPriceResponseDto>,
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
 }
 
 /// `ListProductReviewsResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1262,11 +1410,14 @@ pub struct ListPricesResponseDto {
 pub struct ListProductReviewsResponseDto {
     /// Array of Collections
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<Vec<serde_json::Value>>,
     /// The total count of the collections present, which is useful to calculate the pagination
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
 }
 
 /// `ListProductsResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1274,10 +1425,12 @@ pub struct ListProductReviewsResponseDto {
 pub struct ListProductsResponseDto {
     /// An array of products
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub products: Vec<DefaultProductResponseDto>,
     /// list products status
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub total: Vec<ListProductsStats>,
 }
@@ -1287,7 +1440,9 @@ pub struct ListProductsResponseDto {
 pub struct ListProductsStats {
     /// Total number of products
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
 }
 
 /// `MembershipOfferDto` from the GoHighLevel OpenAPI spec.
@@ -1295,14 +1450,19 @@ pub struct ListProductsStats {
 pub struct MembershipOfferDto {
     /// Membership offer label
     /// Required by the API.
-    pub label: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
     /// Membership offer label
     /// Required by the API.
-    pub value: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub value: Option<String>,
     /// The unique identifier for the membership offer.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
 }
 
 /// `PriceDimensionsDto` from the GoHighLevel OpenAPI spec.
@@ -1379,7 +1539,9 @@ pub struct ProductCategories {
 pub struct ProductLabelDto {
     /// The content for the product label.
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Start date in YYYY-MM-DDTHH:mm:ssZ format
     #[serde(rename = "startDate", default, skip_serializing_if = "Option::is_none")]
     pub start_date: Option<String>,
@@ -1447,12 +1609,17 @@ pub struct ProductSEODto {
 pub struct ProductVariantDto {
     /// A unique identifier for the variant.
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The name of the variant.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// An array of options for the variant.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub options: Vec<ProductVariantOptionDto>,
 }
@@ -1462,10 +1629,14 @@ pub struct ProductVariantDto {
 pub struct ProductVariantOptionDto {
     /// The unique identifier for the option.
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The name of the option.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
 }
 
 /// `RecurringDto` from the GoHighLevel OpenAPI spec.
@@ -1474,11 +1645,18 @@ pub struct RecurringDto {
     /// The interval at which the recurring event occurs.
     /// Allowed values: `day`, `month`, `week`, `year`.
     /// Required by the API.
-    pub interval: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub interval: Option<String>,
     /// The number of intervals between each occurrence of the event.
     /// Required by the API.
-    #[serde(rename = "intervalCount")]
-    pub interval_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "intervalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub interval_count: Option<f64>,
 }
 
 /// `ShippingOptionsDto` from the GoHighLevel OpenAPI spec.
@@ -1554,7 +1732,9 @@ pub struct UpdateInventoryItemDto {
 pub struct UpdateInventoryResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -1683,8 +1863,9 @@ pub struct UpdatePriceDto {
 pub struct UpdatePriceResponseDto {
     /// The unique identifier for the price.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// An array of membership offers associated with the price.
     #[serde(
         rename = "membershipOffers",
@@ -1714,18 +1895,25 @@ pub struct UpdatePriceResponseDto {
     pub user_id: Option<String>,
     /// The name of the price.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The type of the price (e.g., one_time).
     /// Allowed values: `one_time`, `recurring`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// The currency code for the price.
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// The amount of the price.
     /// Required by the API.
-    pub amount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub amount: Option<f64>,
     /// The recurring details of the price (if type is recurring).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub recurring: Option<RecurringDto>,
@@ -1772,7 +1960,9 @@ pub struct UpdatePriceResponseDto {
 pub struct UpdateProductCollectionResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -1903,8 +2093,9 @@ pub struct UpdateProductDto {
 pub struct UpdateProductResponseDto {
     /// The unique identifier for the product.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// product description
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -1913,15 +2104,27 @@ pub struct UpdateProductResponseDto {
     pub variants: Vec<ProductVariantDto>,
     /// The unique identifier for the location.
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// The name of the product.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The type of the product (e.g., PHYSICAL).
     /// Required by the API.
-    #[serde(rename = "productType")]
-    pub product_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "productType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub product_type: Option<String>,
     /// Indicates whether the product is available in-store.
     #[serde(
         rename = "availableInStore",
@@ -1932,13 +2135,15 @@ pub struct UpdateProductResponseDto {
     /// The creation timestamp of the product.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the product.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// The statement descriptor for the product.
     #[serde(
         rename = "statementDescriptor",
@@ -2057,7 +2262,9 @@ pub struct UpdateProductReviewsDto {
 pub struct UpdateProductReviewsResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -2089,7 +2296,9 @@ pub struct UpdateProductStoreDto {
 pub struct UpdateProductStoreResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,

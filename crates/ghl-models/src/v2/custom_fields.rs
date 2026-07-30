@@ -132,11 +132,17 @@ pub struct CustomFieldsResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CustomFolderDeleteResponseDto {
     /// Required by the API.
-    pub succeded: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub succeded: Option<bool>,
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Required by the API.
-    pub key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
 }
 
 /// `ICustomField` from the GoHighLevel OpenAPI spec.
@@ -144,8 +150,13 @@ pub struct CustomFolderDeleteResponseDto {
 pub struct ICustomField {
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Field name
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
@@ -157,8 +168,13 @@ pub struct ICustomField {
     pub placeholder: Option<String>,
     /// Whether the field should be shown in forms
     /// Required by the API.
-    #[serde(rename = "showInForms")]
-    pub show_in_forms: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "showInForms",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub show_in_forms: Option<bool>,
     /// Options for the field (Optional, valid only for SINGLE_OPTIONS, MULTIPLE_OPTIONS, RADIO,
     /// CHECKBOX, TEXTBOX_LIST type)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -175,29 +191,35 @@ pub struct ICustomField {
     pub accepted_formats: Option<String>,
     /// Unique identifier of the object
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The key for your custom / standard object. This key uniquely identifies the custom
     /// object. Example: "custom_object.pet" for a custom object related to pets.
     /// Required by the API.
-    #[serde(rename = "objectKey")]
-    pub object_key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "objectKey", default, skip_serializing_if = "Option::is_none")]
+    pub object_key: Option<String>,
     /// Type of field that you are trying to create
     /// Allowed values: `TEXT`, `LARGE_TEXT`, `NUMERICAL`, `PHONE`, `MONETORY`, `CHECKBOX`,
     /// `SINGLE_OPTIONS`, `MULTIPLE_OPTIONS`, `DATE`, `TEXTBOX_LIST`, `FILE_UPLOAD`, `RADIO`.
     /// Required by the API.
-    #[serde(rename = "dataType")]
-    pub data_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dataType", default, skip_serializing_if = "Option::is_none")]
+    pub data_type: Option<String>,
     /// ID of the parent folder
     /// Required by the API.
-    #[serde(rename = "parentId")]
-    pub parent_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "parentId", default, skip_serializing_if = "Option::is_none")]
+    pub parent_id: Option<String>,
     /// Field key. For Custom Object it's formatted as "custom_object.{objectKey}.{fieldKey}".
     /// "custom_object" is a fixed prefix, "{objectKey}" is your custom object's identifier, and
     /// "{fieldName}" is the unique field name within that object. Example:
     /// "custom_object.pet.name" for a "name" field in a "pet" custom object.
     /// Required by the API.
-    #[serde(rename = "fieldKey")]
-    pub field_key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "fieldKey", default, skip_serializing_if = "Option::is_none")]
+    pub field_key: Option<String>,
     /// Determines if users can add a custom option value different from the predefined options
     /// in records for RADIO type fields. A custom value added in one record does not
     /// automatically become an option and will not appear as an option for other records.
@@ -217,13 +239,19 @@ pub struct ICustomField {
     /// Date and time when the object was added
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "dateAdded")]
-    pub date_added: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dateAdded", default, skip_serializing_if = "Option::is_none")]
+    pub date_added: Option<String>,
     /// Date and time when the object was last updated
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "dateUpdated")]
-    pub date_updated: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dateUpdated",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub date_updated: Option<String>,
 }
 
 /// `ICustomFieldFolder` from the GoHighLevel OpenAPI spec.
@@ -231,19 +259,29 @@ pub struct ICustomField {
 pub struct ICustomFieldFolder {
     /// Unique identifier of the object
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The key for your custom object. This key uniquely identifies the custom object. Example:
     /// "custom_object.pet" for a custom object related to pets.
     /// Required by the API.
-    #[serde(rename = "objectKey")]
-    pub object_key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "objectKey", default, skip_serializing_if = "Option::is_none")]
+    pub object_key: Option<String>,
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Field name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
 }
 
 /// `OptionDTO` from the GoHighLevel OpenAPI spec.
@@ -251,10 +289,14 @@ pub struct ICustomFieldFolder {
 pub struct OptionDTO {
     /// Key of the option (Included in Create and Response, excluded in Update)
     /// Required by the API.
-    pub key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
     /// Value of the option
     /// Required by the API.
-    pub label: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
     /// URL associated with the option (Optional, valid only for RADIO type)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,

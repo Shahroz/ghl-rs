@@ -23,17 +23,23 @@ use serde::{Deserialize, Serialize};
 pub struct AvailableShippingRate {
     /// Name of the shipping zone
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Delivery description
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     /// The currency of the amount of the rate / handling fee
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// The amount of the shipping rate if it is normal rate (0 means free ). Fixed Handling fee
     /// if it is a carrier rate (it will add to the carrier rate).
     /// Required by the API.
-    pub amount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub amount: Option<f64>,
     /// is this a carrier rate
     #[serde(
         rename = "isCarrierRate",
@@ -43,8 +49,13 @@ pub struct AvailableShippingRate {
     pub is_carrier_rate: Option<bool>,
     /// Shipping carrier id
     /// Required by the API.
-    #[serde(rename = "shippingCarrierId")]
-    pub shipping_carrier_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "shippingCarrierId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub shipping_carrier_id: Option<String>,
     /// Percentage of rate fee if it is a carrier rate.
     #[serde(
         rename = "percentageOfRateFee",
@@ -61,12 +72,18 @@ pub struct AvailableShippingRate {
     pub shipping_carrier_services: Vec<ShippingCarrierServiceDto>,
     /// The unique identifier for the product.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The unique identifier for the shipping zone.
     /// Required by the API.
-    #[serde(rename = "shippingZoneId")]
-    pub shipping_zone_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "shippingZoneId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub shipping_zone_id: Option<String>,
 }
 
 /// `ContactAddress` from the GoHighLevel OpenAPI spec.
@@ -146,13 +163,17 @@ pub struct CreateShippingCarrierDto {
 pub struct CreateShippingCarrierResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping carrier data
     /// Required by the API.
-    pub data: ShippingCarrierSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ShippingCarrierSchema>,
 }
 
 /// `CreateShippingRateDto` from the GoHighLevel OpenAPI spec.
@@ -224,13 +245,17 @@ pub struct CreateShippingRateDto {
 pub struct CreateShippingRateResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping zone data
     /// Required by the API.
-    pub data: ShippingRateSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ShippingRateSchema>,
 }
 
 /// `CreateShippingZoneDto` from the GoHighLevel OpenAPI spec.
@@ -258,13 +283,17 @@ pub struct CreateShippingZoneDto {
 pub struct CreateShippingZoneResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping zone data
     /// Required by the API.
-    pub data: ShippingZoneSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ShippingZoneSchema>,
 }
 
 /// `CreateStoreSettingDto` from the GoHighLevel OpenAPI spec.
@@ -303,13 +332,17 @@ pub struct CreateStoreSettingDto {
 pub struct CreateStoreSettingResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping carrier data
     /// Required by the API.
-    pub data: StoreSettingSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<StoreSettingSchema>,
 }
 
 /// `DeleteShippingCarrierResponseDto` from the GoHighLevel OpenAPI spec.
@@ -317,7 +350,9 @@ pub struct CreateStoreSettingResponseDto {
 pub struct DeleteShippingCarrierResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -328,7 +363,9 @@ pub struct DeleteShippingCarrierResponseDto {
 pub struct DeleteShippingRateResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -339,7 +376,9 @@ pub struct DeleteShippingRateResponseDto {
 pub struct DeleteShippingZoneResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -407,12 +446,15 @@ pub struct GetAvailableShippingRates {
 pub struct GetAvailableShippingRatesResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping rate data
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<AvailableShippingRate>,
 }
@@ -422,13 +464,17 @@ pub struct GetAvailableShippingRatesResponseDto {
 pub struct GetShippingCarrierResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping carrier data
     /// Required by the API.
-    pub data: ShippingCarrierSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ShippingCarrierSchema>,
 }
 
 /// `GetShippingRateResponseDto` from the GoHighLevel OpenAPI spec.
@@ -436,13 +482,17 @@ pub struct GetShippingCarrierResponseDto {
 pub struct GetShippingRateResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping zone data
     /// Required by the API.
-    pub data: ShippingRateSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ShippingRateSchema>,
 }
 
 /// `GetShippingZoneResponseDto` from the GoHighLevel OpenAPI spec.
@@ -450,13 +500,17 @@ pub struct GetShippingRateResponseDto {
 pub struct GetShippingZoneResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping zone data
     /// Required by the API.
-    pub data: ShippingZoneSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ShippingZoneSchema>,
 }
 
 /// `GetStoreSettingResponseDto` from the GoHighLevel OpenAPI spec.
@@ -464,13 +518,17 @@ pub struct GetShippingZoneResponseDto {
 pub struct GetStoreSettingResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping carrier data
     /// Required by the API.
-    pub data: StoreSettingSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<StoreSettingSchema>,
 }
 
 /// `ListShippingCarrierResponseDto` from the GoHighLevel OpenAPI spec.
@@ -478,12 +536,15 @@ pub struct GetStoreSettingResponseDto {
 pub struct ListShippingCarrierResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// An array of items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<ShippingCarrierSchema>,
 }
@@ -493,9 +554,12 @@ pub struct ListShippingCarrierResponseDto {
 pub struct ListShippingRateResponseDto {
     /// Total number of items
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// An array of items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<ShippingRateSchema>,
 }
@@ -505,9 +569,12 @@ pub struct ListShippingRateResponseDto {
 pub struct ListShippingZoneResponseDto {
     /// Total number of items
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// An array of items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<ShippingZoneSchema>,
 }
@@ -546,19 +613,28 @@ pub struct ProductItem {
 pub struct ShippingCarrierSchema {
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the shipping carrier
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The URL endpoint that CRM needs to retrieve shipping rates. This must be a public URL.
     /// Required by the API.
-    #[serde(rename = "callbackUrl")]
-    pub callback_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "callbackUrl",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub callback_url: Option<String>,
     /// An array of available shipping carrier services
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub services: Vec<ShippingCarrierServiceDto>,
@@ -571,20 +647,28 @@ pub struct ShippingCarrierSchema {
     pub allows_multiple_service_selection: Option<bool>,
     /// The unique identifier for the product.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The unique identifier for the marketplace app.
     /// Required by the API.
-    #[serde(rename = "marketplaceAppId")]
-    pub marketplace_app_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "marketplaceAppId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub marketplace_app_id: Option<String>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `ShippingCarrierServiceDto` from the GoHighLevel OpenAPI spec.
@@ -592,10 +676,14 @@ pub struct ShippingCarrierSchema {
 pub struct ShippingCarrierServiceDto {
     /// Name of the shipping carrier service
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Value of the shipping carrier service
     /// Required by the API.
-    pub value: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub value: Option<String>,
 }
 
 /// `ShippingRateSchema` from the GoHighLevel OpenAPI spec.
@@ -603,38 +691,61 @@ pub struct ShippingCarrierServiceDto {
 pub struct ShippingRateSchema {
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the shipping zone
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Delivery description
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     /// The currency of the amount of the rate / handling fee
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// The amount of the shipping rate if it is normal rate (0 means free ). Fixed Handling fee
     /// if it is a carrier rate (it will add to the carrier rate).
     /// Required by the API.
-    pub amount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub amount: Option<f64>,
     /// Type of condition to provide the conditional pricing
     /// Allowed values: `none`, `price`, `weight`.
     /// Required by the API.
-    #[serde(rename = "conditionType")]
-    pub condition_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "conditionType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub condition_type: Option<String>,
     /// Minimum condition for applying this price. set 0 or null if there is no minimum
     /// Required by the API.
-    #[serde(rename = "minCondition")]
-    pub min_condition: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "minCondition",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub min_condition: Option<f64>,
     /// Maximum condition for applying this price. set 0 or null if there is no maximum
     /// Required by the API.
-    #[serde(rename = "maxCondition")]
-    pub max_condition: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "maxCondition",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_condition: Option<f64>,
     /// is this a carrier rate
     #[serde(
         rename = "isCarrierRate",
@@ -644,8 +755,13 @@ pub struct ShippingRateSchema {
     pub is_carrier_rate: Option<bool>,
     /// Shipping carrier id
     /// Required by the API.
-    #[serde(rename = "shippingCarrierId")]
-    pub shipping_carrier_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "shippingCarrierId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub shipping_carrier_id: Option<String>,
     /// Percentage of rate fee if it is a carrier rate.
     #[serde(
         rename = "percentageOfRateFee",
@@ -662,20 +778,28 @@ pub struct ShippingRateSchema {
     pub shipping_carrier_services: Vec<ShippingCarrierServiceDto>,
     /// The unique identifier for the product.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The unique identifier for the shipping zone.
     /// Required by the API.
-    #[serde(rename = "shippingZoneId")]
-    pub shipping_zone_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "shippingZoneId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub shipping_zone_id: Option<String>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `ShippingZoneCountryDto` from the GoHighLevel OpenAPI spec.
@@ -701,7 +825,9 @@ pub struct ShippingZoneCountryDto {
     /// 'TG', 'TK', 'TO', 'TT', 'TN', 'TR', 'TM', 'TC', 'TV', 'UG', 'UA', 'AE', 'GB', 'UM',
     /// 'UY', 'UZ', 'VU', 'VE', 'VN', 'VG', 'VI', 'WF', 'EH', 'YE', 'ZM', 'ZW']`.
     /// Required by the API.
-    pub code: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub code: Option<String>,
     /// List of states that are available. If states is empty, then all states are available
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub states: Vec<ShippingZoneCountryStateDto>,
@@ -713,7 +839,9 @@ pub struct ShippingZoneCountryStateDto {
     /// State code
     /// Allowed values: `AL`, `AK`, `AS`, `AZ`, `AR`, `AA`, `AE`, `AP`, `CA`, `CO`, `CT`, `DE`.
     /// Required by the API.
-    pub code: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub code: Option<String>,
 }
 
 /// `ShippingZoneSchema` from the GoHighLevel OpenAPI spec.
@@ -721,23 +849,29 @@ pub struct ShippingZoneCountryStateDto {
 pub struct ShippingZoneSchema {
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the shipping zone
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// List of countries that are available
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub countries: Vec<ShippingZoneCountryDto>,
     /// The unique identifier for the product.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Array of shipping rates under this shipping zone
     #[serde(
         rename = "shippingRates",
@@ -747,12 +881,14 @@ pub struct ShippingZoneSchema {
     pub shipping_rates: Vec<ShippingRateSchema>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `StoreOrderFulfillmentNotificationDto` from the GoHighLevel OpenAPI spec.
@@ -760,18 +896,32 @@ pub struct ShippingZoneSchema {
 pub struct StoreOrderFulfillmentNotificationDto {
     /// Store order fulfillment notification enabled
     /// Required by the API.
-    pub enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     /// Store order fulfillment email subject
     /// Required by the API.
-    pub subject: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub subject: Option<String>,
     /// Email Template Id
     /// Required by the API.
-    #[serde(rename = "emailTemplateId")]
-    pub email_template_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "emailTemplateId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub email_template_id: Option<String>,
     /// Default Email Template Id
     /// Required by the API.
-    #[serde(rename = "defaultEmailTemplateId")]
-    pub default_email_template_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "defaultEmailTemplateId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub default_email_template_id: Option<String>,
 }
 
 /// `StoreOrderNotificationDto` from the GoHighLevel OpenAPI spec.
@@ -779,18 +929,32 @@ pub struct StoreOrderFulfillmentNotificationDto {
 pub struct StoreOrderNotificationDto {
     /// Store order notification enabled
     /// Required by the API.
-    pub enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     /// Store order email subject
     /// Required by the API.
-    pub subject: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub subject: Option<String>,
     /// Email Template Id
     /// Required by the API.
-    #[serde(rename = "emailTemplateId")]
-    pub email_template_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "emailTemplateId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub email_template_id: Option<String>,
     /// Default Email Template Id
     /// Required by the API.
-    #[serde(rename = "defaultEmailTemplateId")]
-    pub default_email_template_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "defaultEmailTemplateId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub default_email_template_id: Option<String>,
 }
 
 /// `StoreSettingSchema` from the GoHighLevel OpenAPI spec.
@@ -798,16 +962,23 @@ pub struct StoreOrderNotificationDto {
 pub struct StoreSettingSchema {
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Shipping origin address
     /// Required by the API.
-    #[serde(rename = "shippingOrigin")]
-    pub shipping_origin: StoreShippingOriginDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "shippingOrigin",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub shipping_origin: Option<StoreShippingOriginDto>,
     /// Store order notification email
     #[serde(
         rename = "storeOrderNotification",
@@ -824,16 +995,19 @@ pub struct StoreSettingSchema {
     pub store_order_fulfillment_notification: Option<StoreOrderFulfillmentNotificationDto>,
     /// The unique identifier for the settings.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `StoreShippingOriginDto` from the GoHighLevel OpenAPI spec.
@@ -841,7 +1015,9 @@ pub struct StoreSettingSchema {
 pub struct StoreShippingOriginDto {
     /// Name of the store / company
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Country code
     /// Allowed values: `['US', 'CA', 'AF', 'AX', 'AL', 'DZ', 'AS', 'AD', 'AO', 'AI', 'AQ',
     /// 'AG', 'AR', 'AM', 'AW', 'AU', 'AT', 'AZ', 'BS', 'BH', 'BD', 'BB', 'BY', 'BE', 'BZ',
@@ -862,23 +1038,31 @@ pub struct StoreShippingOriginDto {
     /// 'TG', 'TK', 'TO', 'TT', 'TN', 'TR', 'TM', 'TC', 'TV', 'UG', 'UA', 'AE', 'GB', 'UM',
     /// 'UY', 'UZ', 'VU', 'VE', 'VN', 'VG', 'VI', 'WF', 'EH', 'YE', 'ZM', 'ZW']`.
     /// Required by the API.
-    pub country: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub country: Option<String>,
     /// State code
     /// Allowed values: `AL`, `AK`, `AS`, `AZ`, `AR`, `AA`, `AE`, `AP`, `CA`, `CO`, `CT`, `DE`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub state: Option<String>,
     /// City name
     /// Required by the API.
-    pub city: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub city: Option<String>,
     /// Street address line 1
     /// Required by the API.
-    pub street1: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub street1: Option<String>,
     /// Street address line 2
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub street2: Option<String>,
     /// Zip code
     /// Required by the API.
-    pub zip: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub zip: Option<String>,
     /// Business Phone Number
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub phone: Option<String>,
@@ -923,13 +1107,17 @@ pub struct UpdateShippingCarrierDto {
 pub struct UpdateShippingCarrierResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping carrier data
     /// Required by the API.
-    pub data: ShippingCarrierSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ShippingCarrierSchema>,
 }
 
 /// `UpdateShippingRateDto` from the GoHighLevel OpenAPI spec.
@@ -1011,13 +1199,17 @@ pub struct UpdateShippingRateDto {
 pub struct UpdateShippingRateResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping zone data
     /// Required by the API.
-    pub data: ShippingRateSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ShippingRateSchema>,
 }
 
 /// `UpdateShippingZoneDto` from the GoHighLevel OpenAPI spec.
@@ -1042,11 +1234,15 @@ pub struct UpdateShippingZoneDto {
 pub struct UpdateShippingZoneResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// Success message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     /// Shipping zone data
     /// Required by the API.
-    pub data: ShippingZoneSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ShippingZoneSchema>,
 }

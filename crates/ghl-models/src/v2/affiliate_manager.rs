@@ -23,7 +23,9 @@ use serde::{Deserialize, Serialize};
 pub struct AffiliateListMetaResponseDto {
     /// Total affiliates matching the applied filters
     /// Required by the API.
-    pub count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub count: Option<f64>,
 }
 
 /// `CommissionAffiliateResponseDto` from the GoHighLevel OpenAPI spec.
@@ -79,8 +81,9 @@ pub struct CommissionCustomerResponseDto {
 pub struct CommissionListItemResponseDto {
     /// Commission id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Product id
     #[serde(rename = "productId", default, skip_serializing_if = "Option::is_none")]
     pub product_id: Option<String>,
@@ -199,7 +202,9 @@ pub struct CommissionListItemResponseDto {
 pub struct CommissionListMetaResponseDto {
     /// Total commissions matching the filters
     /// Required by the API.
-    pub count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub count: Option<f64>,
 }
 
 /// `GetAffiliateResponseDto` from the GoHighLevel OpenAPI spec.
@@ -207,8 +212,9 @@ pub struct CommissionListMetaResponseDto {
 pub struct GetAffiliateResponseDto {
     /// Affiliate id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Affiliate first name
     #[serde(rename = "firstName", default, skip_serializing_if = "Option::is_none")]
     pub first_name: Option<String>,
@@ -223,8 +229,13 @@ pub struct GetAffiliateResponseDto {
     pub deleted: Option<bool>,
     /// Location id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Whether the affiliate is active
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub active: Option<bool>,
@@ -309,7 +320,9 @@ pub struct GetAffiliateResponseDto {
     pub last_updated_by: Option<serde_json::Value>,
     /// Affiliate email
     /// Required by the API.
-    pub email: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
     /// Affiliate revenue
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub revenue: Option<f64>,
@@ -349,6 +362,7 @@ pub struct GetAffiliateResponseDto {
 pub struct GetCommissionListResponseDto {
     /// Commission list
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub commissions: Vec<CommissionListItemResponseDto>,
     /// Pagination metadata
@@ -361,6 +375,7 @@ pub struct GetCommissionListResponseDto {
 pub struct GetPayoutListResponseDto {
     /// Payout list
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub payouts: Vec<PayoutListItemResponseDto>,
     /// Pagination metadata
@@ -373,11 +388,14 @@ pub struct GetPayoutListResponseDto {
 pub struct ListAffiliatesResponseDto {
     /// Affiliate list
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub affiliates: Vec<OAuthAffiliateListItemResponseDto>,
     /// Pagination metadata
     /// Required by the API.
-    pub meta: AffiliateListMetaResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<AffiliateListMetaResponseDto>,
 }
 
 /// `OAuthAffiliateListItemResponseDto` from the GoHighLevel OpenAPI spec.
@@ -385,8 +403,9 @@ pub struct ListAffiliatesResponseDto {
 pub struct OAuthAffiliateListItemResponseDto {
     /// Affiliate id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Affiliate first name
     #[serde(rename = "firstName", default, skip_serializing_if = "Option::is_none")]
     pub first_name: Option<String>,
@@ -401,8 +420,13 @@ pub struct OAuthAffiliateListItemResponseDto {
     pub deleted: Option<bool>,
     /// Location id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Whether the affiliate is active
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub active: Option<bool>,
@@ -487,7 +511,9 @@ pub struct OAuthAffiliateListItemResponseDto {
     pub last_updated_by: Option<serde_json::Value>,
     /// Affiliate email
     /// Required by the API.
-    pub email: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
     /// Affiliate revenue
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub revenue: Option<f64>,
@@ -527,16 +553,27 @@ pub struct OAuthAffiliateListItemResponseDto {
 pub struct PayoutListItemResponseDto {
     /// Payout id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Location id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Affiliate id
     /// Required by the API.
-    #[serde(rename = "affiliateId")]
-    pub affiliate_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "affiliateId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub affiliate_id: Option<String>,
     /// Campaign id
     #[serde(
         rename = "campaignId",
@@ -546,10 +583,14 @@ pub struct PayoutListItemResponseDto {
     pub campaign_id: Option<String>,
     /// Payout currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Payout amount
     /// Required by the API.
-    pub amount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub amount: Option<f64>,
     /// Payout status
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub status: Option<String>,
@@ -629,5 +670,7 @@ pub struct PayoutListItemResponseDto {
 pub struct PayoutListMetaResponseDto {
     /// Total payouts matching the filters
     /// Required by the API.
-    pub count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub count: Option<f64>,
 }

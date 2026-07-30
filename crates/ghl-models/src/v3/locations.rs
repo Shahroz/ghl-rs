@@ -49,8 +49,13 @@ pub struct BusinessSchema {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ConversationChannelEntrySchema {
     /// Required by the API.
-    #[serde(rename = "conversationProvider")]
-    pub conversation_provider: ConversationProviderSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "conversationProvider",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub conversation_provider: Option<ConversationProviderSchema>,
 }
 
 /// `ConversationChannelSchema` from the GoHighLevel OpenAPI spec.
@@ -69,19 +74,25 @@ pub struct ConversationChannelSchema {
 pub struct ConversationProviderSchema {
     /// Provider ID
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Provider name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Provider type
     /// Allowed values: `SMS`, `Email`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Whether this is the default provider
     /// Required by the API.
-    pub default: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub default: Option<bool>,
 }
 
 /// `CreateCustomFieldsDTO` from the GoHighLevel OpenAPI spec.
@@ -340,14 +351,22 @@ pub struct CustomFieldsListSuccessfulResponseDto {
 pub struct CustomRRulesOptions {
     /// Allowed values: `yearly`, `monthly`, `weekly`, `daily`, `hourly`.
     /// Required by the API.
-    #[serde(rename = "intervalType")]
-    pub interval_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "intervalType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub interval_type: Option<String>,
     /// Required by the API.
-    pub interval: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub interval: Option<f64>,
     /// Start Date
     /// Required by the API.
-    #[serde(rename = "startDate")]
-    pub start_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "startDate", default, skip_serializing_if = "Option::is_none")]
+    pub start_date: Option<String>,
     /// End Date
     #[serde(rename = "endDate", default, skip_serializing_if = "Option::is_none")]
     pub end_date: Option<String>,
@@ -380,8 +399,13 @@ pub struct CustomRRulesOptions {
     pub create_task_if_over_due: Option<bool>,
     /// Due after seconds
     /// Required by the API.
-    #[serde(rename = "dueAfterSeconds")]
-    pub due_after_seconds: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dueAfterSeconds",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub due_after_seconds: Option<f64>,
 }
 
 /// `CustomValueDeleteSuccessfulResponseDto` from the GoHighLevel OpenAPI spec.
@@ -437,10 +461,14 @@ pub struct CustomValuesListSuccessfulResponseDto {
 pub struct DeleteRecurringTaskResponseDTO {
     /// Recurring Task Id
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Success
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `EmailTemplateSchema` from the GoHighLevel OpenAPI spec.
@@ -484,8 +512,13 @@ pub struct FileUploadResponseDto {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct GetConversationChannelListSuccessfulResponseDto {
     /// Required by the API.
-    #[serde(rename = "conversationChannel")]
-    pub conversation_channel: ConversationChannelSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "conversationChannel",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub conversation_channel: Option<ConversationChannelSchema>,
 }
 
 /// `GetEmailTemplateResponseSchema` from the GoHighLevel OpenAPI spec.
@@ -659,10 +692,14 @@ pub struct GetTemplatesSuccessfulResponseDto {
 pub struct LocationDeletedSuccessfulResponseDto {
     /// Success status of the API
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Success message of the API
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
 }
 
 /// `LocationTagDeleteSuccessfulResponseDto` from the GoHighLevel OpenAPI spec.
@@ -729,6 +766,7 @@ pub struct PermissionsResponseDto {
     /// `missed-call-text-back`, `text-to-pay`, `calendar`, `crm`, `opportunities`,
     /// `email-marketing`.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub permissions: Vec<String>,
 }
@@ -782,36 +820,61 @@ pub struct RecurringTaskCreateDTO {
 pub struct RecurringTaskResponseDTO {
     /// Recurring Task Id
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Name of the task
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Description of the task
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Updated At
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Created At
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Recurring rules
     /// Required by the API.
-    #[serde(rename = "rruleOptions")]
-    pub rrule_options: CustomRRulesOptions,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "rruleOptions",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub rrule_options: Option<CustomRRulesOptions>,
     /// Total Occurrence
     /// Required by the API.
-    #[serde(rename = "totalOccurrence")]
-    pub total_occurrence: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalOccurrence",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_occurrence: Option<f64>,
     /// Deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Assigned To
     #[serde(
         rename = "assignedTo",
@@ -829,8 +892,13 @@ pub struct RecurringTaskResponseDTO {
 pub struct RecurringTaskSingleResponseDTO {
     /// Recurring Tasks
     /// Required by the API.
-    #[serde(rename = "recurringTask")]
-    pub recurring_task: RecurringTaskResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "recurringTask",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub recurring_task: Option<RecurringTaskResponseDTO>,
 }
 
 /// `RecurringTaskUpdateDTO` from the GoHighLevel OpenAPI spec.

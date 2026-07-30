@@ -208,6 +208,297 @@ impl Ghl {
         CalendarsService::new(self.clone())
     }
 
+    /// Typed access to the `ad-manager` API.
+    ///
+    /// Requires the `ad-manager` cargo feature.
+    #[cfg(feature = "ad-manager")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "ad-manager")))]
+    pub fn ad_manager(&self) -> crate::services::ad_manager::AdManagerService {
+        crate::services::ad_manager::AdManagerService::new(self.clone())
+    }
+    /// Typed access to the `affiliate-manager` API.
+    ///
+    /// Requires the `affiliate-manager` cargo feature.
+    #[cfg(feature = "affiliate-manager")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "affiliate-manager")))]
+    pub fn affiliate_manager(&self) -> crate::services::affiliate_manager::AffiliateManagerService {
+        crate::services::affiliate_manager::AffiliateManagerService::new(self.clone())
+    }
+    /// Typed access to the `agent-studio` API.
+    ///
+    /// Requires the `agent-studio` cargo feature.
+    #[cfg(feature = "agent-studio")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "agent-studio")))]
+    pub fn agent_studio(&self) -> crate::services::agent_studio::AgentStudioService {
+        crate::services::agent_studio::AgentStudioService::new(self.clone())
+    }
+    /// Typed access to the `associations` API.
+    ///
+    /// Requires the `associations` cargo feature.
+    #[cfg(feature = "associations")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "associations")))]
+    pub fn associations(&self) -> crate::services::associations::AssociationsService {
+        crate::services::associations::AssociationsService::new(self.clone())
+    }
+    /// Typed access to the `blogs` API.
+    ///
+    /// Requires the `blogs` cargo feature.
+    #[cfg(feature = "blogs")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "blogs")))]
+    pub fn blogs(&self) -> crate::services::blogs::BlogsService {
+        crate::services::blogs::BlogsService::new(self.clone())
+    }
+    /// Typed access to the `brand-boards` API.
+    ///
+    /// Requires the `brand-boards` cargo feature.
+    #[cfg(feature = "brand-boards")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "brand-boards")))]
+    pub fn brand_boards(&self) -> crate::services::brand_boards::BrandBoardsService {
+        crate::services::brand_boards::BrandBoardsService::new(self.clone())
+    }
+    /// Typed access to the `businesses` API.
+    ///
+    /// Requires the `businesses` cargo feature.
+    #[cfg(feature = "businesses")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "businesses")))]
+    pub fn businesses(&self) -> crate::services::businesses::BusinessesService {
+        crate::services::businesses::BusinessesService::new(self.clone())
+    }
+    /// Typed access to the `campaigns` API.
+    ///
+    /// Requires the `campaigns` cargo feature.
+    #[cfg(feature = "campaigns")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "campaigns")))]
+    pub fn campaigns(&self) -> crate::services::campaigns::CampaignsService {
+        crate::services::campaigns::CampaignsService::new(self.clone())
+    }
+    /// Typed access to the `companies` API.
+    ///
+    /// Requires the `companies` cargo feature.
+    #[cfg(feature = "companies")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "companies")))]
+    pub fn companies(&self) -> crate::services::companies::CompaniesService {
+        crate::services::companies::CompaniesService::new(self.clone())
+    }
+    /// Typed access to the `conversation-ai` API.
+    ///
+    /// Requires the `conversation-ai` cargo feature.
+    #[cfg(feature = "conversation-ai")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "conversation-ai")))]
+    pub fn conversation_ai(&self) -> crate::services::conversation_ai::ConversationAiService {
+        crate::services::conversation_ai::ConversationAiService::new(self.clone())
+    }
+    /// Typed access to the `courses` API.
+    ///
+    /// Requires the `courses` cargo feature.
+    #[cfg(feature = "courses")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "courses")))]
+    pub fn courses(&self) -> crate::services::courses::CoursesService {
+        crate::services::courses::CoursesService::new(self.clone())
+    }
+    /// Typed access to the `custom-fields` API.
+    ///
+    /// Requires the `custom-fields` cargo feature.
+    #[cfg(feature = "custom-fields")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "custom-fields")))]
+    pub fn custom_fields(&self) -> crate::services::custom_fields::CustomFieldsService {
+        crate::services::custom_fields::CustomFieldsService::new(self.clone())
+    }
+    /// Typed access to the `custom-menus` API.
+    ///
+    /// Requires the `custom-menus` cargo feature.
+    #[cfg(feature = "custom-menus")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "custom-menus")))]
+    pub fn custom_menus(&self) -> crate::services::custom_menus::CustomMenusService {
+        crate::services::custom_menus::CustomMenusService::new(self.clone())
+    }
+    /// Typed access to the `email-isv` API.
+    ///
+    /// Requires the `email-isv` cargo feature.
+    #[cfg(feature = "email-isv")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "email-isv")))]
+    pub fn email_isv(&self) -> crate::services::email_isv::EmailIsvService {
+        crate::services::email_isv::EmailIsvService::new(self.clone())
+    }
+    /// Typed access to the `emails` API.
+    ///
+    /// Requires the `emails` cargo feature.
+    #[cfg(feature = "emails")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "emails")))]
+    pub fn emails(&self) -> crate::services::emails::EmailsService {
+        crate::services::emails::EmailsService::new(self.clone())
+    }
+    /// Typed access to the `forms` API.
+    ///
+    /// Requires the `forms` cargo feature.
+    #[cfg(feature = "forms")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "forms")))]
+    pub fn forms(&self) -> crate::services::forms::FormsService {
+        crate::services::forms::FormsService::new(self.clone())
+    }
+    /// Typed access to the `funnels` API.
+    ///
+    /// Requires the `funnels` cargo feature.
+    #[cfg(feature = "funnels")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "funnels")))]
+    pub fn funnels(&self) -> crate::services::funnels::FunnelsService {
+        crate::services::funnels::FunnelsService::new(self.clone())
+    }
+    /// Typed access to the `invoices` API.
+    ///
+    /// Requires the `invoices` cargo feature.
+    #[cfg(feature = "invoices")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "invoices")))]
+    pub fn invoices(&self) -> crate::services::invoices::InvoicesService {
+        crate::services::invoices::InvoicesService::new(self.clone())
+    }
+    /// Typed access to the `knowledge-base` API.
+    ///
+    /// Requires the `knowledge-base` cargo feature.
+    #[cfg(feature = "knowledge-base")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "knowledge-base")))]
+    pub fn knowledge_base(&self) -> crate::services::knowledge_base::KnowledgeBaseService {
+        crate::services::knowledge_base::KnowledgeBaseService::new(self.clone())
+    }
+    /// Typed access to the `links` API.
+    ///
+    /// Requires the `links` cargo feature.
+    #[cfg(feature = "links")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "links")))]
+    pub fn links(&self) -> crate::services::links::LinksService {
+        crate::services::links::LinksService::new(self.clone())
+    }
+    /// Typed access to the `marketplace` API.
+    ///
+    /// Requires the `marketplace` cargo feature.
+    #[cfg(feature = "marketplace")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "marketplace")))]
+    pub fn marketplace(&self) -> crate::services::marketplace::MarketplaceService {
+        crate::services::marketplace::MarketplaceService::new(self.clone())
+    }
+    /// Typed access to the `medias` API.
+    ///
+    /// Requires the `medias` cargo feature.
+    #[cfg(feature = "medias")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "medias")))]
+    pub fn medias(&self) -> crate::services::medias::MediasService {
+        crate::services::medias::MediasService::new(self.clone())
+    }
+    /// Typed access to the `oauth` API.
+    ///
+    /// Requires the `oauth` cargo feature.
+    #[cfg(feature = "oauth")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "oauth")))]
+    pub fn oauth(&self) -> crate::services::oauth::OauthService {
+        crate::services::oauth::OauthService::new(self.clone())
+    }
+    /// Typed access to the `objects` API.
+    ///
+    /// Requires the `objects` cargo feature.
+    #[cfg(feature = "objects")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "objects")))]
+    pub fn objects(&self) -> crate::services::objects::ObjectsService {
+        crate::services::objects::ObjectsService::new(self.clone())
+    }
+    /// Typed access to the `payments` API.
+    ///
+    /// Requires the `payments` cargo feature.
+    #[cfg(feature = "payments")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "payments")))]
+    pub fn payments(&self) -> crate::services::payments::PaymentsService {
+        crate::services::payments::PaymentsService::new(self.clone())
+    }
+    /// Typed access to the `phone-system` API.
+    ///
+    /// Requires the `phone-system` cargo feature.
+    #[cfg(feature = "phone-system")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "phone-system")))]
+    pub fn phone_system(&self) -> crate::services::phone_system::PhoneSystemService {
+        crate::services::phone_system::PhoneSystemService::new(self.clone())
+    }
+    /// Typed access to the `products` API.
+    ///
+    /// Requires the `products` cargo feature.
+    #[cfg(feature = "products")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "products")))]
+    pub fn products(&self) -> crate::services::products::ProductsService {
+        crate::services::products::ProductsService::new(self.clone())
+    }
+    /// Typed access to the `proposals` API.
+    ///
+    /// Requires the `proposals` cargo feature.
+    #[cfg(feature = "proposals")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "proposals")))]
+    pub fn proposals(&self) -> crate::services::proposals::ProposalsService {
+        crate::services::proposals::ProposalsService::new(self.clone())
+    }
+    /// Typed access to the `saas-api` API.
+    ///
+    /// Requires the `saas-api` cargo feature.
+    #[cfg(feature = "saas-api")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "saas-api")))]
+    pub fn saas_api(&self) -> crate::services::saas_api::SaasApiService {
+        crate::services::saas_api::SaasApiService::new(self.clone())
+    }
+    /// Typed access to the `snapshots` API.
+    ///
+    /// Requires the `snapshots` cargo feature.
+    #[cfg(feature = "snapshots")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "snapshots")))]
+    pub fn snapshots(&self) -> crate::services::snapshots::SnapshotsService {
+        crate::services::snapshots::SnapshotsService::new(self.clone())
+    }
+    /// Typed access to the `social-media-posting` API.
+    ///
+    /// Requires the `social-media-posting` cargo feature.
+    #[cfg(feature = "social-media-posting")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "social-media-posting")))]
+    pub fn social_media_posting(
+        &self,
+    ) -> crate::services::social_media_posting::SocialMediaPostingService {
+        crate::services::social_media_posting::SocialMediaPostingService::new(self.clone())
+    }
+    /// Typed access to the `store` API.
+    ///
+    /// Requires the `store` cargo feature.
+    #[cfg(feature = "store")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "store")))]
+    pub fn store(&self) -> crate::services::store::StoreService {
+        crate::services::store::StoreService::new(self.clone())
+    }
+    /// Typed access to the `surveys` API.
+    ///
+    /// Requires the `surveys` cargo feature.
+    #[cfg(feature = "surveys")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "surveys")))]
+    pub fn surveys(&self) -> crate::services::surveys::SurveysService {
+        crate::services::surveys::SurveysService::new(self.clone())
+    }
+    /// Typed access to the `users` API.
+    ///
+    /// Requires the `users` cargo feature.
+    #[cfg(feature = "users")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "users")))]
+    pub fn users(&self) -> crate::services::users::UsersService {
+        crate::services::users::UsersService::new(self.clone())
+    }
+    /// Typed access to the `voice-ai` API.
+    ///
+    /// Requires the `voice-ai` cargo feature.
+    #[cfg(feature = "voice-ai")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "voice-ai")))]
+    pub fn voice_ai(&self) -> crate::services::voice_ai::VoiceAiService {
+        crate::services::voice_ai::VoiceAiService::new(self.clone())
+    }
+    /// Typed access to the `workflows` API.
+    ///
+    /// Requires the `workflows` cargo feature.
+    #[cfg(feature = "workflows")]
+    #[cfg_attr(docsrs, doc(cfg(feature = "workflows")))]
+    pub fn workflows(&self) -> crate::services::workflows::WorkflowsService {
+        crate::services::workflows::WorkflowsService::new(self.clone())
+    }
+
     /// The most recently observed rate-limit headroom.
     pub fn rate_status(&self) -> RateStatus {
         let read = |a: &AtomicI64| {

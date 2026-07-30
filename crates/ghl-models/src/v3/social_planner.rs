@@ -23,14 +23,23 @@ use serde::{Deserialize, Serialize};
 pub struct AccountsListResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<AccountsListResponseSchema>,
@@ -428,11 +437,14 @@ pub struct AvailableCategoryQueueDetailsDTO {
 pub struct BaseOAuthAccountSchema {
     /// Account Name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Origin ID
     /// Required by the API.
-    #[serde(rename = "originId")]
-    pub origin_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "originId", default, skip_serializing_if = "Option::is_none")]
+    pub origin_id: Option<String>,
     /// Account Avatar URL
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub avatar: Option<String>,
@@ -502,17 +514,28 @@ pub struct BulkDeletePostSuccessfulResponseSchema {
 pub struct BulkDeleteResponseDto {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Message and deleted count
     /// Required by the API.
-    pub results: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<serde_json::Value>,
 }
 
 /// `CSVDefaultDTO` from the GoHighLevel OpenAPI spec.
@@ -532,10 +555,14 @@ pub struct CSVErrorResponseDTO {
     /// `CSV_MISSING_HEADERS`, `CSV_MISSING_REQUIRED_ROWS`, `CSV_UNSUPPORTED_EXTENSION`,
     /// `CSV_NO_VALID_POST`, `CSV_PROCESSING_ERROR`.
     /// Required by the API.
-    pub code: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub code: Option<String>,
     /// Error message describing the CSV validation error
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// File type detected
     /// Allowed values: `CSV`, `XLSX`.
     #[serde(rename = "fileType", default, skip_serializing_if = "Option::is_none")]
@@ -562,23 +589,36 @@ pub struct CSVErrorResponseDTO {
 pub struct CSVFileRequiredBadRequestDTO {
     /// HTTP Status
     /// Required by the API.
-    pub status: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<f64>,
     /// Options
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub options: Option<serde_json::Value>,
     /// Error message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Exception name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Error type
     /// Required by the API.
-    pub error: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub error: Option<String>,
     /// HTTP Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Trace ID for debugging
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
@@ -1191,7 +1231,9 @@ pub struct CategorySchema {
     pub created_by: Option<String>,
     /// Deleted Value
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Format: date-time (ISO-8601 string).
     #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
     pub created_at: Option<String>,
@@ -1267,11 +1309,14 @@ pub struct CommentAuthorDTO {
 pub struct CommentItemDTO {
     /// Highlevel comment ID
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Platform the comment was posted on
     /// Required by the API.
-    pub platform: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub platform: Option<String>,
     /// Native platform comment ID
     #[serde(
         rename = "platformCommentId",
@@ -1295,12 +1340,14 @@ pub struct CommentItemDTO {
     pub platform_post_id: Option<String>,
     /// Highlevel post ID
     /// Required by the API.
-    #[serde(rename = "postId")]
-    pub post_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "postId", default, skip_serializing_if = "Option::is_none")]
+    pub post_id: Option<String>,
     /// Connected account / page ID on the native platform
     /// Required by the API.
-    #[serde(rename = "originId")]
-    pub origin_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "originId", default, skip_serializing_if = "Option::is_none")]
+    pub origin_id: Option<String>,
     /// True if this comment is a top-level comment on the post; false if it is a reply to
     /// another comment
     #[serde(
@@ -1311,8 +1358,9 @@ pub struct CommentItemDTO {
     pub is_parent_thread: Option<bool>,
     /// True if this record represents the root post (not a comment)
     /// Required by the API.
-    #[serde(rename = "isPost")]
-    pub is_post: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isPost", default, skip_serializing_if = "Option::is_none")]
+    pub is_post: Option<bool>,
     /// Comment content. May be empty or missing for attachment-only comments.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub content: Option<String>,
@@ -1327,28 +1375,54 @@ pub struct CommentItemDTO {
     pub level: Option<f64>,
     /// Number of likes on the comment
     /// Required by the API.
-    #[serde(rename = "likeCount")]
-    pub like_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "likeCount", default, skip_serializing_if = "Option::is_none")]
+    pub like_count: Option<f64>,
     /// Number of reactions on the comment
     /// Required by the API.
-    #[serde(rename = "reactionCount")]
-    pub reaction_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reactionCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reaction_count: Option<f64>,
     /// Number of replies to the comment
     /// Required by the API.
-    #[serde(rename = "replyCount")]
-    pub reply_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "replyCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reply_count: Option<f64>,
     /// Number of shares of the comment
     /// Required by the API.
-    #[serde(rename = "shareCount")]
-    pub share_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "shareCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub share_count: Option<f64>,
     /// Number of reposts of the comment (platform-specific)
     /// Required by the API.
-    #[serde(rename = "repostCount")]
-    pub repost_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "repostCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub repost_count: Option<f64>,
     /// Number of quote posts (platform-specific)
     /// Required by the API.
-    #[serde(rename = "quoteCount")]
-    pub quote_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "quoteCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub quote_count: Option<f64>,
     /// Direct link to view the comment on the native platform
     #[serde(
         rename = "previewLink",
@@ -1358,16 +1432,19 @@ pub struct CommentItemDTO {
     pub preview_link: Option<String>,
     /// Whether the comment has been read
     /// Required by the API.
-    #[serde(rename = "isRead")]
-    pub is_read: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isRead", default, skip_serializing_if = "Option::is_none")]
+    pub is_read: Option<bool>,
     /// Whether the comment was deleted
     /// Required by the API.
-    #[serde(rename = "isDeleted")]
-    pub is_deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isDeleted", default, skip_serializing_if = "Option::is_none")]
+    pub is_deleted: Option<bool>,
     /// Whether the comment was edited
     /// Required by the API.
-    #[serde(rename = "isEdited")]
-    pub is_edited: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isEdited", default, skip_serializing_if = "Option::is_none")]
+    pub is_edited: Option<bool>,
     /// Time the comment was published on the native platform. May be missing for legacy or
     /// webhook-synced records.
     /// Format: date-time (ISO-8601 string).
@@ -1438,17 +1515,28 @@ pub struct CommentsCreateBodyDTO {
 pub struct CommentsCreateResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// The created comment
     /// Required by the API.
-    pub results: CommentItemDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<CommentItemDTO>,
 }
 
 /// `CommentsGetListBodyDTO` from the GoHighLevel OpenAPI spec.
@@ -1491,17 +1579,28 @@ pub struct CommentsGetListBodyDTO {
 pub struct CommentsGetListResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Comments and pagination metadata
     /// Required by the API.
-    pub results: CommentsGetListResultsDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<CommentsGetListResultsDTO>,
 }
 
 /// `CommentsGetListResultsDTO` from the GoHighLevel OpenAPI spec.
@@ -1509,11 +1608,14 @@ pub struct CommentsGetListResponseDTO {
 pub struct CommentsGetListResultsDTO {
     /// List of comments
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub comments: Vec<CommentItemDTO>,
     /// Pagination metadata
     /// Required by the API.
-    pub meta: CommentsListMetaDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<CommentsListMetaDTO>,
 }
 
 /// `CommentsLikeResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -1521,14 +1623,23 @@ pub struct CommentsGetListResultsDTO {
 pub struct CommentsLikeResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
 }
 
 /// `CommentsListMetaDTO` from the GoHighLevel OpenAPI spec.
@@ -1536,7 +1647,9 @@ pub struct CommentsLikeResponseDTO {
 pub struct CommentsListMetaDTO {
     /// Total comments matching the query
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Total unread comments matching the query
     #[serde(
         rename = "totalUnread",
@@ -1546,14 +1659,19 @@ pub struct CommentsListMetaDTO {
     pub total_unread: Option<f64>,
     /// Pagination skip
     /// Required by the API.
-    pub skip: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub skip: Option<f64>,
     /// Pagination limit
     /// Required by the API.
-    pub limit: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub limit: Option<f64>,
     /// True if more pages exist beyond this batch
     /// Required by the API.
-    #[serde(rename = "hasMore")]
-    pub has_more: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "hasMore", default, skip_serializing_if = "Option::is_none")]
+    pub has_more: Option<bool>,
 }
 
 /// `CreateCategoryQueueDTO` from the GoHighLevel OpenAPI spec.
@@ -1813,14 +1931,23 @@ pub struct CreatePostDTO {
 pub struct CreatePostSuccessfulResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<CreatePostSuccessfulResponseSchema>,
@@ -2071,14 +2198,23 @@ pub struct CreatedTimeSlotDTO {
 pub struct CsvPostStatusResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
 }
 
 /// `CsvResponse` from the GoHighLevel OpenAPI spec.
@@ -2153,13 +2289,19 @@ pub struct CsvResponse {
 pub struct DateSchema {
     /// Year component of the date
     /// Required by the API.
-    pub year: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub year: Option<f64>,
     /// Month component of the date (1-12)
     /// Required by the API.
-    pub month: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub month: Option<f64>,
     /// Day component of the date (1-31)
     /// Required by the API.
-    pub day: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub day: Option<f64>,
 }
 
 /// `DeleteAccountResponseSchema` from the GoHighLevel OpenAPI spec.
@@ -2190,14 +2332,23 @@ pub struct DeleteActivePostResponseDTO {
 pub struct DeleteCsvResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<CSVResponseSchema>,
@@ -2208,14 +2359,23 @@ pub struct DeleteCsvResponseDTO {
 pub struct DeleteLikeResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
 }
 
 /// `DeletePostCsvSchema` from the GoHighLevel OpenAPI spec.
@@ -2262,14 +2422,23 @@ pub struct DeletePostCsvSchema {
 pub struct DeletePostResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<DeletePostResponseSchema>,
@@ -2280,8 +2449,9 @@ pub struct DeletePostResponseDTO {
 pub struct DeletePostResponseSchema {
     /// Post Id
     /// Required by the API.
-    #[serde(rename = "postId")]
-    pub post_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "postId", default, skip_serializing_if = "Option::is_none")]
+    pub post_id: Option<String>,
     /// CSV Data
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub csv: Option<DeletePostCsvSchema>,
@@ -2292,14 +2462,23 @@ pub struct DeletePostResponseSchema {
 pub struct DeletePostSuccessfulResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<DeletePostSuccessfulResponseSchema>,
@@ -2503,8 +2682,9 @@ pub struct FacebookPostSchema {
     /// Captions not supported
     /// Allowed values: `post`, `story`, `reel`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Facebook background preset ID for text-only feed posts. **Facebook `post` only** — not
     /// `story` or `reel`. Ignored when media is attached; `metaLink` is omitted on publish.
     /// **Validations** — request returns `400` if violated: - Must be a valid preset ID from
@@ -2734,8 +2914,13 @@ pub struct GMBPostSchema {
     /// `endDate`, `termsConditions`, `couponCode`, `redeemOnlineUrl`
     /// Allowed values: `STANDARD`, `EVENT`, `OFFER`.
     /// Required by the API.
-    #[serde(rename = "gmbEventType")]
-    pub gmb_event_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "gmbEventType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub gmb_event_type: Option<String>,
     /// Event title. Required when `gmbEventType` is `EVENT`. **Max length:** 58 characters
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
@@ -2854,14 +3039,23 @@ pub struct GetAccountSchema {
 pub struct GetByIdResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetCategorySchema>,
@@ -2902,7 +3096,9 @@ pub struct GetByIdResponseSchema {
     pub created_by: Option<String>,
     /// Deleted Value
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -2919,14 +3115,23 @@ pub struct GetByIdResponseSchema {
 pub struct GetByLocationIdResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetByLocationIdResponseSchema>,
@@ -2937,9 +3142,12 @@ pub struct GetByLocationIdResponseDTO {
 pub struct GetByLocationIdResponseSchema {
     /// Count
     /// Required by the API.
-    pub count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub count: Option<f64>,
     /// Meta Data
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub categories: Vec<CategorySchema>,
 }
@@ -2957,14 +3165,23 @@ pub struct GetCategorySchema {
 pub struct GetCsvPostResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetCsvPostResponseSchema>,
@@ -2989,14 +3206,23 @@ pub struct GetCsvPostResponseSchema {
 pub struct GetFacebookAccountsResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetFacebookAccountsSchema>,
@@ -3023,14 +3249,23 @@ pub struct GetGoogleLocationAccountSchema {
 pub struct GetGoogleLocationResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetGoogleLocationAccountSchema>,
@@ -3052,12 +3287,17 @@ pub struct GetGoogleLocationSchema {
 pub struct GetGroupSchema {
     /// Group Id
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// name of group
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Array of account IDs belonging to this group
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(rename = "accountIds", default, skip_serializing_if = "Vec::is_empty")]
     pub account_ids: Vec<String>,
 }
@@ -3067,14 +3307,23 @@ pub struct GetGroupSchema {
 pub struct GetInstagramAccountsResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetInstagramAccountsSchema>,
@@ -3104,14 +3353,23 @@ pub struct GetLinkedInAccountSchema {
 pub struct GetLinkedInAccountsResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetLinkedInAccountSchema>,
@@ -3130,8 +3388,13 @@ pub struct GetModifiedPayloadFormattedSchema {
     pub source: Option<String>,
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Display date for the post
     /// Format: date-time (ISO-8601 string).
     #[serde(
@@ -3153,7 +3416,9 @@ pub struct GetModifiedPayloadFormattedSchema {
     pub account_id: Option<String>,
     /// Error
     /// Required by the API.
-    pub error: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub error: Option<String>,
     /// Platform-specific post identifier
     #[serde(rename = "postId", default, skip_serializing_if = "Option::is_none")]
     pub post_id: Option<String>,
@@ -3191,8 +3456,9 @@ pub struct GetModifiedPayloadFormattedSchema {
     pub created_by: Option<String>,
     /// Post Type must be one of the following values: - post, story, reel
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<serde_json::Value>,
     /// Tag Ids
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub tags: Vec<String>,
@@ -3284,14 +3550,23 @@ pub struct GetPinterestAccountSchema {
 pub struct GetPinterestAccountsResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetPinterestAccountSchema>,
@@ -3309,8 +3584,13 @@ pub struct GetPostFormattedSchema {
     pub source: Option<String>,
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// platform must be one of the following values: google, facebook, instagram, linkedin,
     /// twitter, tiktok
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3344,7 +3624,9 @@ pub struct GetPostFormattedSchema {
     pub account_id: Option<String>,
     /// Error
     /// Required by the API.
-    pub error: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub error: Option<String>,
     /// Platform-specific post identifier
     #[serde(rename = "postId", default, skip_serializing_if = "Option::is_none")]
     pub post_id: Option<String>,
@@ -3374,8 +3656,9 @@ pub struct GetPostFormattedSchema {
     pub created_by: Option<String>,
     /// Post Type must be one of the following values: - post, story, reel
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<serde_json::Value>,
     /// Tag Ids
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub tags: Vec<String>,
@@ -3472,14 +3755,23 @@ pub struct GetPostFormattedSchema {
 pub struct GetPostSuccessfulResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetPostSuccessfulResponseSchema>,
@@ -3498,14 +3790,23 @@ pub struct GetPostSuccessfulResponseSchema {
 pub struct GetTagsByIdResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetTagsByIdResponseSchema>,
@@ -3516,6 +3817,7 @@ pub struct GetTagsByIdResponseDTO {
 pub struct GetTagsByIdResponseSchema {
     /// Social Media Tag Data
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub tags: Vec<SocialMediaTagSchema>,
     /// Count
@@ -3528,14 +3830,23 @@ pub struct GetTagsByIdResponseSchema {
 pub struct GetTagsByLocationIdResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetTagsByLocationIdResponseSchema>,
@@ -3557,14 +3868,23 @@ pub struct GetTagsByLocationIdResponseSchema {
 pub struct GetTiktokAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetTiktokAccountSchema>,
@@ -3583,14 +3903,23 @@ pub struct GetTiktokAccountSchema {
 pub struct GetTiktokBusinessAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetTiktokBusinessAccountSchema>,
@@ -3609,14 +3938,23 @@ pub struct GetTiktokBusinessAccountSchema {
 pub struct GetTwitterAccountsResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetTwitterAccountsSchema>,
@@ -3635,14 +3973,23 @@ pub struct GetTwitterAccountsSchema {
 pub struct GetUploadStatusResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetUploadStatusResponseSchema>,
@@ -3653,11 +4000,14 @@ pub struct GetUploadStatusResponseDTO {
 pub struct GetUploadStatusResponseSchema {
     /// CSV Data
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub csvs: Vec<CSVImportSchema>,
     /// Total count of CSV records
     /// Required by the API.
-    pub count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub count: Option<f64>,
 }
 
 /// `GetYouTubeAccountsResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -3665,14 +4015,23 @@ pub struct GetUploadStatusResponseSchema {
 pub struct GetYouTubeAccountsResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<GetYoutubeAccountSchema>,
@@ -3837,8 +4196,9 @@ pub struct InstagramPostSchema {
     /// Reels: Require exactly 1 video - Stories: Captions not supported, JPEG only for images
     /// Allowed values: `post`, `story`, `reel`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Object mapping account IDs to arrays of associated usernames for collaboration. Only
     /// allowed for type "post" and "reels"
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -3922,15 +4282,20 @@ pub struct LinkedInProfileSchema {
 pub struct LinkedinPollDto {
     /// Question for the poll. Max length: 140 characters.
     /// Required by the API.
-    pub question: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub question: Option<String>,
     /// Poll options. Minimum 2, maximum 4. Each option text max 30 characters. Option texts
     /// must be unique.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub options: Vec<LinkedinPollOptionDto>,
     /// Poll settings (duration).
     /// Required by the API.
-    pub settings: LinkedinPollSettingsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub settings: Option<LinkedinPollSettingsDto>,
 }
 
 /// `LinkedinPollOptionDto` from the GoHighLevel OpenAPI spec.
@@ -3938,7 +4303,9 @@ pub struct LinkedinPollDto {
 pub struct LinkedinPollOptionDto {
     /// Text describing the option. Max length: 30 characters.
     /// Required by the API.
-    pub text: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub text: Option<String>,
 }
 
 /// `LinkedinPollSettingsDto` from the GoHighLevel OpenAPI spec.
@@ -3947,7 +4314,9 @@ pub struct LinkedinPollSettingsDto {
     /// Duration the poll stays open for votes.
     /// Allowed values: `ONE_DAY`, `THREE_DAYS`, `SEVEN_DAYS`, `FOURTEEN_DAYS`.
     /// Required by the API.
-    pub duration: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub duration: Option<String>,
 }
 
 /// `LinkedinPostSchema` from the GoHighLevel OpenAPI spec.
@@ -3957,13 +4326,15 @@ pub struct LinkedinPostSchema {
     /// length:** 100 characters **Tip:** Use a descriptive title that explains the document
     /// content.
     /// Required by the API.
-    #[serde(rename = "pdfTitle")]
-    pub pdf_title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "pdfTitle", default, skip_serializing_if = "Option::is_none")]
+    pub pdf_title: Option<String>,
     /// Post images as a PDF document carousel. **Limits:** - Max 300 pages/images - Max PDF
     /// size: 100 MB
     /// Required by the API.
-    #[serde(rename = "postAsPdf")]
-    pub post_as_pdf: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "postAsPdf", default, skip_serializing_if = "Option::is_none")]
+    pub post_as_pdf: Option<bool>,
     /// Publish a LinkedIn poll post. **Required fields when `poll` is supplied:** - `question`
     /// (max 140 characters) - `options`: 2 to 4 entries, each `text` ≤ 30 characters; option
     /// texts must be unique - `settings.duration`: one of `ONE_DAY`, `THREE_DAYS`,
@@ -3978,14 +4349,23 @@ pub struct LinkedinPostSchema {
 pub struct LocationAndAccountDeleteResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<DeleteAccountResponseSchema>,
@@ -4098,11 +4478,13 @@ pub struct PinterestBoardSelection {
     /// Connected Pinterest account ID. Must match one of the accounts referenced in the post's
     /// `userIds`.
     /// Required by the API.
-    #[serde(rename = "accountId")]
-    pub account_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "accountId", default, skip_serializing_if = "Option::is_none")]
+    pub account_id: Option<String>,
     /// Pinterest board IDs to publish to on this account. Each board produces an independent
     /// child post. Capped at 25 boards per account.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub boards: Vec<String>,
 }
@@ -4270,8 +4652,9 @@ pub struct PostCreateRequest {
     pub og_tags_details: Option<OgTagsSchema>,
     /// Post Type must be one of the following values: - post, story, reel
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<serde_json::Value>,
     /// Post Approval Details
     #[serde(
         rename = "postApprovalDetails",
@@ -4334,7 +4717,9 @@ pub struct PostInsightsSchema {
 pub struct PostMediaSchema {
     /// Public URL of the media file. Must be a valid, accessible HTTPS URL.
     /// Required by the API.
-    pub url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
     /// Alt text or caption for the media. Used for accessibility and SEO.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
@@ -4358,8 +4743,9 @@ pub struct PostMediaSchema {
     /// Allowed values: `image/jpeg`, `image/jpg`, `image/png`, `image/gif`, `video/mp4`,
     /// `video/mov`, `video/webm`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Cover image URL for a video media item. **Scope** - Applies to the **first video** in
     /// `media[]`. Values supplied on subsequent video items are ignored. - Has no effect on
     /// image-only media items. **Response behavior** - After the post is published, the
@@ -4411,14 +4797,23 @@ pub struct PostMediaSchema {
 pub struct PostSuccessfulResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<PostSuccessfulResponseSchema>,
@@ -4440,28 +4835,43 @@ pub struct PostSuccessfulResponseSchema {
 pub struct PostUserSchema {
     /// User Id
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// First name
     /// Required by the API.
-    #[serde(rename = "firstName")]
-    pub first_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "firstName", default, skip_serializing_if = "Option::is_none")]
+    pub first_name: Option<String>,
     /// Last name
     /// Required by the API.
-    #[serde(rename = "lastName")]
-    pub last_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "lastName", default, skip_serializing_if = "Option::is_none")]
+    pub last_name: Option<String>,
     /// Profile photo
     /// Required by the API.
-    #[serde(rename = "profilePhoto")]
-    pub profile_photo: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "profilePhoto",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub profile_photo: Option<String>,
     /// Phone number
     /// Required by the API.
-    pub phone: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub phone: Option<String>,
     /// Email Id
     /// Required by the API.
-    pub email: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
 }
 
 /// `QueueItemDTO` from the GoHighLevel OpenAPI spec.
@@ -4927,14 +5337,23 @@ pub struct SetAccountsDTO {
 pub struct SetAccountsResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<SetAccountsResultSchema>,
@@ -4945,8 +5364,9 @@ pub struct SetAccountsResponseDTO {
 pub struct SetAccountsResultSchema {
     /// CSV Id
     /// Required by the API.
-    #[serde(rename = "csvId")]
-    pub csv_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "csvId", default, skip_serializing_if = "Option::is_none")]
+    pub csv_id: Option<String>,
 }
 
 /// `SetAccountsUnprocessableDTO` from the GoHighLevel OpenAPI spec.
@@ -4954,24 +5374,36 @@ pub struct SetAccountsResultSchema {
 pub struct SetAccountsUnprocessableDTO {
     /// HTTP Status
     /// Required by the API.
-    pub status: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<f64>,
     /// Options
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub options: Option<serde_json::Value>,
     /// Validation error messages
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub message: Vec<String>,
     /// Exception name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Error type
     /// Required by the API.
-    pub error: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub error: Option<String>,
     /// HTTP Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Trace ID for debugging
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
@@ -5035,14 +5467,23 @@ pub struct SocialGoogleMediaAccountSchema {
 pub struct SocialMediaFBAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<SocialMediaFacebookAccountSchema>,
@@ -5106,14 +5547,23 @@ pub struct SocialMediaFacebookAccountSchema {
 pub struct SocialMediaGmbAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<SocialGoogleMediaAccountSchema>,
@@ -5124,14 +5574,23 @@ pub struct SocialMediaGmbAccountResponseDTO {
 pub struct SocialMediaInstagramAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<SocialMediaInstagramAccountSchema>,
@@ -5195,14 +5654,23 @@ pub struct SocialMediaInstagramAccountSchema {
 pub struct SocialMediaLinkedInAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<SocialMediaLinkedInAccountSchema>,
@@ -5266,14 +5734,23 @@ pub struct SocialMediaLinkedInAccountSchema {
 pub struct SocialMediaPinterestAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<PinterestOAuthAccountSchema>,
@@ -5316,14 +5793,23 @@ pub struct SocialMediaTagSchema {
 pub struct SocialMediaThreadsAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<SocialMediaThreadsAccountSchema>,
@@ -5342,14 +5828,23 @@ pub struct SocialMediaThreadsAccountSchema {
 pub struct SocialMediaTiktokAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<SocialMediaTiktokAccountSchema>,
@@ -5413,14 +5908,23 @@ pub struct SocialMediaTiktokAccountSchema {
 pub struct SocialMediaTiktokBusinessAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<TikTokOAuthAccountSchema>,
@@ -5431,14 +5935,23 @@ pub struct SocialMediaTiktokBusinessAccountResponseDTO {
 pub struct SocialMediaTwitterAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<SocialMediaTwitterAccountSchema>,
@@ -5502,14 +6015,23 @@ pub struct SocialMediaTwitterAccountSchema {
 pub struct SocialMediaYouTubeAccountResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<YouTubeOAuthAccountSchema>,
@@ -5566,8 +6088,13 @@ pub struct TiktokPostSchema {
     /// `SELF_ONLY`, `videoDisclosure` must be `false`.
     /// Allowed values: `PUBLIC_TO_EVERYONE`, `MUTUAL_FOLLOW_FRIENDS`, `SELF_ONLY`.
     /// Required by the API.
-    #[serde(rename = "privacyLevel")]
-    pub privacy_level: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "privacyLevel",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub privacy_level: Option<String>,
     /// Indicates if the video promotes a third-party brand or product. **Required:** Must be
     /// `true` if `videoDisclosure` is enabled and you're promoting another brand.
     #[serde(
@@ -5653,13 +6180,19 @@ pub struct TiktokProfileSchema {
 pub struct TimeSchema {
     /// Hour component of the time (0-23)
     /// Required by the API.
-    pub hours: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hours: Option<f64>,
     /// Minute component of the time (0-59)
     /// Required by the API.
-    pub minutes: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub minutes: Option<f64>,
     /// Second component of the time (0-59)
     /// Required by the API.
-    pub seconds: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub seconds: Option<f64>,
 }
 
 /// `TimeSlotDTO` from the GoHighLevel OpenAPI spec.
@@ -5667,11 +6200,14 @@ pub struct TimeSchema {
 pub struct TimeSlotDTO {
     /// Day of the week (0-6)
     /// Required by the API.
-    #[serde(rename = "dayOfWeek")]
-    pub day_of_week: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dayOfWeek", default, skip_serializing_if = "Option::is_none")]
+    pub day_of_week: Option<f64>,
     /// Time in HH:mm format
     /// Required by the API.
-    pub time: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub time: Option<String>,
 }
 
 /// `TwitterProfileSchema` from the GoHighLevel OpenAPI spec.
@@ -5766,14 +6302,23 @@ pub struct UpdateCategoryQueueResponseDTO {
 pub struct UpdatePostSuccessfulResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
 }
 
 /// `UpdateQueueItemDTO` from the GoHighLevel OpenAPI spec.
@@ -5878,14 +6423,23 @@ pub struct UploadCSVDTO {
 pub struct UploadFileResponseDTO {
     /// Success or Failure
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Status Code
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Requested Results
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub results: Option<UploadFileResponseSchema>,
@@ -5951,12 +6505,21 @@ pub struct VariationInputDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedCloneQueueItemResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: CloneQueueItemResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<CloneQueueItemResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -5965,12 +6528,21 @@ pub struct WrappedCloneQueueItemResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedCreateCategoryQueueResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: CreateCategoryQueueResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<CreateCategoryQueueResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -5979,12 +6551,21 @@ pub struct WrappedCreateCategoryQueueResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedCreateQueueItemResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: CreateQueueItemResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<CreateQueueItemResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -5993,12 +6574,21 @@ pub struct WrappedCreateQueueItemResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedDeleteActivePostResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: DeleteActivePostResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<DeleteActivePostResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6007,12 +6597,21 @@ pub struct WrappedDeleteActivePostResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedDiscardEditSessionResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: DiscardEditSessionResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<DiscardEditSessionResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6021,12 +6620,21 @@ pub struct WrappedDiscardEditSessionResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedEditSessionCalendarResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: EditSessionCalendarResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<EditSessionCalendarResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6035,12 +6643,21 @@ pub struct WrappedEditSessionCalendarResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedFetchAvailableCategoriesResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: FetchAvailableCategoriesResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<FetchAvailableCategoriesResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6049,12 +6666,21 @@ pub struct WrappedFetchAvailableCategoriesResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedFetchCalendarListResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: FetchCalendarListResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<FetchCalendarListResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6063,12 +6689,21 @@ pub struct WrappedFetchCalendarListResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedFetchCategoryQueuesResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: FetchCategoryQueuesResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<FetchCategoryQueuesResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6077,12 +6712,21 @@ pub struct WrappedFetchCategoryQueuesResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedFetchQueueByIdResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: FetchQueueByIdResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<FetchQueueByIdResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6091,12 +6735,21 @@ pub struct WrappedFetchQueueByIdResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedFetchQueueItemsResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: FetchQueueItemsResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<FetchQueueItemsResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6105,12 +6758,21 @@ pub struct WrappedFetchQueueItemsResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedFetchSlotsResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: FetchSlotsResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<FetchSlotsResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6119,12 +6781,21 @@ pub struct WrappedFetchSlotsResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedGeneralSuccessResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: GeneralSuccessResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<GeneralSuccessResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6133,12 +6804,21 @@ pub struct WrappedGeneralSuccessResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedResetQueueItemResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: ResetQueueItemResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<ResetQueueItemResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6147,12 +6827,21 @@ pub struct WrappedResetQueueItemResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedSaveEditSessionResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: SaveEditSessionResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<SaveEditSessionResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6161,12 +6850,21 @@ pub struct WrappedSaveEditSessionResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedStartEditSessionResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: StartEditSessionResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<StartEditSessionResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6175,12 +6873,21 @@ pub struct WrappedStartEditSessionResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedUpdateCategoryQueueResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: UpdateCategoryQueueResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<UpdateCategoryQueueResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6189,12 +6896,21 @@ pub struct WrappedUpdateCategoryQueueResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct WrappedUpdateQueueItemResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
     /// Required by the API.
-    pub results: UpdateQueueItemResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub results: Option<UpdateQueueItemResponseDTO>,
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
 }
@@ -6229,8 +6945,9 @@ pub struct YoutubePostSchema {
     /// **Required field.**
     /// Allowed values: `video`, `short`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
 }
 
 /// `YoutubeProfileSchema` from the GoHighLevel OpenAPI spec.

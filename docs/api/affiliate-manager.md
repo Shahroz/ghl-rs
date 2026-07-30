@@ -4,38 +4,21 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `affiliate-manager` cargo feature on `ghl-sdk`, then call any of the 4 generated methods on `ghl.affiliate_manager()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features affiliate-manager
-use ghl_models::v2::affiliate_manager::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["affiliate-manager"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "affiliate-manager"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/affiliate-manager/{locationId}/affiliates` | List Affiliates | `affiliate-manager.get_affiliate_manager_by_locationId_affiliates` |
-| `GET` | `/affiliate-manager/{locationId}/affiliates/{affiliateId}` | Get Affiliate | `affiliate-manager.get_affiliate_manager_by_locationId_affiliates_by_affiliateId` |
-| `GET` | `/affiliate-manager/{locationId}/commissions` | List Commissions | `affiliate-manager.get_affiliate_manager_by_locationId_commissions` |
-| `GET` | `/affiliate-manager/{locationId}/payouts` | List Payouts | `affiliate-manager.get_affiliate_manager_by_locationId_payouts` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/affiliate-manager/{locationId}/affiliates` | List Affiliates | `list_affiliates()` | `affiliate-manager.get_affiliate_manager_by_locationId_affiliates` |
+| `GET` | `/affiliate-manager/{locationId}/affiliates/{affiliateId}` | Get Affiliate | `get_affiliate()` | `affiliate-manager.get_affiliate_manager_by_locationId_affiliates_by_affiliateId` |
+| `GET` | `/affiliate-manager/{locationId}/commissions` | List Commissions | `list_commissions()` | `affiliate-manager.get_affiliate_manager_by_locationId_commissions` |
+| `GET` | `/affiliate-manager/{locationId}/payouts` | List Payouts | `list_payouts()` | `affiliate-manager.get_affiliate_manager_by_locationId_payouts` |
 
 ### Endpoint details — v2
 
@@ -66,6 +49,15 @@ Operation id: `affiliate-manager.get_affiliate_manager_by_locationId_affiliates`
 | `toDate` | string | no | — |
 
 *Response*: [`ListAffiliatesResponseDto`](#listaffiliatesresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::affiliate_manager::ListAffiliatesParams;
+
+let params = ListAffiliatesParams::new();
+let out = ghl.affiliate_manager().list_affiliates(&locationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -99,6 +91,12 @@ Operation id: `affiliate-manager.get_affiliate_manager_by_locationId_affiliates_
 | `affiliateId` | string | **yes** | Affiliate Id |
 
 *Response*: [`GetAffiliateResponseDto`](#getaffiliateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.affiliate_manager().get_affiliate(&locationId, &affiliateId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -146,6 +144,15 @@ Operation id: `affiliate-manager.get_affiliate_manager_by_locationId_commissions
 
 *Response*: [`GetCommissionListResponseDto`](#getcommissionlistresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::affiliate_manager::ListCommissionsParams;
+
+let params = ListCommissionsParams::new();
+let out = ghl.affiliate_manager().list_commissions(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -190,6 +197,15 @@ Operation id: `affiliate-manager.get_affiliate_manager_by_locationId_payouts` ·
 | `end` | string | no | — |
 
 *Response*: [`GetPayoutListResponseDto`](#getpayoutlistresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::affiliate_manager::ListPayoutsParams;
+
+let params = ListPayoutsParams::new();
+let out = ghl.affiliate_manager().list_payouts(&locationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 

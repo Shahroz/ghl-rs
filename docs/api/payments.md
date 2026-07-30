@@ -4,57 +4,40 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `payments` cargo feature on `ghl-sdk`, then call any of the 23 generated methods on `ghl.payments()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features payments
-use ghl_models::v2::payments::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["payments"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "payments"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `DELETE` | `/payments/coupon` | Delete Coupon | `payments.delete_payments_coupon` |
-| `GET` | `/payments/coupon` | Fetch Coupon | `payments.get_payments_coupon` |
-| `POST` | `/payments/coupon` | Create Coupon | `payments.post_payments_coupon` |
-| `PUT` | `/payments/coupon` | Update Coupon | `payments.put_payments_coupon` |
-| `GET` | `/payments/coupon/list` | List Coupons | `payments.get_payments_coupon_list` |
-| `PUT` | `/payments/custom-provider/capabilities` | Custom-provider marketplace app update capabilities | `payments.put_payments_custom_provider_capabilities` |
-| `GET` | `/payments/custom-provider/connect` | Fetch given provider config | `payments.get_payments_custom_provider_connect` |
-| `POST` | `/payments/custom-provider/connect` | Create new provider config | `payments.post_payments_custom_provider_connect` |
-| `POST` | `/payments/custom-provider/disconnect` | Disconnect existing provider config | `payments.post_payments_custom_provider_disconnect` |
-| `DELETE` | `/payments/custom-provider/provider` | Deleting an existing integration | `payments.delete_payments_custom_provider_provider` |
-| `POST` | `/payments/custom-provider/provider` | Create new integration | `payments.post_payments_custom_provider_provider` |
-| `GET` | `/payments/integrations/provider/whitelabel` | List White-label Integration Providers | `payments.get_payments_integrations_provider_whitelabel` |
-| `POST` | `/payments/integrations/provider/whitelabel` | Create White-label Integration Provider | `payments.post_payments_integrations_provider_whitelabel` |
-| `GET` | `/payments/orders` | List Orders | `payments.get_payments_orders` |
-| `GET` | `/payments/orders/{orderId}` | Get Order by ID | `payments.get_payments_orders_by_orderId` |
-| `GET` | `/payments/orders/{orderId}/fulfillments` | List fulfillment | `payments.get_payments_orders_by_orderId_fulfillments` |
-| `POST` | `/payments/orders/{orderId}/fulfillments` | Create order fulfillment | `payments.post_payments_orders_by_orderId_fulfillments` |
-| `GET` | `/payments/orders/{orderId}/notes` | List Order Notes | `payments.get_payments_orders_by_orderId_notes` |
-| `POST` | `/payments/orders/{orderId}/record-payment` | Record Order Payment | `payments.post_payments_orders_by_orderId_record_payment` |
-| `GET` | `/payments/subscriptions` | List Subscriptions | `payments.get_payments_subscriptions` |
-| `GET` | `/payments/subscriptions/{subscriptionId}` | Get Subscription by ID | `payments.get_payments_subscriptions_by_subscriptionId` |
-| `GET` | `/payments/transactions` | List Transactions | `payments.get_payments_transactions` |
-| `GET` | `/payments/transactions/{transactionId}` | Get Transaction by ID | `payments.get_payments_transactions_by_transactionId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `DELETE` | `/payments/coupon` | Delete Coupon | `delete_coupon()` | `payments.delete_payments_coupon` |
+| `GET` | `/payments/coupon` | Fetch Coupon | `fetch_coupon()` | `payments.get_payments_coupon` |
+| `POST` | `/payments/coupon` | Create Coupon | `create_coupon()` | `payments.post_payments_coupon` |
+| `PUT` | `/payments/coupon` | Update Coupon | `update_coupon()` | `payments.put_payments_coupon` |
+| `GET` | `/payments/coupon/list` | List Coupons | `list_coupons()` | `payments.get_payments_coupon_list` |
+| `PUT` | `/payments/custom-provider/capabilities` | Custom-provider marketplace app update capabilities | `custom_provider_marketplace_app_update_capabilities()` | `payments.put_payments_custom_provider_capabilities` |
+| `GET` | `/payments/custom-provider/connect` | Fetch given provider config | `fetch_given_provider_config()` | `payments.get_payments_custom_provider_connect` |
+| `POST` | `/payments/custom-provider/connect` | Create new provider config | `create_new_provider_config()` | `payments.post_payments_custom_provider_connect` |
+| `POST` | `/payments/custom-provider/disconnect` | Disconnect existing provider config | `disconnect_existing_provider_config()` | `payments.post_payments_custom_provider_disconnect` |
+| `DELETE` | `/payments/custom-provider/provider` | Deleting an existing integration | `deleting_an_existing_integration()` | `payments.delete_payments_custom_provider_provider` |
+| `POST` | `/payments/custom-provider/provider` | Create new integration | `create_new_integration()` | `payments.post_payments_custom_provider_provider` |
+| `GET` | `/payments/integrations/provider/whitelabel` | List White-label Integration Providers | `list_white_label_integration_providers()` | `payments.get_payments_integrations_provider_whitelabel` |
+| `POST` | `/payments/integrations/provider/whitelabel` | Create White-label Integration Provider | `create_white_label_integration_provider()` | `payments.post_payments_integrations_provider_whitelabel` |
+| `GET` | `/payments/orders` | List Orders | `list_orders()` | `payments.get_payments_orders` |
+| `GET` | `/payments/orders/{orderId}` | Get Order by ID | `get_order_by_id()` | `payments.get_payments_orders_by_orderId` |
+| `GET` | `/payments/orders/{orderId}/fulfillments` | List fulfillment | `list_fulfillment()` | `payments.get_payments_orders_by_orderId_fulfillments` |
+| `POST` | `/payments/orders/{orderId}/fulfillments` | Create order fulfillment | `create_order_fulfillment()` | `payments.post_payments_orders_by_orderId_fulfillments` |
+| `GET` | `/payments/orders/{orderId}/notes` | List Order Notes | `list_order_notes()` | `payments.get_payments_orders_by_orderId_notes` |
+| `POST` | `/payments/orders/{orderId}/record-payment` | Record Order Payment | `record_order_payment()` | `payments.post_payments_orders_by_orderId_record_payment` |
+| `GET` | `/payments/subscriptions` | List Subscriptions | `list_subscriptions()` | `payments.get_payments_subscriptions` |
+| `GET` | `/payments/subscriptions/{subscriptionId}` | Get Subscription by ID | `get_subscription_by_id()` | `payments.get_payments_subscriptions_by_subscriptionId` |
+| `GET` | `/payments/transactions` | List Transactions | `list_transactions()` | `payments.get_payments_transactions` |
+| `GET` | `/payments/transactions/{transactionId}` | Get Transaction by ID | `get_transaction_by_id()` | `payments.get_payments_transactions_by_transactionId` |
 
 ### Endpoint details — v2
 
@@ -69,6 +52,12 @@ Operation id: `payments.delete_payments_coupon` · `Version: 2021-07-28` · Scop
 *Request body*: [`DeleteCouponParams`](#deletecouponparams)
 
 *Response*: [`DeleteCouponResponseDto`](#deletecouponresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.payments().delete_coupon(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -105,6 +94,15 @@ Operation id: `payments.get_payments_coupon` · `Version: 2021-07-28` · Scopes:
 
 *Response*: [`CreateCouponResponseDto`](#createcouponresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::FetchCouponParams;
+
+let params = FetchCouponParams::new("altId", "altType", "id", "code");
+let out = ghl.payments().fetch_coupon(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -136,6 +134,12 @@ Operation id: `payments.post_payments_coupon` · `Version: 2021-07-28` · Scopes
 
 *Response*: [`CreateCouponResponseDto`](#createcouponresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.payments().create_coupon(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -163,6 +167,12 @@ Operation id: `payments.put_payments_coupon` · `Version: 2021-07-28` · Scopes:
 *Request body*: [`UpdateCouponParams`](#updatecouponparams)
 
 *Response*: [`CreateCouponResponseDto`](#createcouponresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.payments().update_coupon(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -201,6 +211,15 @@ Operation id: `payments.get_payments_coupon_list` · `Version: 2021-07-28` · Sc
 
 *Response*: [`ListCouponsResponseDto`](#listcouponsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::ListCouponsParams;
+
+let params = ListCouponsParams::new("altId", "altType");
+let out = ghl.payments().list_coupons(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -229,6 +248,12 @@ Operation id: `payments.put_payments_custom_provider_capabilities` · `Version: 
 *Request body*: [`UpdateCustomProviderCapabilitiesDto`](#updatecustomprovidercapabilitiesdto)
 
 *Response*: [`UpdateCustomProviderCapabilitiesResponseSchema`](#updatecustomprovidercapabilitiesresponseschema)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.payments().custom_provider_marketplace_app_update_capabilities(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -261,6 +286,15 @@ Operation id: `payments.get_payments_custom_provider_connect` · `Version: 2021-
 | `locationId` | string | **yes** | Location id |
 
 *Response*: [`GetCustomProvidersResponseSchema`](#getcustomprovidersresponseschema)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::FetchGivenProviderConfigParams;
+
+let params = FetchGivenProviderConfigParams::new("locationId");
+let out = ghl.payments().fetch_given_provider_config(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -295,6 +329,15 @@ Operation id: `payments.post_payments_custom_provider_connect` · `Version: 2021
 *Request body*: [`ConnectCustomProvidersConfigDto`](#connectcustomprovidersconfigdto)
 
 *Response*: [`ConnectCustomProvidersResponseSchema`](#connectcustomprovidersresponseschema)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::CreateNewProviderConfigParams;
+
+let params = CreateNewProviderConfigParams::new("locationId");
+let out = ghl.payments().create_new_provider_config(&params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -333,6 +376,15 @@ Operation id: `payments.post_payments_custom_provider_disconnect` · `Version: 2
 
 *Response*: [`DisconnectCustomProvidersResponseSchema`](#disconnectcustomprovidersresponseschema)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::DisconnectExistingProviderConfigParams;
+
+let params = DisconnectExistingProviderConfigParams::new("locationId");
+let out = ghl.payments().disconnect_existing_provider_config(&params, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -368,6 +420,15 @@ Operation id: `payments.delete_payments_custom_provider_provider` · `Version: 2
 
 *Response*: [`DeleteCustomProvidersResponseSchema`](#deletecustomprovidersresponseschema)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::DeletingAnExistingIntegrationParams;
+
+let params = DeletingAnExistingIntegrationParams::new("locationId");
+let out = ghl.payments().deleting_an_existing_integration(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -401,6 +462,15 @@ Operation id: `payments.post_payments_custom_provider_provider` · `Version: 202
 *Request body*: [`CreateCustomProvidersDto`](#createcustomprovidersdto)
 
 *Response*: [`CreateCustomProvidersResponseSchema`](#createcustomprovidersresponseschema)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::CreateNewIntegrationParams;
+
+let params = CreateNewIntegrationParams::new("locationId");
+let out = ghl.payments().create_new_integration(&params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -440,6 +510,15 @@ Operation id: `payments.get_payments_integrations_provider_whitelabel` · `Versi
 
 *Response*: [`ListWhitelabelIntegrationProviderResponseDto`](#listwhitelabelintegrationproviderresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::ListWhiteLabelIntegrationProvidersParams;
+
+let params = ListWhiteLabelIntegrationProvidersParams::new("altId", "altType");
+let out = ghl.payments().list_white_label_integration_providers(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -468,6 +547,12 @@ Operation id: `payments.post_payments_integrations_provider_whitelabel` · `Vers
 *Request body*: [`CreateWhiteLabelIntegrationProviderDto`](#createwhitelabelintegrationproviderdto)
 
 *Response*: [`CreateWhitelabelIntegrationResponseDto`](#createwhitelabelintegrationresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.payments().create_white_label_integration_provider(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -513,6 +598,15 @@ Operation id: `payments.get_payments_orders` · `Version: 2021-07-28` · Scopes:
 
 *Response*: [`ListOrdersResponseDto`](#listordersresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::ListOrdersParams;
+
+let params = ListOrdersParams::new("altId");
+let out = ghl.payments().list_orders(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -551,6 +645,15 @@ Operation id: `payments.get_payments_orders_by_orderId` · `Version: 2021-07-28`
 | `altId` | string | **yes** | AltId is the unique identifier e.g: location id. |
 
 *Response*: [`GetOrderResponseSchema`](#getorderresponseschema)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::GetOrderByIdParams;
+
+let params = GetOrderByIdParams::new("altId");
+let out = ghl.payments().get_order_by_id(&orderId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -594,6 +697,15 @@ Operation id: `payments.get_payments_orders_by_orderId_fulfillments` · `Version
 
 *Response*: [`ListFulfillmentResponseDto`](#listfulfillmentresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::ListFulfillmentParams;
+
+let params = ListFulfillmentParams::new("altId", "altType");
+let out = ghl.payments().list_fulfillment(&orderId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -631,6 +743,12 @@ Operation id: `payments.post_payments_orders_by_orderId_fulfillments` · `Versio
 *Request body*: [`CreateFulfillmentDto`](#createfulfillmentdto)
 
 *Response*: [`CreateFulfillmentResponseDto`](#createfulfillmentresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.payments().create_order_fulfillment(&orderId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -672,6 +790,15 @@ Operation id: `payments.get_payments_orders_by_orderId_notes` · `Version: 2021-
 | `altId` | string | **yes** | Location Id or Agency Id |
 | `altType` | enum: `location` | **yes** | — |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::ListOrderNotesParams;
+
+let params = ListOrderNotesParams::new("altId", "altType");
+let out = ghl.payments().list_order_notes(&orderId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -709,6 +836,12 @@ Operation id: `payments.post_payments_orders_by_orderId_record_payment` · `Vers
 *Request body*: [`PostRecordOrderPaymentBody`](#postrecordorderpaymentbody)
 
 *Response*: [`PostRecordOrderPaymentResponse`](#postrecordorderpaymentresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.payments().record_order_payment(&orderId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -757,6 +890,15 @@ Operation id: `payments.get_payments_subscriptions` · `Version: 2021-07-28` · 
 
 *Response*: [`ListSubscriptionResponseDto`](#listsubscriptionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::ListSubscriptionsParams;
+
+let params = ListSubscriptionsParams::new("altId", "altType");
+let out = ghl.payments().list_subscriptions(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -796,6 +938,15 @@ Operation id: `payments.get_payments_subscriptions_by_subscriptionId` · `Versio
 | `altType` | enum: `location` | **yes** | AltType is the type of identifier. |
 
 *Response*: [`GetSubscriptionResponseSchema`](#getsubscriptionresponseschema)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::GetSubscriptionByIdParams;
+
+let params = GetSubscriptionByIdParams::new("altId", "altType");
+let out = ghl.payments().get_subscription_by_id(&subscriptionId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -846,6 +997,15 @@ Operation id: `payments.get_payments_transactions` · `Version: 2021-07-28` · S
 
 *Response*: [`ListTxnsResponseDto`](#listtxnsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::ListTransactionsParams;
+
+let params = ListTransactionsParams::new("altId", "altType");
+let out = ghl.payments().list_transactions(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -886,6 +1046,15 @@ Operation id: `payments.get_payments_transactions_by_transactionId` · `Version:
 | `altType` | string | **yes** | AltType is the type of identifier. |
 
 *Response*: [`GetTxnResponseSchema`](#gettxnresponseschema)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::payments::GetTransactionByIdParams;
+
+let params = GetTransactionByIdParams::new("altId", "altType");
+let out = ghl.payments().get_transaction_by_id(&transactionId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 

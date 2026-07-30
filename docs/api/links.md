@@ -4,40 +4,23 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `links` cargo feature on `ghl-sdk`, then call any of the 6 generated methods on `ghl.links()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features links
-use ghl_models::v2::links::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["links"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "links"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/links/` | Get Links | `links.get_links` |
-| `POST` | `/links/` | Create Link | `links.post_links` |
-| `GET` | `/links/id/{linkId}` | Get Link by ID | `links.get_links_id_by_linkId` |
-| `GET` | `/links/search` | Search Trigger Links | `links.get_links_search` |
-| `DELETE` | `/links/{linkId}` | Delete Link | `links.delete_links_by_linkId` |
-| `PUT` | `/links/{linkId}` | Update Link | `links.put_links_by_linkId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/links/` | Get Links | `get_links()` | `links.get_links` |
+| `POST` | `/links/` | Create Link | `create_link()` | `links.post_links` |
+| `GET` | `/links/id/{linkId}` | Get Link by ID | `get_link_by_id()` | `links.get_links_id_by_linkId` |
+| `GET` | `/links/search` | Search Trigger Links | `search_trigger_links()` | `links.get_links_search` |
+| `DELETE` | `/links/{linkId}` | Delete Link | `delete_link()` | `links.delete_links_by_linkId` |
+| `PUT` | `/links/{linkId}` | Update Link | `update_link()` | `links.put_links_by_linkId` |
 
 ### Endpoint details — v2
 
@@ -54,6 +37,15 @@ Operation id: `links.get_links` · `Version: 2021-07-28` · Scopes: `links.reado
 | `locationId` | string | **yes** | — |
 
 *Response*: [`GetLinksSuccessfulResponseDto`](#getlinkssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::links::GetLinksParams;
+
+let params = GetLinksParams::new("locationId");
+let out = ghl.links().get_links(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -80,6 +72,12 @@ Operation id: `links.post_links` · `Version: 2021-07-28` · Scopes: `links.writ
 *Request body*: [`LinksDto`](#linksdto)
 
 *Response*: [`GetLinkSuccessfulResponseDto`](#getlinksuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.links().create_link(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -119,6 +117,15 @@ Operation id: `links.get_links_id_by_linkId` · `Version: 2021-07-28`
 
 *Response*: [`GetLinkSuccessfulResponseDto`](#getlinksuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::links::GetLinkByIdParams;
+
+let params = GetLinkByIdParams::new("locationId");
+let out = ghl.links().get_link_by_id(&linkId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -157,6 +164,15 @@ Operation id: `links.get_links_search` · `Version: 2021-04-15`
 
 *Response*: [`GetLinksSuccessfulResponseDto`](#getlinkssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::links::SearchTriggerLinksParams;
+
+let params = SearchTriggerLinksParams::new("locationId");
+let out = ghl.links().search_trigger_links(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -186,6 +202,12 @@ Operation id: `links.delete_links_by_linkId` · `Version: 2021-07-28` · Scopes:
 | `linkId` | string | **yes** | Link Id |
 
 *Response*: [`DeleteLinksSuccessfulResponseDto`](#deletelinkssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.links().delete_link(&linkId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -218,6 +240,12 @@ Operation id: `links.put_links_by_linkId` · `Version: 2021-07-28` · Scopes: `l
 *Request body*: [`LinkUpdateDto`](#linkupdatedto)
 
 *Response*: [`GetLinkSuccessfulResponseDto`](#getlinksuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.links().update_link(&linkId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

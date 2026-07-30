@@ -4,43 +4,26 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `marketplace` cargo feature on `ghl-sdk`, then call any of the 9 generated methods on `ghl.marketplace()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features marketplace
-use ghl_models::v2::marketplace::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["marketplace"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "marketplace"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `DELETE` | `/marketplace/app/{appId}/installations` | Uninstall an application | `marketplace.delete_marketplace_app_by_appId_installations` |
-| `GET` | `/marketplace/app/{appId}/installations` | Get Installer Details | `marketplace.get_marketplace_app_by_appId_installations` |
-| `GET` | `/marketplace/app/{appId}/rebilling-config/location/{locationId}` | Get rebilling config for an app subscription and usage plans | `marketplace.get_marketplace_app_by_appId_rebilling_config_location_by_locationId` |
-| `GET` | `/marketplace/billing/charges` | Get all wallet charges | `marketplace.get_marketplace_billing_charges` |
-| `POST` | `/marketplace/billing/charges` | Create a new wallet charge | `marketplace.post_marketplace_billing_charges` |
-| `GET` | `/marketplace/billing/charges/has-funds` | Check if account has sufficient funds | `marketplace.get_marketplace_billing_charges_has_funds` |
-| `DELETE` | `/marketplace/billing/charges/{chargeId}` | Delete a wallet charge | `marketplace.delete_marketplace_billing_charges_by_chargeId` |
-| `GET` | `/marketplace/billing/charges/{chargeId}` | Get specific wallet charge details | `marketplace.get_marketplace_billing_charges_by_chargeId` |
-| `POST` | `/marketplace/external-auth/migration` | Migrate external authentication connection | `marketplace.post_marketplace_external_auth_migration` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `DELETE` | `/marketplace/app/{appId}/installations` | Uninstall an application | `uninstall_an_application()` | `marketplace.delete_marketplace_app_by_appId_installations` |
+| `GET` | `/marketplace/app/{appId}/installations` | Get Installer Details | `get_installer_details()` | `marketplace.get_marketplace_app_by_appId_installations` |
+| `GET` | `/marketplace/app/{appId}/rebilling-config/location/{locationId}` | Get rebilling config for an app subscription and usage plans | `get_rebilling_config_for_an_app_subscription_and_usage_plans()` | `marketplace.get_marketplace_app_by_appId_rebilling_config_location_by_locationId` |
+| `GET` | `/marketplace/billing/charges` | Get all wallet charges | `get_all_wallet_charges()` | `marketplace.get_marketplace_billing_charges` |
+| `POST` | `/marketplace/billing/charges` | Create a new wallet charge | `create_a_new_wallet_charge()` | `marketplace.post_marketplace_billing_charges` |
+| `GET` | `/marketplace/billing/charges/has-funds` | Check if account has sufficient funds | `check_if_account_has_sufficient_funds()` | `marketplace.get_marketplace_billing_charges_has_funds` |
+| `DELETE` | `/marketplace/billing/charges/{chargeId}` | Delete a wallet charge | `delete_a_wallet_charge()` | `marketplace.delete_marketplace_billing_charges_by_chargeId` |
+| `GET` | `/marketplace/billing/charges/{chargeId}` | Get specific wallet charge details | `get_specific_wallet_charge_details()` | `marketplace.get_marketplace_billing_charges_by_chargeId` |
+| `POST` | `/marketplace/external-auth/migration` | Migrate external authentication connection | `migrate_external_authentication_connection()` | `marketplace.post_marketplace_external_auth_migration` |
 
 ### Endpoint details — v2
 
@@ -61,6 +44,12 @@ Operation id: `marketplace.delete_marketplace_app_by_appId_installations` · `Ve
 *Request body*: [`DeleteIntegrationBodyDto`](#deleteintegrationbodydto)
 
 *Response*: [`DeleteIntegrationResponse`](#deleteintegrationresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.marketplace().uninstall_an_application(&appId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -97,6 +86,12 @@ Operation id: `marketplace.get_marketplace_app_by_appId_installations` · `Versi
 
 *Response*: [`GetInstallerDetailsResponseDTO`](#getinstallerdetailsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.marketplace().get_installer_details(&appId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -129,6 +124,12 @@ Operation id: `marketplace.get_marketplace_app_by_appId_rebilling_config_locatio
 | `locationId` | string | **yes** | ID of the Sub-Account location to get rebilling config for |
 
 *Response*: [`GetRebillingConfigResponseDTO`](#getrebillingconfigresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.marketplace().get_rebilling_config_for_an_app_subscription_and_usage_plans(&appId, &locationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -165,6 +166,15 @@ Operation id: `marketplace.get_marketplace_billing_charges` · Scopes: `charges.
 | `skip` | number | no | Number of records to skip |
 | `limit` | number | no | Maximum number of records to return |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::marketplace::GetAllWalletChargesParams;
+
+let params = GetAllWalletChargesParams::new();
+let out = ghl.marketplace().get_all_wallet_charges(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -185,6 +195,12 @@ Operation id: `marketplace.get_marketplace_billing_charges` · Scopes: `charges.
 Operation id: `marketplace.post_marketplace_billing_charges` · Scopes: `charges.write`
 
 *Request body*: [`RaiseChargeBodyDTO`](#raisechargebodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.marketplace().create_a_new_wallet_charge(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -207,6 +223,12 @@ Operation id: `marketplace.post_marketplace_billing_charges` · Scopes: `charges
 **Check if account has sufficient funds**
 
 Operation id: `marketplace.get_marketplace_billing_charges_has_funds` · Scopes: `charges.readonly`
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.marketplace().check_if_account_has_sufficient_funds().await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -232,6 +254,12 @@ Operation id: `marketplace.delete_marketplace_billing_charges_by_chargeId` · Sc
 | Name | Type | Required | Description |
 |---|---|---|---|
 | `chargeId` | string | **yes** | ID of the charge to delete |
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.marketplace().delete_a_wallet_charge(&chargeId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -261,6 +289,12 @@ Operation id: `marketplace.get_marketplace_billing_charges_by_chargeId` · Scope
 |---|---|---|---|
 | `chargeId` | string | **yes** | ID of the charge to retrieve |
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.marketplace().get_specific_wallet_charge_details(&chargeId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -288,6 +322,12 @@ Operation id: `marketplace.post_marketplace_external_auth_migration` · `Version
 *Request body*: [`MigrateConnectionDto`](#migrateconnectiondto)
 
 *Response*: [`MigrateConnectionResponseDto`](#migrateconnectionresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.marketplace().migrate_external_authentication_connection(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 

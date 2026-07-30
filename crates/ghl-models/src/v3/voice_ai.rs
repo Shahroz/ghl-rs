@@ -23,21 +23,35 @@ use serde::{Deserialize, Serialize};
 pub struct AgentActionResponseDTO {
     /// Unique identifier for this action
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Type of action
     /// Allowed values: `CALL_TRANSFER`, `DATA_EXTRACTION`, `IN_CALL_DATA_EXTRACTION`,
     /// `WORKFLOW_TRIGGER`, `SMS`, `APPOINTMENT_BOOKING`, `CUSTOM_ACTION`, `KNOWLEDGE_BASE`.
     /// Required by the API.
-    #[serde(rename = "actionType")]
-    pub action_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "actionType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub action_type: Option<String>,
     /// Human-readable name for this action
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Action parameters - structure varies by actionType
     /// Multiple possible shapes in the spec; raw JSON.
     /// Required by the API.
-    #[serde(rename = "actionParameters")]
-    pub action_parameters: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "actionParameters",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub action_parameters: Option<serde_json::Value>,
 }
 
 /// `AgentCreationRequestDTO` from the GoHighLevel OpenAPI spec.
@@ -169,10 +183,16 @@ pub struct AgentWorkingHoursDTO {
     /// Day of the week for this working hours configuration (Monday=1 to Sunday=7)
     /// Allowed values: `1`, `2`, `3`, `4`, `5`, `6`, `7`.
     /// Required by the API.
-    #[serde(rename = "dayOfTheWeek")]
-    pub day_of_the_week: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dayOfTheWeek",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub day_of_the_week: Option<String>,
     /// Array of time intervals when the agent is available on this day
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub intervals: Vec<IntervalDTO>,
 }
@@ -182,20 +202,40 @@ pub struct AgentWorkingHoursDTO {
 pub struct AppointmentBookingActionParameters {
     /// Calendar ID to book appointments in
     /// Required by the API.
-    #[serde(rename = "calendarId")]
-    pub calendar_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "calendarId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub calendar_id: Option<String>,
     /// Number of days ahead to offer booking dates
     /// Required by the API.
-    #[serde(rename = "daysOfOfferingDates")]
-    pub days_of_offering_dates: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "daysOfOfferingDates",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub days_of_offering_dates: Option<f64>,
     /// Number of available slots per day
     /// Required by the API.
-    #[serde(rename = "slotsPerDay")]
-    pub slots_per_day: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "slotsPerDay",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub slots_per_day: Option<f64>,
     /// Hours between available slots
     /// Required by the API.
-    #[serde(rename = "hoursBetweenSlots")]
-    pub hours_between_slots: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "hoursBetweenSlots",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub hours_between_slots: Option<f64>,
 }
 
 /// `CallActionSchema` from the GoHighLevel OpenAPI spec.
@@ -208,12 +248,22 @@ pub struct CallActionSchema {
     /// Allowed values: `CALL_TRANSFER`, `DATA_EXTRACTION`, `IN_CALL_DATA_EXTRACTION`,
     /// `WORKFLOW_TRIGGER`, `SMS`, `APPOINTMENT_BOOKING`, `CUSTOM_ACTION`, `KNOWLEDGE_BASE`.
     /// Required by the API.
-    #[serde(rename = "actionType")]
-    pub action_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "actionType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub action_type: Option<String>,
     /// Action name
     /// Required by the API.
-    #[serde(rename = "actionName")]
-    pub action_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "actionName",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub action_name: Option<String>,
     /// Action parameters - structure varies by actionType
     /// Multiple possible shapes in the spec; raw JSON.
     #[serde(
@@ -245,18 +295,26 @@ pub struct CallActionSchema {
 pub struct CallLogDTO {
     /// Unique identifier for the call
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Associated contact ID
     #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
     pub contact_id: Option<String>,
     /// Agent ID associated with the call
     /// Required by the API.
-    #[serde(rename = "agentId")]
-    pub agent_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "agentId", default, skip_serializing_if = "Option::is_none")]
+    pub agent_id: Option<String>,
     /// Whether the agent is deleted
     /// Required by the API.
-    #[serde(rename = "isAgentDeleted")]
-    pub is_agent_deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "isAgentDeleted",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub is_agent_deleted: Option<bool>,
     /// Caller phone number
     #[serde(
         rename = "fromNumber",
@@ -267,18 +325,23 @@ pub struct CallLogDTO {
     /// Timestamp when the call was created
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Call duration in seconds
     /// Required by the API.
-    pub duration: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub duration: Option<f64>,
     /// Whether this call was a trial call
     /// Required by the API.
-    #[serde(rename = "trialCall")]
-    pub trial_call: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "trialCall", default, skip_serializing_if = "Option::is_none")]
+    pub trial_call: Option<bool>,
     /// Actions performed during the call. Note: The APPOINTMENT_BOOKING action will only be
     /// visible in executedCallActions from Sep 9th 2025.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "executedCallActions",
         default,
@@ -287,10 +350,14 @@ pub struct CallLogDTO {
     pub executed_call_actions: Vec<CallActionSchema>,
     /// Call summary
     /// Required by the API.
-    pub summary: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub summary: Option<String>,
     /// Call transcript
     /// Required by the API.
-    pub transcript: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub transcript: Option<String>,
     /// Transcript translation details
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub translation: Option<TranslationSchema>,
@@ -311,16 +378,22 @@ pub struct CallLogDTO {
 pub struct CallLogsResponseDTO {
     /// Total number of items
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Page number starting from 1
     /// Required by the API.
-    pub page: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub page: Option<f64>,
     /// Number of items per page
     /// Required by the API.
-    #[serde(rename = "pageSize")]
-    pub page_size: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "pageSize", default, skip_serializing_if = "Option::is_none")]
+    pub page_size: Option<f64>,
     /// Array of call logs
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(rename = "callLogs", default, skip_serializing_if = "Vec::is_empty")]
     pub call_logs: Vec<CallLogDTO>,
 }
@@ -330,22 +403,42 @@ pub struct CallLogsResponseDTO {
 pub struct CallTransferActionParameters {
     /// When to trigger this action during the call
     /// Required by the API.
-    #[serde(rename = "triggerPrompt")]
-    pub trigger_prompt: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerPrompt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_prompt: Option<String>,
     /// Type of transfer destination (currently only "number" is supported)
     /// Allowed values: `number`.
     /// Required by the API.
-    #[serde(rename = "transferToType")]
-    pub transfer_to_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "transferToType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub transfer_to_type: Option<String>,
     /// Phone number to transfer to. Must start with +, include country code, contain only
     /// numbers, and be 11-16 characters long (e.g., +12345678901).
     /// Required by the API.
-    #[serde(rename = "transferToValue")]
-    pub transfer_to_value: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "transferToValue",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub transfer_to_value: Option<String>,
     /// Message to tell the caller before transferring
     /// Required by the API.
-    #[serde(rename = "triggerMessage")]
-    pub trigger_message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerMessage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_message: Option<String>,
     /// Whether to play whisper message to the receiving party
     #[serde(
         rename = "hearWhisperMessage",
@@ -360,21 +453,35 @@ pub struct CallTransferActionParameters {
 pub struct CreateActionResponseDTO {
     /// Unique identifier for the created action
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Type of action
     /// Allowed values: `CALL_TRANSFER`, `DATA_EXTRACTION`, `IN_CALL_DATA_EXTRACTION`,
     /// `WORKFLOW_TRIGGER`, `SMS`, `APPOINTMENT_BOOKING`, `CUSTOM_ACTION`, `KNOWLEDGE_BASE`.
     /// Required by the API.
-    #[serde(rename = "actionType")]
-    pub action_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "actionType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub action_type: Option<String>,
     /// Human-readable name for this action
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Action parameters - structure varies by actionType
     /// Multiple possible shapes in the spec; raw JSON.
     /// Required by the API.
-    #[serde(rename = "actionParameters")]
-    pub action_parameters: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "actionParameters",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub action_parameters: Option<serde_json::Value>,
 }
 
 /// `CreateAgentResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -382,50 +489,96 @@ pub struct CreateActionResponseDTO {
 pub struct CreateAgentResponseDTO {
     /// Unique identifier for the created agent
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Unique identifier for the location where this agent operates
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Display name of the voice AI agent
     /// Required by the API.
-    #[serde(rename = "agentName")]
-    pub agent_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "agentName", default, skip_serializing_if = "Option::is_none")]
+    pub agent_name: Option<String>,
     /// Name of the business this agent represents
     /// Required by the API.
-    #[serde(rename = "businessName")]
-    pub business_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessName",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_name: Option<String>,
     /// Greeting message spoken when the agent answers calls
     /// Required by the API.
-    #[serde(rename = "welcomeMessage")]
-    pub welcome_message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "welcomeMessage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub welcome_message: Option<String>,
     /// Custom instructions defining the agent's behavior
     /// Required by the API.
-    #[serde(rename = "agentPrompt")]
-    pub agent_prompt: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "agentPrompt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub agent_prompt: Option<String>,
     /// Identifier for the speech synthesis voice being used
     /// Required by the API.
-    #[serde(rename = "voiceId")]
-    pub voice_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "voiceId", default, skip_serializing_if = "Option::is_none")]
+    pub voice_id: Option<String>,
     /// Language code for the agent's speech and understanding
     /// Required by the API.
-    pub language: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub language: Option<String>,
     /// Current tolerance level for caller response delays
     /// Required by the API.
-    #[serde(rename = "patienceLevel")]
-    pub patience_level: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "patienceLevel",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub patience_level: Option<String>,
     /// Maximum call duration in seconds, between 180-900
     /// Required by the API.
-    #[serde(rename = "maxCallDuration")]
-    pub max_call_duration: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "maxCallDuration",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_call_duration: Option<f64>,
     /// Indicates whether automatic idle reminders are enabled
     /// Required by the API.
-    #[serde(rename = "sendUserIdleReminders")]
-    pub send_user_idle_reminders: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "sendUserIdleReminders",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub send_user_idle_reminders: Option<bool>,
     /// Seconds to wait before sending idle reminders, between 1-20
     /// Required by the API.
-    #[serde(rename = "reminderAfterIdleTimeSeconds")]
-    pub reminder_after_idle_time_seconds: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reminderAfterIdleTimeSeconds",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reminder_after_idle_time_seconds: Option<f64>,
     /// Phone number for receiving inbound calls
     #[serde(
         rename = "inboundNumber",
@@ -463,11 +616,18 @@ pub struct CreateAgentResponseDTO {
     pub agent_working_hours: Vec<AgentWorkingHoursDTO>,
     /// IANA timezone identifier for working hours and scheduling
     /// Required by the API.
-    pub timezone: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub timezone: Option<String>,
     /// Indicates whether this agent is excluded from backup scenarios
     /// Required by the API.
-    #[serde(rename = "isAgentAsBackupDisabled")]
-    pub is_agent_as_backup_disabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "isAgentAsBackupDisabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub is_agent_as_backup_disabled: Option<bool>,
     /// Current language translation settings including enablement status and target language
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub translation: Option<TranslationSchema>,
@@ -505,11 +665,15 @@ pub struct CreateSingleActionDTO {
 pub struct CustomActionApiDetailsDTO {
     /// API endpoint URL
     /// Required by the API.
-    pub url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
     /// HTTP method
     /// Allowed values: `POST`, `GET`.
     /// Required by the API.
-    pub method: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub method: Option<String>,
     /// Whether authentication is required
     #[serde(
         rename = "authenticationRequired",
@@ -537,10 +701,14 @@ pub struct CustomActionApiDetailsDTO {
 pub struct CustomActionHeaderDTO {
     /// HTTP header name
     /// Required by the API.
-    pub key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
     /// HTTP header value
     /// Required by the API.
-    pub value: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub value: Option<String>,
 }
 
 /// `CustomActionParameterDTO` from the GoHighLevel OpenAPI spec.
@@ -548,7 +716,9 @@ pub struct CustomActionHeaderDTO {
 pub struct CustomActionParameterDTO {
     /// Parameter name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Parameter description
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -565,16 +735,31 @@ pub struct CustomActionParameterDTO {
 pub struct CustomActionParameters {
     /// When to call the custom API
     /// Required by the API.
-    #[serde(rename = "triggerPrompt")]
-    pub trigger_prompt: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerPrompt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_prompt: Option<String>,
     /// Message to tell the caller
     /// Required by the API.
-    #[serde(rename = "triggerMessage")]
-    pub trigger_message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerMessage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_message: Option<String>,
     /// API endpoint configuration
     /// Required by the API.
-    #[serde(rename = "apiDetails")]
-    pub api_details: CustomActionApiDetailsDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "apiDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub api_details: Option<CustomActionApiDetailsDTO>,
     /// Selected response paths to extract from API response. Required: at least 1 value if the
     /// method is GET. Should be empty if the method is POST.
     #[serde(
@@ -590,14 +775,22 @@ pub struct CustomActionParameters {
 pub struct DataExtractionActionParameters {
     /// ID of the contact field to be updated with the extracted data
     /// Required by the API.
-    #[serde(rename = "contactFieldId")]
-    pub contact_field_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactFieldId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_field_id: Option<String>,
     /// Description of what data to extract
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// Example values to help Agent understand the expected format. At least one example is
     /// required, maximum 5 examples allowed.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub examples: Vec<String>,
     /// Whether to overwrite existing field value if already set, default is false
@@ -622,21 +815,35 @@ pub struct ExtractedDataSchema {
 pub struct GetActionResponseDTO {
     /// Unique identifier for the action
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Type of action
     /// Allowed values: `CALL_TRANSFER`, `DATA_EXTRACTION`, `IN_CALL_DATA_EXTRACTION`,
     /// `WORKFLOW_TRIGGER`, `SMS`, `APPOINTMENT_BOOKING`, `CUSTOM_ACTION`, `KNOWLEDGE_BASE`.
     /// Required by the API.
-    #[serde(rename = "actionType")]
-    pub action_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "actionType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub action_type: Option<String>,
     /// Human-readable name for this action
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Action parameters - structure varies by actionType
     /// Multiple possible shapes in the spec; raw JSON.
     /// Required by the API.
-    #[serde(rename = "actionParameters")]
-    pub action_parameters: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "actionParameters",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub action_parameters: Option<serde_json::Value>,
 }
 
 /// `GetAgentResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -644,50 +851,96 @@ pub struct GetActionResponseDTO {
 pub struct GetAgentResponseDTO {
     /// Unique identifier for the created agent
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Unique identifier for the location where this agent operates
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Display name of the voice AI agent
     /// Required by the API.
-    #[serde(rename = "agentName")]
-    pub agent_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "agentName", default, skip_serializing_if = "Option::is_none")]
+    pub agent_name: Option<String>,
     /// Name of the business this agent represents
     /// Required by the API.
-    #[serde(rename = "businessName")]
-    pub business_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessName",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_name: Option<String>,
     /// Greeting message spoken when the agent answers calls
     /// Required by the API.
-    #[serde(rename = "welcomeMessage")]
-    pub welcome_message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "welcomeMessage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub welcome_message: Option<String>,
     /// Custom instructions defining the agent's behavior
     /// Required by the API.
-    #[serde(rename = "agentPrompt")]
-    pub agent_prompt: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "agentPrompt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub agent_prompt: Option<String>,
     /// Identifier for the speech synthesis voice being used
     /// Required by the API.
-    #[serde(rename = "voiceId")]
-    pub voice_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "voiceId", default, skip_serializing_if = "Option::is_none")]
+    pub voice_id: Option<String>,
     /// Language code for the agent's speech and understanding
     /// Required by the API.
-    pub language: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub language: Option<String>,
     /// Current tolerance level for caller response delays
     /// Required by the API.
-    #[serde(rename = "patienceLevel")]
-    pub patience_level: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "patienceLevel",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub patience_level: Option<String>,
     /// Maximum call duration in seconds, between 180-900
     /// Required by the API.
-    #[serde(rename = "maxCallDuration")]
-    pub max_call_duration: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "maxCallDuration",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_call_duration: Option<f64>,
     /// Indicates whether automatic idle reminders are enabled
     /// Required by the API.
-    #[serde(rename = "sendUserIdleReminders")]
-    pub send_user_idle_reminders: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "sendUserIdleReminders",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub send_user_idle_reminders: Option<bool>,
     /// Seconds to wait before sending idle reminders, between 1-20
     /// Required by the API.
-    #[serde(rename = "reminderAfterIdleTimeSeconds")]
-    pub reminder_after_idle_time_seconds: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reminderAfterIdleTimeSeconds",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reminder_after_idle_time_seconds: Option<f64>,
     /// Phone number for receiving inbound calls
     #[serde(
         rename = "inboundNumber",
@@ -725,16 +978,24 @@ pub struct GetAgentResponseDTO {
     pub agent_working_hours: Vec<AgentWorkingHoursDTO>,
     /// IANA timezone identifier for working hours and scheduling
     /// Required by the API.
-    pub timezone: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub timezone: Option<String>,
     /// Indicates whether this agent is excluded from backup scenarios
     /// Required by the API.
-    #[serde(rename = "isAgentAsBackupDisabled")]
-    pub is_agent_as_backup_disabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "isAgentAsBackupDisabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub is_agent_as_backup_disabled: Option<bool>,
     /// Current language translation settings including enablement status and target language
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub translation: Option<TranslationSchema>,
     /// Raw actions configured for this agent with complete actionParameters structure
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub actions: Vec<AgentActionResponseDTO>,
 }
@@ -744,15 +1005,21 @@ pub struct GetAgentResponseDTO {
 pub struct GetAgentsResponseDTO {
     /// Total number of items
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Page number starting from 1
     /// Required by the API.
-    pub page: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub page: Option<f64>,
     /// Number of items per page
     /// Required by the API.
-    #[serde(rename = "pageSize")]
-    pub page_size: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "pageSize", default, skip_serializing_if = "Option::is_none")]
+    pub page_size: Option<f64>,
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub agents: Vec<GetAgentResponseDTO>,
 }
@@ -762,14 +1029,22 @@ pub struct GetAgentsResponseDTO {
 pub struct InCallDataExtractionActionParameters {
     /// ID of the contact field to be updated with the extracted data
     /// Required by the API.
-    #[serde(rename = "contactFieldId")]
-    pub contact_field_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactFieldId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_field_id: Option<String>,
     /// Description of what data to extract
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// Example values to help Agent understand the expected format. At least one example is
     /// required, maximum 5 examples allowed.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub examples: Vec<String>,
     /// Whether to overwrite existing field value if already set, default is false
@@ -786,20 +1061,28 @@ pub struct InCallDataExtractionActionParameters {
 pub struct IntervalDTO {
     /// Starting hour of the working interval in 24-hour format (0-23)
     /// Required by the API.
-    #[serde(rename = "startHour")]
-    pub start_hour: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "startHour", default, skip_serializing_if = "Option::is_none")]
+    pub start_hour: Option<f64>,
     /// Ending hour of the working interval in 24-hour format (0-23)
     /// Required by the API.
-    #[serde(rename = "endHour")]
-    pub end_hour: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "endHour", default, skip_serializing_if = "Option::is_none")]
+    pub end_hour: Option<f64>,
     /// Starting minute of the working interval (0-59)
     /// Required by the API.
-    #[serde(rename = "startMinute")]
-    pub start_minute: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "startMinute",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub start_minute: Option<f64>,
     /// Ending minute of the working interval (0-59)
     /// Required by the API.
-    #[serde(rename = "endMinute")]
-    pub end_minute: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "endMinute", default, skip_serializing_if = "Option::is_none")]
+    pub end_minute: Option<f64>,
 }
 
 /// `KnowledgeBaseParameters` from the GoHighLevel OpenAPI spec.
@@ -807,12 +1090,22 @@ pub struct IntervalDTO {
 pub struct KnowledgeBaseParameters {
     /// When to query the knowledge base
     /// Required by the API.
-    #[serde(rename = "triggerPrompt")]
-    pub trigger_prompt: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerPrompt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_prompt: Option<String>,
     /// Knowledge base ID to query
     /// Required by the API.
-    #[serde(rename = "knowledgeBaseId")]
-    pub knowledge_base_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "knowledgeBaseId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub knowledge_base_id: Option<String>,
 }
 
 /// `PatchAgentDTO` from the GoHighLevel OpenAPI spec.
@@ -939,50 +1232,96 @@ pub struct PatchAgentDTO {
 pub struct PatchAgentResponseDTO {
     /// Unique identifier for the created agent
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Unique identifier for the location where this agent operates
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Display name of the voice AI agent
     /// Required by the API.
-    #[serde(rename = "agentName")]
-    pub agent_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "agentName", default, skip_serializing_if = "Option::is_none")]
+    pub agent_name: Option<String>,
     /// Name of the business this agent represents
     /// Required by the API.
-    #[serde(rename = "businessName")]
-    pub business_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessName",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_name: Option<String>,
     /// Greeting message spoken when the agent answers calls
     /// Required by the API.
-    #[serde(rename = "welcomeMessage")]
-    pub welcome_message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "welcomeMessage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub welcome_message: Option<String>,
     /// Custom instructions defining the agent's behavior
     /// Required by the API.
-    #[serde(rename = "agentPrompt")]
-    pub agent_prompt: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "agentPrompt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub agent_prompt: Option<String>,
     /// Identifier for the speech synthesis voice being used
     /// Required by the API.
-    #[serde(rename = "voiceId")]
-    pub voice_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "voiceId", default, skip_serializing_if = "Option::is_none")]
+    pub voice_id: Option<String>,
     /// Language code for the agent's speech and understanding
     /// Required by the API.
-    pub language: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub language: Option<String>,
     /// Current tolerance level for caller response delays
     /// Required by the API.
-    #[serde(rename = "patienceLevel")]
-    pub patience_level: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "patienceLevel",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub patience_level: Option<String>,
     /// Maximum call duration in seconds, between 180-900
     /// Required by the API.
-    #[serde(rename = "maxCallDuration")]
-    pub max_call_duration: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "maxCallDuration",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_call_duration: Option<f64>,
     /// Indicates whether automatic idle reminders are enabled
     /// Required by the API.
-    #[serde(rename = "sendUserIdleReminders")]
-    pub send_user_idle_reminders: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "sendUserIdleReminders",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub send_user_idle_reminders: Option<bool>,
     /// Seconds to wait before sending idle reminders, between 1-20
     /// Required by the API.
-    #[serde(rename = "reminderAfterIdleTimeSeconds")]
-    pub reminder_after_idle_time_seconds: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reminderAfterIdleTimeSeconds",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reminder_after_idle_time_seconds: Option<f64>,
     /// Phone number for receiving inbound calls
     #[serde(
         rename = "inboundNumber",
@@ -1020,11 +1359,18 @@ pub struct PatchAgentResponseDTO {
     pub agent_working_hours: Vec<AgentWorkingHoursDTO>,
     /// IANA timezone identifier for working hours and scheduling
     /// Required by the API.
-    pub timezone: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub timezone: Option<String>,
     /// Indicates whether this agent is excluded from backup scenarios
     /// Required by the API.
-    #[serde(rename = "isAgentAsBackupDisabled")]
-    pub is_agent_as_backup_disabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "isAgentAsBackupDisabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub is_agent_as_backup_disabled: Option<bool>,
     /// Current language translation settings including enablement status and target language
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub translation: Option<TranslationSchema>,
@@ -1040,16 +1386,31 @@ pub type PatienceLevel = String;
 pub struct SMSParameters {
     /// When to send the SMS
     /// Required by the API.
-    #[serde(rename = "triggerPrompt")]
-    pub trigger_prompt: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerPrompt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_prompt: Option<String>,
     /// Message to tell the caller
     /// Required by the API.
-    #[serde(rename = "triggerMessage")]
-    pub trigger_message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerMessage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_message: Option<String>,
     /// SMS message content to send
     /// Required by the API.
-    #[serde(rename = "messageBody")]
-    pub message_body: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "messageBody",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub message_body: Option<String>,
 }
 
 /// `SendPostCallNotificationDTO` from the GoHighLevel OpenAPI spec.
@@ -1143,21 +1504,35 @@ pub struct TranslationSchema {
 pub struct UpdateActionResponseDTO {
     /// Unique identifier for the created action
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Type of action
     /// Allowed values: `CALL_TRANSFER`, `DATA_EXTRACTION`, `IN_CALL_DATA_EXTRACTION`,
     /// `WORKFLOW_TRIGGER`, `SMS`, `APPOINTMENT_BOOKING`, `CUSTOM_ACTION`, `KNOWLEDGE_BASE`.
     /// Required by the API.
-    #[serde(rename = "actionType")]
-    pub action_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "actionType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub action_type: Option<String>,
     /// Human-readable name for this action
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Action parameters - structure varies by actionType
     /// Multiple possible shapes in the spec; raw JSON.
     /// Required by the API.
-    #[serde(rename = "actionParameters")]
-    pub action_parameters: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "actionParameters",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub action_parameters: Option<serde_json::Value>,
 }
 
 /// `UpdateSingleActionDTO` from the GoHighLevel OpenAPI spec.
@@ -1197,14 +1572,29 @@ pub type VoiceAILanguage = String;
 pub struct WorkflowTriggerParameters {
     /// When to trigger this workflow
     /// Required by the API.
-    #[serde(rename = "triggerPrompt")]
-    pub trigger_prompt: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerPrompt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_prompt: Option<String>,
     /// Message to tell the caller
     /// Required by the API.
-    #[serde(rename = "triggerMessage")]
-    pub trigger_message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerMessage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_message: Option<String>,
     /// Workflow ID to trigger
     /// Required by the API.
-    #[serde(rename = "workflowId")]
-    pub workflow_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "workflowId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub workflow_id: Option<String>,
 }

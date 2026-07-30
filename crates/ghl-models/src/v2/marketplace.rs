@@ -46,7 +46,9 @@ pub struct DeleteIntegrationBodyDto {
 pub struct DeleteIntegrationResponse {
     /// The status of the uninstallation of the application
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `GetInstallerDetailsResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -54,8 +56,13 @@ pub struct DeleteIntegrationResponse {
 pub struct GetInstallerDetailsResponseDTO {
     /// Installation details
     /// Required by the API.
-    #[serde(rename = "installationDetails")]
-    pub installation_details: InstallerDetailsDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "installationDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub installation_details: Option<InstallerDetailsDTO>,
 }
 
 /// `GetRebillingConfigResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -63,7 +70,9 @@ pub struct GetInstallerDetailsResponseDTO {
 pub struct GetRebillingConfigResponseDTO {
     /// The rebilling plans configuration
     /// Required by the API.
-    pub plans: PlansDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub plans: Option<PlansDTO>,
 }
 
 /// `InstallerDetailsDTO` from the GoHighLevel OpenAPI spec.
@@ -71,8 +80,9 @@ pub struct GetRebillingConfigResponseDTO {
 pub struct InstallerDetailsDTO {
     /// Company ID
     /// Required by the API.
-    #[serde(rename = "companyId")]
-    pub company_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "companyId", default, skip_serializing_if = "Option::is_none")]
+    pub company_id: Option<String>,
     /// Location ID (if applicable)
     #[serde(
         rename = "locationId",
@@ -82,12 +92,22 @@ pub struct InstallerDetailsDTO {
     pub location_id: Option<String>,
     /// Company name
     /// Required by the API.
-    #[serde(rename = "companyName")]
-    pub company_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "companyName",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub company_name: Option<String>,
     /// Company relationship number
     /// Required by the API.
-    #[serde(rename = "relationshipNumber")]
-    pub relationship_number: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "relationshipNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub relationship_number: Option<String>,
     /// Company email. Will be null for sub-account installations due to PII concerns.
     #[serde(
         rename = "companyEmail",
@@ -104,12 +124,18 @@ pub struct InstallerDetailsDTO {
     pub company_owner_full_name: Option<String>,
     /// User ID who installed the app
     /// Required by the API.
-    #[serde(rename = "userId")]
-    pub user_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "userId", default, skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<String>,
     /// Whether the company is a whitelabel company
     /// Required by the API.
-    #[serde(rename = "isWhitelabelCompany")]
-    pub is_whitelabel_company: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "isWhitelabelCompany",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub is_whitelabel_company: Option<bool>,
     /// Company plan. Will be null for sub-account installations due to business sensitivity.
     #[serde(
         rename = "companyPlan",
@@ -230,10 +256,14 @@ pub struct MigrateConnectionDto {
 pub struct MigrateConnectionResponseDto {
     /// Indicates if the migration was successful
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Unique identifier for the migrated connection
     /// Required by the API.
-    pub identifier: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub identifier: Option<String>,
     /// Message describing the result
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -244,10 +274,12 @@ pub struct MigrateConnectionResponseDto {
 pub struct PlansDTO {
     /// Subscription plans
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub subscription: Vec<SubscriptionPlanDTO>,
     /// Usage-based plans
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub usage: Vec<UsagePlanDTO>,
 }
@@ -299,31 +331,55 @@ pub struct RaiseChargeBodyDTO {
 pub struct SubscriptionPlanDTO {
     /// The reselling amount
     /// Required by the API.
-    #[serde(rename = "resellingAmount")]
-    pub reselling_amount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "resellingAmount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reselling_amount: Option<f64>,
     /// The base amount
     /// Required by the API.
-    #[serde(rename = "baseAmount")]
-    pub base_amount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "baseAmount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub base_amount: Option<f64>,
     /// The plan id
     /// Required by the API.
-    #[serde(rename = "planId")]
-    pub plan_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "planId", default, skip_serializing_if = "Option::is_none")]
+    pub plan_id: Option<String>,
     /// The features
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub features: Vec<String>,
     /// The payment time
     /// Required by the API.
-    #[serde(rename = "paymentType")]
-    pub payment_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "paymentType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub payment_type: Option<String>,
     /// The plan name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The payment time
     /// Required by the API.
-    #[serde(rename = "paymentTime")]
-    pub payment_time: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "paymentTime",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub payment_time: Option<String>,
 }
 
 /// `UsagePlanDTO` from the GoHighLevel OpenAPI spec.
@@ -331,45 +387,79 @@ pub struct SubscriptionPlanDTO {
 pub struct UsagePlanDTO {
     /// The product type
     /// Required by the API.
-    #[serde(rename = "productType")]
-    pub product_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "productType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub product_type: Option<String>,
     /// The product name
     /// Required by the API.
-    #[serde(rename = "productName")]
-    pub product_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "productName",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub product_name: Option<String>,
     /// The usage unit for the meter
     /// Required by the API.
-    #[serde(rename = "usageUnit")]
-    pub usage_unit: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "usageUnit", default, skip_serializing_if = "Option::is_none")]
+    pub usage_unit: Option<String>,
     /// The meter id
     /// Required by the API.
-    #[serde(rename = "meterId")]
-    pub meter_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "meterId", default, skip_serializing_if = "Option::is_none")]
+    pub meter_id: Option<String>,
     /// The meter name
     /// Required by the API.
-    #[serde(rename = "meterName")]
-    pub meter_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "meterName", default, skip_serializing_if = "Option::is_none")]
+    pub meter_name: Option<String>,
     /// The fixed price per unit, applicable for fixed price type
     /// Required by the API.
-    #[serde(rename = "fixedPricePerUnit")]
-    pub fixed_price_per_unit: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "fixedPricePerUnit",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub fixed_price_per_unit: Option<f64>,
     /// The price type
     /// Allowed values: `fixed`, `dynamic`.
     /// Required by the API.
-    #[serde(rename = "priceType")]
-    pub price_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "priceType", default, skip_serializing_if = "Option::is_none")]
+    pub price_type: Option<String>,
     /// The min price per unit, applicable for dynamic price type
     /// Required by the API.
-    #[serde(rename = "minPricePerUnit")]
-    pub min_price_per_unit: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "minPricePerUnit",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub min_price_per_unit: Option<String>,
     /// The max price per unit, applicable for dynamic price type
     /// Required by the API.
-    #[serde(rename = "maxPricePerUnit")]
-    pub max_price_per_unit: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "maxPricePerUnit",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_price_per_unit: Option<String>,
     /// The execution limit per cycle
     /// Required by the API.
-    #[serde(rename = "executionLimitPerCycle")]
-    pub execution_limit_per_cycle: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "executionLimitPerCycle",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub execution_limit_per_cycle: Option<f64>,
 }
 
 /// `WhitelabelDetailsDTO` from the GoHighLevel OpenAPI spec.
@@ -377,9 +467,12 @@ pub struct UsagePlanDTO {
 pub struct WhitelabelDetailsDTO {
     /// Domain of the whitelabel company
     /// Required by the API.
-    pub domain: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub domain: Option<String>,
     /// Logo URL of the whitelabel company
     /// Required by the API.
-    #[serde(rename = "logoUrl")]
-    pub logo_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "logoUrl", default, skip_serializing_if = "Option::is_none")]
+    pub logo_url: Option<String>,
 }

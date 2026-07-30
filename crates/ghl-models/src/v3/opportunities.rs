@@ -125,12 +125,19 @@ pub struct CreateDtoV3 {
 pub struct CustomFieldResponseSchema {
     /// Unique identifier of the custom field
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The value of the custom field
     /// Multiple possible shapes in the spec; raw JSON.
     /// Required by the API.
-    #[serde(rename = "fieldValue")]
-    pub field_value: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "fieldValue",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub field_value: Option<serde_json::Value>,
 }
 
 /// `DeleteFollowersSuccessfulResponseDto` from the GoHighLevel OpenAPI spec.
@@ -305,7 +312,9 @@ pub struct PostSearchSuccessfulResponseDto {
     pub opportunities: Vec<SearchOpportunitiesResponseSchema>,
     /// Total number of opportunities matching the query
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Per-stage totals when pipeline filter is present
     #[serde(
         rename = "stageAggregations",
@@ -584,32 +593,59 @@ pub struct SearchSuccessfulResponseDto {
 pub struct StageAggregationResponseDto {
     /// Identifier of the pipeline stage being aggregated
     /// Required by the API.
-    #[serde(rename = "pipelineStageId")]
-    pub pipeline_stage_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "pipelineStageId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub pipeline_stage_id: Option<String>,
     /// Total number of opportunities in this stage
     /// Required by the API.
-    #[serde(rename = "totalCount")]
-    pub total_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_count: Option<f64>,
     /// Total monetary value of all opportunities in this stage
     /// Required by the API.
-    #[serde(rename = "totalValue")]
-    pub total_value: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalValue",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_value: Option<f64>,
     /// Probability-weighted total value of opportunities in this stage
     /// Required by the API.
-    #[serde(rename = "weightedValue")]
-    pub weighted_value: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "weightedValue",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub weighted_value: Option<f64>,
     /// Total value of open opportunities in this stage
     /// Required by the API.
-    #[serde(rename = "openValue")]
-    pub open_value: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "openValue", default, skip_serializing_if = "Option::is_none")]
+    pub open_value: Option<f64>,
     /// Probability-weighted value of open opportunities in this stage
     /// Required by the API.
-    #[serde(rename = "openWeightedValue")]
-    pub open_weighted_value: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "openWeightedValue",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub open_weighted_value: Option<f64>,
     /// Total value of won opportunities in this stage
     /// Required by the API.
-    #[serde(rename = "wonValue")]
-    pub won_value: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "wonValue", default, skip_serializing_if = "Option::is_none")]
+    pub won_value: Option<f64>,
 }
 
 /// `UpdateOpportunityDtoV3` from the GoHighLevel OpenAPI spec.
@@ -775,10 +811,14 @@ pub struct UpsertOpportunityDto {
 pub struct UpsertOpportunitySuccessfulResponseDto {
     /// Updated / New Opportunity
     /// Required by the API.
-    pub opportunity: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub opportunity: Option<serde_json::Value>,
     /// Indicates whether the opportunity was newly created (true) or updated (false)
     /// Required by the API.
-    pub new: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub new: Option<bool>,
 }
 
 /// `customFieldsInputArraySchemaV3` from the GoHighLevel OpenAPI spec.

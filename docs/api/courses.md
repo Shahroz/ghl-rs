@@ -4,35 +4,18 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `courses` cargo feature on `ghl-sdk`, then call any of the 1 generated methods on `ghl.courses()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features courses
-use ghl_models::v2::courses::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["courses"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "courses"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/courses/courses-exporter/public/import` | Import Courses | `courses.post_courses_courses_exporter_public_import` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/courses/courses-exporter/public/import` | Import Courses | `import_courses()` | `courses.post_courses_courses_exporter_public_import` |
 
 ### Endpoint details — v2
 
@@ -45,6 +28,12 @@ Import Courses through public channels
 Operation id: `courses.post_courses_courses_exporter_public_import` · `Version: 2021-07-28`
 
 *Request body*: [`PublicExporterPayload`](#publicexporterpayload)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.courses().import_courses(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 

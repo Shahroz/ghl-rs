@@ -78,23 +78,28 @@ pub struct DeleteMediaObjectsBodyParams {
 pub struct FolderDTO {
     /// Location identifier that owns this folder
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Type of entity that owns the folder
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the folder
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// ID of the parent folder (null for root folders)
     #[serde(rename = "parentId", default, skip_serializing_if = "Option::is_none")]
     pub parent_id: Option<String>,
     /// Type of the object (always 'folder' for folders)
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Whether the folder has been deleted
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub deleted: Option<bool>,
@@ -159,6 +164,7 @@ pub struct FolderDTO {
 pub struct GetFilesResponseDTO {
     /// Array of File Objects
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub files: Vec<String>,
 }
@@ -167,14 +173,17 @@ pub struct GetFilesResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct MoveOrDeleteObjectParams {
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
 }
 
 /// `UpdateMediaObject` from the GoHighLevel OpenAPI spec.
@@ -232,9 +241,12 @@ pub struct UpdateObject {
 pub struct UploadFileResponseDTO {
     /// ID of the uploaded file
     /// Required by the API.
-    #[serde(rename = "fileId")]
-    pub file_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "fileId", default, skip_serializing_if = "Option::is_none")]
+    pub file_id: Option<String>,
     /// Google Cloud Storage URL of the uploaded file
     /// Required by the API.
-    pub url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
 }

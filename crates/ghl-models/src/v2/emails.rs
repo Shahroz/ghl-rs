@@ -99,11 +99,14 @@ pub struct CreateBuilderDto {
 pub struct CreateBuilderSuccesfulResponseDto {
     /// template id
     /// Required by the API.
-    pub redirect: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub redirect: Option<String>,
     /// trace id
     /// Required by the API.
-    #[serde(rename = "traceId")]
-    pub trace_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
+    pub trace_id: Option<String>,
 }
 
 /// `DeleteBuilderSuccesfulResponseDto` from the GoHighLevel OpenAPI spec.
@@ -244,78 +247,167 @@ pub struct SaveBuilderDataDto {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ScheduleDto {
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Required by the API.
-    #[serde(rename = "repeatAfter")]
-    pub repeat_after: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "repeatAfter",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub repeat_after: Option<String>,
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Required by the API.
-    #[serde(rename = "parentId")]
-    pub parent_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "parentId", default, skip_serializing_if = "Option::is_none")]
+    pub parent_id: Option<String>,
     /// Required by the API.
-    #[serde(rename = "childCount")]
-    pub child_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "childCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub child_count: Option<f64>,
     /// Required by the API.
-    #[serde(rename = "campaignType")]
-    pub campaign_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "campaignType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub campaign_type: Option<String>,
     /// Required by the API.
-    #[serde(rename = "bulkActionVersion")]
-    pub bulk_action_version: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "bulkActionVersion",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub bulk_action_version: Option<String>,
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id_alt: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id_alt: Option<String>,
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(rename = "sendDays", default, skip_serializing_if = "Vec::is_empty")]
     pub send_days: Vec<String>,
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Required by the API.
-    pub migrated: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub migrated: Option<bool>,
     /// Required by the API.
-    pub archived: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub archived: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "hasTracking")]
-    pub has_tracking: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "hasTracking",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub has_tracking: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "isPlainText")]
-    pub is_plain_text: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "isPlainText",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub is_plain_text: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "hasUtmTracking")]
-    pub has_utm_tracking: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "hasUtmTracking",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub has_utm_tracking: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "enableResendToUnopened")]
-    pub enable_resend_to_unopened: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "enableResendToUnopened",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub enable_resend_to_unopened: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Required by the API.
-    #[serde(rename = "templateId")]
-    pub template_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "templateId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub template_id: Option<String>,
     /// Required by the API.
-    #[serde(rename = "templateType")]
-    pub template_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "templateType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub template_type: Option<String>,
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Required by the API.
-    #[serde(rename = "__v")]
-    pub v: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "__v", default, skip_serializing_if = "Option::is_none")]
+    pub v: Option<f64>,
     /// Required by the API.
-    #[serde(rename = "documentId")]
-    pub document_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "documentId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub document_id: Option<String>,
     /// Required by the API.
-    #[serde(rename = "downloadUrl")]
-    pub download_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "downloadUrl",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub download_url: Option<String>,
     /// Required by the API.
-    #[serde(rename = "templateDataDownloadUrl")]
-    pub template_data_download_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "templateDataDownloadUrl",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub template_data_download_url: Option<String>,
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub child: Vec<String>,
 }
@@ -325,16 +417,19 @@ pub struct ScheduleDto {
 pub struct ScheduleFetchSuccessfulDTO {
     /// The list of campaigns
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub schedules: Vec<ScheduleDto>,
     /// The total number of campaigns
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub total: Vec<String>,
     /// Trace Id
     /// Required by the API.
-    #[serde(rename = "traceId")]
-    pub trace_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
+    pub trace_id: Option<String>,
 }
 
 /// `TemplateSettings` from the GoHighLevel OpenAPI spec.

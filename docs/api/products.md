@@ -4,61 +4,44 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `products` cargo feature on `ghl-sdk`, then call any of the 27 generated methods on `ghl.products()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features products
-use ghl_models::v2::products::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["products"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "products"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/products/` | List Products | `products.get_products` |
-| `POST` | `/products/` | Create Product | `products.post_products` |
-| `POST` | `/products/bulk-update` | Bulk Update Products | `products.post_products_bulk_update` |
-| `POST` | `/products/bulk-update/edit` | Bulk Edit Products and Prices | `products.post_products_bulk_update_edit` |
-| `GET` | `/products/collections` | Fetch Product Collections | `products.get_products_collections` |
-| `POST` | `/products/collections` | Create Product Collection | `products.post_products_collections` |
-| `DELETE` | `/products/collections/{collectionId}` | Delete Product Collection | `products.delete_products_collections_by_collectionId` |
-| `GET` | `/products/collections/{collectionId}` | Get Details about individual product collection | `products.get_products_collections_by_collectionId` |
-| `PUT` | `/products/collections/{collectionId}` | Update Product Collection | `products.put_products_collections_by_collectionId` |
-| `GET` | `/products/inventory` | List Inventory | `products.get_products_inventory` |
-| `POST` | `/products/inventory` | Update Inventory | `products.post_products_inventory` |
-| `GET` | `/products/reviews` | Fetch Product Reviews | `products.get_products_reviews` |
-| `POST` | `/products/reviews/bulk-update` | Update Product Reviews | `products.post_products_reviews_bulk_update` |
-| `GET` | `/products/reviews/count` | Fetch Review Count as per status | `products.get_products_reviews_count` |
-| `DELETE` | `/products/reviews/{reviewId}` | Delete Product Review | `products.delete_products_reviews_by_reviewId` |
-| `PUT` | `/products/reviews/{reviewId}` | Update Product Reviews | `products.put_products_reviews_by_reviewId` |
-| `POST` | `/products/store/{storeId}` | Action to include/exclude the product in store | `products.post_products_store_by_storeId` |
-| `POST` | `/products/store/{storeId}/priority` | Update product display priorities in store | `products.post_products_store_by_storeId_priority` |
-| `GET` | `/products/store/{storeId}/stats` | Fetch Product Store Stats | `products.get_products_store_by_storeId_stats` |
-| `DELETE` | `/products/{productId}` | Delete Product by ID | `products.delete_products_by_productId` |
-| `GET` | `/products/{productId}` | Get Product by ID | `products.get_products_by_productId` |
-| `PUT` | `/products/{productId}` | Update Product by ID | `products.put_products_by_productId` |
-| `GET` | `/products/{productId}/price` | List Prices for a Product | `products.get_products_by_productId_price` |
-| `POST` | `/products/{productId}/price` | Create Price for a Product | `products.post_products_by_productId_price` |
-| `DELETE` | `/products/{productId}/price/{priceId}` | Delete Price by ID for a Product | `products.delete_products_by_productId_price_by_priceId` |
-| `GET` | `/products/{productId}/price/{priceId}` | Get Price by ID for a Product | `products.get_products_by_productId_price_by_priceId` |
-| `PUT` | `/products/{productId}/price/{priceId}` | Update Price by ID for a Product | `products.put_products_by_productId_price_by_priceId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/products/` | List Products | `list_products()` | `products.get_products` |
+| `POST` | `/products/` | Create Product | `create_product()` | `products.post_products` |
+| `POST` | `/products/bulk-update` | Bulk Update Products | `bulk_update_products()` | `products.post_products_bulk_update` |
+| `POST` | `/products/bulk-update/edit` | Bulk Edit Products and Prices | `bulk_edit_products_and_prices()` | `products.post_products_bulk_update_edit` |
+| `GET` | `/products/collections` | Fetch Product Collections | `fetch_product_collections()` | `products.get_products_collections` |
+| `POST` | `/products/collections` | Create Product Collection | `create_product_collection()` | `products.post_products_collections` |
+| `DELETE` | `/products/collections/{collectionId}` | Delete Product Collection | `delete_product_collection()` | `products.delete_products_collections_by_collectionId` |
+| `GET` | `/products/collections/{collectionId}` | Get Details about individual product collection | `get_details_about_individual_product_collection()` | `products.get_products_collections_by_collectionId` |
+| `PUT` | `/products/collections/{collectionId}` | Update Product Collection | `update_product_collection()` | `products.put_products_collections_by_collectionId` |
+| `GET` | `/products/inventory` | List Inventory | `list_inventory()` | `products.get_products_inventory` |
+| `POST` | `/products/inventory` | Update Inventory | `update_inventory()` | `products.post_products_inventory` |
+| `GET` | `/products/reviews` | Fetch Product Reviews | `fetch_product_reviews()` | `products.get_products_reviews` |
+| `POST` | `/products/reviews/bulk-update` | Update Product Reviews | `update_product_reviews()` | `products.post_products_reviews_bulk_update` |
+| `GET` | `/products/reviews/count` | Fetch Review Count as per status | `fetch_review_count_as_per_status()` | `products.get_products_reviews_count` |
+| `DELETE` | `/products/reviews/{reviewId}` | Delete Product Review | `delete_product_review()` | `products.delete_products_reviews_by_reviewId` |
+| `PUT` | `/products/reviews/{reviewId}` | Update Product Reviews | `update_product_reviews_op()` | `products.put_products_reviews_by_reviewId` |
+| `POST` | `/products/store/{storeId}` | Action to include/exclude the product in store | `action_to_include_exclude_the_product_in_store()` | `products.post_products_store_by_storeId` |
+| `POST` | `/products/store/{storeId}/priority` | Update product display priorities in store | `update_product_display_priorities_in_store()` | `products.post_products_store_by_storeId_priority` |
+| `GET` | `/products/store/{storeId}/stats` | Fetch Product Store Stats | `fetch_product_store_stats()` | `products.get_products_store_by_storeId_stats` |
+| `DELETE` | `/products/{productId}` | Delete Product by ID | `delete_product_by_id()` | `products.delete_products_by_productId` |
+| `GET` | `/products/{productId}` | Get Product by ID | `get_product_by_id()` | `products.get_products_by_productId` |
+| `PUT` | `/products/{productId}` | Update Product by ID | `update_product_by_id()` | `products.put_products_by_productId` |
+| `GET` | `/products/{productId}/price` | List Prices for a Product | `list_prices_for_a_product()` | `products.get_products_by_productId_price` |
+| `POST` | `/products/{productId}/price` | Create Price for a Product | `create_price_for_a_product()` | `products.post_products_by_productId_price` |
+| `DELETE` | `/products/{productId}/price/{priceId}` | Delete Price by ID for a Product | `delete_price_by_id_for_a_product()` | `products.delete_products_by_productId_price_by_priceId` |
+| `GET` | `/products/{productId}/price/{priceId}` | Get Price by ID for a Product | `get_price_by_id_for_a_product()` | `products.get_products_by_productId_price_by_priceId` |
+| `PUT` | `/products/{productId}/price/{priceId}` | Update Price by ID for a Product | `update_price_by_id_for_a_product()` | `products.put_products_by_productId_price_by_priceId` |
 
 ### Endpoint details — v2
 
@@ -89,6 +72,15 @@ Operation id: `products.get_products` · `Version: 2021-07-28` · Scopes: `produ
 
 *Response*: [`ListProductsResponseDto`](#listproductsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::ListProductsParams;
+
+let params = ListProductsParams::new("locationId");
+let out = ghl.products().list_products(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -116,6 +108,12 @@ Operation id: `products.post_products` · `Version: 2021-07-28` · Scopes: `prod
 *Request body*: [`CreateProductDto`](#createproductdto)
 
 *Response*: [`CreateProductResponseDto`](#createproductresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().create_product(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -145,6 +143,12 @@ Operation id: `products.post_products_bulk_update` · `Version: 2021-07-28` · S
 
 *Response*: [`BulkUpdateResponseDto`](#bulkupdateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().bulk_update_products(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -172,6 +176,12 @@ Operation id: `products.post_products_bulk_update_edit` · `Version: 2021-07-28`
 *Request body*: [`BulkEditRequestDto`](#bulkeditrequestdto)
 
 *Response*: [`BulkEditResponseDto`](#bulkeditresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().bulk_edit_products_and_prices(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -210,6 +220,15 @@ Operation id: `products.get_products_collections` · `Version: 2021-07-28` · Sc
 
 *Response*: [`ListCollectionResponseDto`](#listcollectionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::FetchProductCollectionsParams;
+
+let params = FetchProductCollectionsParams::new("altId", "altType");
+let out = ghl.products().fetch_product_collections(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -238,6 +257,12 @@ Operation id: `products.post_products_collections` · `Version: 2021-07-28` · S
 *Request body*: [`CreateProductCollectionsDto`](#createproductcollectionsdto)
 
 *Response*: [`CreateCollectionResponseDto`](#createcollectionresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().create_product_collection(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -277,6 +302,15 @@ Operation id: `products.delete_products_collections_by_collectionId` · `Version
 | `altType` | enum: `location` | **yes** | The type of alt. For now it is only LOCATION |
 
 *Response*: [`DeleteProductCollectionResponseDto`](#deleteproductcollectionresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::DeleteProductCollectionParams;
+
+let params = DeleteProductCollectionParams::new("altId", "altType");
+let out = ghl.products().delete_product_collection(&collectionId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -318,6 +352,15 @@ Operation id: `products.get_products_collections_by_collectionId` · `Version: 2
 
 *Response*: [`DefaultCollectionResponseDto`](#defaultcollectionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::GetDetailsAboutIndividualProductCollectionParams;
+
+let params = GetDetailsAboutIndividualProductCollectionParams::new("altId");
+let out = ghl.products().get_details_about_individual_product_collection(&collectionId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -354,6 +397,12 @@ Operation id: `products.put_products_collections_by_collectionId` · `Version: 2
 *Request body*: [`UpdateProductCollectionsDto`](#updateproductcollectionsdto)
 
 *Response*: [`UpdateProductCollectionResponseDto`](#updateproductcollectionresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().update_product_collection(&collectionId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -394,6 +443,15 @@ Operation id: `products.get_products_inventory` · `Version: 2021-07-28` · Scop
 
 *Response*: [`GetInventoryResponseDto`](#getinventoryresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::ListInventoryParams;
+
+let params = ListInventoryParams::new("altId", "altType");
+let out = ghl.products().list_inventory(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -422,6 +480,12 @@ Operation id: `products.post_products_inventory` · `Version: 2021-07-28` · Sco
 *Request body*: [`UpdateInventoryDto`](#updateinventorydto)
 
 *Response*: [`UpdateInventoryResponseDto`](#updateinventoryresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().update_inventory(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -465,6 +529,15 @@ Operation id: `products.get_products_reviews` · `Version: 2021-07-28` · Scopes
 
 *Response*: [`ListProductReviewsResponseDto`](#listproductreviewsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::FetchProductReviewsParams;
+
+let params = FetchProductReviewsParams::new("altId", "altType");
+let out = ghl.products().fetch_product_reviews(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -493,6 +566,12 @@ Operation id: `products.post_products_reviews_bulk_update` · `Version: 2021-07-
 *Request body*: [`UpdateProductReviewsDto`](#updateproductreviewsdto)
 
 *Response*: [`UpdateProductReviewsResponseDto`](#updateproductreviewsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().update_product_reviews(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -531,6 +610,15 @@ Operation id: `products.get_products_reviews_count` · `Version: 2021-07-28` · 
 | `storeId` | string | no | Comma-separated list of store IDs |
 
 *Response*: [`CountReviewsByStatusResponseDto`](#countreviewsbystatusresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::FetchReviewCountAsPerStatusParams;
+
+let params = FetchReviewCountAsPerStatusParams::new("altId", "altType");
+let out = ghl.products().fetch_review_count_as_per_status(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -573,6 +661,15 @@ Operation id: `products.delete_products_reviews_by_reviewId` · `Version: 2021-0
 
 *Response*: [`DeleteProductReviewResponseDto`](#deleteproductreviewresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::DeleteProductReviewParams;
+
+let params = DeleteProductReviewParams::new("altId", "altType", "productId");
+let out = ghl.products().delete_product_review(&reviewId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -612,6 +709,12 @@ Operation id: `products.put_products_reviews_by_reviewId` · `Version: 2021-07-2
 
 *Response*: [`UpdateProductReviewsResponseDto`](#updateproductreviewsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().update_product_reviews_op(&reviewId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -649,6 +752,12 @@ Operation id: `products.post_products_store_by_storeId` · `Version: 2021-07-28`
 
 *Response*: [`UpdateProductStoreResponseDto`](#updateproductstoreresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().action_to_include_exclude_the_product_in_store(&storeId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -683,6 +792,12 @@ Operation id: `products.post_products_store_by_storeId_priority` · `Version: 20
 | `storeId` | string | **yes** | Products related to the store |
 
 *Request body*: [`UpdateDisplayPriorityBodyDto`](#updatedisplayprioritybodydto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().update_product_display_priorities_in_store(&storeId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -728,6 +843,15 @@ Operation id: `products.get_products_store_by_storeId_stats` · `Version: 2021-0
 
 *Response*: [`GetProductStatsResponseDto`](#getproductstatsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::FetchProductStoreStatsParams;
+
+let params = FetchProductStoreStatsParams::new("altId", "altType");
+let out = ghl.products().fetch_product_store_stats(&storeId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -771,6 +895,15 @@ Operation id: `products.delete_products_by_productId` · `Version: 2021-07-28` �
 
 *Response*: [`DeleteProductResponseDto`](#deleteproductresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::DeleteProductByIdParams;
+
+let params = DeleteProductByIdParams::new("locationId");
+let out = ghl.products().delete_product_by_id(&productId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -813,6 +946,15 @@ Operation id: `products.get_products_by_productId` · `Version: 2021-07-28` · S
 
 *Response*: [`GetProductResponseDto`](#getproductresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::GetProductByIdParams;
+
+let params = GetProductByIdParams::new("locationId");
+let out = ghl.products().get_product_by_id(&productId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -849,6 +991,12 @@ Operation id: `products.put_products_by_productId` · `Version: 2021-07-28` · S
 *Request body*: [`UpdateProductDto`](#updateproductdto)
 
 *Response*: [`UpdateProductResponseDto`](#updateproductresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().update_product_by_id(&productId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -894,6 +1042,15 @@ Operation id: `products.get_products_by_productId_price` · `Version: 2021-07-28
 
 *Response*: [`ListPricesResponseDto`](#listpricesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::ListPricesForAProductParams;
+
+let params = ListPricesForAProductParams::new("locationId");
+let out = ghl.products().list_prices_for_a_product(&productId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -930,6 +1087,12 @@ Operation id: `products.post_products_by_productId_price` · `Version: 2021-07-2
 *Request body*: [`CreatePriceDto`](#createpricedto)
 
 *Response*: [`CreatePriceResponseDto`](#createpriceresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().create_price_for_a_product(&productId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -972,6 +1135,15 @@ Operation id: `products.delete_products_by_productId_price_by_priceId` · `Versi
 | `locationId` | string | **yes** | location Id |
 
 *Response*: [`DeletePriceResponseDto`](#deletepriceresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::DeletePriceByIdForAProductParams;
+
+let params = DeletePriceByIdForAProductParams::new("locationId");
+let out = ghl.products().delete_price_by_id_for_a_product(&productId, &priceId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1016,6 +1188,15 @@ Operation id: `products.get_products_by_productId_price_by_priceId` · `Version:
 
 *Response*: [`GetPriceResponseDto`](#getpriceresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::products::GetPriceByIdForAProductParams;
+
+let params = GetPriceByIdForAProductParams::new("locationId");
+let out = ghl.products().get_price_by_id_for_a_product(&productId, &priceId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1054,6 +1235,12 @@ Operation id: `products.put_products_by_productId_price_by_priceId` · `Version:
 *Request body*: [`UpdatePriceDto`](#updatepricedto)
 
 *Response*: [`UpdatePriceResponseDto`](#updatepriceresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.products().update_price_by_id_for_a_product(&productId, &priceId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

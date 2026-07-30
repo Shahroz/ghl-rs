@@ -23,7 +23,9 @@ use serde::{Deserialize, Serialize};
 pub struct AmountSummary {
     /// Order sub-total value.
     /// Required by the API.
-    pub subtotal: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub subtotal: Option<f64>,
     /// Discount value on order.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<f64>,
@@ -53,8 +55,9 @@ pub struct ApplyToFuturePaymentsConfigDto {
     /// Type of future payments configuration
     /// Allowed values: `forever`, `fixed`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Duration value for fixed type configurations
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub duration: Option<f64>,
@@ -103,35 +106,57 @@ pub struct ConnectCustomProvidersConfigDto {
 pub struct ConnectCustomProvidersResponseSchema {
     /// The name of the custom provider
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Description of payment gateway. Shown on the payments integrations page as subtext
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// This url will be loaded in iFrame to start a payment session.
     /// Required by the API.
-    #[serde(rename = "paymentsUrl")]
-    pub payments_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "paymentsUrl",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub payments_url: Option<String>,
     /// The url used for querying payments related events. Ex. verify, refund, subscription etc.
     /// Required by the API.
-    #[serde(rename = "queryUrl")]
-    pub query_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "queryUrl", default, skip_serializing_if = "Option::is_none")]
+    pub query_url: Option<String>,
     /// Public image url for logo of the payment gateway displayed on the payments integrations
     /// page.
     /// Required by the API.
-    #[serde(rename = "imageUrl")]
-    pub image_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "imageUrl", default, skip_serializing_if = "Option::is_none")]
+    pub image_url: Option<String>,
     /// The unique identifier for the custom provider.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Location id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// The application id of marketplace
     /// Required by the API.
-    #[serde(rename = "marketplaceAppId")]
-    pub marketplace_app_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "marketplaceAppId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub marketplace_app_id: Option<String>,
     /// Payment provider details.
     #[serde(
         rename = "paymentProvider",
@@ -141,17 +166,21 @@ pub struct ConnectCustomProvidersResponseSchema {
     pub payment_provider: Option<serde_json::Value>,
     /// Whether the config is deleted or not. true represents config is deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// The creation timestamp of the custom provider.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the custom provider.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Trace id of the custom provider.
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
@@ -162,69 +191,111 @@ pub struct ConnectCustomProvidersResponseSchema {
 pub struct CouponDto {
     /// Unique MongoDB identifier for the coupon
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Number of times the coupon has been used
     /// Required by the API.
-    #[serde(rename = "usageCount")]
-    pub usage_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "usageCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub usage_count: Option<f64>,
     /// Maximum number of times a customer can use this coupon (0 for unlimited)
     /// Required by the API.
-    #[serde(rename = "limitPerCustomer")]
-    pub limit_per_customer: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "limitPerCustomer",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub limit_per_customer: Option<f64>,
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Type of entity
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Display name of the coupon
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Redemption code for the coupon
     /// Required by the API.
-    pub code: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub code: Option<String>,
     /// Type of discount (percentage or amount)
     /// Allowed values: `percentage`, `amount`.
     /// Required by the API.
-    #[serde(rename = "discountType")]
-    pub discount_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "discountType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub discount_type: Option<String>,
     /// Value of the discount (percentage or fixed amount)
     /// Required by the API.
-    #[serde(rename = "discountValue")]
-    pub discount_value: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "discountValue",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub discount_value: Option<f64>,
     /// Current status of the coupon
     /// Allowed values: `scheduled`, `active`, `expired`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Date when the coupon becomes active
     /// Required by the API.
-    #[serde(rename = "startDate")]
-    pub start_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "startDate", default, skip_serializing_if = "Option::is_none")]
+    pub start_date: Option<String>,
     /// End date when the coupon expires
     #[serde(rename = "endDate", default, skip_serializing_if = "Option::is_none")]
     pub end_date: Option<String>,
     /// Indicates if the coupon applies to future recurring payments
     /// Required by the API.
-    #[serde(rename = "applyToFuturePayments")]
-    pub apply_to_future_payments: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "applyToFuturePayments",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub apply_to_future_payments: Option<bool>,
     /// Configuration for how the coupon applies to future payments
     /// Required by the API.
-    #[serde(rename = "applyToFuturePaymentsConfig")]
-    pub apply_to_future_payments_config: ApplyToFuturePaymentsConfigDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "applyToFuturePaymentsConfig",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub apply_to_future_payments_config: Option<ApplyToFuturePaymentsConfigDto>,
     /// User ID associated with the coupon (if applicable)
     #[serde(rename = "userId", default, skip_serializing_if = "Option::is_none")]
     pub user_id: Option<String>,
     /// Creation timestamp
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Last update timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `CreateCouponParams` from the GoHighLevel OpenAPI spec.
@@ -300,73 +371,116 @@ pub struct CreateCouponParams {
 pub struct CreateCouponResponseDto {
     /// Unique MongoDB identifier for the coupon
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Number of times the coupon has been used
     /// Required by the API.
-    #[serde(rename = "usageCount")]
-    pub usage_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "usageCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub usage_count: Option<f64>,
     /// Maximum number of times a customer can use this coupon (0 for unlimited)
     /// Required by the API.
-    #[serde(rename = "limitPerCustomer")]
-    pub limit_per_customer: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "limitPerCustomer",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub limit_per_customer: Option<f64>,
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Type of entity
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Display name of the coupon
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Redemption code for the coupon
     /// Required by the API.
-    pub code: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub code: Option<String>,
     /// Type of discount (percentage or amount)
     /// Allowed values: `percentage`, `amount`.
     /// Required by the API.
-    #[serde(rename = "discountType")]
-    pub discount_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "discountType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub discount_type: Option<String>,
     /// Value of the discount (percentage or fixed amount)
     /// Required by the API.
-    #[serde(rename = "discountValue")]
-    pub discount_value: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "discountValue",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub discount_value: Option<f64>,
     /// Current status of the coupon
     /// Allowed values: `scheduled`, `active`, `expired`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Date when the coupon becomes active
     /// Required by the API.
-    #[serde(rename = "startDate")]
-    pub start_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "startDate", default, skip_serializing_if = "Option::is_none")]
+    pub start_date: Option<String>,
     /// End date when the coupon expires
     #[serde(rename = "endDate", default, skip_serializing_if = "Option::is_none")]
     pub end_date: Option<String>,
     /// Indicates if the coupon applies to future recurring payments
     /// Required by the API.
-    #[serde(rename = "applyToFuturePayments")]
-    pub apply_to_future_payments: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "applyToFuturePayments",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub apply_to_future_payments: Option<bool>,
     /// Configuration for how the coupon applies to future payments
     /// Required by the API.
-    #[serde(rename = "applyToFuturePaymentsConfig")]
-    pub apply_to_future_payments_config: ApplyToFuturePaymentsConfigDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "applyToFuturePaymentsConfig",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub apply_to_future_payments_config: Option<ApplyToFuturePaymentsConfigDto>,
     /// User ID associated with the coupon (if applicable)
     #[serde(rename = "userId", default, skip_serializing_if = "Option::is_none")]
     pub user_id: Option<String>,
     /// Creation timestamp
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Last update timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Unique identifier for tracing this API request
     /// Required by the API.
-    #[serde(rename = "traceId")]
-    pub trace_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
+    pub trace_id: Option<String>,
 }
 
 /// `CreateCustomProvidersDto` from the GoHighLevel OpenAPI spec.
@@ -403,35 +517,57 @@ pub struct CreateCustomProvidersDto {
 pub struct CreateCustomProvidersResponseSchema {
     /// The name of the custom provider
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Description of payment gateway. Shown on the payments integrations page as subtext
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// This url will be loaded in iFrame to start a payment session.
     /// Required by the API.
-    #[serde(rename = "paymentsUrl")]
-    pub payments_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "paymentsUrl",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub payments_url: Option<String>,
     /// The url used for querying payments related events. Ex. verify, refund, subscription etc.
     /// Required by the API.
-    #[serde(rename = "queryUrl")]
-    pub query_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "queryUrl", default, skip_serializing_if = "Option::is_none")]
+    pub query_url: Option<String>,
     /// Public image url for logo of the payment gateway displayed on the payments integrations
     /// page.
     /// Required by the API.
-    #[serde(rename = "imageUrl")]
-    pub image_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "imageUrl", default, skip_serializing_if = "Option::is_none")]
+    pub image_url: Option<String>,
     /// The unique identifier for the custom provider.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Location id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// The application id of marketplace
     /// Required by the API.
-    #[serde(rename = "marketplaceAppId")]
-    pub marketplace_app_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "marketplaceAppId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub marketplace_app_id: Option<String>,
     /// Payment provider details.
     #[serde(
         rename = "paymentProvider",
@@ -441,17 +577,21 @@ pub struct CreateCustomProvidersResponseSchema {
     pub payment_provider: Option<serde_json::Value>,
     /// Whether the config is deleted or not. true represents config is deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// The creation timestamp of the custom provider.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the custom provider.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Trace id of the custom provider.
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
@@ -487,10 +627,14 @@ pub struct CreateFulfillmentDto {
 pub struct CreateFulfillmentResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// fulfillment data
     /// Required by the API.
-    pub data: FulfillmentSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<FulfillmentSchema>,
 }
 
 /// `CreateWhiteLabelIntegrationProviderDto` from the GoHighLevel OpenAPI spec.
@@ -521,7 +665,7 @@ pub struct CreateWhiteLabelIntegrationProviderDto {
     /// Required by the API.
     pub description: String,
     /// The URL to an image representing the integration provider. The imageUrl should start
-    /// with "https://" and ensure that this URL is publicly accessible.
+    /// with "<https://"> and ensure that this URL is publicly accessible.
     /// Required by the API.
     #[serde(rename = "imageUrl")]
     pub image_url: String,
@@ -532,42 +676,56 @@ pub struct CreateWhiteLabelIntegrationProviderDto {
 pub struct CreateWhitelabelIntegrationResponseDto {
     /// The unique identifier of the integration provider.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The altId / locationId of the integration provider.
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// The altType of the integration provider.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// The title or name of the integration provider.
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// The route name associated with the integration provider.
     /// Required by the API.
-    pub route: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub route: Option<String>,
     /// The payment provider associated with the integration provider.
     /// Required by the API.
-    pub provider: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub provider: Option<String>,
     /// A brief description providing additional information about the integration provider.
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// The URL to an image representing the integration provider.
     /// Required by the API.
-    #[serde(rename = "imageUrl")]
-    pub image_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "imageUrl", default, skip_serializing_if = "Option::is_none")]
+    pub image_url: Option<String>,
     /// The timestamp when the integration provider was created.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The timestamp when the integration provider was last updated.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `CustomProviderKeys` from the GoHighLevel OpenAPI spec.
@@ -589,14 +747,22 @@ pub struct CustomRRuleOptionsDto {
     /// Allowed values: `yearly`, `monthly`, `weekly`, `daily`, `hourly`, `minutely`,
     /// `secondly`.
     /// Required by the API.
-    #[serde(rename = "intervalType")]
-    pub interval_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "intervalType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub interval_type: Option<String>,
     /// Required by the API.
-    pub interval: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub interval: Option<f64>,
     /// Start date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "startDate")]
-    pub start_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "startDate", default, skip_serializing_if = "Option::is_none")]
+    pub start_date: Option<String>,
     /// Start time in HH:mm:ss format
     #[serde(rename = "startTime", default, skip_serializing_if = "Option::is_none")]
     pub start_time: Option<String>,
@@ -644,8 +810,9 @@ pub struct CustomRRuleOptionsDto {
 pub struct DefaultPriceResponseDto {
     /// The unique identifier for the price.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// An array of membership offers associated with the price.
     #[serde(
         rename = "membershipOffers",
@@ -675,18 +842,25 @@ pub struct DefaultPriceResponseDto {
     pub user_id: Option<String>,
     /// The name of the price.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The type of the price (e.g., one_time).
     /// Allowed values: `one_time`, `recurring`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// The currency code for the price.
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// The amount of the price.
     /// Required by the API.
-    pub amount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub amount: Option<f64>,
     /// The recurring details of the price (if type is recurring).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub recurring: Option<RecurringDto>,
@@ -733,8 +907,9 @@ pub struct DefaultPriceResponseDto {
 pub struct DefaultProductResponseDto {
     /// The unique identifier for the product.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// product description
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -743,15 +918,27 @@ pub struct DefaultProductResponseDto {
     pub variants: Vec<ProductVariantDto>,
     /// The unique identifier for the location.
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// The name of the product.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// The type of the product (e.g., PHYSICAL).
     /// Required by the API.
-    #[serde(rename = "productType")]
-    pub product_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "productType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub product_type: Option<String>,
     /// Indicates whether the product is available in-store.
     #[serde(
         rename = "availableInStore",
@@ -762,13 +949,15 @@ pub struct DefaultProductResponseDto {
     /// The creation timestamp of the product.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the product.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// The statement descriptor for the product.
     #[serde(
         rename = "statementDescriptor",
@@ -835,11 +1024,14 @@ pub struct DeleteCouponParams {
 pub struct DeleteCouponResponseDto {
     /// Indicates whether the delete was successful
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Unique identifier for tracing this API request
     /// Required by the API.
-    #[serde(rename = "traceId")]
-    pub trace_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
+    pub trace_id: Option<String>,
 }
 
 /// `DeleteCustomProvidersConfigDto` from the GoHighLevel OpenAPI spec.
@@ -858,7 +1050,9 @@ pub struct DeleteCustomProvidersResponseSchema {
     /// Whether the custom provider config is disconnect or not. true represents config is
     /// disconnect
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `DisconnectCustomProvidersResponseSchema` from the GoHighLevel OpenAPI spec.
@@ -867,7 +1061,9 @@ pub struct DisconnectCustomProvidersResponseSchema {
     /// Whether the custom provider config is disconnect or not. true represents config is
     /// disconnect
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `FulfilledItem` from the GoHighLevel OpenAPI spec.
@@ -875,20 +1071,29 @@ pub struct DisconnectCustomProvidersResponseSchema {
 pub struct FulfilledItem {
     /// The id of product price
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Product details
     /// Required by the API.
-    pub product: DefaultProductResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub product: Option<DefaultProductResponseDto>,
     /// Price details
     /// Required by the API.
-    pub price: DefaultPriceResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub price: Option<DefaultPriceResponseDto>,
     /// The no of quantity of the current fulfilled item
     /// Required by the API.
-    pub qty: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub qty: Option<f64>,
 }
 
 /// `FulfillmentItems` from the GoHighLevel OpenAPI spec.
@@ -908,32 +1113,39 @@ pub struct FulfillmentItems {
 pub struct FulfillmentSchema {
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Fulfillment tracking information
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub trackings: Vec<FulfillmentTracking>,
     /// The unique identifier for the fulfillment item.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Fulfilled items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<FulfilledItem>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `FulfillmentTracking` from the GoHighLevel OpenAPI spec.
@@ -967,35 +1179,57 @@ pub struct FulfillmentTracking {
 pub struct GetCustomProvidersResponseSchema {
     /// The name of the custom provider
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Description of payment gateway. Shown on the payments integrations page as subtext
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// This url will be loaded in iFrame to start a payment session.
     /// Required by the API.
-    #[serde(rename = "paymentsUrl")]
-    pub payments_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "paymentsUrl",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub payments_url: Option<String>,
     /// The url used for querying payments related events. Ex. verify, refund, subscription etc.
     /// Required by the API.
-    #[serde(rename = "queryUrl")]
-    pub query_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "queryUrl", default, skip_serializing_if = "Option::is_none")]
+    pub query_url: Option<String>,
     /// Public image url for logo of the payment gateway displayed on the payments integrations
     /// page.
     /// Required by the API.
-    #[serde(rename = "imageUrl")]
-    pub image_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "imageUrl", default, skip_serializing_if = "Option::is_none")]
+    pub image_url: Option<String>,
     /// The unique identifier for the custom provider.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Location id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// The application id of marketplace
     /// Required by the API.
-    #[serde(rename = "marketplaceAppId")]
-    pub marketplace_app_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "marketplaceAppId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub marketplace_app_id: Option<String>,
     /// Payment provider details.
     #[serde(
         rename = "paymentProvider",
@@ -1005,17 +1239,21 @@ pub struct GetCustomProvidersResponseSchema {
     pub payment_provider: Option<serde_json::Value>,
     /// Whether the config is deleted or not. true represents config is deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// The creation timestamp of the custom provider.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the custom provider.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Trace id of the custom provider.
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
@@ -1026,16 +1264,19 @@ pub struct GetCustomProvidersResponseSchema {
 pub struct GetOrderResponseSchema {
     /// The unique identifier for the order.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// AltId is the unique identifier eg: location id.
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// AltType is the type of identifier.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Contact id corresponding to the order.
     #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
     pub contact_id: Option<String>,
@@ -1047,20 +1288,24 @@ pub struct GetOrderResponseSchema {
     pub amount: Option<f64>,
     /// The status of the order (e.g., completed).
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Order is in live / test mode.
     #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
     pub live_mode: Option<bool>,
     /// The creation timestamp of the order.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the order.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Fulfillment status of the order.
     #[serde(
         rename = "fulfillmentStatus",
@@ -1138,16 +1383,19 @@ pub struct GetOrderResponseSchema {
 pub struct GetSubscriptionResponseSchema {
     /// The unique identifier for the subscription.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// AltType is the type of identifier.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<serde_json::Value>,
     /// AltId is the unique identifier eg: location id.
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Contact id corresponding to the subscription.
     #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
     pub contact_id: Option<String>,
@@ -1217,13 +1465,15 @@ pub struct GetSubscriptionResponseSchema {
     /// The creation timestamp of the subscription.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the subscription.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Meta details of the subscription.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub meta: Option<serde_json::Value>,
@@ -1279,16 +1529,19 @@ pub struct GetSubscriptionResponseSchema {
 pub struct GetTxnResponseSchema {
     /// The unique identifier for the transaction.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// AltType is the type of identifier.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// AltId is the unique identifier eg: location id.
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Contact id corresponding to the transaction.
     #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
     pub contact_id: Option<String>,
@@ -1314,13 +1567,15 @@ pub struct GetTxnResponseSchema {
     /// The creation timestamp of the transaction.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the transaction.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Entity type of transaction (eg: order).
     #[serde(
         rename = "entityType",
@@ -1421,42 +1676,56 @@ pub struct GetTxnResponseSchema {
 pub struct IntegrationProviderSchema {
     /// The unique identifier of the integration provider.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The altId / locationId of the integration provider.
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// The altType of the integration provider.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// The title or name of the integration provider.
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// The route name associated with the integration provider.
     /// Required by the API.
-    pub route: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub route: Option<String>,
     /// The payment provider associated with the integration provider.
     /// Required by the API.
-    pub provider: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub provider: Option<String>,
     /// A brief description providing additional information about the integration provider.
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// The URL to an image representing the integration provider.
     /// Required by the API.
-    #[serde(rename = "imageUrl")]
-    pub image_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "imageUrl", default, skip_serializing_if = "Option::is_none")]
+    pub image_url: Option<String>,
     /// The timestamp when the integration provider was created.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The timestamp when the integration provider was last updated.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `ListCouponsResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1464,16 +1733,23 @@ pub struct IntegrationProviderSchema {
 pub struct ListCouponsResponseDto {
     /// Array of coupon objects
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<CouponDto>,
     /// Total number of coupons matching the query criteria
     /// Required by the API.
-    #[serde(rename = "totalCount")]
-    pub total_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_count: Option<f64>,
     /// Unique identifier for tracing this API request
     /// Required by the API.
-    #[serde(rename = "traceId")]
-    pub trace_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
+    pub trace_id: Option<String>,
 }
 
 /// `ListFulfillmentResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1481,9 +1757,12 @@ pub struct ListCouponsResponseDto {
 pub struct ListFulfillmentResponseDto {
     /// Status of api action
     /// Required by the API.
-    pub status: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<bool>,
     /// An array of fulfilled items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<FulfillmentSchema>,
 }
@@ -1493,12 +1772,18 @@ pub struct ListFulfillmentResponseDto {
 pub struct ListOrdersResponseDto {
     /// An array of orders
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<OrderResponseSchema>,
     /// total orders count
     /// Required by the API.
-    #[serde(rename = "totalCount")]
-    pub total_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_count: Option<f64>,
 }
 
 /// `ListSubscriptionResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1506,12 +1791,18 @@ pub struct ListOrdersResponseDto {
 pub struct ListSubscriptionResponseDto {
     /// An array of subscriptions
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<SubscriptionResponseSchema>,
     /// total subscriptions count
     /// Required by the API.
-    #[serde(rename = "totalCount")]
-    pub total_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_count: Option<f64>,
 }
 
 /// `ListTxnsResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1519,12 +1810,18 @@ pub struct ListSubscriptionResponseDto {
 pub struct ListTxnsResponseDto {
     /// An array of transactions
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<TxnResponseSchema>,
     /// total transactions count
     /// Required by the API.
-    #[serde(rename = "totalCount")]
-    pub total_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_count: Option<f64>,
 }
 
 /// `ListWhitelabelIntegrationProviderResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1532,7 +1829,9 @@ pub struct ListTxnsResponseDto {
 pub struct ListWhitelabelIntegrationProviderResponseDto {
     /// list of integration provider.
     /// Required by the API.
-    pub providers: IntegrationProviderSchema,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub providers: Option<IntegrationProviderSchema>,
 }
 
 /// `MembershipOfferDto` from the GoHighLevel OpenAPI spec.
@@ -1540,14 +1839,19 @@ pub struct ListWhitelabelIntegrationProviderResponseDto {
 pub struct MembershipOfferDto {
     /// Membership offer label
     /// Required by the API.
-    pub label: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
     /// Membership offer label
     /// Required by the API.
-    pub value: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub value: Option<String>,
     /// The unique identifier for the membership offer.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
 }
 
 /// `OrderResponseSchema` from the GoHighLevel OpenAPI spec.
@@ -1555,16 +1859,19 @@ pub struct MembershipOfferDto {
 pub struct OrderResponseSchema {
     /// The unique identifier for the order.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// AltId is the unique identifier eg: location id.
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// AltType is the type of identifier.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Contact id corresponding to the order.
     #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
     pub contact_id: Option<String>,
@@ -1596,7 +1903,9 @@ pub struct OrderResponseSchema {
     pub discount: Option<f64>,
     /// The status of the order (e.g., completed).
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Order is in live / test mode.
     #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
     pub live_mode: Option<bool>,
@@ -1609,8 +1918,13 @@ pub struct OrderResponseSchema {
     pub total_products: Option<f64>,
     /// Source type of order (eg: funnel).
     /// Required by the API.
-    #[serde(rename = "sourceType")]
-    pub source_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "sourceType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub source_type: Option<String>,
     /// Source name for the order.
     #[serde(
         rename = "sourceName",
@@ -1638,13 +1952,15 @@ pub struct OrderResponseSchema {
     /// The creation timestamp of the order.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The last update timestamp of the order.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Source sub-type for the order.
     #[serde(
         rename = "sourceSubType",
@@ -1685,15 +2001,18 @@ pub struct OrderSource {
     /// `document_contracts`, `membership`, `mobile_app`, `communities`, `point_of_sale`,
     /// `manual`, `form`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Allowed values: `one_step_order_form`, `two_step_order_form`, `upsell`, `tap_to_pay`,
     /// `card_payment`, `store`, `contact_view`, `email_campaign`, `payments_dashboard`,
     /// `shopify`, `subscription_view`, `store_upsell`.
     #[serde(rename = "subType", default, skip_serializing_if = "Option::is_none")]
     pub sub_type: Option<String>,
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1745,7 +2064,9 @@ pub struct PostRecordOrderPaymentBody {
 pub struct PostRecordOrderPaymentResponse {
     /// Success status of the request
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `ProductLabelDto` from the GoHighLevel OpenAPI spec.
@@ -1753,7 +2074,9 @@ pub struct PostRecordOrderPaymentResponse {
 pub struct ProductLabelDto {
     /// The content for the product label.
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Start date in YYYY-MM-DDTHH:mm:ssZ format
     #[serde(rename = "startDate", default, skip_serializing_if = "Option::is_none")]
     pub start_date: Option<String>,
@@ -1767,12 +2090,17 @@ pub struct ProductLabelDto {
 pub struct ProductVariantDto {
     /// A unique identifier for the variant.
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The name of the variant.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// An array of options for the variant.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub options: Vec<ProductVariantOptionDto>,
 }
@@ -1782,10 +2110,14 @@ pub struct ProductVariantDto {
 pub struct ProductVariantOptionDto {
     /// The unique identifier for the option.
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The name of the option.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
 }
 
 /// `RecurringDto` from the GoHighLevel OpenAPI spec.
@@ -1794,11 +2126,18 @@ pub struct RecurringDto {
     /// The interval at which the recurring event occurs.
     /// Allowed values: `day`, `month`, `week`, `year`.
     /// Required by the API.
-    pub interval: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub interval: Option<String>,
     /// The number of intervals between each occurrence of the event.
     /// Required by the API.
-    #[serde(rename = "intervalCount")]
-    pub interval_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "intervalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub interval_count: Option<f64>,
 }
 
 /// `ScheduleOptionsDto` from the GoHighLevel OpenAPI spec.
@@ -1815,17 +2154,20 @@ pub struct ScheduleOptionsDto {
 pub struct SubscriptionResponseSchema {
     /// The unique identifier for the subscription.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// AltId is the unique identifier eg: location id.
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// AltType is the type of identifier.
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Contact id corresponding to the subscription.
     #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
     pub contact_id: Option<String>,
@@ -1851,7 +2193,9 @@ pub struct SubscriptionResponseSchema {
     pub amount: Option<f64>,
     /// The status of the subscription (e.g., succeeded).
     /// Required by the API.
-    pub status: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<serde_json::Value>,
     /// Subscription is in live / test mode.
     #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
     pub live_mode: Option<bool>,
@@ -1867,8 +2211,13 @@ pub struct SubscriptionResponseSchema {
     pub entity_id: Option<String>,
     /// Entity source type of subscription (eg: funnel).
     /// Required by the API.
-    #[serde(rename = "entitySourceType")]
-    pub entity_source_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "entitySourceType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub entity_source_type: Option<String>,
     /// Entity source name for the subscription.
     #[serde(
         rename = "entitySourceName",
@@ -1924,13 +2273,15 @@ pub struct SubscriptionResponseSchema {
     /// The creation timestamp of the subscription.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The update timestamp of the subscription.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// User ID who created the subscription.
     #[serde(rename = "createdBy", default, skip_serializing_if = "Option::is_none")]
     pub created_by: Option<String>,
@@ -1941,16 +2292,19 @@ pub struct SubscriptionResponseSchema {
 pub struct TxnResponseSchema {
     /// The unique identifier for the transaction.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// AltId is the unique identifier eg: location id.
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// AltType is the type of identifier.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Contact id corresponding to the transaction.
     #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
     pub contact_id: Option<String>,
@@ -1983,7 +2337,9 @@ pub struct TxnResponseSchema {
     pub amount: Option<f64>,
     /// The status of the transaction (e.g., succeeded).
     /// Required by the API.
-    pub status: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<serde_json::Value>,
     /// Transaction is in live / test mode.
     #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
     pub live_mode: Option<bool>,
@@ -1999,8 +2355,13 @@ pub struct TxnResponseSchema {
     pub entity_id: Option<String>,
     /// Entity source type of transaction (eg: funnel).
     /// Required by the API.
-    #[serde(rename = "entitySourceType")]
-    pub entity_source_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "entitySourceType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub entity_source_type: Option<String>,
     /// Entity source sub-type of the transactions.
     #[serde(
         rename = "entitySourceSubType",
@@ -2066,13 +2427,15 @@ pub struct TxnResponseSchema {
     /// The creation timestamp of the transaction.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// The update timestamp of the transaction.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Transaction amount refunded.
     #[serde(
         rename = "amountRefunded",
@@ -2090,8 +2453,13 @@ pub struct TxnResponseSchema {
     /// The charged timestamp of the transaction.
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "fulfilledAt")]
-    pub fulfilled_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "fulfilledAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub fulfilled_at: Option<String>,
     /// User ID who created the transaction.
     #[serde(rename = "createdBy", default, skip_serializing_if = "Option::is_none")]
     pub created_by: Option<String>,
@@ -2193,5 +2561,7 @@ pub struct UpdateCustomProviderCapabilitiesResponseSchema {
     /// Whether the custom provider capabilities are updated or not. true represents
     /// capabilities are updated
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }

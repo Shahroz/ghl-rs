@@ -4,41 +4,24 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `users` cargo feature on `ghl-sdk`, then call any of the 7 generated methods on `ghl.users()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features users
-use ghl_models::v2::users::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["users"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "users"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/users/` | Get User by Location | `users.get_users` |
-| `POST` | `/users/` | Create User | `users.post_users` |
-| `GET` | `/users/search` | Search Users | `users.get_users_search` |
-| `POST` | `/users/search/filter-by-email` | Filter Users by Email | `users.post_users_search_filter_by_email` |
-| `DELETE` | `/users/{userId}` | Delete User | `users.delete_users_by_userId` |
-| `GET` | `/users/{userId}` | Get User | `users.get_users_by_userId` |
-| `PUT` | `/users/{userId}` | Update User | `users.put_users_by_userId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/users/` | Get User by Location | `get_user_by_location()` | `users.get_users` |
+| `POST` | `/users/` | Create User | `create_user()` | `users.post_users` |
+| `GET` | `/users/search` | Search Users | `search_users()` | `users.get_users_search` |
+| `POST` | `/users/search/filter-by-email` | Filter Users by Email | `filter_users_by_email()` | `users.post_users_search_filter_by_email` |
+| `DELETE` | `/users/{userId}` | Delete User | `delete_user()` | `users.delete_users_by_userId` |
+| `GET` | `/users/{userId}` | Get User | `get_user()` | `users.get_users_by_userId` |
+| `PUT` | `/users/{userId}` | Update User | `update_user()` | `users.put_users_by_userId` |
 
 ### Endpoint details — v2
 
@@ -57,6 +40,15 @@ Operation id: `users.get_users` · `Version: 2021-07-28` · Scopes: `users.reado
 | `locationId` | string | **yes** | — |
 
 *Response*: [`LocationSuccessfulResponseDto`](#locationsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::users::GetUserByLocationParams;
+
+let params = GetUserByLocationParams::new("locationId");
+let out = ghl.users().get_user_by_location(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -83,6 +75,12 @@ Operation id: `users.post_users` · `Version: 2021-07-28` · Scopes: `users.writ
 *Request body*: [`CreateUserDto`](#createuserdto)
 
 *Response*: [`UserSuccessfulResponseDto`](#usersuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.users().create_user(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -124,6 +122,15 @@ Operation id: `users.get_users_search` · `Version: 2021-07-28` · Scopes: `user
 
 *Response*: [`SearchUserSuccessfulResponseDto`](#searchusersuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::users::SearchUsersParams;
+
+let params = SearchUsersParams::new("companyId");
+let out = ghl.users().search_users(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -152,6 +159,12 @@ Operation id: `users.post_users_search_filter_by_email` · `Version: 2021-07-28`
 
 *Response*: [`SearchUserSuccessfulResponseDto`](#searchusersuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.users().filter_users_by_email(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -175,6 +188,12 @@ Operation id: `users.post_users_search_filter_by_email` · `Version: 2021-07-28`
 Operation id: `users.delete_users_by_userId` · `Version: 2021-07-28` · Scopes: `users.write`
 
 *Response*: [`DeleteUserSuccessfulResponseDto`](#deleteusersuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.users().delete_user().await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -203,6 +222,12 @@ Operation id: `users.get_users_by_userId` · `Version: 2021-07-28` · Scopes: `u
 
 *Response*: [`UserSuccessfulResponseDto`](#usersuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.users().get_user(&userId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -228,6 +253,12 @@ Operation id: `users.put_users_by_userId` · `Version: 2021-07-28` · Scopes: `u
 *Request body*: [`UpdateUserDto`](#updateuserdto)
 
 *Response*: [`UserSuccessfulResponseDto`](#usersuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.users().update_user(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 

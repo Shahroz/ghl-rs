@@ -90,7 +90,7 @@ struct LocationList {
 
 /// Access to the Locations API. Obtained via [`Ghl::locations`].
 pub struct LocationsService {
-    client: Ghl,
+    pub(crate) client: Ghl,
 }
 
 impl LocationsService {

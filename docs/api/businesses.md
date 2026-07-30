@@ -4,39 +4,22 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `businesses` cargo feature on `ghl-sdk`, then call any of the 5 generated methods on `ghl.businesses()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features businesses
-use ghl_models::v2::businesses::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["businesses"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "businesses"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/businesses/` | Get Businesses by Location | `businesses.get_businesses` |
-| `POST` | `/businesses/` | Create Business | `businesses.post_businesses` |
-| `DELETE` | `/businesses/{businessId}` | Delete Business | `businesses.delete_businesses_by_businessId` |
-| `GET` | `/businesses/{businessId}` | Get Business | `businesses.get_businesses_by_businessId` |
-| `PUT` | `/businesses/{businessId}` | Update Business | `businesses.put_businesses_by_businessId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/businesses/` | Get Businesses by Location | `get_businesses_by_location()` | `businesses.get_businesses` |
+| `POST` | `/businesses/` | Create Business | `create_business()` | `businesses.post_businesses` |
+| `DELETE` | `/businesses/{businessId}` | Delete Business | `delete_business()` | `businesses.delete_businesses_by_businessId` |
+| `GET` | `/businesses/{businessId}` | Get Business | `get_business()` | `businesses.get_businesses_by_businessId` |
+| `PUT` | `/businesses/{businessId}` | Update Business | `update_business()` | `businesses.put_businesses_by_businessId` |
 
 ### Endpoint details — v2
 
@@ -55,6 +38,15 @@ Operation id: `businesses.get_businesses` · `Version: 2021-07-28` · Scopes: `b
 | `skip` | string | no | — |
 
 *Response*: [`GetBusinessByLocationResponseDto`](#getbusinessbylocationresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::businesses::GetBusinessesByLocationParams;
+
+let params = GetBusinessesByLocationParams::new("locationId");
+let out = ghl.businesses().get_businesses_by_location(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -81,6 +73,12 @@ Operation id: `businesses.post_businesses` · `Version: 2021-07-28` · Scopes: `
 *Request body*: [`CreateBusinessDto`](#createbusinessdto)
 
 *Response*: [`UpdateBusinessResponseDto`](#updatebusinessresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.businesses().create_business(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -112,6 +110,12 @@ Operation id: `businesses.delete_businesses_by_businessId` · `Version: 2021-07-
 
 *Response*: [`DeleteBusinessResponseDto`](#deletebusinessresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.businesses().delete_business(&businessId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -141,6 +145,12 @@ Operation id: `businesses.get_businesses_by_businessId` · `Version: 2021-07-28`
 | `businessId` | string | **yes** | — |
 
 *Response*: [`GetBusinessByIdResponseDto`](#getbusinessbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.businesses().get_business(&businessId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -173,6 +183,12 @@ Operation id: `businesses.put_businesses_by_businessId` · `Version: 2021-07-28`
 *Request body*: [`UpdateBusinessDto`](#updatebusinessdto)
 
 *Response*: [`UpdateBusinessResponseDto`](#updatebusinessresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.businesses().update_business(&businessId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

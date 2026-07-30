@@ -18,13 +18,20 @@ One typed SDK. One static-binary MCP server. Every location in your agency — n
 
 | | Count |
 |---|---|
-| API operations callable | **1,203** (576 in v2 + 627 in v3) |
+| **Typed Rust methods** | **576** — one per API v2 endpoint, across all 41 v2 modules |
+| Typed data models (DTOs) | **2,417** (v2 + v3) |
+| API operations reachable | **1,203** (576 v2 + 627 v3) |
 | API modules covered | **45** across both versions |
-| Typed data models (DTOs) | **2,417** |
-| Ergonomic typed SDK services | 5 modules (contacts, opportunities, conversations, calendars, locations) |
 | MCP tools | 21 (16 typed + 3 meta-tools + 2 utility) |
 
-Hand-written services give you the nicest ergonomics for the busiest modules; the meta-tools and generated DTOs cover everything else — invoices, payments, ad publishing, social planner, voice AI, SaaS, custom objects, workflows, and the rest — so no endpoint is ever out of reach.
+**You never have to leave the library.** Every v2 endpoint is a real method with typed parameters and a typed response — invoices, payments, ad manager, social planner, voice AI, SaaS, custom objects, workflows, all of it. Five busy modules also get hand-written helpers (envelope unwrapping, paginated `Stream`s) on the same services.
+
+```rust
+use ghl_sdk::services::invoices::ListInvoicesParams;
+
+let params = ListInvoicesParams::new(&location_id, "location", "20", "0").status("draft");
+let page = ghl.invoices().list_invoices(&params).await?;
+```
 
 ## Documentation
 
@@ -48,7 +55,7 @@ GoHighLevel powers **60k+ agencies and ~2M businesses**, but its developer stack
 
 |  | Official MCP server | Community Node servers | **ghl-mcp** |
 |---|---|---|---|
-| API coverage | ~36 curated tools | varies, often stale | ✅ 21 tools + all **1,203** operations via meta-tools |
+| API coverage | ~36 curated tools | varies, often stale | ✅ **576 typed Rust methods** + all 1,203 operations via meta-tools |
 | API v3 support | ❌ | ❌ | ✅ v2 and v3 side by side |
 | Typed data models | — | ❌ | ✅ 2,417 generated DTOs |
 | Agency (multi-location) access | ❌ one location per connection | ⚠️ varies | ✅ agency token → per-location routing |
@@ -62,7 +69,7 @@ GoHighLevel powers **60k+ agencies and ~2M businesses**, but its developer stack
 
 ```toml
 [dependencies]
-ghl-sdk = "0.3"
+ghl-sdk = { version = "0.4", features = ["contacts", "invoices"] }
 tokio = { version = "1", features = ["full"] }
 ```
 
@@ -174,7 +181,8 @@ The MCP server reaches the **entire** API today; typed SDK services cover the bu
 - [x] MCP server: 21 tools over stdio, write/destructive gating
 - [x] Meta-tools reaching all **1,203 operations / 45 modules**, v2 **and** v3
 - [x] **2,417 generated DTOs** in `ghl-models`, feature-gated per module
-- [ ] Typed service methods for invoices, payments, products, workflows
+- [x] **576 generated typed service methods** — every API v2 endpoint
+- [ ] Generated services for API v3 (v3 DTOs and `request_raw` cover it today)
 - [ ] Streamable HTTP transport (hosted multi-tenant gateway)
 - [ ] Webhook signature validation + typed events
 - [ ] `npx ghl-mcp` wrapper, Homebrew tap, Docker image

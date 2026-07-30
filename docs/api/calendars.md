@@ -4,55 +4,62 @@
 
 ## How to call it
 
-This module has a **typed SDK service**: `ghl.calendars()` with `list()`, `free_slots()`, `create_appointment()`, `get_appointment()`.
+**Every endpoint has a typed Rust method.** Enable the `calendars` cargo feature on `ghl-sdk`, then call any of the 41 generated methods on `ghl.calendars()`:
+
+```toml
+ghl-sdk = { version = "0.4", features = ["calendars"] }
+```
+
+This module also has hand-written ergonomic helpers on the same `ghl.calendars()`: `list()`, `free_slots()`, `create_appointment()`, `get_appointment()` (envelope unwrapping, paginated `Stream`s).
 
 MCP tools: `ghl_list_calendars`, `ghl_get_free_slots`, `ghl_book_appointment`.
 
+
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/calendars/` | Get Calendars | `calendars.get_calendars` |
-| `POST` | `/calendars/` | Create Calendar | `calendars.post_calendars` |
-| `GET` | `/calendars/appointments/{appointmentId}/notes` | Get Notes | `calendars.get_calendars_appointments_by_appointmentId_notes` |
-| `POST` | `/calendars/appointments/{appointmentId}/notes` | Create Note | `calendars.post_calendars_appointments_by_appointmentId_notes` |
-| `DELETE` | `/calendars/appointments/{appointmentId}/notes/{noteId}` | Delete Note | `calendars.delete_calendars_appointments_by_appointmentId_notes_by_noteId` |
-| `PUT` | `/calendars/appointments/{appointmentId}/notes/{noteId}` | Update Note | `calendars.put_calendars_appointments_by_appointmentId_notes_by_noteId` |
-| `GET` | `/calendars/blocked-slots` | Get Blocked Slots | `calendars.get_calendars_blocked_slots` |
-| `GET` | `/calendars/events` | Get Calendar Events | `calendars.get_calendars_events` |
-| `POST` | `/calendars/events/appointments` | Create appointment | `calendars.post_calendars_events_appointments` |
-| `GET` | `/calendars/events/appointments/{eventId}` | Get Appointment | `calendars.get_calendars_events_appointments_by_eventId` |
-| `PUT` | `/calendars/events/appointments/{eventId}` | Update Appointment | `calendars.put_calendars_events_appointments_by_eventId` |
-| `POST` | `/calendars/events/block-slots` | Create Block Slot | `calendars.post_calendars_events_block_slots` |
-| `PUT` | `/calendars/events/block-slots/{eventId}` | Update Block Slot | `calendars.put_calendars_events_block_slots_by_eventId` |
-| `DELETE` | `/calendars/events/{eventId}` | Delete Event | `calendars.delete_calendars_events_by_eventId` |
-| `GET` | `/calendars/groups` | Get Groups | `calendars.get_calendars_groups` |
-| `POST` | `/calendars/groups` | Create Calendar Group | `calendars.post_calendars_groups` |
-| `POST` | `/calendars/groups/validate-slug` | Validate group slug | `calendars.post_calendars_groups_validate_slug` |
-| `DELETE` | `/calendars/groups/{groupId}` | Delete Group | `calendars.delete_calendars_groups_by_groupId` |
-| `PUT` | `/calendars/groups/{groupId}` | Update Group | `calendars.put_calendars_groups_by_groupId` |
-| `PUT` | `/calendars/groups/{groupId}/status` | Disable Group | `calendars.put_calendars_groups_by_groupId_status` |
-| `GET` | `/calendars/resources/{resourceType}` | List Calendar Resources | `calendars.get_calendars_resources_by_resourceType` |
-| `POST` | `/calendars/resources/{resourceType}` | Create Calendar Resource | `calendars.post_calendars_resources_by_resourceType` |
-| `DELETE` | `/calendars/resources/{resourceType}/{id}` | Delete Calendar Resource | `calendars.delete_calendars_resources_by_resourceType_by_id` |
-| `GET` | `/calendars/resources/{resourceType}/{id}` | Get Calendar Resource | `calendars.get_calendars_resources_by_resourceType_by_id` |
-| `PUT` | `/calendars/resources/{resourceType}/{id}` | Update Calendar Resource | `calendars.put_calendars_resources_by_resourceType_by_id` |
-| `POST` | `/calendars/schedules` | Create user availability schedule | `calendars.post_calendars_schedules` |
-| `GET` | `/calendars/schedules/search` | List user availability schedule | `calendars.get_calendars_schedules_search` |
-| `DELETE` | `/calendars/schedules/{id}` | Delete user availability schedule | `calendars.delete_calendars_schedules_by_id` |
-| `GET` | `/calendars/schedules/{id}` | Get user availability schedule | `calendars.get_calendars_schedules_by_id` |
-| `PUT` | `/calendars/schedules/{id}` | Update user availability schedule | `calendars.put_calendars_schedules_by_id` |
-| `DELETE` | `/calendars/schedules/{id}/associations/{calendarId}` | Remove user availability schedule from a calendar | `calendars.delete_calendars_schedules_by_id_associations_by_calendarId` |
-| `PUT` | `/calendars/schedules/{id}/associations/{calendarId}` | Apply user availability schedule to a calendar | `calendars.put_calendars_schedules_by_id_associations_by_calendarId` |
-| `DELETE` | `/calendars/{calendarId}` | Delete Calendar | `calendars.delete_calendars_by_calendarId` |
-| `GET` | `/calendars/{calendarId}` | Get Calendar | `calendars.get_calendars_by_calendarId` |
-| `PUT` | `/calendars/{calendarId}` | Update Calendar | `calendars.put_calendars_by_calendarId` |
-| `GET` | `/calendars/{calendarId}/free-slots` | Get Free Slots | `calendars.get_calendars_by_calendarId_free_slots` |
-| `GET` | `/calendars/{calendarId}/notifications` | Get notifications | `calendars.get_calendars_by_calendarId_notifications` |
-| `POST` | `/calendars/{calendarId}/notifications` | Create notification | `calendars.post_calendars_by_calendarId_notifications` |
-| `DELETE` | `/calendars/{calendarId}/notifications/{notificationId}` | Delete Notification | `calendars.delete_calendars_by_calendarId_notifications_by_notificationId` |
-| `GET` | `/calendars/{calendarId}/notifications/{notificationId}` | Get notification | `calendars.get_calendars_by_calendarId_notifications_by_notificationId` |
-| `PUT` | `/calendars/{calendarId}/notifications/{notificationId}` | Update notification | `calendars.put_calendars_by_calendarId_notifications_by_notificationId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/calendars/` | Get Calendars | `get_calendars()` | `calendars.get_calendars` |
+| `POST` | `/calendars/` | Create Calendar | `create_calendar()` | `calendars.post_calendars` |
+| `GET` | `/calendars/appointments/{appointmentId}/notes` | Get Notes | `get_notes()` | `calendars.get_calendars_appointments_by_appointmentId_notes` |
+| `POST` | `/calendars/appointments/{appointmentId}/notes` | Create Note | `create_note()` | `calendars.post_calendars_appointments_by_appointmentId_notes` |
+| `DELETE` | `/calendars/appointments/{appointmentId}/notes/{noteId}` | Delete Note | `delete_note()` | `calendars.delete_calendars_appointments_by_appointmentId_notes_by_noteId` |
+| `PUT` | `/calendars/appointments/{appointmentId}/notes/{noteId}` | Update Note | `update_note()` | `calendars.put_calendars_appointments_by_appointmentId_notes_by_noteId` |
+| `GET` | `/calendars/blocked-slots` | Get Blocked Slots | `get_blocked_slots()` | `calendars.get_calendars_blocked_slots` |
+| `GET` | `/calendars/events` | Get Calendar Events | `get_calendar_events()` | `calendars.get_calendars_events` |
+| `POST` | `/calendars/events/appointments` | Create appointment | `create_appointment_op()` | `calendars.post_calendars_events_appointments` |
+| `GET` | `/calendars/events/appointments/{eventId}` | Get Appointment | `get_appointment_op()` | `calendars.get_calendars_events_appointments_by_eventId` |
+| `PUT` | `/calendars/events/appointments/{eventId}` | Update Appointment | `update_appointment()` | `calendars.put_calendars_events_appointments_by_eventId` |
+| `POST` | `/calendars/events/block-slots` | Create Block Slot | `create_block_slot()` | `calendars.post_calendars_events_block_slots` |
+| `PUT` | `/calendars/events/block-slots/{eventId}` | Update Block Slot | `update_block_slot()` | `calendars.put_calendars_events_block_slots_by_eventId` |
+| `DELETE` | `/calendars/events/{eventId}` | Delete Event | `delete_event()` | `calendars.delete_calendars_events_by_eventId` |
+| `GET` | `/calendars/groups` | Get Groups | `get_groups()` | `calendars.get_calendars_groups` |
+| `POST` | `/calendars/groups` | Create Calendar Group | `create_calendar_group()` | `calendars.post_calendars_groups` |
+| `POST` | `/calendars/groups/validate-slug` | Validate group slug | `validate_group_slug()` | `calendars.post_calendars_groups_validate_slug` |
+| `DELETE` | `/calendars/groups/{groupId}` | Delete Group | `delete_group()` | `calendars.delete_calendars_groups_by_groupId` |
+| `PUT` | `/calendars/groups/{groupId}` | Update Group | `update_group()` | `calendars.put_calendars_groups_by_groupId` |
+| `PUT` | `/calendars/groups/{groupId}/status` | Disable Group | `disable_group()` | `calendars.put_calendars_groups_by_groupId_status` |
+| `GET` | `/calendars/resources/{resourceType}` | List Calendar Resources | `list_calendar_resources()` | `calendars.get_calendars_resources_by_resourceType` |
+| `POST` | `/calendars/resources/{resourceType}` | Create Calendar Resource | `create_calendar_resource()` | `calendars.post_calendars_resources_by_resourceType` |
+| `DELETE` | `/calendars/resources/{resourceType}/{id}` | Delete Calendar Resource | `delete_calendar_resource()` | `calendars.delete_calendars_resources_by_resourceType_by_id` |
+| `GET` | `/calendars/resources/{resourceType}/{id}` | Get Calendar Resource | `get_calendar_resource()` | `calendars.get_calendars_resources_by_resourceType_by_id` |
+| `PUT` | `/calendars/resources/{resourceType}/{id}` | Update Calendar Resource | `update_calendar_resource()` | `calendars.put_calendars_resources_by_resourceType_by_id` |
+| `POST` | `/calendars/schedules` | Create user availability schedule | `create_user_availability_schedule()` | `calendars.post_calendars_schedules` |
+| `GET` | `/calendars/schedules/search` | List user availability schedule | `list_user_availability_schedule()` | `calendars.get_calendars_schedules_search` |
+| `DELETE` | `/calendars/schedules/{id}` | Delete user availability schedule | `delete_user_availability_schedule()` | `calendars.delete_calendars_schedules_by_id` |
+| `GET` | `/calendars/schedules/{id}` | Get user availability schedule | `get_user_availability_schedule()` | `calendars.get_calendars_schedules_by_id` |
+| `PUT` | `/calendars/schedules/{id}` | Update user availability schedule | `update_user_availability_schedule()` | `calendars.put_calendars_schedules_by_id` |
+| `DELETE` | `/calendars/schedules/{id}/associations/{calendarId}` | Remove user availability schedule from a calendar | `remove_user_availability_schedule_from_a_calendar()` | `calendars.delete_calendars_schedules_by_id_associations_by_calendarId` |
+| `PUT` | `/calendars/schedules/{id}/associations/{calendarId}` | Apply user availability schedule to a calendar | `apply_user_availability_schedule_to_a_calendar()` | `calendars.put_calendars_schedules_by_id_associations_by_calendarId` |
+| `DELETE` | `/calendars/{calendarId}` | Delete Calendar | `delete_calendar()` | `calendars.delete_calendars_by_calendarId` |
+| `GET` | `/calendars/{calendarId}` | Get Calendar | `get_calendar()` | `calendars.get_calendars_by_calendarId` |
+| `PUT` | `/calendars/{calendarId}` | Update Calendar | `update_calendar()` | `calendars.put_calendars_by_calendarId` |
+| `GET` | `/calendars/{calendarId}/free-slots` | Get Free Slots | `get_free_slots()` | `calendars.get_calendars_by_calendarId_free_slots` |
+| `GET` | `/calendars/{calendarId}/notifications` | Get notifications | `get_notifications()` | `calendars.get_calendars_by_calendarId_notifications` |
+| `POST` | `/calendars/{calendarId}/notifications` | Create notification | `create_notification()` | `calendars.post_calendars_by_calendarId_notifications` |
+| `DELETE` | `/calendars/{calendarId}/notifications/{notificationId}` | Delete Notification | `delete_notification()` | `calendars.delete_calendars_by_calendarId_notifications_by_notificationId` |
+| `GET` | `/calendars/{calendarId}/notifications/{notificationId}` | Get notification | `get_notification()` | `calendars.get_calendars_by_calendarId_notifications_by_notificationId` |
+| `PUT` | `/calendars/{calendarId}/notifications/{notificationId}` | Update notification | `update_notification()` | `calendars.put_calendars_by_calendarId_notifications_by_notificationId` |
 
 ### Endpoint details — v2
 
@@ -73,6 +80,15 @@ Operation id: `calendars.get_calendars` · `Version: 2021-04-15` · Scopes: `cal
 | `showDrafted` | boolean | no | Show drafted |
 
 *Response*: [`CalendarsGetSuccessfulResponseDTO`](#calendarsgetsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::calendars::GetCalendarsParams;
+
+let params = GetCalendarsParams::new("locationId");
+let out = ghl.calendars().get_calendars(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -101,6 +117,12 @@ Operation id: `calendars.post_calendars` · `Version: 2021-04-15` · Scopes: `ca
 *Request body*: [`CalendarCreateDTO`](#calendarcreatedto)
 
 *Response*: [`CalendarByIdSuccessfulResponseDTO`](#calendarbyidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().create_calendar(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -141,6 +163,15 @@ Operation id: `calendars.get_calendars_appointments_by_appointmentId_notes` · `
 
 *Response*: [`GetNotesListSuccessfulResponseDto`](#getnoteslistsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::calendars::GetNotesParams;
+
+let params = GetNotesParams::new("limit", "offset");
+let out = ghl.calendars().get_notes(&appointmentId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -177,6 +208,12 @@ Operation id: `calendars.post_calendars_appointments_by_appointmentId_notes` · 
 
 *Response*: [`GetCreateUpdateNoteSuccessfulResponseDto`](#getcreateupdatenotesuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().create_note(&appointmentId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -210,6 +247,12 @@ Operation id: `calendars.delete_calendars_appointments_by_appointmentId_notes_by
 
 *Response*: [`DeleteNoteSuccessfulResponseDto`](#deletenotesuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().delete_note(&appointmentId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -241,6 +284,12 @@ Operation id: `calendars.put_calendars_appointments_by_appointmentId_notes_by_no
 *Request body*: [`NotesDTO`](#notesdto)
 
 *Response*: [`GetCreateUpdateNoteSuccessfulResponseDto`](#getcreateupdatenotesuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().update_note(&appointmentId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -280,6 +329,15 @@ Operation id: `calendars.get_calendars_blocked_slots` · `Version: 2021-04-15` �
 
 *Response*: [`GetCalendarEventsSuccessfulResponseDTO`](#getcalendareventssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::calendars::GetBlockedSlotsParams;
+
+let params = GetBlockedSlotsParams::new("locationId", "startTime", "endTime");
+let out = ghl.calendars().get_blocked_slots(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -317,6 +375,15 @@ Operation id: `calendars.get_calendars_events` · `Version: 2021-04-15` · Scope
 
 *Response*: [`GetCalendarEventsSuccessfulResponseDTO`](#getcalendareventssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::calendars::GetCalendarEventsParams;
+
+let params = GetCalendarEventsParams::new("locationId", "startTime", "endTime");
+let out = ghl.calendars().get_calendar_events(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -344,6 +411,12 @@ Operation id: `calendars.post_calendars_events_appointments` · `Version: 2021-0
 *Request body*: [`AppointmentCreateSchema`](#appointmentcreateschema)
 
 *Response*: [`AppointmentSchemaResponse`](#appointmentschemaresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().create_appointment_op(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -376,6 +449,12 @@ Operation id: `calendars.get_calendars_events_appointments_by_eventId` · `Versi
 | `eventId` | string | **yes** | Event Id or Instance id. For recurring appointments send masterEventId to modify original series. |
 
 *Response*: [`GetCalendarEventSuccessfulResponseDTO`](#getcalendareventsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().get_appointment_op(&eventId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -411,6 +490,12 @@ Operation id: `calendars.put_calendars_events_appointments_by_eventId` · `Versi
 
 *Response*: [`AppointmentSchemaResponse`](#appointmentschemaresponse)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().update_appointment(&eventId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -441,6 +526,12 @@ Operation id: `calendars.post_calendars_events_block_slots` · `Version: 2021-04
 *Request body*: [`BlockSlotCreateRequestDTO`](#blockslotcreaterequestdto)
 
 *Response*: [`BlockedSlotSuccessfulResponseDto`](#blockedslotsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().create_block_slot(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -475,6 +566,12 @@ Operation id: `calendars.put_calendars_events_block_slots_by_eventId` · `Versio
 *Request body*: [`BlockSlotEditRequestDTO`](#blocksloteditrequestdto)
 
 *Response*: [`BlockedSlotSuccessfulResponseDto`](#blockedslotsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().update_block_slot(&eventId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -513,6 +610,12 @@ Operation id: `calendars.delete_calendars_events_by_eventId` · `Version: 2021-0
 
 *Response*: [`DeleteEventSuccessfulResponseDto`](#deleteeventsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().delete_event(&eventId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -548,6 +651,15 @@ Operation id: `calendars.get_calendars_groups` · `Version: 2021-04-15` · Scope
 
 *Response*: [`AllGroupsSuccessfulResponseDTO`](#allgroupssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::calendars::GetGroupsParams;
+
+let params = GetGroupsParams::new("locationId");
+let out = ghl.calendars().get_groups(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -573,6 +685,12 @@ Operation id: `calendars.post_calendars_groups` · `Version: 2021-04-15` · Scop
 *Request body*: [`GroupCreateDTO`](#groupcreatedto)
 
 *Response*: [`GroupCreateSuccessfulResponseDTO`](#groupcreatesuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().create_calendar_group(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -601,6 +719,12 @@ Operation id: `calendars.post_calendars_groups_validate_slug` · `Version: 2021-
 *Request body*: [`ValidateGroupSlugPostBody`](#validategroupslugpostbody)
 
 *Response*: [`ValidateGroupSlugSuccessResponseDTO`](#validategroupslugsuccessresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().validate_group_slug(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -631,6 +755,12 @@ Operation id: `calendars.delete_calendars_groups_by_groupId` · `Version: 2021-0
 | `groupId` | string | **yes** | Group Id |
 
 *Response*: [`GroupSuccessfulResponseDTO`](#groupsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().delete_group(&groupId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -666,6 +796,12 @@ Operation id: `calendars.put_calendars_groups_by_groupId` · `Version: 2021-04-1
 
 *Response*: [`GroupCreateSuccessfulResponseDTO`](#groupcreatesuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().update_group(&groupId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -700,6 +836,12 @@ Operation id: `calendars.put_calendars_groups_by_groupId_status` · `Version: 20
 *Request body*: [`GroupStatusUpdateParams`](#groupstatusupdateparams)
 
 *Response*: [`GroupSuccessfulResponseDTO`](#groupsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().disable_group(&groupId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -742,6 +884,15 @@ Operation id: `calendars.get_calendars_resources_by_resourceType` · `Version: 2
 | `limit` | number | **yes** | — |
 | `skip` | number | **yes** | — |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::calendars::ListCalendarResourcesParams;
+
+let params = ListCalendarResourcesParams::new("locationId", "limit", "skip");
+let out = ghl.calendars().list_calendar_resources(&resourceType, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -781,6 +932,12 @@ Operation id: `calendars.post_calendars_resources_by_resourceType` · `Version: 
 
 *Response*: [`CalendarResourceByIdResponseDTO`](#calendarresourcebyidresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().create_calendar_resource(&resourceType, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -817,6 +974,12 @@ Operation id: `calendars.delete_calendars_resources_by_resourceType_by_id` · `V
 
 *Response*: [`ResourceDeleteResponseDTO`](#resourcedeleteresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().delete_calendar_resource(&resourceType, &id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -850,6 +1013,12 @@ Operation id: `calendars.get_calendars_resources_by_resourceType_by_id` · `Vers
 | `id` | string | **yes** | Calendar Resource ID |
 
 *Response*: [`CalendarResourceByIdResponseDTO`](#calendarresourcebyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().get_calendar_resource(&resourceType, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -887,6 +1056,12 @@ Operation id: `calendars.put_calendars_resources_by_resourceType_by_id` · `Vers
 
 *Response*: [`CalendarResourceResponseDTO`](#calendarresourceresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().update_calendar_resource(&resourceType, &id, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -918,6 +1093,12 @@ Operation id: `calendars.post_calendars_schedules` · `Version: 2021-04-15` · S
 *Request body*: [`CreateScheduleDTO`](#createscheduledto)
 
 *Response*: [`ScheduleResponseDTO`](#scheduleresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().create_user_availability_schedule(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -955,6 +1136,15 @@ Operation id: `calendars.get_calendars_schedules_search` · `Version: 2021-04-15
 
 *Response*: [`GetAllSchedulesResponseDTO`](#getallschedulesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::calendars::ListUserAvailabilityScheduleParams;
+
+let params = ListUserAvailabilityScheduleParams::new("locationId", "userId");
+let out = ghl.calendars().list_user_availability_schedule(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -985,6 +1175,12 @@ Operation id: `calendars.delete_calendars_schedules_by_id` · `Version: 2021-04-
 | Name | Type | Required | Description |
 |---|---|---|---|
 | `id` | string | **yes** | Unique identifier of the schedule to delete |
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().delete_user_availability_schedule(&id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1017,6 +1213,12 @@ Operation id: `calendars.get_calendars_schedules_by_id` · `Version: 2021-04-15`
 | `id` | string | **yes** | Unique identifier of the schedule |
 
 *Response*: [`ScheduleResponseDTO`](#scheduleresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().get_user_availability_schedule(&id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1052,6 +1254,12 @@ Operation id: `calendars.put_calendars_schedules_by_id` · `Version: 2021-04-15`
 
 *Response*: [`ScheduleResponseDTO`](#scheduleresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().update_user_availability_schedule(&id, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1086,6 +1294,12 @@ Operation id: `calendars.delete_calendars_schedules_by_id_associations_by_calend
 | `id` | string | **yes** | Unique identifier of the schedule |
 | `calendarId` | string | **yes** | Unique identifier of the calendar to remove from the schedule |
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().remove_user_availability_schedule_from_a_calendar(&id, &calendarId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1117,6 +1331,12 @@ Operation id: `calendars.put_calendars_schedules_by_id_associations_by_calendarI
 |---|---|---|---|
 | `id` | string | **yes** | Unique identifier of the schedule |
 | `calendarId` | string | **yes** | Unique identifier of the team calendar to add to the schedule |
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().apply_user_availability_schedule_to_a_calendar(&id, &calendarId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1151,6 +1371,12 @@ Operation id: `calendars.delete_calendars_by_calendarId` · `Version: 2021-04-15
 
 *Response*: [`CalendarDeleteSuccessfulResponseDTO`](#calendardeletesuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().delete_calendar(&calendarId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1182,6 +1408,12 @@ Operation id: `calendars.get_calendars_by_calendarId` · `Version: 2021-04-15` �
 | `calendarId` | string | **yes** | Calendar Id |
 
 *Response*: [`CalendarByIdSuccessfulResponseDTO`](#calendarbyidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().get_calendar(&calendarId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1216,6 +1448,12 @@ Operation id: `calendars.put_calendars_by_calendarId` · `Version: 2021-04-15` �
 *Request body*: [`CalendarUpdateDTO`](#calendarupdatedto)
 
 *Response*: [`CalendarByIdSuccessfulResponseDTO`](#calendarbyidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().update_calendar(&calendarId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1260,6 +1498,15 @@ Operation id: `calendars.get_calendars_by_calendarId_free_slots` · `Version: 20
 | `userId` | string | no | The user for whom the free slots are returned |
 | `userIds` | array | no | The users for whom the free slots are returned |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::calendars::GetFreeSlotsParams;
+
+let params = GetFreeSlotsParams::new("startDate", "endDate");
+let out = ghl.calendars().get_free_slots(&calendarId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1303,6 +1550,15 @@ Operation id: `calendars.get_calendars_by_calendarId_notifications` · `Version:
 | `limit` | number | no | Number of records to return |
 | `skip` | number | no | Number of records to skip |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::calendars::GetNotificationsParams;
+
+let params = GetNotificationsParams::new();
+let out = ghl.calendars().get_notifications(&calendarId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1332,6 +1588,12 @@ Operation id: `calendars.post_calendars_by_calendarId_notifications` · `Version
 | Name | Type | Required | Description |
 |---|---|---|---|
 | `calendarId` | string | **yes** | — |
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().create_notification(&calendarId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1366,6 +1628,12 @@ Operation id: `calendars.delete_calendars_by_calendarId_notifications_by_notific
 
 *Response*: [`CalendarNotificationDeleteResponseDTO`](#calendarnotificationdeleteresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().delete_notification(&calendarId, &notificationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1399,6 +1667,12 @@ Operation id: `calendars.get_calendars_by_calendarId_notifications_by_notificati
 | `notificationId` | string | **yes** | — |
 
 *Response*: [`CalendarNotificationResponseDTO`](#calendarnotificationresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().get_notification(&calendarId, &notificationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1435,6 +1709,12 @@ Operation id: `calendars.put_calendars_by_calendarId_notifications_by_notificati
 *Request body*: [`UpdateCalendarNotificationsDTO`](#updatecalendarnotificationsdto)
 
 *Response*: [`CalendarNotificationDeleteResponseDTO`](#calendarnotificationdeleteresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.calendars().update_notification(&calendarId, &notificationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

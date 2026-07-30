@@ -4,46 +4,53 @@
 
 ## How to call it
 
-This module has a **typed SDK service**: `ghl.contacts()` with `create()`, `get()`, `update()`, `delete()`, `list()`.
+**Every endpoint has a typed Rust method.** Enable the `contacts` cargo feature on `ghl-sdk`, then call any of the 32 generated methods on `ghl.contacts()`:
+
+```toml
+ghl-sdk = { version = "0.4", features = ["contacts"] }
+```
+
+This module also has hand-written ergonomic helpers on the same `ghl.contacts()`: `create()`, `get()`, `update()`, `delete()`, `list()` (envelope unwrapping, paginated `Stream`s).
 
 MCP tools: `ghl_search_contacts`, `ghl_get_contact`, `ghl_create_contact`, `ghl_update_contact`, `ghl_delete_contact`.
 
+
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/contacts/` | Get Contacts | `contacts.get_contacts` |
-| `POST` | `/contacts/` | Create Contact | `contacts.post_contacts` |
-| `POST` | `/contacts/bulk/business` | Add/Remove Contacts From Business | `contacts.post_contacts_bulk_business` |
-| `POST` | `/contacts/bulk/tags/update/{type}` | Update Contacts Tags | `contacts.post_contacts_bulk_tags_update_by_type` |
-| `GET` | `/contacts/business/{businessId}` | Get Contacts By BusinessId | `contacts.get_contacts_business_by_businessId` |
-| `POST` | `/contacts/search` | Search Contacts | `contacts.post_contacts_search` |
-| `GET` | `/contacts/search/duplicate` | Get Duplicate Contact | `contacts.get_contacts_search_duplicate` |
-| `POST` | `/contacts/upsert` | Upsert Contact | `contacts.post_contacts_upsert` |
-| `DELETE` | `/contacts/{contactId}` | Delete Contact | `contacts.delete_contacts_by_contactId` |
-| `GET` | `/contacts/{contactId}` | Get Contact | `contacts.get_contacts_by_contactId` |
-| `PUT` | `/contacts/{contactId}` | Update Contact | `contacts.put_contacts_by_contactId` |
-| `GET` | `/contacts/{contactId}/appointments` | Get Appointments for Contact | `contacts.get_contacts_by_contactId_appointments` |
-| `DELETE` | `/contacts/{contactId}/campaigns/removeAll` | Remove Contact From Every Campaign | `contacts.delete_contacts_by_contactId_campaigns_removeAll` |
-| `DELETE` | `/contacts/{contactId}/campaigns/{campaignId}` | Remove Contact From Campaign | `contacts.delete_contacts_by_contactId_campaigns_by_campaignId` |
-| `POST` | `/contacts/{contactId}/campaigns/{campaignId}` | Add Contact to Campaign | `contacts.post_contacts_by_contactId_campaigns_by_campaignId` |
-| `DELETE` | `/contacts/{contactId}/followers` | Remove Followers | `contacts.delete_contacts_by_contactId_followers` |
-| `POST` | `/contacts/{contactId}/followers` | Add Followers | `contacts.post_contacts_by_contactId_followers` |
-| `GET` | `/contacts/{contactId}/notes` | Get All Notes | `contacts.get_contacts_by_contactId_notes` |
-| `POST` | `/contacts/{contactId}/notes` | Create Note | `contacts.post_contacts_by_contactId_notes` |
-| `DELETE` | `/contacts/{contactId}/notes/{id}` | Delete Note | `contacts.delete_contacts_by_contactId_notes_by_id` |
-| `GET` | `/contacts/{contactId}/notes/{id}` | Get Note | `contacts.get_contacts_by_contactId_notes_by_id` |
-| `PUT` | `/contacts/{contactId}/notes/{id}` | Update Note | `contacts.put_contacts_by_contactId_notes_by_id` |
-| `DELETE` | `/contacts/{contactId}/tags` | Remove Tags | `contacts.delete_contacts_by_contactId_tags` |
-| `POST` | `/contacts/{contactId}/tags` | Add Tags | `contacts.post_contacts_by_contactId_tags` |
-| `GET` | `/contacts/{contactId}/tasks` | Get all Tasks | `contacts.get_contacts_by_contactId_tasks` |
-| `POST` | `/contacts/{contactId}/tasks` | Create Task | `contacts.post_contacts_by_contactId_tasks` |
-| `DELETE` | `/contacts/{contactId}/tasks/{taskId}` | Delete Task | `contacts.delete_contacts_by_contactId_tasks_by_taskId` |
-| `GET` | `/contacts/{contactId}/tasks/{taskId}` | Get Task | `contacts.get_contacts_by_contactId_tasks_by_taskId` |
-| `PUT` | `/contacts/{contactId}/tasks/{taskId}` | Update Task | `contacts.put_contacts_by_contactId_tasks_by_taskId` |
-| `PUT` | `/contacts/{contactId}/tasks/{taskId}/completed` | Update Task Completed | `contacts.put_contacts_by_contactId_tasks_by_taskId_completed` |
-| `DELETE` | `/contacts/{contactId}/workflow/{workflowId}` | Delete Contact from Workflow | `contacts.delete_contacts_by_contactId_workflow_by_workflowId` |
-| `POST` | `/contacts/{contactId}/workflow/{workflowId}` | Add Contact to Workflow | `contacts.post_contacts_by_contactId_workflow_by_workflowId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/contacts/` | Get Contacts | `get_contacts()` | `contacts.get_contacts` |
+| `POST` | `/contacts/` | Create Contact | `create_contact()` | `contacts.post_contacts` |
+| `POST` | `/contacts/bulk/business` | Add/Remove Contacts From Business | `add_remove_contacts_from_business()` | `contacts.post_contacts_bulk_business` |
+| `POST` | `/contacts/bulk/tags/update/{type}` | Update Contacts Tags | `update_contacts_tags()` | `contacts.post_contacts_bulk_tags_update_by_type` |
+| `GET` | `/contacts/business/{businessId}` | Get Contacts By BusinessId | `get_contacts_by_business_id()` | `contacts.get_contacts_business_by_businessId` |
+| `POST` | `/contacts/search` | Search Contacts | `search_contacts()` | `contacts.post_contacts_search` |
+| `GET` | `/contacts/search/duplicate` | Get Duplicate Contact | `get_duplicate_contact()` | `contacts.get_contacts_search_duplicate` |
+| `POST` | `/contacts/upsert` | Upsert Contact | `upsert_contact()` | `contacts.post_contacts_upsert` |
+| `DELETE` | `/contacts/{contactId}` | Delete Contact | `delete_contact()` | `contacts.delete_contacts_by_contactId` |
+| `GET` | `/contacts/{contactId}` | Get Contact | `get_contact()` | `contacts.get_contacts_by_contactId` |
+| `PUT` | `/contacts/{contactId}` | Update Contact | `update_contact()` | `contacts.put_contacts_by_contactId` |
+| `GET` | `/contacts/{contactId}/appointments` | Get Appointments for Contact | `get_appointments_for_contact()` | `contacts.get_contacts_by_contactId_appointments` |
+| `DELETE` | `/contacts/{contactId}/campaigns/removeAll` | Remove Contact From Every Campaign | `remove_contact_from_every_campaign()` | `contacts.delete_contacts_by_contactId_campaigns_removeAll` |
+| `DELETE` | `/contacts/{contactId}/campaigns/{campaignId}` | Remove Contact From Campaign | `remove_contact_from_campaign()` | `contacts.delete_contacts_by_contactId_campaigns_by_campaignId` |
+| `POST` | `/contacts/{contactId}/campaigns/{campaignId}` | Add Contact to Campaign | `add_contact_to_campaign()` | `contacts.post_contacts_by_contactId_campaigns_by_campaignId` |
+| `DELETE` | `/contacts/{contactId}/followers` | Remove Followers | `remove_followers()` | `contacts.delete_contacts_by_contactId_followers` |
+| `POST` | `/contacts/{contactId}/followers` | Add Followers | `add_followers()` | `contacts.post_contacts_by_contactId_followers` |
+| `GET` | `/contacts/{contactId}/notes` | Get All Notes | `get_all_notes()` | `contacts.get_contacts_by_contactId_notes` |
+| `POST` | `/contacts/{contactId}/notes` | Create Note | `create_note()` | `contacts.post_contacts_by_contactId_notes` |
+| `DELETE` | `/contacts/{contactId}/notes/{id}` | Delete Note | `delete_note()` | `contacts.delete_contacts_by_contactId_notes_by_id` |
+| `GET` | `/contacts/{contactId}/notes/{id}` | Get Note | `get_note()` | `contacts.get_contacts_by_contactId_notes_by_id` |
+| `PUT` | `/contacts/{contactId}/notes/{id}` | Update Note | `update_note()` | `contacts.put_contacts_by_contactId_notes_by_id` |
+| `DELETE` | `/contacts/{contactId}/tags` | Remove Tags | `remove_tags()` | `contacts.delete_contacts_by_contactId_tags` |
+| `POST` | `/contacts/{contactId}/tags` | Add Tags | `add_tags()` | `contacts.post_contacts_by_contactId_tags` |
+| `GET` | `/contacts/{contactId}/tasks` | Get all Tasks | `get_all_tasks()` | `contacts.get_contacts_by_contactId_tasks` |
+| `POST` | `/contacts/{contactId}/tasks` | Create Task | `create_task()` | `contacts.post_contacts_by_contactId_tasks` |
+| `DELETE` | `/contacts/{contactId}/tasks/{taskId}` | Delete Task | `delete_task()` | `contacts.delete_contacts_by_contactId_tasks_by_taskId` |
+| `GET` | `/contacts/{contactId}/tasks/{taskId}` | Get Task | `get_task()` | `contacts.get_contacts_by_contactId_tasks_by_taskId` |
+| `PUT` | `/contacts/{contactId}/tasks/{taskId}` | Update Task | `update_task()` | `contacts.put_contacts_by_contactId_tasks_by_taskId` |
+| `PUT` | `/contacts/{contactId}/tasks/{taskId}/completed` | Update Task Completed | `update_task_completed()` | `contacts.put_contacts_by_contactId_tasks_by_taskId_completed` |
+| `DELETE` | `/contacts/{contactId}/workflow/{workflowId}` | Delete Contact from Workflow | `delete_contact_from_workflow()` | `contacts.delete_contacts_by_contactId_workflow_by_workflowId` |
+| `POST` | `/contacts/{contactId}/workflow/{workflowId}` | Add Contact to Workflow | `add_contact_to_workflow()` | `contacts.post_contacts_by_contactId_workflow_by_workflowId` |
 
 ### Endpoint details — v2
 
@@ -66,6 +73,15 @@ Operation id: `contacts.get_contacts` · `Version: 2021-07-28` · Scopes: `conta
 | `limit` | number | no | Limit Per Page records count. will allow maximum up to 100 and default will be 20 |
 
 *Response*: [`ContactsSearchSuccessfulResponseDto`](#contactssearchsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::contacts::GetContactsParams;
+
+let params = GetContactsParams::new("locationId");
+let out = ghl.contacts().get_contacts(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -95,6 +111,12 @@ Operation id: `contacts.post_contacts` · `Version: 2021-07-28` · Scopes: `cont
 
 *Response*: [`CreateContactsSuccessfulResponseDto`](#createcontactssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().create_contact(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -123,6 +145,12 @@ Operation id: `contacts.post_contacts_bulk_business` · `Version: 2021-07-28`
 
 *Response*: [`ContactsBulkUpateResponse`](#contactsbulkupateresponse)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().add_remove_contacts_from_business(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -150,6 +178,12 @@ Operation id: `contacts.post_contacts_bulk_tags_update_by_type` · `Version: 202
 *Request body*: [`UpdateTagsDTO`](#updatetagsdto)
 
 *Response*: [`UpdateTagsResponseDTO`](#updatetagsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().update_contacts_tags(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -190,6 +224,15 @@ Operation id: `contacts.get_contacts_business_by_businessId` · `Version: 2021-0
 
 *Response*: [`ContactsSearchSuccessfulResponseDto`](#contactssearchsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::contacts::GetContactsByBusinessIdParams;
+
+let params = GetContactsByBusinessIdParams::new("locationId");
+let out = ghl.contacts().get_contacts_by_business_id(&businessId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -218,6 +261,12 @@ Search contacts based on combinations of advanced filters. Documentation Link - 
 Operation id: `contacts.post_contacts_search` · `Version: 2021-07-28` · Scopes: `contacts.readonly`
 
 *Request body*: [`SearchBodyV2DTO`](#searchbodyv2dto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().search_contacts(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -251,6 +300,15 @@ Operation id: `contacts.get_contacts_search_duplicate` · `Version: 2021-07-28` 
 | `number` | string | no | Phone Number - Pass in URL Encoded form. i.e +1423164516 will become `%2B1423164516` |
 | `email` | string | no | Email - Pass in URL Encoded form. i.e test+abc@gmail.com will become `test%2Babc%40gmail.com` |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::contacts::GetDuplicateContactParams;
+
+let params = GetDuplicateContactParams::new("locationId");
+let out = ghl.contacts().get_duplicate_contact(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -278,6 +336,12 @@ Operation id: `contacts.post_contacts_upsert` · `Version: 2021-07-28` · Scopes
 *Request body*: [`UpsertContactDto`](#upsertcontactdto)
 
 *Response*: [`UpsertContactsSuccessfulResponseDto`](#upsertcontactssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().upsert_contact(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -309,6 +373,12 @@ Operation id: `contacts.delete_contacts_by_contactId` · `Version: 2021-07-28` �
 
 *Response*: [`DeleteContactsSuccessfulResponseDto`](#deletecontactssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().delete_contact(&contactId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -338,6 +408,12 @@ Operation id: `contacts.get_contacts_by_contactId` · `Version: 2021-07-28` · S
 | `contactId` | string | **yes** | Contact Id |
 
 *Response*: [`ContactsByIdSuccessfulResponseDto`](#contactsbyidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().get_contact(&contactId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -373,6 +449,12 @@ Operation id: `contacts.put_contacts_by_contactId` · `Version: 2021-07-28` · S
 
 *Response*: [`UpdateContactsSuccessfulResponseDto`](#updatecontactssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().update_contact(&contactId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -406,6 +488,12 @@ Operation id: `contacts.get_contacts_by_contactId_appointments` · `Version: 202
 
 *Response*: [`GetEventsSuccessfulResponseDto`](#geteventssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().get_appointments_for_contact(&contactId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -435,6 +523,12 @@ Operation id: `contacts.delete_contacts_by_contactId_campaigns_removeAll` · `Ve
 | `contactId` | string | **yes** | Contact Id |
 
 *Response*: [`CreateDeleteCantactsCampaignsSuccessfulResponseDto`](#createdeletecantactscampaignssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().remove_contact_from_every_campaign(&contactId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -466,6 +560,12 @@ Operation id: `contacts.delete_contacts_by_contactId_campaigns_by_campaignId` ·
 | `campaignId` | string | **yes** | Campaigns Id |
 
 *Response*: [`CreateDeleteCantactsCampaignsSuccessfulResponseDto`](#createdeletecantactscampaignssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().remove_contact_from_campaign(&contactId, &campaignId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -503,6 +603,12 @@ Operation id: `contacts.post_contacts_by_contactId_campaigns_by_campaignId` · `
 
 *Response*: [`CreateDeleteCantactsCampaignsSuccessfulResponseDto`](#createdeletecantactscampaignssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().add_contact_to_campaign(&contactId, &campaignId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -539,6 +645,12 @@ Operation id: `contacts.delete_contacts_by_contactId_followers` · `Version: 202
 
 *Response*: [`DeleteFollowersSuccessfulResponseDto`](#deletefollowerssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().remove_followers(&contactId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -574,6 +686,12 @@ Operation id: `contacts.post_contacts_by_contactId_followers` · `Version: 2021-
 
 *Response*: [`CreateAddFollowersSuccessfulResponseDto`](#createaddfollowerssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().add_followers(&contactId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -607,6 +725,12 @@ Operation id: `contacts.get_contacts_by_contactId_notes` · `Version: 2021-07-28
 
 *Response*: [`GetNotesListSuccessfulResponseDto`](#getnoteslistsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().get_all_notes(&contactId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -638,6 +762,12 @@ Operation id: `contacts.post_contacts_by_contactId_notes` · `Version: 2021-07-2
 *Request body*: [`NotesDTO`](#notesdto)
 
 *Response*: [`GetCreateUpdateNoteSuccessfulResponseDto`](#getcreateupdatenotesuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().create_note(&contactId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -673,6 +803,12 @@ Operation id: `contacts.delete_contacts_by_contactId_notes_by_id` · `Version: 2
 
 *Response*: [`DeleteNoteSuccessfulResponseDto`](#deletenotesuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().delete_note(&contactId, &id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -704,6 +840,12 @@ Operation id: `contacts.get_contacts_by_contactId_notes_by_id` · `Version: 2021
 | `id` | string | **yes** | Note Id |
 
 *Response*: [`GetCreateUpdateNoteSuccessfulResponseDto`](#getcreateupdatenotesuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().get_note(&contactId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -738,6 +880,12 @@ Operation id: `contacts.put_contacts_by_contactId_notes_by_id` · `Version: 2021
 *Request body*: [`UpdateNoteDTO`](#updatenotedto)
 
 *Response*: [`GetCreateUpdateNoteSuccessfulResponseDto`](#getcreateupdatenotesuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().update_note(&contactId, &id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -775,6 +923,12 @@ Operation id: `contacts.delete_contacts_by_contactId_tags` · `Version: 2021-07-
 
 *Response*: [`CreateDeleteTagSuccessfulResponseDto`](#createdeletetagsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().remove_tags(&contactId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -810,6 +964,12 @@ Operation id: `contacts.post_contacts_by_contactId_tags` · `Version: 2021-07-28
 
 *Response*: [`CreateAddTagSuccessfulResponseDto`](#createaddtagsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().add_tags(&contactId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -843,6 +1003,12 @@ Operation id: `contacts.get_contacts_by_contactId_tasks` · `Version: 2021-07-28
 
 *Response*: [`TasksListSuccessfulResponseDto`](#taskslistsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().get_all_tasks(&contactId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -874,6 +1040,12 @@ Operation id: `contacts.post_contacts_by_contactId_tasks` · `Version: 2021-07-2
 *Request body*: [`CreateTaskParams`](#createtaskparams)
 
 *Response*: [`TaskByIsSuccessfulResponseDto`](#taskbyissuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().create_task(&contactId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -909,6 +1081,12 @@ Operation id: `contacts.delete_contacts_by_contactId_tasks_by_taskId` · `Versio
 
 *Response*: [`DeleteTaskSuccessfulResponseDto`](#deletetasksuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().delete_task(&contactId, &taskId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -940,6 +1118,12 @@ Operation id: `contacts.get_contacts_by_contactId_tasks_by_taskId` · `Version: 
 | `taskId` | string | **yes** | Task Id |
 
 *Response*: [`TaskByIsSuccessfulResponseDto`](#taskbyissuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().get_task(&contactId, &taskId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -974,6 +1158,12 @@ Operation id: `contacts.put_contacts_by_contactId_tasks_by_taskId` · `Version: 
 *Request body*: [`UpdateTaskBody`](#updatetaskbody)
 
 *Response*: [`TaskByIsSuccessfulResponseDto`](#taskbyissuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().update_task(&contactId, &taskId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1012,6 +1202,12 @@ Operation id: `contacts.put_contacts_by_contactId_tasks_by_taskId_completed` · 
 
 *Response*: [`TaskByIsSuccessfulResponseDto`](#taskbyissuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().update_task_completed(&contactId, &taskId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1049,6 +1245,12 @@ Operation id: `contacts.delete_contacts_by_contactId_workflow_by_workflowId` · 
 
 *Response*: [`ContactsWorkflowSuccessfulResponseDto`](#contactsworkflowsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().delete_contact_from_workflow(&contactId, &workflowId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1085,6 +1287,12 @@ Operation id: `contacts.post_contacts_by_contactId_workflow_by_workflowId` · `V
 *Request body*: [`CreateWorkflowDto`](#createworkflowdto)
 
 *Response*: [`ContactsWorkflowSuccessfulResponseDto`](#contactsworkflowsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.contacts().add_contact_to_workflow(&contactId, &workflowId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

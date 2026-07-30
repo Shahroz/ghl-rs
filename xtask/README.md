@@ -36,7 +36,22 @@ Regenerates every DTO (~2,400 structs) into `crates/ghl-models/src/{v2,v3}/`,
 one Rust module per API module. **Also update `crates/ghl-models/Cargo.toml`** if
 HighLevel adds or renames a module, since each one is its own cargo feature.
 
-## 3. API reference docs
+## 3. Typed services (in `ghl-sdk`)
+
+```bash
+python3 xtask/generate_services.py ../highlevel-api-docs crates/ghl-sdk
+```
+
+Writes `crates/ghl-sdk/src/services/<module>.rs` — one service per API v2 module
+with a typed method per endpoint (576 total), plus a params struct per endpoint
+that has query parameters. **Also update `crates/ghl-sdk/Cargo.toml`** if
+HighLevel adds or renames a module: each one is a cargo feature that forwards to
+the matching `ghl-models` feature. Modules with a hand-written service
+(contacts, opportunities, conversations, calendars, locations) get a second
+`impl` block; generated names that collide with a hand-written method are
+suffixed `_op`.
+
+## 4. API reference docs
 
 ```bash
 python3 xtask/generate_api_docs.py ../highlevel-api-docs docs/api

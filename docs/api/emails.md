@@ -4,39 +4,22 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `emails` cargo feature on `ghl-sdk`, then call any of the 5 generated methods on `ghl.emails()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features emails
-use ghl_models::v2::emails::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["emails"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "emails"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/emails/builder` | Fetch email templates | `emails.get_emails_builder` |
-| `POST` | `/emails/builder` | Create a new template | `emails.post_emails_builder` |
-| `POST` | `/emails/builder/data` | Update a template | `emails.post_emails_builder_data` |
-| `DELETE` | `/emails/builder/{locationId}/{templateId}` | Delete a template | `emails.delete_emails_builder_by_locationId_by_templateId` |
-| `GET` | `/emails/schedule` | Get Campaigns | `emails.get_emails_schedule` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/emails/builder` | Fetch email templates | `fetch_email_templates()` | `emails.get_emails_builder` |
+| `POST` | `/emails/builder` | Create a new template | `create_a_new_template()` | `emails.post_emails_builder` |
+| `POST` | `/emails/builder/data` | Update a template | `update_a_template()` | `emails.post_emails_builder_data` |
+| `DELETE` | `/emails/builder/{locationId}/{templateId}` | Delete a template | `delete_a_template()` | `emails.delete_emails_builder_by_locationId_by_templateId` |
+| `GET` | `/emails/schedule` | Get Campaigns | `get_campaigns()` | `emails.get_emails_schedule` |
 
 ### Endpoint details — v2
 
@@ -66,6 +49,15 @@ Operation id: `emails.get_emails_builder` · `Version: 2021-07-28` · Scopes: `e
 
 *Response*: [`FetchBuilderSuccesfulResponseDto`](#fetchbuildersuccesfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::emails::FetchEmailTemplatesParams;
+
+let params = FetchEmailTemplatesParams::new("locationId");
+let out = ghl.emails().fetch_email_templates(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -92,6 +84,12 @@ Operation id: `emails.post_emails_builder` · `Version: 2021-07-28` · Scopes: `
 
 *Response*: [`CreateBuilderSuccesfulResponseDto`](#createbuildersuccesfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.emails().create_a_new_template(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -117,6 +115,12 @@ Operation id: `emails.post_emails_builder_data` · `Version: 2021-07-28` · Scop
 *Request body*: [`SaveBuilderDataDto`](#savebuilderdatadto)
 
 *Response*: [`BuilderUpdateSuccessfulDTO`](#builderupdatesuccessfuldto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.emails().update_a_template(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -148,6 +152,12 @@ Operation id: `emails.delete_emails_builder_by_locationId_by_templateId` · `Ver
 | `templateId` | string | **yes** | — |
 
 *Response*: [`DeleteBuilderSuccesfulResponseDto`](#deletebuildersuccesfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.emails().delete_a_template(&locationId, &templateId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -189,6 +199,15 @@ Operation id: `emails.get_emails_schedule` · `Version: 2021-07-28` · Scopes: `
 | `showStats` | boolean | no | When true, returns campaign statistics including delivered count, opened count, clicked count and revenue if available for the campaign. When false, returns cam… |
 
 *Response*: [`ScheduleFetchSuccessfulDTO`](#schedulefetchsuccessfuldto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::emails::GetCampaignsParams;
+
+let params = GetCampaignsParams::new("locationId");
+let out = ghl.emails().get_campaigns(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

@@ -4,26 +4,33 @@
 
 ## How to call it
 
-This module has a **typed SDK service**: `ghl.opportunities()` with `pipelines()`, `create()`, `get()`, `update()`, `update_status()`, `delete()`, `search()`.
+**Every endpoint has a typed Rust method.** Enable the `opportunities` cargo feature on `ghl-sdk`, then call any of the 12 generated methods on `ghl.opportunities()`:
+
+```toml
+ghl-sdk = { version = "0.4", features = ["opportunities"] }
+```
+
+This module also has hand-written ergonomic helpers on the same `ghl.opportunities()`: `pipelines()`, `create()`, `get()`, `update()`, `update_status()`, `delete()`, `search()` (envelope unwrapping, paginated `Stream`s).
 
 MCP tools: `ghl_list_pipelines`, `ghl_search_opportunities`, `ghl_get_opportunity`, `ghl_create_opportunity`, `ghl_move_opportunity`.
 
+
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/opportunities/` | Create Opportunity | `opportunities.post_opportunities` |
-| `GET` | `/opportunities/lost-reason` | Get lost reason | `opportunities.get_opportunities_lost_reason` |
-| `GET` | `/opportunities/pipelines` | Get Pipelines | `opportunities.get_opportunities_pipelines` |
-| `GET` | `/opportunities/search` | Search Opportunity | `opportunities.get_opportunities_search` |
-| `POST` | `/opportunities/search` | Search Opportunities | `opportunities.post_opportunities_search` |
-| `POST` | `/opportunities/upsert` | Upsert Opportunity | `opportunities.post_opportunities_upsert` |
-| `DELETE` | `/opportunities/{id}` | Delete Opportunity | `opportunities.delete_opportunities_by_id` |
-| `GET` | `/opportunities/{id}` | Get Opportunity | `opportunities.get_opportunities_by_id` |
-| `PUT` | `/opportunities/{id}` | Update Opportunity | `opportunities.put_opportunities_by_id` |
-| `DELETE` | `/opportunities/{id}/followers` | Remove Followers | `opportunities.delete_opportunities_by_id_followers` |
-| `POST` | `/opportunities/{id}/followers` | Add Followers | `opportunities.post_opportunities_by_id_followers` |
-| `PUT` | `/opportunities/{id}/status` | Update Opportunity Status | `opportunities.put_opportunities_by_id_status` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/opportunities/` | Create Opportunity | `create_opportunity()` | `opportunities.post_opportunities` |
+| `GET` | `/opportunities/lost-reason` | Get lost reason | `get_lost_reason()` | `opportunities.get_opportunities_lost_reason` |
+| `GET` | `/opportunities/pipelines` | Get Pipelines | `get_pipelines()` | `opportunities.get_opportunities_pipelines` |
+| `GET` | `/opportunities/search` | Search Opportunity | `search_opportunity()` | `opportunities.get_opportunities_search` |
+| `POST` | `/opportunities/search` | Search Opportunities | `search_opportunities()` | `opportunities.post_opportunities_search` |
+| `POST` | `/opportunities/upsert` | Upsert Opportunity | `upsert_opportunity()` | `opportunities.post_opportunities_upsert` |
+| `DELETE` | `/opportunities/{id}` | Delete Opportunity | `delete_opportunity()` | `opportunities.delete_opportunities_by_id` |
+| `GET` | `/opportunities/{id}` | Get Opportunity | `get_opportunity()` | `opportunities.get_opportunities_by_id` |
+| `PUT` | `/opportunities/{id}` | Update Opportunity | `update_opportunity()` | `opportunities.put_opportunities_by_id` |
+| `DELETE` | `/opportunities/{id}/followers` | Remove Followers | `remove_followers()` | `opportunities.delete_opportunities_by_id_followers` |
+| `POST` | `/opportunities/{id}/followers` | Add Followers | `add_followers()` | `opportunities.post_opportunities_by_id_followers` |
+| `PUT` | `/opportunities/{id}/status` | Update Opportunity Status | `update_opportunity_status()` | `opportunities.put_opportunities_by_id_status` |
 
 ### Endpoint details — v2
 
@@ -36,6 +43,12 @@ Operation id: `opportunities.post_opportunities` · `Version: 2021-07-28` · Sco
 *Request body*: [`CreateDto`](#createdto)
 
 *Response*: [`GetPostOpportunitySuccessfulResponseDto`](#getpostopportunitysuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.opportunities().create_opportunity(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -73,6 +86,15 @@ Operation id: `opportunities.get_opportunities_lost_reason` · `Version: 2021-07
 
 *Response*: [`LostReasonsResponseSchema`](#lostreasonsresponseschema)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::opportunities::GetLostReasonParams;
+
+let params = GetLostReasonParams::new("locationId");
+let out = ghl.opportunities().get_lost_reason(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -102,6 +124,15 @@ Operation id: `opportunities.get_opportunities_pipelines` · `Version: 2021-07-2
 | `locationId` | string | **yes** | — |
 
 *Response*: [`GetPipelinesSuccessfulResponseDto`](#getpipelinessuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::opportunities::GetPipelinesParams;
+
+let params = GetPipelinesParams::new("locationId");
+let out = ghl.opportunities().get_pipelines(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -152,6 +183,15 @@ Operation id: `opportunities.get_opportunities_search` · `Version: 2021-07-28` 
 
 *Response*: [`SearchSuccessfulResponseDto`](#searchsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::opportunities::SearchOpportunityParams;
+
+let params = SearchOpportunityParams::new("location_id");
+let out = ghl.opportunities().search_opportunity(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -180,6 +220,12 @@ Operation id: `opportunities.post_opportunities_search` · `Version: 2021-07-28`
 
 *Response*: [`PostSearchSuccessfulResponseDto`](#postsearchsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.opportunities().search_opportunities(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -205,6 +251,12 @@ Operation id: `opportunities.post_opportunities_upsert` · `Version: 2021-07-28`
 *Request body*: [`UpsertOpportunityDto`](#upsertopportunitydto)
 
 *Response*: [`UpsertOpportunitySuccessfulResponseDto`](#upsertopportunitysuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.opportunities().upsert_opportunity(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -236,6 +288,12 @@ Operation id: `opportunities.delete_opportunities_by_id` · `Version: 2021-07-28
 
 *Response*: [`DeleteUpdateOpportunitySuccessfulResponseDto`](#deleteupdateopportunitysuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.opportunities().delete_opportunity(&id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -265,6 +323,12 @@ Operation id: `opportunities.get_opportunities_by_id` · `Version: 2021-07-28` �
 | `id` | string | **yes** | Opportunity Id |
 
 *Response*: [`GetPostOpportunitySuccessfulResponseDto`](#getpostopportunitysuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.opportunities().get_opportunity(&id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -297,6 +361,12 @@ Operation id: `opportunities.put_opportunities_by_id` · `Version: 2021-07-28` �
 *Request body*: [`UpdateOpportunityDto`](#updateopportunitydto)
 
 *Response*: [`GetPostOpportunitySuccessfulResponseDto`](#getpostopportunitysuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.opportunities().update_opportunity(&id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -341,6 +411,15 @@ Operation id: `opportunities.delete_opportunities_by_id_followers` · `Version: 
 
 *Response*: [`DeleteFollowersSuccessfulResponseDto`](#deletefollowerssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::opportunities::RemoveFollowersParams;
+
+let params = RemoveFollowersParams::new();
+let out = ghl.opportunities().remove_followers(&id, &params, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -376,6 +455,12 @@ Operation id: `opportunities.post_opportunities_by_id_followers` · `Version: 20
 
 *Response*: [`CreateAddFollowersSuccessfulResponseDto`](#createaddfollowerssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.opportunities().add_followers(&id, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -410,6 +495,12 @@ Operation id: `opportunities.put_opportunities_by_id_status` · `Version: 2021-0
 *Request body*: [`UpdateStatusDto`](#updatestatusdto)
 
 *Response*: [`DeleteUpdateOpportunitySuccessfulResponseDto`](#deleteupdateopportunitysuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.opportunities().update_opportunity_status(&id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

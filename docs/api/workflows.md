@@ -4,35 +4,18 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `workflows` cargo feature on `ghl-sdk`, then call any of the 1 generated methods on `ghl.workflows()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features workflows
-use ghl_models::v2::workflows::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["workflows"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "workflows"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/workflows/` | Get Workflow | `workflows.get_workflows` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/workflows/` | Get Workflow | `get_workflow()` | `workflows.get_workflows` |
 
 ### Endpoint details — v2
 
@@ -49,6 +32,15 @@ Operation id: `workflows.get_workflows` · `Version: 2021-07-28` · Scopes: `wor
 | `locationId` | string | **yes** | — |
 
 *Response*: [`GetWorkflowSuccessfulResponseDto`](#getworkflowsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::workflows::GetWorkflowParams;
+
+let params = GetWorkflowParams::new("locationId");
+let out = ghl.workflows().get_workflow(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

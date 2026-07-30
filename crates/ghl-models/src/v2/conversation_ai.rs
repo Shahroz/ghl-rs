@@ -23,16 +23,21 @@ use serde::{Deserialize, Serialize};
 pub struct ActionDataDTO {
     /// Unique identifier for the action
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Name of the action
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Type of the action
     /// Allowed values: `triggerWorkflow`, `updateContactField`, `appointmentBooking`,
     /// `stopBot`, `humanHandOver`, `advancedFollowup`, `transferBot`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Agent ID where the action belongs
     #[serde(rename = "agentId", default, skip_serializing_if = "Option::is_none")]
     pub agent_id: Option<String>,
@@ -43,7 +48,9 @@ pub struct ActionDataDTO {
     /// for TRANSFER_BOT use transferBotDto.
     /// Multiple possible shapes in the spec; raw JSON.
     /// Required by the API.
-    pub details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub details: Option<serde_json::Value>,
 }
 
 /// `ActionsIdDto` from the GoHighLevel OpenAPI spec.
@@ -51,13 +58,16 @@ pub struct ActionDataDTO {
 pub struct ActionsIdDto {
     /// Unique identifier for the action.
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// type of action.
     /// Allowed values: `triggerWorkflow`, `updateContactField`, `appointmentBooking`,
     /// `stopBot`, `humanHandOver`, `advancedFollowup`, `transferBot`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
 }
 
 /// `CreateActionDTO` from the GoHighLevel OpenAPI spec.
@@ -194,7 +204,9 @@ pub struct CreateEmployeeDto {
 pub struct DeleteActionDataDTO {
     /// ID of the deleted action
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
 }
 
 /// `DeleteEmployeeResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -202,10 +214,14 @@ pub struct DeleteActionDataDTO {
 pub struct DeleteEmployeeResponseDTO {
     /// Indicates if the agent was deleted successfully.
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Unique identifier of the deleted agent.
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
 }
 
 /// `EmployeeListItemDTO` from the GoHighLevel OpenAPI spec.
@@ -213,10 +229,14 @@ pub struct DeleteEmployeeResponseDTO {
 pub struct EmployeeListItemDTO {
     /// Unique identifier for the agent.
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Name of the agent.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Name of the business the agent represents.
     #[serde(
         rename = "businessName",
@@ -227,24 +247,38 @@ pub struct EmployeeListItemDTO {
     /// Current operating mode of the agent.
     /// Allowed values: `off`, `suggestive`, `auto-pilot`.
     /// Required by the API.
-    pub mode: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mode: Option<String>,
     /// Communication channels the agent operates on.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub channels: Vec<String>,
     /// Wait time before agent responds.
     /// Required by the API.
-    #[serde(rename = "waitTime")]
-    pub wait_time: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "waitTime", default, skip_serializing_if = "Option::is_none")]
+    pub wait_time: Option<f64>,
     /// Unit for wait time.
     /// Allowed values: `minutes`, `seconds`.
     /// Required by the API.
-    #[serde(rename = "waitTimeUnit")]
-    pub wait_time_unit: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "waitTimeUnit",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub wait_time_unit: Option<String>,
     /// Indicates if sleep functionality is enabled.
     /// Required by the API.
-    #[serde(rename = "sleepEnabled")]
-    pub sleep_enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "sleepEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sleep_enabled: Option<bool>,
     /// Duration of sleep period.
     #[serde(rename = "sleepTime", default, skip_serializing_if = "Option::is_none")]
     pub sleep_time: Option<f64>,
@@ -258,17 +292,24 @@ pub struct EmployeeListItemDTO {
     pub sleep_time_unit: Option<String>,
     /// List of actions associated with this agent.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub actions: Vec<serde_json::Value>,
     /// Indicates if this agent is a primary agent. (First agent created for a location is
     /// primary by default)
     /// Required by the API.
-    #[serde(rename = "isPrimary")]
-    pub is_primary: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isPrimary", default, skip_serializing_if = "Option::is_none")]
+    pub is_primary: Option<bool>,
     /// Maximum number of messages in auto-pilot mode before requiring human intervention.
     /// Required by the API.
-    #[serde(rename = "autoPilotMaxMessages")]
-    pub auto_pilot_max_messages: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "autoPilotMaxMessages",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub auto_pilot_max_messages: Option<f64>,
     /// Goal configuration for the agent.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub goal: Option<serde_json::Value>,
@@ -281,12 +322,14 @@ pub struct EmployeeListItemDTO {
     pub knowledge_base_ids: Vec<String>,
     /// Timestamp when the agent was created.
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Timestamp when the agent was last updated.
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Whether the bot sleeps on manual outbound messages.
     #[serde(
         rename = "sleepOnManualMessage",
@@ -308,10 +351,14 @@ pub struct EmployeeListItemDTO {
 pub struct EmployeeResponseDTO {
     /// Unique identifier for the agent.
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Name of the agent.
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Name of the business the agent represents.
     #[serde(
         rename = "businessName",
@@ -322,25 +369,39 @@ pub struct EmployeeResponseDTO {
     /// Current operating mode of the agent.
     /// Allowed values: `off`, `suggestive`, `auto-pilot`.
     /// Required by the API.
-    pub mode: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mode: Option<String>,
     /// Communication channels the agent operates on.
     /// Allowed values: `IG`, `FB`, `SMS`, `WebChat`, `WhatsApp`, `Live_Chat`.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub channels: Vec<String>,
     /// Wait time before agent responds.
     /// Required by the API.
-    #[serde(rename = "waitTime")]
-    pub wait_time: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "waitTime", default, skip_serializing_if = "Option::is_none")]
+    pub wait_time: Option<f64>,
     /// Unit for wait time.
     /// Allowed values: `minutes`, `seconds`.
     /// Required by the API.
-    #[serde(rename = "waitTimeUnit")]
-    pub wait_time_unit: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "waitTimeUnit",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub wait_time_unit: Option<String>,
     /// Indicates if sleep functionality is enabled.
     /// Required by the API.
-    #[serde(rename = "sleepEnabled")]
-    pub sleep_enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "sleepEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sleep_enabled: Option<bool>,
     /// Duration of sleep period.
     #[serde(rename = "sleepTime", default, skip_serializing_if = "Option::is_none")]
     pub sleep_time: Option<f64>,
@@ -354,16 +415,23 @@ pub struct EmployeeResponseDTO {
     pub sleep_time_unit: Option<String>,
     /// List of actions associated with this agent.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub actions: Vec<ActionsIdDto>,
     /// Indicates if this agent is a primary agent.
     /// Required by the API.
-    #[serde(rename = "isPrimary")]
-    pub is_primary: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isPrimary", default, skip_serializing_if = "Option::is_none")]
+    pub is_primary: Option<bool>,
     /// Maximum number of messages in auto-pilot mode before requiring human intervention.
     /// Required by the API.
-    #[serde(rename = "autoPilotMaxMessages")]
-    pub auto_pilot_max_messages: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "autoPilotMaxMessages",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub auto_pilot_max_messages: Option<f64>,
     /// The goal of the agent.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub goal: Option<String>,
@@ -401,14 +469,21 @@ pub struct EmployeeResponseDTO {
 pub struct FetchAIResponseDetailsResponseDTO {
     /// The complete prompt used for the AI response.
     /// Required by the API.
-    pub prompt: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub prompt: Option<String>,
     /// The intent/goal extracted from location prompt.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub intent: Option<String>,
     /// The response message generated by the AI.
     /// Required by the API.
-    #[serde(rename = "responseMessage")]
-    pub response_message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "responseMessage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub response_message: Option<String>,
     /// FAQ chunks used in generating the response from fine-tuned data.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub faqs: Vec<serde_json::Value>,
@@ -423,10 +498,12 @@ pub struct FetchAIResponseDetailsResponseDTO {
     pub input: Option<String>,
     /// List of actions taken during this interaction.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(rename = "actionLogs", default, skip_serializing_if = "Vec::is_empty")]
     pub action_logs: Vec<serde_json::Value>,
     /// Conversation history leading up to this response.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub history: Vec<serde_json::Value>,
     /// Mode of operation during this interaction.
@@ -439,16 +516,28 @@ pub struct FetchAIResponseDetailsResponseDTO {
 pub struct FollowupSequence {
     /// Unique identifier for this followup step
     /// Required by the API.
-    pub id: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<f64>,
     /// Time unit for followup delay
     /// Allowed values: `days`, `hours`, `minutes`.
     /// Required by the API.
-    #[serde(rename = "followupTimeUnit")]
-    pub followup_time_unit: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "followupTimeUnit",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub followup_time_unit: Option<String>,
     /// Time duration before followup (max: 60 minutes, 24 hours, or 180 days depending on unit)
     /// Required by the API.
-    #[serde(rename = "followupTime")]
-    pub followup_time: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "followupTime",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub followup_time: Option<f64>,
     /// Whether to use AI to generate the followup message
     #[serde(
         rename = "aiEnabledMessage",
@@ -491,8 +580,13 @@ pub struct FollowupSequence {
 pub struct FollowupSettings {
     /// Whether to dynamically switch channels for followups
     /// Required by the API.
-    #[serde(rename = "dynamicChannelSwitching")]
-    pub dynamic_channel_switching: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dynamicChannelSwitching",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub dynamic_channel_switching: Option<bool>,
     /// Whether to respect working hours for followups
     #[serde(
         rename = "followUpHours",
@@ -522,20 +616,28 @@ pub struct FollowupSettings {
 pub struct Interval {
     /// Start hour (24-hour format)
     /// Required by the API.
-    #[serde(rename = "startHour")]
-    pub start_hour: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "startHour", default, skip_serializing_if = "Option::is_none")]
+    pub start_hour: Option<f64>,
     /// Start minute
     /// Required by the API.
-    #[serde(rename = "startMinute")]
-    pub start_minute: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "startMinute",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub start_minute: Option<f64>,
     /// End hour (24-hour format)
     /// Required by the API.
-    #[serde(rename = "endHour")]
-    pub end_hour: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "endHour", default, skip_serializing_if = "Option::is_none")]
+    pub end_hour: Option<f64>,
     /// End minute
     /// Required by the API.
-    #[serde(rename = "endMinute")]
-    pub end_minute: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "endMinute", default, skip_serializing_if = "Option::is_none")]
+    pub end_minute: Option<f64>,
 }
 
 /// `SearchEmployeeResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -543,15 +645,23 @@ pub struct Interval {
 pub struct SearchEmployeeResponseDTO {
     /// List of agents matching the search criteria.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub agents: Vec<EmployeeListItemDTO>,
     /// Total number of agents in the location (unfiltered count).
     /// Required by the API.
-    #[serde(rename = "totalCount")]
-    pub total_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_count: Option<f64>,
     /// Number of agents in the current response (filtered/paginated count).
     /// Required by the API.
-    pub count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub count: Option<f64>,
 }
 
 /// `UpdateEmployeeDto` from the GoHighLevel OpenAPI spec.
@@ -676,8 +786,13 @@ pub struct UpdateFollowupSettingsDTO {
 pub struct WorkingHours {
     /// Day of the week (0=Sunday, 1=Monday, etc.)
     /// Required by the API.
-    #[serde(rename = "dayOfTheWeek")]
-    pub day_of_the_week: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dayOfTheWeek",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub day_of_the_week: Option<f64>,
     /// Time intervals for this day
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub intervals: Vec<Interval>,
@@ -688,14 +803,22 @@ pub struct WorkingHours {
 pub struct AdvancedFollowupDto {
     /// Whether advanced followup is enabled
     /// Required by the API.
-    pub enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     /// ID of the followup scenario
     /// Allowed values: `contactStoppedReplying`, `contactIsBusy`, `contactRequested`.
     /// Required by the API.
-    #[serde(rename = "scenarioId")]
-    pub scenario_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "scenarioId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub scenario_id: Option<String>,
     /// Sequence of followup actions to perform
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "followupSequence",
         default,
@@ -719,24 +842,44 @@ pub struct AppointmentBookingDto {
     pub action_id: Option<String>,
     /// Calendar ID for appointment booking
     /// Required by the API.
-    #[serde(rename = "calendarId")]
-    pub calendar_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "calendarId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub calendar_id: Option<String>,
     /// If true, only sends the appointment link without booking
     /// Required by the API.
-    #[serde(rename = "onlySendLink")]
-    pub only_send_link: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "onlySendLink",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub only_send_link: Option<bool>,
     /// Whether to trigger a workflow after booking (cannot be true when onlySendLink is true)
     /// Required by the API.
-    #[serde(rename = "triggerWorkflow")]
-    pub trigger_workflow: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerWorkflow",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_workflow: Option<bool>,
     /// Workflow IDs to trigger after booking (required when triggerWorkflow is true)
     #[serde(rename = "workflowIds", default, skip_serializing_if = "Vec::is_empty")]
     pub workflow_ids: Vec<String>,
     /// Whether to put the agent to sleep after booking (cannot be true when onlySendLink is
     /// true)
     /// Required by the API.
-    #[serde(rename = "sleepAfterBooking")]
-    pub sleep_after_booking: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "sleepAfterBooking",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sleep_after_booking: Option<bool>,
     /// Unit for sleep time (required when sleepAfterBooking is true)
     /// Allowed values: `days`, `hours`, `minutes`.
     #[serde(
@@ -751,8 +894,13 @@ pub struct AppointmentBookingDto {
     /// Whether to transfer to another agent after booking (cannot be true when onlySendLink is
     /// true)
     /// Required by the API.
-    #[serde(rename = "transferBot")]
-    pub transfer_bot: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "transferBot",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub transfer_bot: Option<bool>,
     /// Agent ID to transfer to (required when transferBot is true)
     #[serde(
         rename = "transferAgent",
@@ -762,12 +910,22 @@ pub struct AppointmentBookingDto {
     pub transfer_agent: Option<String>,
     /// Whether to allow appointment rescheduling (cannot be true when onlySendLink is true)
     /// Required by the API.
-    #[serde(rename = "rescheduleEnabled")]
-    pub reschedule_enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "rescheduleEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reschedule_enabled: Option<bool>,
     /// Whether to allow appointment cancellation (cannot be true when onlySendLink is true)
     /// Required by the API.
-    #[serde(rename = "cancelEnabled")]
-    pub cancel_enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "cancelEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub cancel_enabled: Option<bool>,
 }
 
 /// `createActionResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -775,10 +933,14 @@ pub struct AppointmentBookingDto {
 pub struct CreateActionResponseDTO {
     /// Created action details
     /// Required by the API.
-    pub data: ActionDataDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ActionDataDTO>,
     /// Success status of the request
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `deleteActionResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -786,10 +948,14 @@ pub struct CreateActionResponseDTO {
 pub struct DeleteActionResponseDTO {
     /// Deleted action information
     /// Required by the API.
-    pub data: DeleteActionDataDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<DeleteActionDataDTO>,
     /// Success status of the request
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `fetchActionDetailsResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -797,10 +963,14 @@ pub struct DeleteActionResponseDTO {
 pub struct FetchActionDetailsResponseDTO {
     /// Action details
     /// Required by the API.
-    pub data: ActionDataDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ActionDataDTO>,
     /// Success status of the request
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `fetchActionsForEmployeeResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -808,11 +978,14 @@ pub struct FetchActionDetailsResponseDTO {
 pub struct FetchActionsForEmployeeResponseDTO {
     /// Grouped actions by type
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<ActionDataDTO>,
     /// Success status of the request
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `humanHandOverDto` from the GoHighLevel OpenAPI spec.
@@ -820,11 +993,18 @@ pub struct FetchActionsForEmployeeResponseDTO {
 pub struct HumanHandOverDto {
     /// Whether human handover action is enabled
     /// Required by the API.
-    pub enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     /// Condition that triggers human handover
     /// Required by the API.
-    #[serde(rename = "triggerCondition")]
-    pub trigger_condition: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerCondition",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_condition: Option<String>,
     /// Example phrases that trigger human handover (required when handoverType is custom or
     /// contactRequest)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -852,8 +1032,13 @@ pub struct HumanHandOverDto {
     pub create_task: Option<bool>,
     /// Whether the agent can be reactivated after handover
     /// Required by the API.
-    #[serde(rename = "reactivateEnabled")]
-    pub reactivate_enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reactivateEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reactivate_enabled: Option<bool>,
     /// Time unit for reactivation delay (required when reactivateEnabled is true)
     /// Allowed values: `days`, `hours`, `minutes`.
     #[serde(
@@ -867,16 +1052,26 @@ pub struct HumanHandOverDto {
     pub sleep_time: Option<f64>,
     /// Final message sent when handing over to human
     /// Required by the API.
-    #[serde(rename = "finalMessage")]
-    pub final_message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "finalMessage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub final_message: Option<String>,
     /// Tags to apply during handover
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub tags: Vec<String>,
     /// Type of human handover detection
     /// Allowed values: `contactRequest`, `lackOfInformation`, `failedToResolveIssue`, `custom`.
     /// Required by the API.
-    #[serde(rename = "handoverType")]
-    pub handover_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "handoverType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub handover_type: Option<String>,
 }
 
 /// `stopBotDto` from the GoHighLevel OpenAPI spec.
@@ -885,16 +1080,31 @@ pub struct StopBotDto {
     /// Type of stop bot detection - Goodbye or Custom
     /// Allowed values: `Goodbye`, `Custom`.
     /// Required by the API.
-    #[serde(rename = "stopBotDetectionType")]
-    pub stop_bot_detection_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "stopBotDetectionType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub stop_bot_detection_type: Option<String>,
     /// Condition that triggers stopping the bot
     /// Required by the API.
-    #[serde(rename = "stopBotTriggerCondition")]
-    pub stop_bot_trigger_condition: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "stopBotTriggerCondition",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub stop_bot_trigger_condition: Option<String>,
     /// Whether the bot can be reactivated after being stopped
     /// Required by the API.
-    #[serde(rename = "reactivateEnabled")]
-    pub reactivate_enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reactivateEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reactivate_enabled: Option<bool>,
     /// Time unit for reactivation delay (required when reactivateEnabled is true)
     /// Allowed values: `days`, `hours`, `minutes`.
     #[serde(
@@ -908,9 +1118,12 @@ pub struct StopBotDto {
     pub sleep_time: Option<f64>,
     /// Whether this action is enabled for the agent
     /// Required by the API.
-    pub enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     /// Example phrases that trigger stop bot action (minimum 2 required)
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "stopBotExamples",
         default,
@@ -919,8 +1132,13 @@ pub struct StopBotDto {
     pub stop_bot_examples: Vec<String>,
     /// Final message sent when stopping the bot
     /// Required by the API.
-    #[serde(rename = "finalMessage")]
-    pub final_message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "finalMessage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub final_message: Option<String>,
     /// Tags to apply when stopping the bot
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub tags: Vec<String>,
@@ -932,15 +1150,27 @@ pub struct TransferBotDto {
     /// Type of transfer - Default or Custom
     /// Allowed values: `Default`, `Custom`.
     /// Required by the API.
-    #[serde(rename = "transferBotType")]
-    pub transfer_bot_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "transferBotType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub transfer_bot_type: Option<String>,
     /// ID of the bot/agent to transfer to
     /// Required by the API.
-    #[serde(rename = "transferToBot")]
-    pub transfer_to_bot: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "transferToBot",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub transfer_to_bot: Option<String>,
     /// Whether this transfer action is enabled
     /// Required by the API.
-    pub enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     /// Condition that triggers the transfer (required for Custom type)
     #[serde(
         rename = "transferBotTriggerCondition",
@@ -962,12 +1192,18 @@ pub struct TransferBotDto {
 pub struct TriggerWorkflowDto {
     /// Array of workflow IDs to trigger
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(rename = "workflowIds", default, skip_serializing_if = "Vec::is_empty")]
     pub workflow_ids: Vec<String>,
     /// Condition that triggers the workflow
     /// Required by the API.
-    #[serde(rename = "triggerCondition")]
-    pub trigger_condition: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "triggerCondition",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trigger_condition: Option<String>,
     /// Optional message to send when triggering the workflow
     #[serde(
         rename = "triggerMessage",
@@ -982,10 +1218,14 @@ pub struct TriggerWorkflowDto {
 pub struct UpdateActionResponseDTO {
     /// Updated action details
     /// Required by the API.
-    pub data: ActionDataDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ActionDataDTO>,
     /// Success status of the request
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `updateContactFieldDto` from the GoHighLevel OpenAPI spec.
@@ -993,11 +1233,18 @@ pub struct UpdateActionResponseDTO {
 pub struct UpdateContactFieldDto {
     /// ID of the contact field in Contacts Table
     /// Required by the API.
-    #[serde(rename = "contactFieldId")]
-    pub contact_field_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactFieldId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_field_id: Option<String>,
     /// Description of the contact field in Contacts Table
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// Contact update examples in Contacts Table. Not required when using standard fields,
     /// Monetory or Date Custom fields.
     #[serde(

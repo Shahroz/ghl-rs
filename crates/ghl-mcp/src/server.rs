@@ -1063,7 +1063,7 @@ impl GhlServer {
 
 #[tool_handler(
     name = "ghl-mcp",
-    version = "0.3.1",
+    version = "0.4.0",
     instructions = "Tools for working with a GoHighLevel (HighLevel) CRM account. Dedicated \
                     typed tools cover contacts, opportunities (pipeline deals), and locations. \
                     For anything else — invoices, calendars, payments, workflows, forms, \

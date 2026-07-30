@@ -24,10 +24,16 @@ pub struct AvailableNumbersResponseDto {
     /// Unique fingerprint ID for this search result, required when purchasing one of the
     /// returned numbers
     /// Required by the API.
-    #[serde(rename = "fingerprintId")]
-    pub fingerprint_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "fingerprintId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub fingerprint_id: Option<String>,
     /// List of available phone numbers matching the search criteria
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub numbers: Vec<AvailablePhoneNumberDto>,
 }
@@ -37,16 +43,31 @@ pub struct AvailableNumbersResponseDto {
 pub struct AvailablePhoneNumberDto {
     /// E.164 formatted phone number
     /// Required by the API.
-    #[serde(rename = "phoneNumber")]
-    pub phone_number: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "phoneNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub phone_number: Option<String>,
     /// Human-readable formatted phone number
     /// Required by the API.
-    #[serde(rename = "friendlyName")]
-    pub friendly_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "friendlyName",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub friendly_name: Option<String>,
     /// ISO 3166-1 alpha-2 country code
     /// Required by the API.
-    #[serde(rename = "isoCountry")]
-    pub iso_country: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "isoCountry",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub iso_country: Option<String>,
     /// Local Access and Transport Area code
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub lata: Option<String>,
@@ -79,15 +100,24 @@ pub struct AvailablePhoneNumberDto {
     /// Address requirements for purchasing this number
     /// Allowed values: `none`, `any`, `local`, `foreign`.
     /// Required by the API.
-    #[serde(rename = "addressRequirements")]
-    pub address_requirements: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "addressRequirements",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub address_requirements: Option<String>,
     /// Whether this is a beta number
     /// Required by the API.
-    pub beta: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub beta: Option<bool>,
     /// Communication capabilities supported by this number
     /// Nested object; raw JSON (see the API docs for its fields).
     /// Required by the API.
-    pub capabilities: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub capabilities: Option<serde_json::Value>,
     /// Pricing information for this number
     /// Nested object; raw JSON (see the API docs for its fields).
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -99,8 +129,13 @@ pub struct AvailablePhoneNumberDto {
 pub struct DetailedPhoneNumberDto {
     /// E.164 formatted phone number
     /// Required by the API.
-    #[serde(rename = "phoneNumber")]
-    pub phone_number: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "phoneNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub phone_number: Option<String>,
     /// Human-readable name assigned to the number
     #[serde(
         rename = "friendlyName",
@@ -110,24 +145,39 @@ pub struct DetailedPhoneNumberDto {
     pub friendly_name: Option<String>,
     /// Phone number SID (unique identifier)
     /// Required by the API.
-    pub sid: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub sid: Option<String>,
     /// ISO 3166-1 alpha-2 country code
     /// Required by the API.
-    #[serde(rename = "countryCode")]
-    pub country_code: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "countryCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub country_code: Option<String>,
     /// Communication capabilities supported by this number
     /// Nested object; raw JSON (see the API docs for its fields).
     /// Required by the API.
-    pub capabilities: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub capabilities: Option<serde_json::Value>,
     /// Type of phone number (local, toll-free, mobile, etc.)
     /// Allowed values: `local`, `toll-free`, `mobile`, `national`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Whether this is the default outbound number for the location
     /// Required by the API.
-    #[serde(rename = "isDefaultNumber")]
-    pub is_default_number: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "isDefaultNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub is_default_number: Option<bool>,
     /// User ID of the user assigned to this number
     #[serde(
         rename = "linkedUser",
@@ -137,6 +187,7 @@ pub struct DetailedPhoneNumberDto {
     pub linked_user: Option<String>,
     /// Array of user IDs that should ring when this number is called
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "linkedRingAllUsers",
         default,
@@ -161,8 +212,13 @@ pub struct DetailedPhoneNumberDto {
     /// Whether group conversations are enabled for this number (US/CA numbers with SMS/MMS
     /// only)
     /// Required by the API.
-    #[serde(rename = "isGroupConversationEnabled")]
-    pub is_group_conversation_enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "isGroupConversationEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub is_group_conversation_enabled: Option<bool>,
     /// Address SID for compliance purposes
     #[serde(
         rename = "addressSid",
@@ -308,19 +364,29 @@ pub struct PurchasePhoneNumberBodyDto {
 pub struct TwilioAccountResponseDto {
     /// Unique identifier of the Twilio account record
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Twilio Account SID
     /// Required by the API.
-    pub account_sid: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub account_sid: Option<String>,
     /// Whether this location is under a GHL-managed Twilio account
     /// Required by the API.
-    pub under_ghl_account: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub under_ghl_account: Option<bool>,
     /// Whether SMS validation is enabled
     /// Required by the API.
-    pub validate_sms: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub validate_sms: Option<bool>,
     /// The location ID this Twilio account belongs to
     /// Required by the API.
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub location_id: Option<String>,
     /// Current migration status of the account
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub migration_status: Option<String>,
@@ -332,7 +398,9 @@ pub struct TwilioAccountResponseDto {
     pub assigned_to_numbers: Option<serde_json::Value>,
     /// Map of phone numbers to their service type (e.g. 'conversation')
     /// Required by the API.
-    pub numbers: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub numbers: Option<serde_json::Value>,
     /// Map of phone numbers to their friendly names
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub number_name: Option<serde_json::Value>,

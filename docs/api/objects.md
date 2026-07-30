@@ -4,43 +4,26 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `objects` cargo feature on `ghl-sdk`, then call any of the 9 generated methods on `ghl.objects()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features objects
-use ghl_models::v2::objects::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["objects"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "objects"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/objects/` | Get all objects for a location | `objects.get_objects` |
-| `POST` | `/objects/` | Create Custom Object | `objects.post_objects` |
-| `GET` | `/objects/{key}` | Get Object Schema by key / id | `objects.get_objects_by_key` |
-| `PUT` | `/objects/{key}` | Update Object Schema By Key / Id | `objects.put_objects_by_key` |
-| `POST` | `/objects/{schemaKey}/records` | Create Record | `objects.post_objects_by_schemaKey_records` |
-| `POST` | `/objects/{schemaKey}/records/search` | Search Object Records | `objects.post_objects_by_schemaKey_records_search` |
-| `DELETE` | `/objects/{schemaKey}/records/{id}` | Delete Record | `objects.delete_objects_by_schemaKey_records_by_id` |
-| `GET` | `/objects/{schemaKey}/records/{id}` | Get Record By Id | `objects.get_objects_by_schemaKey_records_by_id` |
-| `PUT` | `/objects/{schemaKey}/records/{id}` | Update Record | `objects.put_objects_by_schemaKey_records_by_id` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/objects/` | Get all objects for a location | `get_all_objects_for_a_location()` | `objects.get_objects` |
+| `POST` | `/objects/` | Create Custom Object | `create_custom_object()` | `objects.post_objects` |
+| `GET` | `/objects/{key}` | Get Object Schema by key / id | `get_object_schema_by_key_id()` | `objects.get_objects_by_key` |
+| `PUT` | `/objects/{key}` | Update Object Schema By Key / Id | `update_object_schema_by_key_id()` | `objects.put_objects_by_key` |
+| `POST` | `/objects/{schemaKey}/records` | Create Record | `create_record()` | `objects.post_objects_by_schemaKey_records` |
+| `POST` | `/objects/{schemaKey}/records/search` | Search Object Records | `search_object_records()` | `objects.post_objects_by_schemaKey_records_search` |
+| `DELETE` | `/objects/{schemaKey}/records/{id}` | Delete Record | `delete_record()` | `objects.delete_objects_by_schemaKey_records_by_id` |
+| `GET` | `/objects/{schemaKey}/records/{id}` | Get Record By Id | `get_record_by_id()` | `objects.get_objects_by_schemaKey_records_by_id` |
+| `PUT` | `/objects/{schemaKey}/records/{id}` | Update Record | `update_record()` | `objects.put_objects_by_schemaKey_records_by_id` |
 
 ### Endpoint details — v2
 
@@ -59,6 +42,15 @@ Operation id: `objects.get_objects` · `Version: 2021-07-28` · Scopes: `objects
 | `locationId` | string | **yes** | location id |
 
 *Response*: [`CustomObjectListResponseDTO`](#customobjectlistresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::objects::GetAllObjectsForALocationParams;
+
+let params = GetAllObjectsForALocationParams::new("locationId");
+let out = ghl.objects().get_all_objects_for_a_location(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -87,6 +79,12 @@ Operation id: `objects.post_objects` · `Version: 2021-07-28` · Scopes: `object
 *Request body*: [`CreateCustomObjectSchemaDTO`](#createcustomobjectschemadto)
 
 *Response*: [`CustomObjectResponseDTO`](#customobjectresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.objects().create_custom_object(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -127,6 +125,15 @@ Operation id: `objects.get_objects_by_key` · `Version: 2021-07-28` · Scopes: `
 
 *Response*: [`CustomObjectByIdResponseDTO`](#customobjectbyidresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::objects::GetObjectSchemaByKeyIdParams;
+
+let params = GetObjectSchemaByKeyIdParams::new("locationId");
+let out = ghl.objects().get_object_schema_by_key_id(&key, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -163,6 +170,12 @@ Operation id: `objects.put_objects_by_key` · `Version: 2021-07-28` · Scopes: `
 *Request body*: [`UpdateCustomObjectSchemaDTO`](#updatecustomobjectschemadto)
 
 *Response*: [`CustomObjectResponseDTO`](#customobjectresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.objects().update_object_schema_by_key_id(&key, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -201,6 +214,12 @@ Operation id: `objects.post_objects_by_schemaKey_records` · `Version: 2021-07-2
 
 *Response*: [`RecordByIdResponseDTO`](#recordbyidresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.objects().create_record(&schemaKey, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -238,6 +257,12 @@ Operation id: `objects.post_objects_by_schemaKey_records_search` · `Version: 20
 
 *Response*: [`SearchRecordResponseDTO`](#searchrecordresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.objects().search_object_records(&schemaKey, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -274,6 +299,12 @@ Operation id: `objects.delete_objects_by_schemaKey_records_by_id` · `Version: 2
 
 *Response*: [`ObjectRecordDeleteResponseDTO`](#objectrecorddeleteresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.objects().delete_record(&schemaKey, &id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -307,6 +338,12 @@ Operation id: `objects.get_objects_by_schemaKey_records_by_id` · `Version: 2021
 | `id` | string | **yes** | id of the record to be updated. Available on the Record details page under the 3 dots or in the url |
 
 *Response*: [`RecordByIdResponseDTO`](#recordbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.objects().get_record_by_id(&schemaKey, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -349,6 +386,15 @@ Operation id: `objects.put_objects_by_schemaKey_records_by_id` · `Version: 2021
 *Request body*: [`UpdateCustomObjectRecordDto`](#updatecustomobjectrecorddto)
 
 *Response*: [`RecordByIdResponseDTO`](#recordbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::objects::UpdateRecordParams;
+
+let params = UpdateRecordParams::new("locationId");
+let out = ghl.objects().update_record(&schemaKey, &id, &params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

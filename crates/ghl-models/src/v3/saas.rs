@@ -23,16 +23,22 @@ use serde::{Deserialize, Serialize};
 pub struct AgencyPlanResponseDto {
     /// Unique identifier for the plan
     /// Required by the API.
-    #[serde(rename = "planId")]
-    pub plan_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "planId", default, skip_serializing_if = "Option::is_none")]
+    pub plan_id: Option<String>,
     /// Title of the plan
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Description of the plan
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// Array of SaaS products included in the plan
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "saasProducts",
         default,
@@ -44,12 +50,18 @@ pub struct AgencyPlanResponseDto {
     pub add_ons: Vec<String>,
     /// Level of the plan (0-4)
     /// Required by the API.
-    #[serde(rename = "planLevel")]
-    pub plan_level: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "planLevel", default, skip_serializing_if = "Option::is_none")]
+    pub plan_level: Option<f64>,
     /// Trial period in days
     /// Required by the API.
-    #[serde(rename = "trialPeriod")]
-    pub trial_period: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "trialPeriod",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trial_period: Option<f64>,
     /// User limit for the plan
     #[serde(rename = "userLimit", default, skip_serializing_if = "Option::is_none")]
     pub user_limit: Option<f64>,
@@ -63,6 +75,7 @@ pub struct AgencyPlanResponseDto {
     /// Pricing information for the plan
     /// Nested object; raw JSON (see the API docs for its fields).
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub prices: Vec<serde_json::Value>,
     /// Category ID for the plan
@@ -84,8 +97,9 @@ pub struct AgencyPlanResponseDto {
     pub product_id: Option<String>,
     /// Indicates if this is a SaaS V2 plan
     /// Required by the API.
-    #[serde(rename = "isSaaSV2")]
-    pub is_saa_sv2: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isSaaSV2", default, skip_serializing_if = "Option::is_none")]
+    pub is_saa_sv2: Option<bool>,
     /// Provider location ID
     #[serde(
         rename = "providerLocationId",
@@ -95,12 +109,14 @@ pub struct AgencyPlanResponseDto {
     pub provider_location_id: Option<String>,
     /// Creation timestamp
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Last update timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `AllowAttachRebillingDto` from the GoHighLevel OpenAPI spec.
@@ -129,16 +145,28 @@ pub struct AllowAttachRebillingDto {
 pub struct AllowAttachRebillingResponseDto {
     /// Indicates if the allow attach rebilling operation succeeded
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Location ID the rebilling config was attached to
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Stored rebilling configuration on the location. Markup is the internal percentage value
     /// converted from the request multiplier (e.g. 4 -> 300%, 3 -> 200%).
     /// Required by the API.
-    #[serde(rename = "attachedRebillingConfig")]
-    pub attached_rebilling_config: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "attachedRebillingConfig",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub attached_rebilling_config: Option<serde_json::Value>,
 }
 
 /// `AttachedRebillingProductConfigDto` from the GoHighLevel OpenAPI spec.
@@ -184,7 +212,9 @@ pub struct BulkDisableSaasDto {
 pub struct BulkDisableSaasResponseDto {
     /// Response data from the bulk disable SaaS operation
     /// Required by the API.
-    pub data: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<serde_json::Value>,
 }
 
 /// `BulkEnableSaasActionPayloadDto` from the GoHighLevel OpenAPI spec.
@@ -235,10 +265,14 @@ pub struct BulkEnableSaasRequestDto {
 pub struct BulkEnableSaasResponseDto {
     /// Indicates if the bulk enable SaaS operation was successful
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Message indicating the bulk enable SaaS operation
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// URL for the bulk enable SaaS operation
     #[serde(
         rename = "bulkActionUrl",
@@ -320,7 +354,9 @@ pub struct EnableSaasDto {
 pub struct EnableSaasResponseDto {
     /// Response data from the enable SaaS operation
     /// Required by the API.
-    pub data: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<serde_json::Value>,
 }
 
 /// `GetSaasLocationsResponseDto` from the GoHighLevel OpenAPI spec.
@@ -328,11 +364,14 @@ pub struct EnableSaasResponseDto {
 pub struct GetSaasLocationsResponseDto {
     /// Array of SaaS locations
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub locations: Vec<SaasLocationDto>,
     /// Nested object; raw JSON (see the API docs for its fields).
     /// Required by the API.
-    pub pagination: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pagination: Option<serde_json::Value>,
 }
 
 /// `InternalServerErrorDTO` from the GoHighLevel OpenAPI spec.
@@ -355,16 +394,23 @@ pub struct InternalServerErrorDTO {
 pub struct LocationSubscriptionResponseDto {
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Indicates if the SaaS is V2
     /// Required by the API.
-    #[serde(rename = "isSaaSV2")]
-    pub is_saa_sv2: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isSaaSV2", default, skip_serializing_if = "Option::is_none")]
+    pub is_saa_sv2: Option<bool>,
     /// Company ID
     /// Required by the API.
-    #[serde(rename = "companyId")]
-    pub company_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "companyId", default, skip_serializing_if = "Option::is_none")]
+    pub company_id: Option<String>,
     /// SaaS mode
     #[serde(rename = "saasMode", default, skip_serializing_if = "Option::is_none")]
     pub saas_mode: Option<String>,
@@ -409,15 +455,23 @@ pub struct LocationSubscriptionResponseDto {
 pub struct LocationWalletBalanceDto {
     /// Wallet Id
     /// Required by the API.
-    #[serde(rename = "walletId")]
-    pub wallet_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "walletId", default, skip_serializing_if = "Option::is_none")]
+    pub wallet_id: Option<String>,
     /// Current wallet balance
     /// Required by the API.
-    pub balance: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub balance: Option<f64>,
     /// Complimentary credits amount
     /// Required by the API.
-    #[serde(rename = "complimentaryCredits")]
-    pub complimentary_credits: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "complimentaryCredits",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub complimentary_credits: Option<f64>,
 }
 
 /// `PauseLocationDto` from the GoHighLevel OpenAPI spec.
@@ -452,20 +506,32 @@ pub struct ResourceNotFoundDTO {
 pub struct SaasLocationDto {
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Company ID
     /// Required by the API.
-    #[serde(rename = "companyId")]
-    pub company_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "companyId", default, skip_serializing_if = "Option::is_none")]
+    pub company_id: Option<String>,
     /// SaaS mode
     /// Required by the API.
-    #[serde(rename = "saasMode")]
-    pub saas_mode: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "saasMode", default, skip_serializing_if = "Option::is_none")]
+    pub saas_mode: Option<String>,
     /// Subscription ID
     /// Required by the API.
-    #[serde(rename = "subscriptionId")]
-    pub subscription_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "subscriptionId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub subscription_id: Option<String>,
     /// Customer ID
     #[serde(
         rename = "customerId",
@@ -503,20 +569,27 @@ pub struct SaasLocationDto {
 pub struct SaasPlanResponseDto {
     /// Unique identifier for the SaaS plan
     /// Required by the API.
-    #[serde(rename = "planId")]
-    pub plan_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "planId", default, skip_serializing_if = "Option::is_none")]
+    pub plan_id: Option<String>,
     /// Company ID associated with the SaaS plan
     /// Required by the API.
-    #[serde(rename = "companyId")]
-    pub company_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "companyId", default, skip_serializing_if = "Option::is_none")]
+    pub company_id: Option<String>,
     /// Title of the SaaS plan
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Description of the SaaS plan
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// Array of SaaS products included in the plan
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "saasProducts",
         default,
@@ -528,12 +601,18 @@ pub struct SaasPlanResponseDto {
     pub add_ons: Vec<String>,
     /// Level of the plan (0-4)
     /// Required by the API.
-    #[serde(rename = "planLevel")]
-    pub plan_level: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "planLevel", default, skip_serializing_if = "Option::is_none")]
+    pub plan_level: Option<f64>,
     /// Trial period in days
     /// Required by the API.
-    #[serde(rename = "trialPeriod")]
-    pub trial_period: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "trialPeriod",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trial_period: Option<f64>,
     /// Setup fee for the plan
     #[serde(rename = "setupFee", default, skip_serializing_if = "Option::is_none")]
     pub setup_fee: Option<f64>,
@@ -550,6 +629,7 @@ pub struct SaasPlanResponseDto {
     /// Prices for the plan
     /// Nested object; raw JSON (see the API docs for its fields).
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub prices: Vec<serde_json::Value>,
     /// Category ID for the plan
@@ -578,18 +658,21 @@ pub struct SaasPlanResponseDto {
     pub product_id: Option<String>,
     /// Indicates if this is a SaaS V2 plan
     /// Required by the API.
-    #[serde(rename = "isSaaSV2")]
-    pub is_saa_sv2: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isSaaSV2", default, skip_serializing_if = "Option::is_none")]
+    pub is_saa_sv2: Option<bool>,
     /// Creation timestamp
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Last update timestamp
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `UnauthorizedDTO` from the GoHighLevel OpenAPI spec.
@@ -634,7 +717,9 @@ pub struct UpdateRebillingDto {
 pub struct UpdateRebillingResponseDto {
     /// Indicates if the rebilling update was successful
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `UpdateSubscriptionDto` from the GoHighLevel OpenAPI spec.

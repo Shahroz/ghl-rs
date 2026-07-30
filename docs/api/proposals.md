@@ -4,38 +4,21 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `proposals` cargo feature on `ghl-sdk`, then call any of the 4 generated methods on `ghl.proposals()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features proposals
-use ghl_models::v2::proposals::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["proposals"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "proposals"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/proposals/document` | List documents | `proposals.get_proposals_document` |
-| `POST` | `/proposals/document/send` | Send document | `proposals.post_proposals_document_send` |
-| `GET` | `/proposals/templates` | List templates | `proposals.get_proposals_templates` |
-| `POST` | `/proposals/templates/send` | Send template | `proposals.post_proposals_templates_send` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/proposals/document` | List documents | `list_documents()` | `proposals.get_proposals_document` |
+| `POST` | `/proposals/document/send` | Send document | `send_document()` | `proposals.post_proposals_document_send` |
+| `GET` | `/proposals/templates` | List templates | `list_templates()` | `proposals.get_proposals_templates` |
+| `POST` | `/proposals/templates/send` | Send template | `send_template()` | `proposals.post_proposals_templates_send` |
 
 ### Endpoint details — v2
 
@@ -61,6 +44,15 @@ Operation id: `proposals.get_proposals_document` · `Version: 2021-07-28`
 | `dateTo` | string | no | Date to (ISO 8601), dateFrom & DateTo must be provided together |
 
 *Response*: [`DocumentListResponseDto`](#documentlistresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::proposals::ListDocumentsParams;
+
+let params = ListDocumentsParams::new("locationId");
+let out = ghl.proposals().list_documents(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -89,6 +81,12 @@ Operation id: `proposals.post_proposals_document_send` · `Version: 2021-07-28`
 *Request body*: [`SendDocumentDto`](#senddocumentdto)
 
 *Response*: [`SendDocumentResponseDto`](#senddocumentresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.proposals().send_document(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -130,6 +128,15 @@ Operation id: `proposals.get_proposals_templates` · `Version: 2021-07-28`
 
 *Response*: [`TemplateListPaginationResponseDTO`](#templatelistpaginationresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::proposals::ListTemplatesParams;
+
+let params = ListTemplatesParams::new("locationId");
+let out = ghl.proposals().list_templates(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -157,6 +164,12 @@ Operation id: `proposals.post_proposals_templates_send` · `Version: 2021-07-28`
 *Request body*: [`SendDocumentFromPublicApiBodyDto`](#senddocumentfrompublicapibodydto)
 
 *Response*: [`SendTemplateResponseDto`](#sendtemplateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.proposals().send_template(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 

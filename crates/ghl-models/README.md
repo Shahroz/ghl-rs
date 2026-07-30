@@ -10,7 +10,7 @@ Every module is behind a cargo feature, because enabling everything means thousa
 
 ```toml
 [dependencies]
-ghl-models = { version = "0.3", features = ["invoices", "payments"] }
+ghl-models = { version = "0.4", features = ["invoices", "payments"] }
 ```
 
 ```rust,ignore
@@ -59,7 +59,7 @@ Every model, field, and enum value is documented per module in the [API referenc
 
 ## Related crates
 
-- [`ghl-sdk`](https://crates.io/crates/ghl-sdk) — the async API client (auth, retries, rate limits, pagination). Re-exports these models under its `models` feature.
+- [`ghl-sdk`](https://crates.io/crates/ghl-sdk) — the async API client. Its per-module features give you **generated typed methods for every v2 endpoint**, wired to these DTOs, so you rarely construct requests by hand.
 - [`ghl-mcp`](https://crates.io/crates/ghl-mcp) — MCP server exposing GoHighLevel to AI agents.
 
 License: MIT or Apache-2.0. *Not affiliated with HighLevel Inc.*

@@ -55,37 +55,63 @@ pub struct BadRequestDTO {
 pub struct CrawledUrlDTO {
     /// Unique identifier for the URL
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The actual URL that was crawled
     /// Required by the API.
-    pub url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
     /// Title of the webpage
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Current processing status of the URL
     /// Allowed values: `Pending`, `Processing`, `Successful`, `Failed`, `Existing`,
     /// `Restricted`, `Cancelled`, `Aborted`, `Training`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Location ID associated with this URL
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Knowledge base ID this URL belongs to
     /// Required by the API.
-    #[serde(rename = "knowledgeBaseId")]
-    pub knowledge_base_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "knowledgeBaseId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub knowledge_base_id: Option<String>,
     /// URL to the stored content file
     /// Required by the API.
-    pub content: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub content: Option<String>,
     /// Whether the content was edited by user
     /// Required by the API.
-    #[serde(rename = "contentEditedByUser")]
-    pub content_edited_by_user: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contentEditedByUser",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub content_edited_by_user: Option<bool>,
     /// Last updated timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `CrawlingAggregateDTO` from the GoHighLevel OpenAPI spec.
@@ -95,10 +121,12 @@ pub struct CrawlingAggregateDTO {
     /// Allowed values: `Pending`, `Processing`, `Successful`, `Failed`, `Existing`,
     /// `Restricted`, `Cancelled`, `Aborted`, `Training`.
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Array of records for this status
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub records: Vec<CrawlingRecordDTO>,
 }
@@ -108,10 +136,14 @@ pub struct CrawlingAggregateDTO {
 pub struct CrawlingRecordDTO {
     /// URL being crawled
     /// Required by the API.
-    pub url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
     /// Unique record identifier
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Page title (for successful/pending records)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
@@ -125,12 +157,18 @@ pub struct CrawlingRecordDTO {
 pub struct CrawlingStatusDataDTO {
     /// Aggregated crawling results by status
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub aggregate: Vec<CrawlingAggregateDTO>,
     /// Detailed operation information
     /// Required by the API.
-    #[serde(rename = "operationDetails")]
-    pub operation_details: OperationDetailsDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "operationDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub operation_details: Option<OperationDetailsDTO>,
 }
 
 /// `CrawlingStatusResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -138,10 +176,14 @@ pub struct CrawlingStatusDataDTO {
 pub struct CrawlingStatusResponseDTO {
     /// Indicates if the operation was successful
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Detailed crawling status data
     /// Required by the API.
-    pub data: CrawlingStatusDataDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<CrawlingStatusDataDTO>,
 }
 
 /// `CreateFaqResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -149,10 +191,14 @@ pub struct CrawlingStatusResponseDTO {
 pub struct CreateFaqResponseDTO {
     /// Success status of the operation
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Created FAQ details
     /// Required by the API.
-    pub faq: FaqResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub faq: Option<FaqResponseDTO>,
 }
 
 /// `CreateKnowledgeBaseDTO` from the GoHighLevel OpenAPI spec.
@@ -172,10 +218,14 @@ pub struct CreateKnowledgeBaseDTO {
 pub struct CreateKnowledgeBaseResponseDTO {
     /// Success status of the operation
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Created knowledge base details
     /// Required by the API.
-    pub data: KnowledgeBaseDataDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<KnowledgeBaseDataDTO>,
 }
 
 /// `DeleteFaqResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -183,14 +233,18 @@ pub struct CreateKnowledgeBaseResponseDTO {
 pub struct DeleteFaqResponseDTO {
     /// Success status of the delete operation
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `DeleteKnowledgeBaseResponseDTO` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct DeleteKnowledgeBaseResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `DeleteWebsiteUrlRequestDTO` from the GoHighLevel OpenAPI spec.
@@ -216,7 +270,9 @@ pub struct DeleteWebsiteUrlRequestDTO {
 pub struct DeleteWebsiteUrlResponseDTO {
     /// Indicates if the operation was successful
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `DiscoverWebsiteDataDTO` from the GoHighLevel OpenAPI spec.
@@ -224,16 +280,25 @@ pub struct DeleteWebsiteUrlResponseDTO {
 pub struct DiscoverWebsiteDataDTO {
     /// Operation ID for tracking the discovery process
     /// Required by the API.
-    #[serde(rename = "operationId")]
-    pub operation_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "operationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub operation_id: Option<String>,
     /// Current status of the website discovery operation
     /// Allowed values: `Pending`, `Processing`, `Successful`, `Failed`, `Existing`,
     /// `Restricted`, `Cancelled`, `Aborted`, `Training`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// The URL being discovered/crawled
     /// Required by the API.
-    pub url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
 }
 
 /// `DiscoverWebsiteRequestDTO` from the GoHighLevel OpenAPI spec.
@@ -261,10 +326,14 @@ pub struct DiscoverWebsiteRequestDTO {
 pub struct DiscoverWebsiteResponseDTO {
     /// Indicates if the operation was successful
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Data containing operation details
     /// Required by the API.
-    pub data: DiscoverWebsiteDataDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<DiscoverWebsiteDataDTO>,
 }
 
 /// `ErrorDetailsDTO` from the GoHighLevel OpenAPI spec.
@@ -272,22 +341,32 @@ pub struct DiscoverWebsiteResponseDTO {
 pub struct ErrorDetailsDTO {
     /// Error stack trace
     /// Required by the API.
-    pub stack: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub stack: Option<String>,
     /// Error response message
     /// Required by the API.
-    pub response: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub response: Option<String>,
     /// HTTP status code
     /// Required by the API.
-    pub status: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<f64>,
     /// Additional options (nullable)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub options: Option<serde_json::Value>,
     /// Error message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Error name/type
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
 }
 
 /// `FaqResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -295,40 +374,70 @@ pub struct ErrorDetailsDTO {
 pub struct FaqResponseDTO {
     /// FAQ ID as string
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// FAQ question
     /// Required by the API.
-    pub question: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub question: Option<String>,
     /// FAQ question in lowercase
     /// Required by the API.
-    #[serde(rename = "questionLowerCase")]
-    pub question_lower_case: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "questionLowerCase",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub question_lower_case: Option<String>,
     /// FAQ answer
     /// Required by the API.
-    pub answer: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub answer: Option<String>,
     /// Knowledge base ID
     /// Required by the API.
-    #[serde(rename = "knowledgeBaseId")]
-    pub knowledge_base_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "knowledgeBaseId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub knowledge_base_id: Option<String>,
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Trained URL ID
     /// Required by the API.
-    #[serde(rename = "trainedUrlId")]
-    pub trained_url_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "trainedUrlId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trained_url_id: Option<String>,
     /// Whether the FAQ is deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Date when FAQ was created
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Date when FAQ was last updated
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `GetAllKnowledgeBasesPaginatedDataDTO` from the GoHighLevel OpenAPI spec.
@@ -336,6 +445,7 @@ pub struct FaqResponseDTO {
 pub struct GetAllKnowledgeBasesPaginatedDataDTO {
     /// Array of knowledge bases
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "knowledgeBases",
         default,
@@ -344,12 +454,18 @@ pub struct GetAllKnowledgeBasesPaginatedDataDTO {
     pub knowledge_bases: Vec<KnowledgeBaseListItemDTO>,
     /// Total count of all active knowledge bases
     /// Required by the API.
-    #[serde(rename = "activeCount")]
-    pub active_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "activeCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub active_count: Option<f64>,
     /// Whether there are more knowledge bases available
     /// Required by the API.
-    #[serde(rename = "hasMore")]
-    pub has_more: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "hasMore", default, skip_serializing_if = "Option::is_none")]
+    pub has_more: Option<bool>,
     /// ID of the last knowledge base in this page (use for next page request)
     #[serde(
         rename = "lastKnowledgeBaseId",
@@ -364,10 +480,14 @@ pub struct GetAllKnowledgeBasesPaginatedDataDTO {
 pub struct GetAllKnowledgeBasesPaginatedResponseDTO {
     /// Success status of the operation
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Paginated knowledge bases data
     /// Required by the API.
-    pub data: GetAllKnowledgeBasesPaginatedDataDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<GetAllKnowledgeBasesPaginatedDataDTO>,
 }
 
 /// `GetAllUrlsByKnowledgeBaseResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -375,9 +495,12 @@ pub struct GetAllKnowledgeBasesPaginatedResponseDTO {
 pub struct GetAllUrlsByKnowledgeBaseResponseDTO {
     /// Total count of URLs in the knowledge base
     /// Required by the API.
-    pub count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub count: Option<f64>,
     /// Array of crawled URLs with their details
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub urls: Vec<CrawledUrlDTO>,
 }
@@ -387,33 +510,56 @@ pub struct GetAllUrlsByKnowledgeBaseResponseDTO {
 pub struct GetKnowledgeBaseByIdDataDTO {
     /// Knowledge base ID
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Knowledge base name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Knowledge base name in lowercase
     /// Required by the API.
-    #[serde(rename = "nameLowerCase")]
-    pub name_lower_case: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "nameLowerCase",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub name_lower_case: Option<String>,
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Whether the knowledge base is deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Date when knowledge base was created
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Date when knowledge base was last updated
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Knowledge base metadata with content counts
     /// Required by the API.
-    #[serde(rename = "kbMetadata")]
-    pub kb_metadata: KnowledgeBaseMetadataDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "kbMetadata",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub kb_metadata: Option<KnowledgeBaseMetadataDTO>,
     /// Whether the knowledge base is default or not
     #[serde(rename = "isDefault", default, skip_serializing_if = "Option::is_none")]
     pub is_default: Option<bool>,
@@ -424,10 +570,14 @@ pub struct GetKnowledgeBaseByIdDataDTO {
 pub struct GetKnowledgeBaseByIdResponseDTO {
     /// Success status of the operation
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Knowledge base details
     /// Required by the API.
-    pub data: GetKnowledgeBaseByIdDataDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<GetKnowledgeBaseByIdDataDTO>,
 }
 
 /// `InternalServerErrorDTO` from the GoHighLevel OpenAPI spec.
@@ -448,33 +598,56 @@ pub struct InternalServerErrorDTO {
 pub struct KnowledgeBaseDataDTO {
     /// Knowledge base ID
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Knowledge base name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Knowledge base name in lowercase
     /// Required by the API.
-    #[serde(rename = "nameLowerCase")]
-    pub name_lower_case: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "nameLowerCase",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub name_lower_case: Option<String>,
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Knowledge base metadata
     /// Required by the API.
-    #[serde(rename = "kbMetadata")]
-    pub kb_metadata: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "kbMetadata",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub kb_metadata: Option<serde_json::Value>,
     /// Whether the knowledge base is deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Date when knowledge base was created
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Date when knowledge base was last updated
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `KnowledgeBaseListItemDTO` from the GoHighLevel OpenAPI spec.
@@ -482,14 +655,19 @@ pub struct KnowledgeBaseDataDTO {
 pub struct KnowledgeBaseListItemDTO {
     /// Knowledge base ID
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Knowledge base name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Date when knowledge base was created
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
 }
 
 /// `KnowledgeBaseMetadataDTO` from the GoHighLevel OpenAPI spec.
@@ -497,24 +675,38 @@ pub struct KnowledgeBaseListItemDTO {
 pub struct KnowledgeBaseMetadataDTO {
     /// Number of FAQs in the knowledge base
     /// Required by the API.
-    pub faqs: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub faqs: Option<f64>,
     /// Number of URLs in the knowledge base
     /// Required by the API.
-    pub urls: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub urls: Option<f64>,
     /// Number of rich text documents in the knowledge base
     /// Required by the API.
-    #[serde(rename = "richText")]
-    pub rich_text: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "richText", default, skip_serializing_if = "Option::is_none")]
+    pub rich_text: Option<f64>,
     /// Number of files in the knowledge base
     /// Required by the API.
-    pub files: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub files: Option<f64>,
     /// Number of web searche configs in the knowledge base
     /// Required by the API.
-    #[serde(rename = "webSearches")]
-    pub web_searches: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "webSearches",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub web_searches: Option<f64>,
     /// Number of tables in the knowledge base
     /// Required by the API.
-    pub tables: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tables: Option<f64>,
 }
 
 /// `ListFaqsResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -522,9 +714,12 @@ pub struct KnowledgeBaseMetadataDTO {
 pub struct ListFaqsResponseDTO {
     /// Total count of all FAQs in the knowledge base
     /// Required by the API.
-    pub count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub count: Option<f64>,
     /// Array of FAQ objects
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub faqs: Vec<FaqResponseDTO>,
     /// Last FAQ ID for pagination (use as lastFaqId in next request)
@@ -540,48 +735,78 @@ pub struct ListFaqsResponseDTO {
 pub struct OperationDetailsDTO {
     /// Number of URLs discovered
     /// Required by the API.
-    #[serde(rename = "discoveredUrlsCount")]
-    pub discovered_urls_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "discoveredUrlsCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub discovered_urls_count: Option<f64>,
     /// Number of URLs successfully trained
     /// Required by the API.
-    #[serde(rename = "trainedUrlsCount")]
-    pub trained_urls_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "trainedUrlsCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub trained_urls_count: Option<f64>,
     /// Operation unique identifier
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Associated location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Current operation status
     /// Allowed values: `Pending`, `Processing`, `Successful`, `Failed`, `Existing`,
     /// `Restricted`, `Cancelled`, `Aborted`, `Training`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Base URL being crawled
     /// Required by the API.
-    pub url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
     /// Crawling mode used
     /// Allowed values: `Exact`, `Path`, `Domain`.
     /// Required by the API.
-    pub mode: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mode: Option<String>,
     /// Knowledge base ID
     /// Required by the API.
-    #[serde(rename = "knowledgeBaseId")]
-    pub knowledge_base_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "knowledgeBaseId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub knowledge_base_id: Option<String>,
     /// Operation creation timestamp
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Last update timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Version field
     /// Required by the API.
-    #[serde(rename = "__v")]
-    pub v: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "__v", default, skip_serializing_if = "Option::is_none")]
+    pub v: Option<f64>,
     /// Robots.txt file content
     #[serde(
         rename = "robotsFileData",
@@ -617,7 +842,9 @@ pub struct TrainDiscoveredUrlsDTO {
 pub struct TrainDiscoveredUrlsResponseDTO {
     /// Indicates if the operation was successful
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `UnauthorizedDTO` from the GoHighLevel OpenAPI spec.
@@ -666,7 +893,9 @@ pub struct UpdateFaqBodyDTO {
 pub struct UpdateFaqResponseDTO {
     /// Success status of the update operation
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `UpdateKnowledgeBaseDTO` from the GoHighLevel OpenAPI spec.
@@ -684,5 +913,7 @@ pub struct UpdateKnowledgeBaseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct UpdateKnowledgeBaseResponseDTO {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }

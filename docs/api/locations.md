@@ -4,43 +4,50 @@
 
 ## How to call it
 
-This module has a **typed SDK service**: `ghl.locations()` with `get()`, `search()`.
+**Every endpoint has a typed Rust method.** Enable the `locations` cargo feature on `ghl-sdk`, then call any of the 29 generated methods on `ghl.locations()`:
+
+```toml
+ghl-sdk = { version = "0.4", features = ["locations"] }
+```
+
+This module also has hand-written ergonomic helpers on the same `ghl.locations()`: `get()`, `search()` (envelope unwrapping, paginated `Stream`s).
 
 MCP tools: `ghl_list_locations`.
 
+
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/locations/` | Create Sub-Account (Formerly Location) | `locations.post_locations` |
-| `GET` | `/locations/search` | Search | `locations.get_locations_search` |
-| `DELETE` | `/locations/{locationId}` | Delete Sub-Account (Formerly Location) | `locations.delete_locations_by_locationId` |
-| `GET` | `/locations/{locationId}` | Get Sub-Account (Formerly Location) | `locations.get_locations_by_locationId` |
-| `PUT` | `/locations/{locationId}` | Put Sub-Account (Formerly Location) | `locations.put_locations_by_locationId` |
-| `GET` | `/locations/{locationId}/customFields` | Get Custom Fields | `locations.get_locations_by_locationId_customFields` |
-| `POST` | `/locations/{locationId}/customFields` | Create Custom Field | `locations.post_locations_by_locationId_customFields` |
-| `POST` | `/locations/{locationId}/customFields/upload` | Uploads File to customFields | `locations.post_locations_by_locationId_customFields_upload` |
-| `DELETE` | `/locations/{locationId}/customFields/{id}` | Delete Custom Field | `locations.delete_locations_by_locationId_customFields_by_id` |
-| `GET` | `/locations/{locationId}/customFields/{id}` | Get Custom Field | `locations.get_locations_by_locationId_customFields_by_id` |
-| `PUT` | `/locations/{locationId}/customFields/{id}` | Update Custom Field | `locations.put_locations_by_locationId_customFields_by_id` |
-| `GET` | `/locations/{locationId}/customValues` | Get Custom Values | `locations.get_locations_by_locationId_customValues` |
-| `POST` | `/locations/{locationId}/customValues` | Create Custom Value | `locations.post_locations_by_locationId_customValues` |
-| `DELETE` | `/locations/{locationId}/customValues/{id}` | Delete Custom Value | `locations.delete_locations_by_locationId_customValues_by_id` |
-| `GET` | `/locations/{locationId}/customValues/{id}` | Get Custom Value | `locations.get_locations_by_locationId_customValues_by_id` |
-| `PUT` | `/locations/{locationId}/customValues/{id}` | Update Custom Value | `locations.put_locations_by_locationId_customValues_by_id` |
-| `POST` | `/locations/{locationId}/recurring-tasks` | Create Recurring Task | `locations.post_locations_by_locationId_recurring_tasks` |
-| `DELETE` | `/locations/{locationId}/recurring-tasks/{id}` | Delete Recurring Task | `locations.delete_locations_by_locationId_recurring_tasks_by_id` |
-| `GET` | `/locations/{locationId}/recurring-tasks/{id}` | Get Recurring Task By Id | `locations.get_locations_by_locationId_recurring_tasks_by_id` |
-| `PUT` | `/locations/{locationId}/recurring-tasks/{id}` | Update Recurring Task | `locations.put_locations_by_locationId_recurring_tasks_by_id` |
-| `GET` | `/locations/{locationId}/tags` | Get Tags | `locations.get_locations_by_locationId_tags` |
-| `POST` | `/locations/{locationId}/tags` | Create Tag | `locations.post_locations_by_locationId_tags` |
-| `DELETE` | `/locations/{locationId}/tags/{tagId}` | Delete tag | `locations.delete_locations_by_locationId_tags_by_tagId` |
-| `GET` | `/locations/{locationId}/tags/{tagId}` | Get tag by id | `locations.get_locations_by_locationId_tags_by_tagId` |
-| `PUT` | `/locations/{locationId}/tags/{tagId}` | Update tag | `locations.put_locations_by_locationId_tags_by_tagId` |
-| `POST` | `/locations/{locationId}/tasks/search` | Task Search Filter | `locations.post_locations_by_locationId_tasks_search` |
-| `GET` | `/locations/{locationId}/templates` | GET all or email/sms templates | `locations.get_locations_by_locationId_templates` |
-| `DELETE` | `/locations/{locationId}/templates/{id}` | DELETE an email/sms template | `locations.delete_locations_by_locationId_templates_by_id` |
-| `GET` | `/locations/{locationId}/timezones` | Fetch Timezones | `locations.get_locations_by_locationId_timezones` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/locations/` | Create Sub-Account (Formerly Location) | `create_sub_account_formerly_location()` | `locations.post_locations` |
+| `GET` | `/locations/search` | Search | `search_op()` | `locations.get_locations_search` |
+| `DELETE` | `/locations/{locationId}` | Delete Sub-Account (Formerly Location) | `delete_sub_account_formerly_location()` | `locations.delete_locations_by_locationId` |
+| `GET` | `/locations/{locationId}` | Get Sub-Account (Formerly Location) | `get_sub_account_formerly_location()` | `locations.get_locations_by_locationId` |
+| `PUT` | `/locations/{locationId}` | Put Sub-Account (Formerly Location) | `put_sub_account_formerly_location()` | `locations.put_locations_by_locationId` |
+| `GET` | `/locations/{locationId}/customFields` | Get Custom Fields | `get_custom_fields()` | `locations.get_locations_by_locationId_customFields` |
+| `POST` | `/locations/{locationId}/customFields` | Create Custom Field | `create_custom_field()` | `locations.post_locations_by_locationId_customFields` |
+| `POST` | `/locations/{locationId}/customFields/upload` | Uploads File to customFields | `uploads_file_to_custom_fields()` | `locations.post_locations_by_locationId_customFields_upload` |
+| `DELETE` | `/locations/{locationId}/customFields/{id}` | Delete Custom Field | `delete_custom_field()` | `locations.delete_locations_by_locationId_customFields_by_id` |
+| `GET` | `/locations/{locationId}/customFields/{id}` | Get Custom Field | `get_custom_field()` | `locations.get_locations_by_locationId_customFields_by_id` |
+| `PUT` | `/locations/{locationId}/customFields/{id}` | Update Custom Field | `update_custom_field()` | `locations.put_locations_by_locationId_customFields_by_id` |
+| `GET` | `/locations/{locationId}/customValues` | Get Custom Values | `get_custom_values()` | `locations.get_locations_by_locationId_customValues` |
+| `POST` | `/locations/{locationId}/customValues` | Create Custom Value | `create_custom_value()` | `locations.post_locations_by_locationId_customValues` |
+| `DELETE` | `/locations/{locationId}/customValues/{id}` | Delete Custom Value | `delete_custom_value()` | `locations.delete_locations_by_locationId_customValues_by_id` |
+| `GET` | `/locations/{locationId}/customValues/{id}` | Get Custom Value | `get_custom_value()` | `locations.get_locations_by_locationId_customValues_by_id` |
+| `PUT` | `/locations/{locationId}/customValues/{id}` | Update Custom Value | `update_custom_value()` | `locations.put_locations_by_locationId_customValues_by_id` |
+| `POST` | `/locations/{locationId}/recurring-tasks` | Create Recurring Task | `create_recurring_task()` | `locations.post_locations_by_locationId_recurring_tasks` |
+| `DELETE` | `/locations/{locationId}/recurring-tasks/{id}` | Delete Recurring Task | `delete_recurring_task()` | `locations.delete_locations_by_locationId_recurring_tasks_by_id` |
+| `GET` | `/locations/{locationId}/recurring-tasks/{id}` | Get Recurring Task By Id | `get_recurring_task_by_id()` | `locations.get_locations_by_locationId_recurring_tasks_by_id` |
+| `PUT` | `/locations/{locationId}/recurring-tasks/{id}` | Update Recurring Task | `update_recurring_task()` | `locations.put_locations_by_locationId_recurring_tasks_by_id` |
+| `GET` | `/locations/{locationId}/tags` | Get Tags | `get_tags()` | `locations.get_locations_by_locationId_tags` |
+| `POST` | `/locations/{locationId}/tags` | Create Tag | `create_tag()` | `locations.post_locations_by_locationId_tags` |
+| `DELETE` | `/locations/{locationId}/tags/{tagId}` | Delete tag | `delete_tag()` | `locations.delete_locations_by_locationId_tags_by_tagId` |
+| `GET` | `/locations/{locationId}/tags/{tagId}` | Get tag by id | `get_tag_by_id()` | `locations.get_locations_by_locationId_tags_by_tagId` |
+| `PUT` | `/locations/{locationId}/tags/{tagId}` | Update tag | `update_tag()` | `locations.put_locations_by_locationId_tags_by_tagId` |
+| `POST` | `/locations/{locationId}/tasks/search` | Task Search Filter | `task_search_filter()` | `locations.post_locations_by_locationId_tasks_search` |
+| `GET` | `/locations/{locationId}/templates` | GET all or email/sms templates | `get_all_or_email_sms_templates()` | `locations.get_locations_by_locationId_templates` |
+| `DELETE` | `/locations/{locationId}/templates/{id}` | DELETE an email/sms template | `delete_an_email_sms_template()` | `locations.delete_locations_by_locationId_templates_by_id` |
+| `GET` | `/locations/{locationId}/timezones` | Fetch Timezones | `fetch_timezones()` | `locations.get_locations_by_locationId_timezones` |
 
 ### Endpoint details — v2
 
@@ -55,6 +62,12 @@ Operation id: `locations.post_locations` · `Version: 2021-07-28` · Scopes: `lo
 *Request body*: [`CreateLocationDto`](#createlocationdto)
 
 *Response*: [`CreateLocationSuccessfulResponseDto`](#createlocationsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().create_sub_account_formerly_location(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -92,6 +105,15 @@ Operation id: `locations.get_locations_search` · `Version: 2021-07-28` · Scope
 
 *Response*: [`SearchSuccessfulResponseDto`](#searchsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::locations::SearchOpParams;
+
+let params = SearchOpParams::new();
+let out = ghl.locations().search_op(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -126,6 +148,15 @@ Operation id: `locations.delete_locations_by_locationId` · `Version: 2021-07-28
 | `deleteTwilioAccount` | boolean | **yes** | Boolean value to indicate whether to delete Twilio Account or not |
 
 *Response*: [`LocationDeletedSuccessfulResponseDto`](#locationdeletedsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::locations::DeleteSubAccountFormerlyLocationParams;
+
+let params = DeleteSubAccountFormerlyLocationParams::new("deleteTwilioAccount");
+let out = ghl.locations().delete_sub_account_formerly_location(&locationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -162,6 +193,12 @@ Operation id: `locations.get_locations_by_locationId` · `Version: 2021-07-28` �
 
 *Response*: [`GetLocationByIdSuccessfulResponseDto`](#getlocationbyidsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().get_sub_account_formerly_location(&locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -195,6 +232,12 @@ Operation id: `locations.put_locations_by_locationId` · `Version: 2021-07-28` �
 *Request body*: [`UpdateLocationDto`](#updatelocationdto)
 
 *Response*: [`CreateLocationSuccessfulResponseDto`](#createlocationsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().put_sub_account_formerly_location(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -235,6 +278,15 @@ Operation id: `locations.get_locations_by_locationId_customFields` · `Version: 
 
 *Response*: [`CustomFieldsListSuccessfulResponseDto`](#customfieldslistsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::locations::GetCustomFieldsParams;
+
+let params = GetCustomFieldsParams::new();
+let out = ghl.locations().get_custom_fields(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -266,6 +318,12 @@ Operation id: `locations.post_locations_by_locationId_customFields` · `Version:
 *Request body*: [`CreateCustomFieldsDTO`](#createcustomfieldsdto)
 
 *Response*: [`CustomFieldSuccessfulResponseDto`](#customfieldsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().create_custom_field(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -300,6 +358,12 @@ Operation id: `locations.post_locations_by_locationId_customFields_upload` · `V
 
 *Response*: [`FileUploadResponseDto`](#fileuploadresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().uploads_file_to_custom_fields(&locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -330,6 +394,12 @@ Operation id: `locations.delete_locations_by_locationId_customFields_by_id` · `
 | `id` | string | **yes** | Custom Field Id |
 
 *Response*: [`CustomFieldDeleteSuccessfulResponseDto`](#customfielddeletesuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().delete_custom_field(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -362,6 +432,12 @@ Operation id: `locations.get_locations_by_locationId_customFields_by_id` · `Ver
 | `id` | string | **yes** | Custom Field Id or Field Key (e.g. "contact.first_name" or "opportunity.pipeline_id") |
 
 *Response*: [`CustomFieldSuccessfulResponseDto`](#customfieldsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().get_custom_field(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -397,6 +473,12 @@ Operation id: `locations.put_locations_by_locationId_customFields_by_id` · `Ver
 
 *Response*: [`CustomFieldSuccessfulResponseDto`](#customfieldsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().update_custom_field(&locationId, &id, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -431,6 +513,12 @@ Operation id: `locations.get_locations_by_locationId_customValues` · `Version: 
 
 *Response*: [`CustomValuesListSuccessfulResponseDto`](#customvalueslistsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().get_custom_values(&locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -462,6 +550,12 @@ Operation id: `locations.post_locations_by_locationId_customValues` · `Version:
 *Request body*: [`customValuesDTO`](#customvaluesdto)
 
 *Response*: [`CustomValueIdSuccessfulResponseDto`](#customvalueidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().create_custom_value(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -497,6 +591,12 @@ Operation id: `locations.delete_locations_by_locationId_customValues_by_id` · `
 
 *Response*: [`CustomValueDeleteSuccessfulResponseDto`](#customvaluedeletesuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().delete_custom_value(&locationId, &id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -528,6 +628,12 @@ Operation id: `locations.get_locations_by_locationId_customValues_by_id` · `Ver
 | `id` | string | **yes** | Custom Value Id |
 
 *Response*: [`CustomValueIdSuccessfulResponseDto`](#customvalueidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().get_custom_value(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -562,6 +668,12 @@ Operation id: `locations.put_locations_by_locationId_customValues_by_id` · `Ver
 *Request body*: [`customValuesDTO`](#customvaluesdto)
 
 *Response*: [`CustomValueIdSuccessfulResponseDto`](#customvalueidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().update_custom_value(&locationId, &id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -599,6 +711,12 @@ Operation id: `locations.post_locations_by_locationId_recurring_tasks` · `Versi
 
 *Response*: [`RecurringTaskSingleResponseDTO`](#recurringtasksingleresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().create_recurring_task(&locationId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -633,6 +751,12 @@ Operation id: `locations.delete_locations_by_locationId_recurring_tasks_by_id` �
 
 *Response*: [`DeleteRecurringTaskResponseDTO`](#deleterecurringtaskresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().delete_recurring_task(&id, &locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -664,6 +788,12 @@ Operation id: `locations.get_locations_by_locationId_recurring_tasks_by_id` · `
 | `locationId` | string | **yes** | Location Id |
 
 *Response*: [`RecurringTaskSingleResponseDTO`](#recurringtasksingleresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().get_recurring_task_by_id(&id, &locationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -698,6 +828,12 @@ Operation id: `locations.put_locations_by_locationId_recurring_tasks_by_id` · `
 *Request body*: [`RecurringTaskUpdateDTO`](#recurringtaskupdatedto)
 
 *Response*: [`RecurringTaskSingleResponseDTO`](#recurringtasksingleresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().update_recurring_task(&id, &locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -735,6 +871,12 @@ Operation id: `locations.get_locations_by_locationId_tags` · `Version: 2021-07-
 
 *Response*: [`LocationTagsSuccessfulResponseDto`](#locationtagssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().get_tags(&locationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -768,6 +910,12 @@ Operation id: `locations.post_locations_by_locationId_tags` · `Version: 2021-07
 *Request body*: [`tagBody`](#tagbody)
 
 *Response*: [`LocationTagSuccessfulResponseDto`](#locationtagsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().create_tag(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -803,6 +951,12 @@ Operation id: `locations.delete_locations_by_locationId_tags_by_tagId` · `Versi
 
 *Response*: [`LocationTagDeleteSuccessfulResponseDto`](#locationtagdeletesuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().delete_tag(&locationId, &tagId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -834,6 +988,12 @@ Operation id: `locations.get_locations_by_locationId_tags_by_tagId` · `Version:
 | `tagId` | string | **yes** | Tag Id |
 
 *Response*: [`LocationTagSuccessfulResponseDto`](#locationtagsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().get_tag_by_id(&locationId, &tagId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -868,6 +1028,12 @@ Operation id: `locations.put_locations_by_locationId_tags_by_tagId` · `Version:
 *Request body*: [`tagBody`](#tagbody)
 
 *Response*: [`LocationTagSuccessfulResponseDto`](#locationtagsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().update_tag(&locationId, &tagId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -906,6 +1072,12 @@ Operation id: `locations.post_locations_by_locationId_tasks_search` · `Version:
 *Request body*: [`TaskSearchParamsDto`](#tasksearchparamsdto)
 
 *Response*: [`LocationTaskListSuccessfulResponseDto`](#locationtasklistsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().task_search_filter(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -950,6 +1122,15 @@ Operation id: `locations.get_locations_by_locationId_templates` · `Version: 202
 
 *Response*: [`GetTemplatesSuccessfulResponseDto`](#gettemplatessuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::locations::GetAllOrEmailSmsTemplatesParams;
+
+let params = GetAllOrEmailSmsTemplatesParams::new("originId");
+let out = ghl.locations().get_all_or_email_sms_templates(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -982,6 +1163,12 @@ Operation id: `locations.delete_locations_by_locationId_templates_by_id` · `Ver
 | `locationId` | string | **yes** | Location Id |
 | `id` | string | **yes** | Template Id |
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().delete_an_email_sms_template(&locationId, &id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1006,6 +1193,12 @@ Operation id: `locations.delete_locations_by_locationId_templates_by_id` · `Ver
 Fetch the available timezones
 
 Operation id: `locations.get_locations_by_locationId_timezones` · `Version: 2021-07-28` · Scopes: `locations.readonly`
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.locations().fetch_timezones().await?;
+```
 
 <details><summary>MCP call</summary>
 

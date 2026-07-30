@@ -163,7 +163,7 @@ impl FreeSlots {
 
 /// Access to the Calendars API. Obtained via [`Ghl::calendars`].
 pub struct CalendarsService {
-    client: Ghl,
+    pub(crate) client: Ghl,
 }
 
 impl CalendarsService {

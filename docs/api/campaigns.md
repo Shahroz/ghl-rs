@@ -4,35 +4,18 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `campaigns` cargo feature on `ghl-sdk`, then call any of the 1 generated methods on `ghl.campaigns()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features campaigns
-use ghl_models::v2::campaigns::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["campaigns"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "campaigns"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/campaigns/` | Get Campaigns | `campaigns.get_campaigns` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/campaigns/` | Get Campaigns | `get_campaigns()` | `campaigns.get_campaigns` |
 
 ### Endpoint details — v2
 
@@ -50,6 +33,15 @@ Operation id: `campaigns.get_campaigns` · `Version: 2021-07-28` · Scopes: `cam
 | `status` | string | no | — |
 
 *Response*: [`CampaignsSuccessfulResponseDto`](#campaignssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::campaigns::GetCampaignsParams;
+
+let params = GetCampaignsParams::new("locationId");
+let out = ghl.campaigns().get_campaigns(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

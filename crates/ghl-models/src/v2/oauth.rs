@@ -52,8 +52,9 @@ pub struct GetAccessCodeSuccessfulResponseDto {
     pub approved_locations: Vec<String>,
     /// USER ID - Represent user id of person who performed installation
     /// Required by the API.
-    #[serde(rename = "userId")]
-    pub user_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "userId", default, skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<String>,
     /// Plan Id of the subscribed plan in paid apps.
     #[serde(rename = "planId", default, skip_serializing_if = "Option::is_none")]
     pub plan_id: Option<String>,
@@ -162,8 +163,9 @@ pub struct GetLocationAccessTokenSuccessfulResponseDto {
     pub plan_id: Option<String>,
     /// USER ID - Represent user id of person who performed installation
     /// Required by the API.
-    #[serde(rename = "userId")]
-    pub user_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "userId", default, skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<String>,
     /// App ID of the installed application
     #[serde(rename = "appId", default, skip_serializing_if = "Option::is_none")]
     pub app_id: Option<String>,
@@ -177,14 +179,19 @@ pub struct GetLocationAccessTokenSuccessfulResponseDto {
 pub struct InstalledLocationSchema {
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Name of the location
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Address linked to location
     /// Required by the API.
-    pub address: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub address: Option<String>,
     /// Check if the requested app is installed for following location
     #[serde(
         rename = "isInstalled",

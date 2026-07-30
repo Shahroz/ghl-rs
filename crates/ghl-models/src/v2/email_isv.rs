@@ -23,7 +23,9 @@ use serde::{Deserialize, Serialize};
 pub struct EmailNotVerifiedResponseDto {
     /// Email verification not processed
     /// Required by the API.
-    pub verified: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub verified: Option<bool>,
     /// Email verification failure message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
@@ -41,18 +43,29 @@ pub struct EmailVerifiedResponseDto {
     /// Email verification result
     /// Allowed values: `deliverable`, `undeliverable`, `do_not_send`, `unknown`, `catch_all`.
     /// Required by the API.
-    pub result: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub result: Option<String>,
     /// Risk level of email sending to bounce
     /// Allowed values: `high`, `low`, `medium`, `unknown`.
     /// Required by the API.
-    pub risk: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub risk: Option<String>,
     /// Email address
     /// Required by the API.
-    pub address: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub address: Option<String>,
     /// Lead Connector email verification recomendation
     /// Required by the API.
-    #[serde(rename = "leadconnectorRecomendation")]
-    pub leadconnector_recomendation: LeadConnectorRecomandationDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "leadconnectorRecomendation",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub leadconnector_recomendation: Option<LeadConnectorRecomandationDto>,
 }
 
 /// `LeadConnectorRecomandationDto` from the GoHighLevel OpenAPI spec.

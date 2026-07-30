@@ -4,35 +4,18 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `email-isv` cargo feature on `ghl-sdk`, then call any of the 1 generated methods on `ghl.email_isv()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features email-isv
-use ghl_models::v2::email_isv::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["email-isv"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "email-isv"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/email/verify` | Email Verification | `email-isv.post_email_verify` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/email/verify` | Email Verification | `email_verification()` | `email-isv.post_email_verify` |
 
 ### Endpoint details — v2
 
@@ -51,6 +34,15 @@ Operation id: `email-isv.post_email_verify` · `Version: 2021-07-28`
 | `locationId` | string | **yes** | Location Id, The email verification charges will be deducted from this location (if rebilling is enabled) / company wallet |
 
 *Request body*: [`VerificationBodyDto`](#verificationbodydto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::email_isv::EmailVerificationParams;
+
+let params = EmailVerificationParams::new("locationId");
+let out = ghl.email_isv().email_verification(&params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

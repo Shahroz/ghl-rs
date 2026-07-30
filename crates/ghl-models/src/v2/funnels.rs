@@ -40,7 +40,9 @@ pub struct CreateRedirectParams {
 pub struct CreateRedirectResponseDTO {
     /// Data containing details of the created redirect
     /// Required by the API.
-    pub data: RedirectResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<RedirectResponseDTO>,
 }
 
 /// `DeleteRedirectResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -48,50 +50,72 @@ pub struct CreateRedirectResponseDTO {
 pub struct DeleteRedirectResponseDTO {
     /// Status of the delete operation
     /// Required by the API.
-    pub data: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<serde_json::Value>,
 }
 
 /// `FunnelListResponseDTO` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct FunnelListResponseDTO {
     /// Required by the API.
-    pub funnels: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub funnels: Option<serde_json::Value>,
     /// Required by the API.
-    pub count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub count: Option<f64>,
     /// Required by the API.
-    #[serde(rename = "traceId")]
-    pub trace_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
+    pub trace_id: Option<String>,
 }
 
 /// `FunnelPageCountResponseDTO` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct FunnelPageCountResponseDTO {
     /// Required by the API.
-    pub count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub count: Option<f64>,
 }
 
 /// `FunnelPageResponseDTO` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct FunnelPageResponseDTO {
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Required by the API.
-    #[serde(rename = "funnelId")]
-    pub funnel_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "funnelId", default, skip_serializing_if = "Option::is_none")]
+    pub funnel_id: Option<String>,
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Required by the API.
-    #[serde(rename = "stepId")]
-    pub step_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "stepId", default, skip_serializing_if = "Option::is_none")]
+    pub step_id: Option<String>,
     /// Required by the API.
-    pub deleted: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<String>,
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `RedirectListResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -99,7 +123,9 @@ pub struct FunnelPageResponseDTO {
 pub struct RedirectListResponseDTO {
     /// Object containing the count of redirects and an array of redirect data
     /// Required by the API.
-    pub data: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<serde_json::Value>,
 }
 
 /// `RedirectResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -107,31 +133,52 @@ pub struct RedirectListResponseDTO {
 pub struct RedirectResponseDTO {
     /// Unique identifier of the redirect
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Identifier of the location associated with the redirect
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Domain where the redirect occurs
     /// Required by the API.
-    pub domain: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub domain: Option<String>,
     /// Original path that will be redirected
     /// Required by the API.
-    pub path: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
     /// Lowercase version of the original path
     /// Required by the API.
-    #[serde(rename = "pathLowercase")]
-    pub path_lowercase: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "pathLowercase",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub path_lowercase: Option<String>,
     /// Type of redirect (e.g., Permanent, Temporary)
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Target URL to which the original path will be redirected
     /// Required by the API.
-    pub target: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub target: Option<String>,
     /// Action performed by the redirect
     /// Required by the API.
-    pub action: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub action: Option<String>,
 }
 
 /// `UpdateRedirectParams` from the GoHighLevel OpenAPI spec.
@@ -152,5 +199,7 @@ pub struct UpdateRedirectParams {
 pub struct UpdateRedirectResponseDTO {
     /// Data containing details of the updated redirect
     /// Required by the API.
-    pub data: RedirectResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<RedirectResponseDTO>,
 }

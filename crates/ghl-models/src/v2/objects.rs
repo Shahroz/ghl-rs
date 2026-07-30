@@ -55,18 +55,24 @@ pub struct CreateCustomObjectSchemaDTO {
 pub struct CreatedByResponseDTO {
     /// Creation Channel
     /// Required by the API.
-    pub channel: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub channel: Option<String>,
     /// Created At
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// From where the record was created
     /// Required by the API.
-    pub source: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source: Option<String>,
     /// User/Resource Id
     /// Required by the API.
-    #[serde(rename = "sourceId")]
-    pub source_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "sourceId", default, skip_serializing_if = "Option::is_none")]
+    pub source_id: Option<String>,
 }
 
 /// `CustomObjectByIdResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -76,7 +82,9 @@ pub struct CustomObjectByIdResponseDTO {
     pub object: Option<ICustomObjectSchema>,
     /// Is the response served from cache
     /// Required by the API.
-    pub cache: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cache: Option<bool>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub fields: Vec<ICustomField>,
 }
@@ -103,10 +111,14 @@ pub struct CustomObjectDisplayPropertyDetails {
 pub struct CustomObjectLabelDto {
     /// Singular name of the custom object
     /// Required by the API.
-    pub singular: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub singular: Option<String>,
     /// Plural name of the custom object
     /// Required by the API.
-    pub plural: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub plural: Option<String>,
 }
 
 /// `CustomObjectLabelUpdateDto` from the GoHighLevel OpenAPI spec.
@@ -139,8 +151,13 @@ pub struct CustomObjectResponseDTO {
 pub struct ICustomField {
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Field name
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub name: Option<String>,
@@ -152,8 +169,13 @@ pub struct ICustomField {
     pub placeholder: Option<String>,
     /// Whether the field should be shown in forms
     /// Required by the API.
-    #[serde(rename = "showInForms")]
-    pub show_in_forms: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "showInForms",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub show_in_forms: Option<bool>,
     /// Options for the field (Optional, valid only for SINGLE_OPTIONS, MULTIPLE_OPTIONS, RADIO,
     /// CHECKBOX, TEXTBOX_LIST type)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -170,29 +192,35 @@ pub struct ICustomField {
     pub accepted_formats: Option<String>,
     /// Unique identifier of the object
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The key for your custom / standard object. This key uniquely identifies the custom
     /// object. Example: "custom_object.pet" for a custom object related to pets.
     /// Required by the API.
-    #[serde(rename = "objectKey")]
-    pub object_key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "objectKey", default, skip_serializing_if = "Option::is_none")]
+    pub object_key: Option<String>,
     /// Type of field that you are trying to create
     /// Allowed values: `TEXT`, `LARGE_TEXT`, `NUMERICAL`, `PHONE`, `MONETORY`, `CHECKBOX`,
     /// `SINGLE_OPTIONS`, `MULTIPLE_OPTIONS`, `DATE`, `TEXTBOX_LIST`, `FILE_UPLOAD`, `RADIO`.
     /// Required by the API.
-    #[serde(rename = "dataType")]
-    pub data_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dataType", default, skip_serializing_if = "Option::is_none")]
+    pub data_type: Option<String>,
     /// ID of the parent folder
     /// Required by the API.
-    #[serde(rename = "parentId")]
-    pub parent_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "parentId", default, skip_serializing_if = "Option::is_none")]
+    pub parent_id: Option<String>,
     /// Field key. For Custom Object it's formatted as "custom_object.{objectKey}.{fieldKey}".
     /// "custom_object" is a fixed prefix, "{objectKey}" is your custom object's identifier, and
     /// "{fieldName}" is the unique field name within that object. Example:
     /// "custom_object.pet.name" for a "name" field in a "pet" custom object.
     /// Required by the API.
-    #[serde(rename = "fieldKey")]
-    pub field_key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "fieldKey", default, skip_serializing_if = "Option::is_none")]
+    pub field_key: Option<String>,
     /// Determines if users can add a custom option value different from the predefined options
     /// in records for RADIO type fields. A custom value added in one record does not
     /// automatically become an option and will not appear as an option for other records.
@@ -212,13 +240,19 @@ pub struct ICustomField {
     /// Date and time when the object was added
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "dateAdded")]
-    pub date_added: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dateAdded", default, skip_serializing_if = "Option::is_none")]
+    pub date_added: Option<String>,
     /// Date and time when the object was last updated
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "dateUpdated")]
-    pub date_updated: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dateUpdated",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub date_updated: Option<String>,
 }
 
 /// `ICustomObjectSchema` from the GoHighLevel OpenAPI spec.
@@ -226,43 +260,67 @@ pub struct ICustomField {
 pub struct ICustomObjectSchema {
     /// id of the custom / standard object schema
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// false in case of custom objects and true in case of standard objects like contacts and
     /// opportunities
     /// Required by the API.
-    pub standard: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub standard: Option<bool>,
     /// key that would be used to refer the custom / standard Object internally (lowercase +
     /// underscore_separated). For custom objects, 'custom_objects.' would be added as prefix by
     /// default
     /// Required by the API.
-    pub key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
     /// This is what your custom / standard object will be called. These labels will be used to
     /// display your custom object on the UI
     /// Required by the API.
-    pub labels: CustomObjectLabelDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub labels: Option<CustomObjectLabelDto>,
     /// Custom / Standard Object Descriptions for example , Pet Object`s description
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     /// location's id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Primary property for the custom / standard Object. This would be used as primary data
     /// when rendering the UI. 'custom_objects.{{object_key}} or business.{{object_key}} (for
     /// company)' would be added as prefix by default for all the custom / standard objects
     /// Required by the API.
-    #[serde(rename = "primaryDisplayProperty")]
-    pub primary_display_property: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "primaryDisplayProperty",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub primary_display_property: Option<String>,
     /// Date and time when the object was added
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "dateAdded")]
-    pub date_added: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dateAdded", default, skip_serializing_if = "Option::is_none")]
+    pub date_added: Option<String>,
     /// Date and time when the object was last updated
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "dateUpdated")]
-    pub date_updated: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dateUpdated",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub date_updated: Option<String>,
     /// Object`s Type
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<serde_json::Value>,
@@ -273,28 +331,40 @@ pub struct ICustomObjectSchema {
 pub struct IRecordSchema {
     /// id of the record
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Owner (User's id). Limited to 1 for now. Only Supported with custom objects
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub owner: Vec<String>,
     /// Follower (User's ids). Limited to 10 for now
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub followers: Vec<String>,
     /// Properties of the record
     /// Required by the API.
-    pub properties: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub properties: Option<String>,
     /// Date and time when the object was added
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "dateAdded")]
-    pub date_added: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dateAdded", default, skip_serializing_if = "Option::is_none")]
+    pub date_added: Option<String>,
     /// Date and time when the object was last updated
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "dateUpdated")]
-    pub date_updated: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dateUpdated",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub date_updated: Option<String>,
 }
 
 /// `ObjectRecordDeleteResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -313,10 +383,14 @@ pub struct ObjectRecordDeleteResponseDTO {
 pub struct OptionDTO {
     /// Key of the option (Included in Create and Response, excluded in Update)
     /// Required by the API.
-    pub key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
     /// Value of the option
     /// Required by the API.
-    pub label: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
     /// URL associated with the option (Optional, valid only for RADIO type)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
@@ -334,49 +408,71 @@ pub struct RecordByIdResponseDTO {
 pub struct RecordResponseDTO {
     /// id of the record
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Owner (User's id). Limited to 1 for now . Only supported for custom objects for now
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub owner: Vec<String>,
     /// Follower (User's ids). Limited to 10 and supported for custom objects for now
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub followers: Vec<String>,
     /// Properties of the record
     /// Required by the API.
-    pub properties: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub properties: Option<String>,
     /// Date and time when the object was added
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Date and time when the object was last updated
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// ObjectId Id
     /// Required by the API.
-    #[serde(rename = "objectId")]
-    pub object_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "objectId", default, skip_serializing_if = "Option::is_none")]
+    pub object_id: Option<String>,
     /// ObjectId key
     /// Required by the API.
-    #[serde(rename = "objectKey")]
-    pub object_key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "objectKey", default, skip_serializing_if = "Option::is_none")]
+    pub object_key: Option<String>,
     /// Created By Meta
     /// Required by the API.
-    #[serde(rename = "createdBy")]
-    pub created_by: CreatedByResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdBy", default, skip_serializing_if = "Option::is_none")]
+    pub created_by: Option<CreatedByResponseDTO>,
     /// Last Updated By Meta
     /// Required by the API.
-    #[serde(rename = "lastUpdatedBy")]
-    pub last_updated_by: CreatedByResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "lastUpdatedBy",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_updated_by: Option<CreatedByResponseDTO>,
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(rename = "searchAfter", default, skip_serializing_if = "Vec::is_empty")]
     pub search_after: Vec<f64>,
 }
@@ -389,7 +485,9 @@ pub struct SearchRecordResponseDTO {
     pub records: Vec<RecordResponseDTO>,
     /// Total Number of records
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
 }
 
 /// `SearchRecordsBody` from the GoHighLevel OpenAPI spec.
@@ -438,7 +536,7 @@ pub struct UpdateCustomObjectSchemaDTO {
     #[serde(rename = "locationId")]
     pub location_id: String,
     /// Searchable Fields: Provide the field key of your object that you want to search on,
-    /// using the format (custom_object.<object_name>.<field_key>).
+    /// using the format (custom_object. . ).
     /// Required by the API.
     #[serde(
         rename = "searchableProperties",

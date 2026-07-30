@@ -285,7 +285,9 @@ pub struct GetCompanyByIdSuccessfulResponseDto {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct IOnboardingDto {
     /// Required by the API.
-    pub pending: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pending: Option<bool>,
     #[serde(
         rename = "haveWebsite",
         default,

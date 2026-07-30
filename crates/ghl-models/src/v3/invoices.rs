@@ -22,7 +22,9 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct AdditionalEmailsDto {
     /// Required by the API.
-    pub email: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
 }
 
 /// `Address` from the GoHighLevel OpenAPI spec.
@@ -116,20 +118,29 @@ pub struct AltDto {
 pub struct AttachmentsDto {
     /// Id of the file selected
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Name of the file
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// URL of the file
     /// Required by the API.
-    pub url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
     /// Type of the file
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Size of the file
     /// Required by the API.
-    pub size: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub size: Option<f64>,
 }
 
 /// `AutoInvoice` from the GoHighLevel OpenAPI spec.
@@ -211,72 +222,110 @@ pub struct AutoPaymentDetailsDto {
 pub struct AutoPaymentInvoiceScheduleResponseDto {
     /// Schedule Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Schedule Status
     /// Required by the API.
-    pub status: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<serde_json::Value>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub schedule: Option<ScheduleOptionsDto>,
     /// List of invoices
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub invoices: Vec<DefaultInvoiceResponseDto>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetailsDto>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: ContactDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<ContactDetailsDto>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<DiscountDto>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Terms notes
     /// Required by the API.
-    #[serde(rename = "termsNotes")]
-    pub terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "termsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub terms_notes: Option<String>,
     /// Compiled terms notes
     /// Required by the API.
-    #[serde(rename = "compiledTermsNotes")]
-    pub compiled_terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "compiledTermsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub compiled_terms_notes: Option<String>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `AutoPaymentScheduleDto` from the GoHighLevel OpenAPI spec.
@@ -371,72 +420,110 @@ pub struct CancelInvoiceScheduleDto {
 pub struct CancelInvoiceScheduleResponseDto {
     /// Schedule Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Schedule Status
     /// Required by the API.
-    pub status: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<serde_json::Value>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub schedule: Option<ScheduleOptionsDto>,
     /// List of invoices
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub invoices: Vec<DefaultInvoiceResponseDto>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetailsDto>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: ContactDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<ContactDetailsDto>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<DiscountDto>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Terms notes
     /// Required by the API.
-    #[serde(rename = "termsNotes")]
-    pub terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "termsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub terms_notes: Option<String>,
     /// Compiled terms notes
     /// Required by the API.
-    #[serde(rename = "compiledTermsNotes")]
-    pub compiled_terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "compiledTermsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub compiled_terms_notes: Option<String>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `CardDto` from the GoHighLevel OpenAPI spec.
@@ -469,17 +556,24 @@ pub struct ContactDetails {
 pub struct ContactDetailsDto {
     /// Contact ID
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Contact Name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Contact Phone Number
     /// Required by the API.
-    #[serde(rename = "phoneNo")]
-    pub phone_no: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "phoneNo", default, skip_serializing_if = "Option::is_none")]
+    pub phone_no: Option<String>,
     /// Contact Email
     /// Required by the API.
-    pub email: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
     /// Secondary email addresses for the contact to be saved
     #[serde(
         rename = "additionalEmails",
@@ -766,10 +860,14 @@ pub struct CreateInvoiceFromEstimateDto {
 pub struct CreateInvoiceFromEstimateResponseDTO {
     /// Estimate details
     /// Required by the API.
-    pub estimate: EstimateResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub estimate: Option<EstimateResponseDto>,
     /// Invoice details
     /// Required by the API.
-    pub invoice: DefaultInvoiceResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub invoice: Option<DefaultInvoiceResponseDto>,
 }
 
 /// `CreateInvoiceResponseDto` from the GoHighLevel OpenAPI spec.
@@ -777,59 +875,92 @@ pub struct CreateInvoiceFromEstimateResponseDTO {
 pub struct CreateInvoiceResponseDto {
     /// Invoice Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Invoice Status
     /// Allowed values: `draft`, `sent`, `payment_processing`, `paid`, `void`, `partially_paid`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Amount Paid
     /// Required by the API.
-    #[serde(rename = "amountPaid")]
-    pub amount_paid: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "amountPaid",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub amount_paid: Option<f64>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<serde_json::Value>,
     /// Invoice Number
     /// Required by the API.
-    #[serde(rename = "invoiceNumber")]
-    pub invoice_number: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "invoiceNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub invoice_number: Option<f64>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<serde_json::Value>,
     /// Issue date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "issueDate")]
-    pub issue_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "issueDate", default, skip_serializing_if = "Option::is_none")]
+    pub issue_date: Option<String>,
     /// Due date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "dueDate")]
-    pub due_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dueDate", default, skip_serializing_if = "Option::is_none")]
+    pub due_date: Option<String>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<serde_json::Value>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "invoiceItems",
         default,
@@ -838,22 +969,29 @@ pub struct CreateInvoiceResponseDto {
     pub invoice_items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Total Amount Due
     /// Required by the API.
-    #[serde(rename = "amountDue")]
-    pub amount_due: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "amountDue", default, skip_serializing_if = "Option::is_none")]
+    pub amount_due: Option<f64>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Automatic taxes enabled for the Invoice
     #[serde(
         rename = "automaticTaxesEnabled",
@@ -969,72 +1107,110 @@ pub struct CreateInvoiceScheduleDto {
 pub struct CreateInvoiceScheduleResponseDto {
     /// Schedule Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Schedule Status
     /// Required by the API.
-    pub status: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<serde_json::Value>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub schedule: Option<ScheduleOptionsDto>,
     /// List of invoices
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub invoices: Vec<DefaultInvoiceResponseDto>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetailsDto>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: ContactDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<ContactDetailsDto>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<DiscountDto>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Terms notes
     /// Required by the API.
-    #[serde(rename = "termsNotes")]
-    pub terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "termsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub terms_notes: Option<String>,
     /// Compiled terms notes
     /// Required by the API.
-    #[serde(rename = "compiledTermsNotes")]
-    pub compiled_terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "compiledTermsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub compiled_terms_notes: Option<String>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `CreateInvoiceTemplateDto` from the GoHighLevel OpenAPI spec.
@@ -1125,31 +1301,44 @@ pub struct CreateInvoiceTemplateDto {
 pub struct CreateInvoiceTemplateResponseDto {
     /// Template Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the Template
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetailsDto>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<DiscountDto>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<String>,
     /// prefix for invoice number
@@ -1161,68 +1350,152 @@ pub struct CreateInvoiceTemplateResponseDto {
     pub invoice_number_prefix: Option<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `CustomNotificationDto` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CustomNotificationDto {
     /// Required by the API.
-    #[serde(rename = "customerSendInvoice")]
-    pub customer_send_invoice: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "customerSendInvoice",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub customer_send_invoice: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "teamPaymentSuccess")]
-    pub team_payment_success: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "teamPaymentSuccess",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub team_payment_success: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "customerPaymentSuccess")]
-    pub customer_payment_success: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "customerPaymentSuccess",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub customer_payment_success: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "teamAutoPaymentSuccess")]
-    pub team_auto_payment_success: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "teamAutoPaymentSuccess",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub team_auto_payment_success: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "customerAutoPaymentSuccess")]
-    pub customer_auto_payment_success: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "customerAutoPaymentSuccess",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub customer_auto_payment_success: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "teamPaymentFailure")]
-    pub team_payment_failure: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "teamPaymentFailure",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub team_payment_failure: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "customerPaymentFailure")]
-    pub customer_payment_failure: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "customerPaymentFailure",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub customer_payment_failure: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "teamAutoPaymentFailure")]
-    pub team_auto_payment_failure: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "teamAutoPaymentFailure",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub team_auto_payment_failure: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "customerAutoPaymentFailure")]
-    pub customer_auto_payment_failure: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "customerAutoPaymentFailure",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub customer_auto_payment_failure: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "customerAutoPaymentInfo")]
-    pub customer_auto_payment_info: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "customerAutoPaymentInfo",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub customer_auto_payment_info: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "customerAutoPaymentAmountChanged")]
-    pub customer_auto_payment_amount_changed: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "customerAutoPaymentAmountChanged",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub customer_auto_payment_amount_changed: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "teamAutoPaymentSkip")]
-    pub team_auto_payment_skip: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "teamAutoPaymentSkip",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub team_auto_payment_skip: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "teamRecurringSendInvoiceFailed")]
-    pub team_recurring_send_invoice_failed: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "teamRecurringSendInvoiceFailed",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub team_recurring_send_invoice_failed: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "customerSendEstimate")]
-    pub customer_send_estimate: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "customerSendEstimate",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub customer_send_estimate: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "teamEstimateAccepted")]
-    pub team_estimate_accepted: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "teamEstimateAccepted",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub team_estimate_accepted: Option<CustomNotificationItemDto>,
     /// Required by the API.
-    #[serde(rename = "teamEstimateDeclined")]
-    pub team_estimate_declined: CustomNotificationItemDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "teamEstimateDeclined",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub team_estimate_declined: Option<CustomNotificationItemDto>,
 }
 
 /// `CustomNotificationItemDto` from the GoHighLevel OpenAPI spec.
@@ -1230,15 +1503,27 @@ pub struct CustomNotificationDto {
 pub struct CustomNotificationItemDto {
     /// Flag indicating if the notification is enabled or not
     /// Required by the API.
-    pub enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     /// Template to be used for sending email
     /// Required by the API.
-    #[serde(rename = "emailTemplate")]
-    pub email_template: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "emailTemplate",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub email_template: Option<String>,
     /// Template to be used for sending sms
     /// Required by the API.
-    #[serde(rename = "smsTemplate")]
-    pub sms_template: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "smsTemplate",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sms_template: Option<String>,
     /// Name to be used while sending email
     #[serde(rename = "fromName", default, skip_serializing_if = "Option::is_none")]
     pub from_name: Option<String>,
@@ -1267,14 +1552,22 @@ pub struct CustomRRuleOptionsDto {
     /// Allowed values: `yearly`, `monthly`, `weekly`, `daily`, `hourly`, `minutely`,
     /// `secondly`.
     /// Required by the API.
-    #[serde(rename = "intervalType")]
-    pub interval_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "intervalType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub interval_type: Option<String>,
     /// Required by the API.
-    pub interval: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub interval: Option<f64>,
     /// Start date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "startDate")]
-    pub start_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "startDate", default, skip_serializing_if = "Option::is_none")]
+    pub start_date: Option<String>,
     /// Start time in HH:mm:ss format
     #[serde(rename = "startTime", default, skip_serializing_if = "Option::is_none")]
     pub start_time: Option<String>,
@@ -1332,59 +1625,92 @@ pub struct CustomRRuleOptionsDto {
 pub struct DefaultInvoiceResponseDto {
     /// Invoice Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Invoice Status
     /// Allowed values: `draft`, `sent`, `payment_processing`, `paid`, `void`, `partially_paid`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Amount Paid
     /// Required by the API.
-    #[serde(rename = "amountPaid")]
-    pub amount_paid: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "amountPaid",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub amount_paid: Option<f64>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<serde_json::Value>,
     /// Invoice Number
     /// Required by the API.
-    #[serde(rename = "invoiceNumber")]
-    pub invoice_number: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "invoiceNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub invoice_number: Option<f64>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<serde_json::Value>,
     /// Issue date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "issueDate")]
-    pub issue_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "issueDate", default, skip_serializing_if = "Option::is_none")]
+    pub issue_date: Option<String>,
     /// Due date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "dueDate")]
-    pub due_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dueDate", default, skip_serializing_if = "Option::is_none")]
+    pub due_date: Option<String>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<serde_json::Value>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "invoiceItems",
         default,
@@ -1393,22 +1719,29 @@ pub struct DefaultInvoiceResponseDto {
     pub invoice_items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Total Amount Due
     /// Required by the API.
-    #[serde(rename = "amountDue")]
-    pub amount_due: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "amountDue", default, skip_serializing_if = "Option::is_none")]
+    pub amount_due: Option<f64>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Automatic taxes enabled for the Invoice
     #[serde(
         rename = "automaticTaxesEnabled",
@@ -1437,59 +1770,92 @@ pub struct DefaultInvoiceResponseDto {
 pub struct DeleteInvoiceResponseDto {
     /// Invoice Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Invoice Status
     /// Allowed values: `draft`, `sent`, `payment_processing`, `paid`, `void`, `partially_paid`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Amount Paid
     /// Required by the API.
-    #[serde(rename = "amountPaid")]
-    pub amount_paid: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "amountPaid",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub amount_paid: Option<f64>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<serde_json::Value>,
     /// Invoice Number
     /// Required by the API.
-    #[serde(rename = "invoiceNumber")]
-    pub invoice_number: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "invoiceNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub invoice_number: Option<f64>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<serde_json::Value>,
     /// Issue date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "issueDate")]
-    pub issue_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "issueDate", default, skip_serializing_if = "Option::is_none")]
+    pub issue_date: Option<String>,
     /// Due date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "dueDate")]
-    pub due_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dueDate", default, skip_serializing_if = "Option::is_none")]
+    pub due_date: Option<String>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<serde_json::Value>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "invoiceItems",
         default,
@@ -1498,22 +1864,29 @@ pub struct DeleteInvoiceResponseDto {
     pub invoice_items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Total Amount Due
     /// Required by the API.
-    #[serde(rename = "amountDue")]
-    pub amount_due: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "amountDue", default, skip_serializing_if = "Option::is_none")]
+    pub amount_due: Option<f64>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Automatic taxes enabled for the Invoice
     #[serde(
         rename = "automaticTaxesEnabled",
@@ -1542,7 +1915,9 @@ pub struct DeleteInvoiceResponseDto {
 pub struct DeleteInvoiceScheduleResponseDto {
     /// success
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `DeleteInvoiceTemplateResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1550,7 +1925,9 @@ pub struct DeleteInvoiceScheduleResponseDto {
 pub struct DeleteInvoiceTemplateResponseDto {
     /// success
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `DiscountDto` from the GoHighLevel OpenAPI spec.
@@ -1562,8 +1939,9 @@ pub struct DiscountDto {
     /// Discount type
     /// Allowed values: `percentage`, `fixed`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Product Ids on which discount is applicable
     #[serde(
         rename = "validOnProductIds",
@@ -1644,40 +2022,58 @@ pub struct EstimateLineItemDto {
 pub struct EstimateResponseDto {
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Unique identifier
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Indicates if it is in live mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Indicates if deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Currency code
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Business details associated with the estimate
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetails,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetails>,
     /// An array of items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<Vec<serde_json::Value>>,
     /// Discount details for the estimate template
     /// Required by the API.
-    pub discount: DiscountDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub discount: Option<DiscountDto>,
     /// Title
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
@@ -1696,25 +2092,35 @@ pub struct EstimateResponseDto {
     pub updated_by: Option<String>,
     /// Total amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Timestamp when created
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Timestamp when last updated
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Version number
     /// Required by the API.
-    #[serde(rename = "__v")]
-    pub v: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "__v", default, skip_serializing_if = "Option::is_none")]
+    pub v: Option<f64>,
     /// Indicates if automatic taxes are enabled for this estimate
     /// Required by the API.
-    #[serde(rename = "automaticTaxesEnabled")]
-    pub automatic_taxes_enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "automaticTaxesEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub automatic_taxes_enabled: Option<bool>,
     /// Terms and conditions for the estimate, supports HTML markup
     #[serde(
         rename = "termsNotes",
@@ -1724,34 +2130,54 @@ pub struct EstimateResponseDto {
     pub terms_notes: Option<String>,
     /// Company identifier associated with the estimate
     /// Required by the API.
-    #[serde(rename = "companyId")]
-    pub company_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "companyId", default, skip_serializing_if = "Option::is_none")]
+    pub company_id: Option<String>,
     /// Contact details for the estimate
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: ContactDetails,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<ContactDetails>,
     /// Date when the estimate was issued
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "issueDate")]
-    pub issue_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "issueDate", default, skip_serializing_if = "Option::is_none")]
+    pub issue_date: Option<String>,
     /// Date when the estimate expires
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "expiryDate")]
-    pub expiry_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "expiryDate",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub expiry_date: Option<String>,
     /// User who sent the estimate
     #[serde(rename = "sentBy", default, skip_serializing_if = "Option::is_none")]
     pub sent_by: Option<String>,
     /// Indicates if automatic taxes were calculated
     /// Required by the API.
-    #[serde(rename = "automaticTaxesCalculated")]
-    pub automatic_taxes_calculated: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "automaticTaxesCalculated",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub automatic_taxes_calculated: Option<bool>,
     /// Additional metadata associated with the estimate
     /// Required by the API.
-    pub meta: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub meta: Option<serde_json::Value>,
     /// History of actions taken on the estimate
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "estimateActionHistory",
         default,
@@ -1760,21 +2186,37 @@ pub struct EstimateResponseDto {
     pub estimate_action_history: Vec<String>,
     /// Recipient details for the estimate
     /// Required by the API.
-    #[serde(rename = "sentTo")]
-    pub sent_to: SentTo,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "sentTo", default, skip_serializing_if = "Option::is_none")]
+    pub sent_to: Option<SentTo>,
     /// Frequency settings for recurring estimates
     /// Required by the API.
-    #[serde(rename = "frequencySettings")]
-    pub frequency_settings: FrequencySettingsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "frequencySettings",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub frequency_settings: Option<FrequencySettingsDto>,
     /// Timestamp when the estimate was last visited
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "lastVisitedAt")]
-    pub last_visited_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "lastVisitedAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_visited_at: Option<String>,
     /// Total amount in USD
     /// Required by the API.
-    #[serde(rename = "totalamountInUSD")]
-    pub totalamount_in_usd: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalamountInUSD",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub totalamount_in_usd: Option<f64>,
     /// Auto-invoice settings for the estimate
     #[serde(
         rename = "autoInvoice",
@@ -1784,8 +2226,9 @@ pub struct EstimateResponseDto {
     pub auto_invoice: Option<AutoInvoice>,
     /// Trace ID for logging and debugging
     /// Required by the API.
-    #[serde(rename = "traceId")]
-    pub trace_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
+    pub trace_id: Option<String>,
 }
 
 /// `EstimateTemplateResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -1793,40 +2236,58 @@ pub struct EstimateResponseDto {
 pub struct EstimateTemplateResponseDTO {
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Unique identifier
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Indicates if it is in live mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Indicates if deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Currency code
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Business details associated with the estimate
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetails,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetails>,
     /// An array of items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<Vec<serde_json::Value>>,
     /// Discount details for the estimate template
     /// Required by the API.
-    pub discount: DiscountDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub discount: Option<DiscountDto>,
     /// Title
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub title: Option<String>,
@@ -1845,25 +2306,35 @@ pub struct EstimateTemplateResponseDTO {
     pub updated_by: Option<String>,
     /// Total amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Timestamp when created
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Timestamp when last updated
     /// Format: date-time (ISO-8601 string).
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Version number
     /// Required by the API.
-    #[serde(rename = "__v")]
-    pub v: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "__v", default, skip_serializing_if = "Option::is_none")]
+    pub v: Option<f64>,
     /// Indicates if automatic taxes are enabled for this estimate
     /// Required by the API.
-    #[serde(rename = "automaticTaxesEnabled")]
-    pub automatic_taxes_enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "automaticTaxesEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub automatic_taxes_enabled: Option<bool>,
     /// Terms and conditions for the estimate, supports HTML markup
     #[serde(
         rename = "termsNotes",
@@ -1953,21 +2424,31 @@ pub struct EstimateTemplatesDto {
 pub struct FrequencySettingsDto {
     /// enabled for the frequency settings
     /// Required by the API.
-    pub enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     /// schedule setting for the estimate
     /// Required by the API.
-    pub schedule: ScheduleOptionsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub schedule: Option<ScheduleOptionsDto>,
 }
 
 /// `GenerateEstimateNumberResponse` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct GenerateEstimateNumberResponse {
     /// Required by the API.
-    #[serde(rename = "estimateNumber")]
-    pub estimate_number: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "estimateNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub estimate_number: Option<f64>,
     /// Required by the API.
-    #[serde(rename = "traceId")]
-    pub trace_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
+    pub trace_id: Option<String>,
 }
 
 /// `GenerateInvoiceNumberResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1987,59 +2468,92 @@ pub struct GenerateInvoiceNumberResponseDto {
 pub struct GetInvoiceResponseDto {
     /// Invoice Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Invoice Status
     /// Allowed values: `draft`, `sent`, `payment_processing`, `paid`, `void`, `partially_paid`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Amount Paid
     /// Required by the API.
-    #[serde(rename = "amountPaid")]
-    pub amount_paid: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "amountPaid",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub amount_paid: Option<f64>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<serde_json::Value>,
     /// Invoice Number
     /// Required by the API.
-    #[serde(rename = "invoiceNumber")]
-    pub invoice_number: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "invoiceNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub invoice_number: Option<f64>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<serde_json::Value>,
     /// Issue date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "issueDate")]
-    pub issue_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "issueDate", default, skip_serializing_if = "Option::is_none")]
+    pub issue_date: Option<String>,
     /// Due date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "dueDate")]
-    pub due_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dueDate", default, skip_serializing_if = "Option::is_none")]
+    pub due_date: Option<String>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<serde_json::Value>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "invoiceItems",
         default,
@@ -2048,22 +2562,29 @@ pub struct GetInvoiceResponseDto {
     pub invoice_items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Total Amount Due
     /// Required by the API.
-    #[serde(rename = "amountDue")]
-    pub amount_due: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "amountDue", default, skip_serializing_if = "Option::is_none")]
+    pub amount_due: Option<f64>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Automatic taxes enabled for the Invoice
     #[serde(
         rename = "automaticTaxesEnabled",
@@ -2086,8 +2607,13 @@ pub struct GetInvoiceResponseDto {
     )]
     pub payment_schedule: Option<serde_json::Value>,
     /// Required by the API.
-    #[serde(rename = "totalSummary")]
-    pub total_summary: TotalSummaryDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalSummary",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_summary: Option<TotalSummaryDto>,
     /// Reminders Configuration
     #[serde(
         rename = "remindersConfiguration",
@@ -2232,72 +2758,110 @@ pub struct GetInvoiceSettingsResponseDto {
 pub struct GetScheduleResponseDto {
     /// Schedule Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Schedule Status
     /// Required by the API.
-    pub status: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<serde_json::Value>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub schedule: Option<ScheduleOptionsDto>,
     /// List of invoices
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub invoices: Vec<DefaultInvoiceResponseDto>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetailsDto>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: ContactDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<ContactDetailsDto>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<DiscountDto>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Terms notes
     /// Required by the API.
-    #[serde(rename = "termsNotes")]
-    pub terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "termsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub terms_notes: Option<String>,
     /// Compiled terms notes
     /// Required by the API.
-    #[serde(rename = "compiledTermsNotes")]
-    pub compiled_terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "compiledTermsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub compiled_terms_notes: Option<String>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `GetTemplateResponseDto` from the GoHighLevel OpenAPI spec.
@@ -2305,31 +2869,44 @@ pub struct GetScheduleResponseDto {
 pub struct GetTemplateResponseDto {
     /// Template Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the Template
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetailsDto>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<DiscountDto>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<String>,
     /// prefix for invoice number
@@ -2341,15 +2918,19 @@ pub struct GetTemplateResponseDto {
     pub invoice_number_prefix: Option<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `InvoiceItemDto` from the GoHighLevel OpenAPI spec.
@@ -2431,7 +3012,9 @@ pub struct InvoiceSettingsBusinessDetailsDto {
     #[serde(rename = "logoUrl", default, skip_serializing_if = "Option::is_none")]
     pub logo_url: Option<String>,
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     #[serde(rename = "phoneNo", default, skip_serializing_if = "Option::is_none")]
     pub phone_no: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -2481,18 +3064,25 @@ pub struct ItemTaxDto {
 pub struct LateFeesConfigurationDto {
     /// Enable late fees
     /// Required by the API.
-    pub enable: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enable: Option<bool>,
     /// Late Fees Value
     /// Required by the API.
-    pub value: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub value: Option<f64>,
     /// Late Fees Type
     /// Allowed values: `fixed`, `percentage`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Late Fees Frequency
     /// Required by the API.
-    pub frequency: LateFeesFrequencyDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub frequency: Option<LateFeesFrequencyDto>,
     /// Late Fees Grace
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub grace: Option<LateFeesGraceDto>,
@@ -2510,12 +3100,19 @@ pub struct LateFeesConfigurationDto {
 pub struct LateFeesFrequencyDto {
     /// Late fees interval count
     /// Required by the API.
-    #[serde(rename = "intervalCount")]
-    pub interval_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "intervalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub interval_count: Option<f64>,
     /// Late fees interval
     /// Allowed values: `minute`, `hour`, `day`, `week`, `month`, `one_time`.
     /// Required by the API.
-    pub interval: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub interval: Option<String>,
 }
 
 /// `LateFeesGraceDto` from the GoHighLevel OpenAPI spec.
@@ -2523,12 +3120,19 @@ pub struct LateFeesFrequencyDto {
 pub struct LateFeesGraceDto {
     /// Late fees grace interval count
     /// Required by the API.
-    #[serde(rename = "intervalCount")]
-    pub interval_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "intervalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub interval_count: Option<f64>,
     /// Late fees grace interval
     /// Allowed values: `day`.
     /// Required by the API.
-    pub interval: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub interval: Option<String>,
 }
 
 /// `LateFeesMaxFeesDto` from the GoHighLevel OpenAPI spec.
@@ -2536,11 +3140,14 @@ pub struct LateFeesGraceDto {
 pub struct LateFeesMaxFeesDto {
     /// Allowed values: `fixed`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Max late fees to pay
     /// Required by the API.
-    pub value: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub value: Option<f64>,
 }
 
 /// `ListEstimateTemplateResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -2548,16 +3155,23 @@ pub struct LateFeesMaxFeesDto {
 pub struct ListEstimateTemplateResponseDTO {
     /// List of estimate templates
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<String>,
     /// Total number of estimate templates available
     /// Required by the API.
-    #[serde(rename = "totalCount")]
-    pub total_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_count: Option<f64>,
     /// Unique identifier for tracing the request
     /// Required by the API.
-    #[serde(rename = "traceId")]
-    pub trace_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
+    pub trace_id: Option<String>,
 }
 
 /// `ListEstimatesResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -2565,49 +3179,65 @@ pub struct ListEstimateTemplateResponseDTO {
 pub struct ListEstimatesResponseDTO {
     /// List of estimates
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub estimates: Vec<String>,
     /// Total number of estimates
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Unique identifier for tracing the request
     /// Required by the API.
-    #[serde(rename = "traceId")]
-    pub trace_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
+    pub trace_id: Option<String>,
 }
 
 /// `ListInvoicesResponseDto` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ListInvoicesResponseDto {
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub invoices: Vec<GetInvoiceResponseDto>,
     /// Total number of invoices
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
 }
 
 /// `ListSchedulesResponseDto` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ListSchedulesResponseDto {
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub schedules: Vec<GetScheduleResponseDto>,
     /// Total number of Schedules
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
 }
 
 /// `ListTemplatesResponseDto` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ListTemplatesResponseDto {
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<GetTemplateResponseDto>,
     /// Total number of Templates
     /// Required by the API.
-    #[serde(rename = "totalCount")]
-    pub total_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_count: Option<f64>,
 }
 
 /// `OldCreateInvoiceDTO` from the GoHighLevel OpenAPI spec.
@@ -2632,7 +3262,9 @@ pub struct PatchInvoiceStatsLastViewedDto {
 pub struct PaymentMethodDto {
     /// Payment Method
     /// Required by the API.
-    pub stripe: StripePaymentMethodDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub stripe: Option<StripePaymentMethodDto>,
 }
 
 /// `PaymentScheduleConfigDto` from the GoHighLevel OpenAPI spec.
@@ -2768,9 +3400,13 @@ pub struct RecordPaymentDto {
 pub struct RecordPaymentResponseDto {
     /// status
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
-    pub invoice: DefaultInvoiceResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub invoice: Option<DefaultInvoiceResponseDto>,
 }
 
 /// `ReminderDto` from the GoHighLevel OpenAPI spec.
@@ -2778,51 +3414,103 @@ pub struct RecordPaymentResponseDto {
 pub struct ReminderDto {
     /// Flag indicating if the reminder is enabled or not
     /// Required by the API.
-    pub enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     /// Email template to be used for sending reminders
     /// Required by the API.
-    #[serde(rename = "emailTemplate")]
-    pub email_template: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "emailTemplate",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub email_template: Option<String>,
     /// SMS template to be used for sending reminders
     /// Required by the API.
-    #[serde(rename = "smsTemplate")]
-    pub sms_template: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "smsTemplate",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sms_template: Option<String>,
     /// Subject of the reminder
     /// Required by the API.
-    #[serde(rename = "emailSubject")]
-    pub email_subject: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "emailSubject",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub email_subject: Option<String>,
     /// Unique identifier for the reminder
     /// Required by the API.
-    #[serde(rename = "reminderId")]
-    pub reminder_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reminderId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reminder_id: Option<String>,
     /// Name of the reminder
     /// Required by the API.
-    #[serde(rename = "reminderName")]
-    pub reminder_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reminderName",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reminder_name: Option<String>,
     /// Time condition for the reminder
     /// Allowed values: `before`, `after`.
     /// Required by the API.
-    #[serde(rename = "reminderTime")]
-    pub reminder_time: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reminderTime",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reminder_time: Option<String>,
     /// Interval type for the reminder
     /// Allowed values: `yearly`, `monthly`, `weekly`, `daily`, `hourly`, `minutely`,
     /// `secondly`.
     /// Required by the API.
-    #[serde(rename = "intervalType")]
-    pub interval_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "intervalType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub interval_type: Option<String>,
     /// Maximum number of reminders that can be sent
     /// Required by the API.
-    #[serde(rename = "maxReminders")]
-    pub max_reminders: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "maxReminders",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_reminders: Option<f64>,
     /// Condition for sending the reminder
     /// Allowed values: `invoice_sent`, `invoice_overdue`.
     /// Required by the API.
-    #[serde(rename = "reminderInvoiceCondition")]
-    pub reminder_invoice_condition: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reminderInvoiceCondition",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reminder_invoice_condition: Option<String>,
     /// frequency gap of the reminder to exeucte
     /// Required by the API.
-    #[serde(rename = "reminderNumber")]
-    pub reminder_number: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reminderNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reminder_number: Option<f64>,
     /// Business Hour Start Time
     #[serde(rename = "startTime", default, skip_serializing_if = "Option::is_none")]
     pub start_time: Option<String>,
@@ -2847,10 +3535,16 @@ pub struct ReminderExecutionDetailsList {
 pub struct ReminderSettingsDto {
     /// default template Id of reminder
     /// Required by the API.
-    #[serde(rename = "defaultEmailTemplateId")]
-    pub default_email_template_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "defaultEmailTemplateId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub default_email_template_id: Option<String>,
     /// List of reminders
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub reminders: Vec<ReminderDto>,
 }
@@ -2860,12 +3554,22 @@ pub struct ReminderSettingsDto {
 pub struct RemindersConfigurationDto {
     /// List of reminders
     /// Required by the API.
-    #[serde(rename = "reminderExecutionDetailsList")]
-    pub reminder_execution_details_list: ReminderExecutionDetailsList,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reminderExecutionDetailsList",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reminder_execution_details_list: Option<ReminderExecutionDetailsList>,
     /// Reminder settings
     /// Required by the API.
-    #[serde(rename = "reminderSettings")]
-    pub reminder_settings: ReminderSettingsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "reminderSettings",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub reminder_settings: Option<ReminderSettingsDto>,
 }
 
 /// `ScheduleInvoiceScheduleDto` from the GoHighLevel OpenAPI spec.
@@ -2897,72 +3601,110 @@ pub struct ScheduleInvoiceScheduleDto {
 pub struct ScheduleInvoiceScheduleResponseDto {
     /// Schedule Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Schedule Status
     /// Required by the API.
-    pub status: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<serde_json::Value>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub schedule: Option<ScheduleOptionsDto>,
     /// List of invoices
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub invoices: Vec<DefaultInvoiceResponseDto>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetailsDto>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: ContactDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<ContactDetailsDto>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<DiscountDto>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Terms notes
     /// Required by the API.
-    #[serde(rename = "termsNotes")]
-    pub terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "termsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub terms_notes: Option<String>,
     /// Compiled terms notes
     /// Required by the API.
-    #[serde(rename = "compiledTermsNotes")]
-    pub compiled_terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "compiledTermsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub compiled_terms_notes: Option<String>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `ScheduleOptionsDto` from the GoHighLevel OpenAPI spec.
@@ -3050,13 +3792,17 @@ pub struct SendInvoiceDto {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SendInvoicesResponseDto {
     /// Required by the API.
-    pub invoice: DefaultInvoiceResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub invoice: Option<DefaultInvoiceResponseDto>,
     /// Required by the API.
-    #[serde(rename = "smsData")]
-    pub sms_data: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "smsData", default, skip_serializing_if = "Option::is_none")]
+    pub sms_data: Option<serde_json::Value>,
     /// Required by the API.
-    #[serde(rename = "emailData")]
-    pub email_data: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "emailData", default, skip_serializing_if = "Option::is_none")]
+    pub email_data: Option<serde_json::Value>,
 }
 
 /// `SentTo` from the GoHighLevel OpenAPI spec.
@@ -3101,8 +3847,13 @@ pub struct SepaDirectDebitDTO {
 pub struct StripePaymentMethodDto {
     /// Enable Bank Debit Only
     /// Required by the API.
-    #[serde(rename = "enableBankDebitOnly")]
-    pub enable_bank_debit_only: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "enableBankDebitOnly",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub enable_bank_debit_only: Option<bool>,
 }
 
 /// `Text2PayDto` from the GoHighLevel OpenAPI spec.
@@ -3245,11 +3996,18 @@ pub struct Text2PayDto {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Text2PayInvoiceResponseDto {
     /// Required by the API.
-    pub invoice: DefaultInvoiceResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub invoice: Option<DefaultInvoiceResponseDto>,
     /// preview url of generated invoice
     /// Required by the API.
-    #[serde(rename = "invoiceUrl")]
-    pub invoice_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "invoiceUrl",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub invoice_url: Option<String>,
 }
 
 /// `TipsConfigurationDto` from the GoHighLevel OpenAPI spec.
@@ -3257,6 +4015,7 @@ pub struct Text2PayInvoiceResponseDto {
 pub struct TipsConfigurationDto {
     /// Percentage of tips allowed
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "tipsPercentage",
         default,
@@ -3265,8 +4024,13 @@ pub struct TipsConfigurationDto {
     pub tips_percentage: Vec<String>,
     /// Tips enabled status
     /// Required by the API.
-    #[serde(rename = "tipsEnabled")]
-    pub tips_enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "tipsEnabled",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub tips_enabled: Option<bool>,
 }
 
 /// `TotalSummaryDto` from the GoHighLevel OpenAPI spec.
@@ -3274,14 +4038,19 @@ pub struct TipsConfigurationDto {
 pub struct TotalSummaryDto {
     /// subTotal
     /// Required by the API.
-    #[serde(rename = "subTotal")]
-    pub sub_total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "subTotal", default, skip_serializing_if = "Option::is_none")]
+    pub sub_total: Option<f64>,
     /// discount
     /// Required by the API.
-    pub discount: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub discount: Option<f64>,
     /// tax
     /// Required by the API.
-    pub tax: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tax: Option<f64>,
 }
 
 /// `USBankAccountDto` from the GoHighLevel OpenAPI spec.
@@ -3298,72 +4067,110 @@ pub struct USBankAccountDto {
 pub struct UpdateAndScheduleInvoiceScheduleResponseDto {
     /// Schedule Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Schedule Status
     /// Required by the API.
-    pub status: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<serde_json::Value>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub schedule: Option<ScheduleOptionsDto>,
     /// List of invoices
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub invoices: Vec<DefaultInvoiceResponseDto>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetailsDto>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: ContactDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<ContactDetailsDto>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<DiscountDto>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Terms notes
     /// Required by the API.
-    #[serde(rename = "termsNotes")]
-    pub terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "termsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub terms_notes: Option<String>,
     /// Compiled terms notes
     /// Required by the API.
-    #[serde(rename = "compiledTermsNotes")]
-    pub compiled_terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "compiledTermsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub compiled_terms_notes: Option<String>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `UpdateEstimateDto` from the GoHighLevel OpenAPI spec.
@@ -3644,59 +4451,92 @@ pub struct UpdateInvoiceLateFeesConfigurationDto {
 pub struct UpdateInvoiceResponseDto {
     /// Invoice Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Invoice Status
     /// Allowed values: `draft`, `sent`, `payment_processing`, `paid`, `void`, `partially_paid`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Amount Paid
     /// Required by the API.
-    #[serde(rename = "amountPaid")]
-    pub amount_paid: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "amountPaid",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub amount_paid: Option<f64>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<serde_json::Value>,
     /// Invoice Number
     /// Required by the API.
-    #[serde(rename = "invoiceNumber")]
-    pub invoice_number: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "invoiceNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub invoice_number: Option<f64>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<serde_json::Value>,
     /// Issue date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "issueDate")]
-    pub issue_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "issueDate", default, skip_serializing_if = "Option::is_none")]
+    pub issue_date: Option<String>,
     /// Due date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "dueDate")]
-    pub due_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dueDate", default, skip_serializing_if = "Option::is_none")]
+    pub due_date: Option<String>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<serde_json::Value>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "invoiceItems",
         default,
@@ -3705,22 +4545,29 @@ pub struct UpdateInvoiceResponseDto {
     pub invoice_items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Total Amount Due
     /// Required by the API.
-    #[serde(rename = "amountDue")]
-    pub amount_due: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "amountDue", default, skip_serializing_if = "Option::is_none")]
+    pub amount_due: Option<f64>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Automatic taxes enabled for the Invoice
     #[serde(
         rename = "automaticTaxesEnabled",
@@ -3801,72 +4648,110 @@ pub struct UpdateInvoiceScheduleDto {
 pub struct UpdateInvoiceScheduleResponseDto {
     /// Schedule Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Schedule Status
     /// Required by the API.
-    pub status: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<serde_json::Value>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub schedule: Option<ScheduleOptionsDto>,
     /// List of invoices
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub invoices: Vec<DefaultInvoiceResponseDto>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetailsDto>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: ContactDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<ContactDetailsDto>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<DiscountDto>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Terms notes
     /// Required by the API.
-    #[serde(rename = "termsNotes")]
-    pub terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "termsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub terms_notes: Option<String>,
     /// Compiled terms notes
     /// Required by the API.
-    #[serde(rename = "compiledTermsNotes")]
-    pub compiled_terms_notes: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "compiledTermsNotes",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub compiled_terms_notes: Option<String>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `UpdateInvoiceTemplateDto` from the GoHighLevel OpenAPI spec.
@@ -3919,31 +4804,44 @@ pub struct UpdateInvoiceTemplateDto {
 pub struct UpdateInvoiceTemplateResponseDto {
     /// Template Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the Template
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: BusinessDetailsDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<BusinessDetailsDto>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<DiscountDto>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<String>,
     /// prefix for invoice number
@@ -3955,15 +4853,19 @@ pub struct UpdateInvoiceTemplateResponseDto {
     pub invoice_number_prefix: Option<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `UpdatePaymentMethodsConfigurationDto` from the GoHighLevel OpenAPI spec.
@@ -4006,59 +4908,92 @@ pub struct VoidInvoiceDto {
 pub struct VoidInvoiceResponseDto {
     /// Invoice Id
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Invoice Status
     /// Allowed values: `draft`, `sent`, `payment_processing`, `paid`, `void`, `partially_paid`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Live Mode
     /// Required by the API.
-    #[serde(rename = "liveMode")]
-    pub live_mode: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "liveMode", default, skip_serializing_if = "Option::is_none")]
+    pub live_mode: Option<bool>,
     /// Amount Paid
     /// Required by the API.
-    #[serde(rename = "amountPaid")]
-    pub amount_paid: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "amountPaid",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub amount_paid: Option<f64>,
     /// Location Id or Agency Id
     /// Required by the API.
-    #[serde(rename = "altId")]
-    pub alt_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
+    pub alt_id: Option<String>,
     /// Allowed values: `location`.
     /// Required by the API.
-    #[serde(rename = "altType")]
-    pub alt_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "altType", default, skip_serializing_if = "Option::is_none")]
+    pub alt_type: Option<String>,
     /// Name of the invoice
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Business Details
     /// Required by the API.
-    #[serde(rename = "businessDetails")]
-    pub business_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "businessDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub business_details: Option<serde_json::Value>,
     /// Invoice Number
     /// Required by the API.
-    #[serde(rename = "invoiceNumber")]
-    pub invoice_number: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "invoiceNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub invoice_number: Option<f64>,
     /// Currency
     /// Required by the API.
-    pub currency: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub currency: Option<String>,
     /// Contact Details
     /// Required by the API.
-    #[serde(rename = "contactDetails")]
-    pub contact_details: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactDetails",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_details: Option<serde_json::Value>,
     /// Issue date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "issueDate")]
-    pub issue_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "issueDate", default, skip_serializing_if = "Option::is_none")]
+    pub issue_date: Option<String>,
     /// Due date in YYYY-MM-DD format
     /// Required by the API.
-    #[serde(rename = "dueDate")]
-    pub due_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dueDate", default, skip_serializing_if = "Option::is_none")]
+    pub due_date: Option<String>,
     /// Discount
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub discount: Option<serde_json::Value>,
     /// Invoice Items
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "invoiceItems",
         default,
@@ -4067,22 +5002,29 @@ pub struct VoidInvoiceResponseDto {
     pub invoice_items: Vec<String>,
     /// Total Amount
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Total Amount Due
     /// Required by the API.
-    #[serde(rename = "amountDue")]
-    pub amount_due: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "amountDue", default, skip_serializing_if = "Option::is_none")]
+    pub amount_due: Option<f64>,
     /// created at
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// updated at
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Automatic taxes enabled for the Invoice
     #[serde(
         rename = "automaticTaxesEnabled",

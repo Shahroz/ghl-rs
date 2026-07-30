@@ -4,43 +4,50 @@
 
 ## How to call it
 
-This module has a **typed SDK service**: `ghl.conversations()` with `search()`, `messages()`, `send_message()`.
+**Every endpoint has a typed Rust method.** Enable the `conversations` cargo feature on `ghl-sdk`, then call any of the 29 generated methods on `ghl.conversations()`:
+
+```toml
+ghl-sdk = { version = "0.4", features = ["conversations"] }
+```
+
+This module also has hand-written ergonomic helpers on the same `ghl.conversations()`: `search()`, `messages()`, `send_message()` (envelope unwrapping, paginated `Stream`s).
 
 MCP tools: `ghl_search_conversations`, `ghl_get_messages`, `ghl_send_message`.
 
+
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/conversations/` | Create Conversation | `conversations.post_conversations` |
-| `GET` | `/conversations/locations/{locationId}/messages/{messageId}/transcription` | Get transcription by Message ID | `conversations.get_conversations_locations_by_locationId_messages_by_messageId_transcription` |
-| `GET` | `/conversations/locations/{locationId}/messages/{messageId}/transcription/download` | Download transcription by Message ID | `conversations.get_conversations_locations_by_locationId_messages_by_messageId_transcription_download` |
-| `POST` | `/conversations/messages` | Send a new message | `conversations.post_conversations_messages` |
-| `DELETE` | `/conversations/messages/email/{emailMessageId}/schedule` | Cancel a scheduled email message. | `conversations.delete_conversations_messages_email_by_emailMessageId_schedule` |
-| `GET` | `/conversations/messages/email/{id}` | Get email by Id | `conversations.get_conversations_messages_email_by_id` |
-| `GET` | `/conversations/messages/export` | Export messages by location ID | `conversations.get_conversations_messages_export` |
-| `POST` | `/conversations/messages/inbound` | Add an inbound message | `conversations.post_conversations_messages_inbound` |
-| `POST` | `/conversations/messages/outbound` | Add an external outbound call | `conversations.post_conversations_messages_outbound` |
-| `POST` | `/conversations/messages/review-reply` | Send a review reply to Google My Business | `conversations.post_conversations_messages_review_reply` |
-| `POST` | `/conversations/messages/upload` | Upload file attachments | `conversations.post_conversations_messages_upload` |
-| `POST` | `/conversations/messages/upload/complete` | Complete file upload | `conversations.post_conversations_messages_upload_complete` |
-| `POST` | `/conversations/messages/upload/initiate` | Initiate file upload to GCS | `conversations.post_conversations_messages_upload_initiate` |
-| `GET` | `/conversations/messages/{id}` | Get message by message id | `conversations.get_conversations_messages_by_id` |
-| `PUT` | `/conversations/messages/{messageId}/attachments` | Add message attachments | `conversations.put_conversations_messages_by_messageId_attachments` |
-| `GET` | `/conversations/messages/{messageId}/locations/{locationId}/recording` | Get Recording by Message ID | `conversations.get_conversations_messages_by_messageId_locations_by_locationId_recording` |
-| `DELETE` | `/conversations/messages/{messageId}/schedule` | Cancel a scheduled message. | `conversations.delete_conversations_messages_by_messageId_schedule` |
-| `PUT` | `/conversations/messages/{messageId}/status` | Update message status | `conversations.put_conversations_messages_by_messageId_status` |
-| `GET` | `/conversations/preferences/custom-subtypes` | Get All Custom Subtypes | `conversations.get_conversations_preferences_custom_subtypes` |
-| `POST` | `/conversations/preferences/custom-subtypes` | Create Custom Subtype | `conversations.post_conversations_preferences_custom_subtypes` |
-| `PUT` | `/conversations/preferences/custom-subtypes/{id}` | Update Custom Subtype | `conversations.put_conversations_preferences_custom_subtypes_by_id` |
-| `GET` | `/conversations/preferences/unsubscriptions/status` | Get Contact Unsubscription Status | `conversations.get_conversations_preferences_unsubscriptions_status` |
-| `POST` | `/conversations/preferences/unsubscriptions/user-change` | User Subscription Change | `conversations.post_conversations_preferences_unsubscriptions_user_change` |
-| `POST` | `/conversations/providers/live-chat/typing` | Agent/Ai-Bot is typing a message indicator for live chat | `conversations.post_conversations_providers_live_chat_typing` |
-| `GET` | `/conversations/search` | Search Conversations | `conversations.get_conversations_search` |
-| `DELETE` | `/conversations/{conversationId}` | Delete Conversation | `conversations.delete_conversations_by_conversationId` |
-| `GET` | `/conversations/{conversationId}` | Get Conversation | `conversations.get_conversations_by_conversationId` |
-| `PUT` | `/conversations/{conversationId}` | Update Conversation | `conversations.put_conversations_by_conversationId` |
-| `GET` | `/conversations/{conversationId}/messages` | Get messages by conversation id | `conversations.get_conversations_by_conversationId_messages` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/conversations/` | Create Conversation | `create_conversation()` | `conversations.post_conversations` |
+| `GET` | `/conversations/locations/{locationId}/messages/{messageId}/transcription` | Get transcription by Message ID | `get_transcription_by_message_id()` | `conversations.get_conversations_locations_by_locationId_messages_by_messageId_transcription` |
+| `GET` | `/conversations/locations/{locationId}/messages/{messageId}/transcription/download` | Download transcription by Message ID | `download_transcription_by_message_id()` | `conversations.get_conversations_locations_by_locationId_messages_by_messageId_transcription_download` |
+| `POST` | `/conversations/messages` | Send a new message | `send_a_new_message()` | `conversations.post_conversations_messages` |
+| `DELETE` | `/conversations/messages/email/{emailMessageId}/schedule` | Cancel a scheduled email message. | `cancel_a_scheduled_email_message()` | `conversations.delete_conversations_messages_email_by_emailMessageId_schedule` |
+| `GET` | `/conversations/messages/email/{id}` | Get email by Id | `get_email_by_id()` | `conversations.get_conversations_messages_email_by_id` |
+| `GET` | `/conversations/messages/export` | Export messages by location ID | `export_messages_by_location_id()` | `conversations.get_conversations_messages_export` |
+| `POST` | `/conversations/messages/inbound` | Add an inbound message | `add_an_inbound_message()` | `conversations.post_conversations_messages_inbound` |
+| `POST` | `/conversations/messages/outbound` | Add an external outbound call | `add_an_external_outbound_call()` | `conversations.post_conversations_messages_outbound` |
+| `POST` | `/conversations/messages/review-reply` | Send a review reply to Google My Business | `send_a_review_reply_to_google_my_business()` | `conversations.post_conversations_messages_review_reply` |
+| `POST` | `/conversations/messages/upload` | Upload file attachments | `upload_file_attachments()` | `conversations.post_conversations_messages_upload` |
+| `POST` | `/conversations/messages/upload/complete` | Complete file upload | `complete_file_upload()` | `conversations.post_conversations_messages_upload_complete` |
+| `POST` | `/conversations/messages/upload/initiate` | Initiate file upload to GCS | `initiate_file_upload_to_gcs()` | `conversations.post_conversations_messages_upload_initiate` |
+| `GET` | `/conversations/messages/{id}` | Get message by message id | `get_message_by_message_id()` | `conversations.get_conversations_messages_by_id` |
+| `PUT` | `/conversations/messages/{messageId}/attachments` | Add message attachments | `add_message_attachments()` | `conversations.put_conversations_messages_by_messageId_attachments` |
+| `GET` | `/conversations/messages/{messageId}/locations/{locationId}/recording` | Get Recording by Message ID | `get_recording_by_message_id()` | `conversations.get_conversations_messages_by_messageId_locations_by_locationId_recording` |
+| `DELETE` | `/conversations/messages/{messageId}/schedule` | Cancel a scheduled message. | `cancel_a_scheduled_message()` | `conversations.delete_conversations_messages_by_messageId_schedule` |
+| `PUT` | `/conversations/messages/{messageId}/status` | Update message status | `update_message_status()` | `conversations.put_conversations_messages_by_messageId_status` |
+| `GET` | `/conversations/preferences/custom-subtypes` | Get All Custom Subtypes | `get_all_custom_subtypes()` | `conversations.get_conversations_preferences_custom_subtypes` |
+| `POST` | `/conversations/preferences/custom-subtypes` | Create Custom Subtype | `create_custom_subtype()` | `conversations.post_conversations_preferences_custom_subtypes` |
+| `PUT` | `/conversations/preferences/custom-subtypes/{id}` | Update Custom Subtype | `update_custom_subtype()` | `conversations.put_conversations_preferences_custom_subtypes_by_id` |
+| `GET` | `/conversations/preferences/unsubscriptions/status` | Get Contact Unsubscription Status | `get_contact_unsubscription_status()` | `conversations.get_conversations_preferences_unsubscriptions_status` |
+| `POST` | `/conversations/preferences/unsubscriptions/user-change` | User Subscription Change | `user_subscription_change()` | `conversations.post_conversations_preferences_unsubscriptions_user_change` |
+| `POST` | `/conversations/providers/live-chat/typing` | Agent/Ai-Bot is typing a message indicator for live chat | `agent_ai_bot_is_typing_a_message_indicator_for_live_chat()` | `conversations.post_conversations_providers_live_chat_typing` |
+| `GET` | `/conversations/search` | Search Conversations | `search_conversations()` | `conversations.get_conversations_search` |
+| `DELETE` | `/conversations/{conversationId}` | Delete Conversation | `delete_conversation()` | `conversations.delete_conversations_by_conversationId` |
+| `GET` | `/conversations/{conversationId}` | Get Conversation | `get_conversation()` | `conversations.get_conversations_by_conversationId` |
+| `PUT` | `/conversations/{conversationId}` | Update Conversation | `update_conversation()` | `conversations.put_conversations_by_conversationId` |
+| `GET` | `/conversations/{conversationId}/messages` | Get messages by conversation id | `get_messages_by_conversation_id()` | `conversations.get_conversations_by_conversationId_messages` |
 
 ### Endpoint details — v2
 
@@ -55,6 +62,12 @@ Operation id: `conversations.post_conversations` · `Version: 2021-04-15` · Sco
 *Request body*: [`CreateConversationDto`](#createconversationdto)
 
 *Response*: [`CreateConversationSuccessResponse`](#createconversationsuccessresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().create_conversation(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -89,6 +102,12 @@ Operation id: `conversations.get_conversations_locations_by_locationId_messages_
 
 *Response*: [`GetMessageTranscriptionResponseDto`](#getmessagetranscriptionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().get_transcription_by_message_id(&locationId, &messageId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -121,6 +140,12 @@ Operation id: `conversations.get_conversations_locations_by_locationId_messages_
 | `locationId` | string | **yes** | Location ID as string |
 | `messageId` | string | **yes** | Message ID as string |
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().download_transcription_by_message_id(&locationId, &messageId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -149,6 +174,12 @@ Operation id: `conversations.post_conversations_messages` · `Version: 2021-04-1
 *Request body*: [`SendMessageBodyDto`](#sendmessagebodydto)
 
 *Response*: [`SendMessageResponseDto`](#sendmessageresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().send_a_new_message(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -182,6 +213,12 @@ Operation id: `conversations.delete_conversations_messages_email_by_emailMessage
 
 *Response*: [`CancelScheduledResponseDto`](#cancelscheduledresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().cancel_a_scheduled_email_message(&emailMessageId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -205,6 +242,12 @@ Operation id: `conversations.delete_conversations_messages_email_by_emailMessage
 Operation id: `conversations.get_conversations_messages_email_by_id`
 
 *Response*: [`GetEmailMessageResponseDto`](#getemailmessageresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().get_email_by_id().await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -244,6 +287,15 @@ Operation id: `conversations.get_conversations_messages_export` · `Version: 202
 
 *Response*: [`ExportMessagesResponseDto`](#exportmessagesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::conversations::ExportMessagesByLocationIdParams;
+
+let params = ExportMessagesByLocationIdParams::new("locationId");
+let out = ghl.conversations().export_messages_by_location_id(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -271,6 +323,12 @@ Operation id: `conversations.post_conversations_messages_inbound` · `Version: 2
 *Request body*: [`ProcessMessageBodyDto`](#processmessagebodydto)
 
 *Response*: [`ProcessMessageResponseDto`](#processmessageresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().add_an_inbound_message(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -300,6 +358,12 @@ Operation id: `conversations.post_conversations_messages_outbound` · `Version: 
 
 *Response*: [`ProcessMessageResponseDto`](#processmessageresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().add_an_external_outbound_call(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -328,6 +392,12 @@ Operation id: `conversations.post_conversations_messages_review_reply` · `Versi
 
 *Response*: [`SendMessageResponseDto`](#sendmessageresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().send_a_review_reply_to_google_my_business(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -354,6 +424,12 @@ Operation id: `conversations.post_conversations_messages_upload` · `Version: 20
 
 *Response*: [`UploadFilesResponseDto`](#uploadfilesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().upload_file_attachments().await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -378,6 +454,12 @@ Operation id: `conversations.post_conversations_messages_upload_complete` · `Ve
 *Request body*: [`CompleteFileUploadDto`](#completefileuploaddto)
 
 *Response*: [`CompleteFileUploadResponseDto`](#completefileuploadresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().complete_file_upload(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -407,6 +489,12 @@ Operation id: `conversations.post_conversations_messages_upload_initiate` · `Ve
 
 *Response*: [`InitiateFileUploadResponseDto`](#initiatefileuploadresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().initiate_file_upload_to_gcs(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -432,6 +520,12 @@ Get message by message id.
 Operation id: `conversations.get_conversations_messages_by_id` · `Version: 2021-04-15` · Scopes: `conversations/message.readonly`
 
 *Response*: [`GetMessageResponseDto`](#getmessageresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().get_message_by_message_id().await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -461,6 +555,12 @@ Operation id: `conversations.put_conversations_messages_by_messageId_attachments
 | `messageId` | string | **yes** | Message Id |
 
 *Request body*: [`AddMessageAttachmentsDto`](#addmessageattachmentsdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().add_message_attachments(&messageId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -496,6 +596,12 @@ Operation id: `conversations.get_conversations_messages_by_messageId_locations_b
 | `locationId` | string | **yes** | Location ID as string |
 | `messageId` | string | **yes** | Message ID as string |
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().get_recording_by_message_id(&locationId, &messageId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -528,6 +634,12 @@ Operation id: `conversations.delete_conversations_messages_by_messageId_schedule
 | `messageId` | string | **yes** | Message Id |
 
 *Response*: [`CancelScheduledResponseDto`](#cancelscheduledresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().cancel_a_scheduled_message(&messageId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -563,6 +675,12 @@ Operation id: `conversations.put_conversations_messages_by_messageId_status` · 
 
 *Response*: [`SendMessageResponseDto`](#sendmessageresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().update_message_status(&messageId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -596,6 +714,15 @@ Operation id: `conversations.get_conversations_preferences_custom_subtypes` · `
 |---|---|---|---|
 | `locationId` | string | **yes** | Location Id |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::conversations::GetAllCustomSubtypesParams;
+
+let params = GetAllCustomSubtypesParams::new("locationId");
+let out = ghl.conversations().get_all_custom_subtypes(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -627,6 +754,15 @@ Operation id: `conversations.post_conversations_preferences_custom_subtypes` · 
 | `locationId` | string | **yes** | Location Id |
 
 *Request body*: [`CreateCustomSubtypeDto`](#createcustomsubtypedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::conversations::CreateCustomSubtypeParams;
+
+let params = CreateCustomSubtypeParams::new("locationId");
+let out = ghl.conversations().create_custom_subtype(&params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -669,6 +805,15 @@ Operation id: `conversations.put_conversations_preferences_custom_subtypes_by_id
 
 *Request body*: [`UpdateCustomSubtypeDto`](#updatecustomsubtypedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::conversations::UpdateCustomSubtypeParams;
+
+let params = UpdateCustomSubtypeParams::new("locationId");
+let out = ghl.conversations().update_custom_subtype(&id, &params, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -707,6 +852,15 @@ Operation id: `conversations.get_conversations_preferences_unsubscriptions_statu
 | `contactId` | string | **yes** | Contact Id |
 | `email` | string | no | Email address (optional - if not provided, gets all emails for contact) |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::conversations::GetContactUnsubscriptionStatusParams;
+
+let params = GetContactUnsubscriptionStatusParams::new("locationId", "contactId");
+let out = ghl.conversations().get_contact_unsubscription_status(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -733,6 +887,12 @@ Process subscription change initiated by a user (admin/agent). Supports individu
 Operation id: `conversations.post_conversations_preferences_unsubscriptions_user_change` · `Version: 2021-04-15`
 
 *Request body*: [`UserSubscriptionChangeDto`](#usersubscriptionchangedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().user_subscription_change(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -761,6 +921,12 @@ Operation id: `conversations.post_conversations_providers_live_chat_typing` · `
 *Request body*: [`UserTypingBody`](#usertypingbody)
 
 *Response*: [`CreateLiveChatMessageFeedbackResponse`](#createlivechatmessagefeedbackresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().agent_ai_bot_is_typing_a_message_indicator_for_live_chat(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -814,6 +980,15 @@ Operation id: `conversations.get_conversations_search` · `Version: 2021-04-15` 
 
 *Response*: [`SendConversationResponseDto`](#sendconversationresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::conversations::SearchConversationsParams;
+
+let params = SearchConversationsParams::new("locationId");
+let out = ghl.conversations().search_conversations(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -846,6 +1021,12 @@ Operation id: `conversations.delete_conversations_by_conversationId` · `Version
 
 *Response*: [`DeleteConversationSuccessfulResponse`](#deleteconversationsuccessfulresponse)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().delete_conversation(&conversationId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -877,6 +1058,12 @@ Operation id: `conversations.get_conversations_by_conversationId` · `Version: 2
 | `conversationId` | string | **yes** | Conversation ID as string |
 
 *Response*: [`GetConversationByIdResponse`](#getconversationbyidresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().get_conversation(&conversationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -911,6 +1098,12 @@ Operation id: `conversations.put_conversations_by_conversationId` · `Version: 2
 *Request body*: [`UpdateConversationDto`](#updateconversationdto)
 
 *Response*: [`GetConversationSuccessfulResponse`](#getconversationsuccessfulresponse)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversations().update_conversation(&conversationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -954,6 +1147,15 @@ Operation id: `conversations.get_conversations_by_conversationId_messages` · `V
 | `type` | enum: `TYPE_CALL`, `TYPE_SMS`, `TYPE_RCS`, `TYPE_EMAIL`, `TYPE_FACEBOOK`, `TYPE_GMB`, `TYPE_INSTAGRAM`, `TYPE_WHATSAPP`, `TYPE_ACTIVITY_APPOINTMENT`, `TYPE_ACTIVITY_CONTACT`, `TYPE_ACTIVITY_INVOICE`, `TYPE_ACTIVITY_PAYMENT`, `TYPE_ACTIVITY_OPPORTUNITY`, `TYPE_LIVE_CHAT`, `TYPE_INTERNAL_COMMENTS`, `TYPE_ACTIVITY_EMPLOYEE_ACTION_LOG`, `TYPE_TIKTOK`, `TYPE_ACTIVITY_WHATSAPP`, `TYPE_FORM_SUBMISSION` | no | Types of message to fetched separated with comma |
 
 *Response*: [`GetMessagesByConversationResponseDto`](#getmessagesbyconversationresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::conversations::GetMessagesByConversationIdParams;
+
+let params = GetMessagesByConversationIdParams::new();
+let out = ghl.conversations().get_messages_by_conversation_id(&conversationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 

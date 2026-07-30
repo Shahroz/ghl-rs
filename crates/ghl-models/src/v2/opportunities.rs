@@ -96,12 +96,19 @@ pub struct CreateDto {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CustomFieldResponseSchema {
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// The value of the custom field
     /// Multiple possible shapes in the spec; raw JSON.
     /// Required by the API.
-    #[serde(rename = "fieldValue")]
-    pub field_value: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "fieldValue",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub field_value: Option<serde_json::Value>,
 }
 
 /// `DeleteFollowersSuccessfulResponseDto` from the GoHighLevel OpenAPI spec.
@@ -245,7 +252,9 @@ pub struct PostSearchSuccessfulResponseDto {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub opportunities: Vec<SearchOpportunitiesResponseSchema>,
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub aggregations: Option<serde_json::Value>,
 }
@@ -545,9 +554,13 @@ pub struct UpsertOpportunityDto {
 pub struct UpsertOpportunitySuccessfulResponseDto {
     /// Updated / New Opportunity
     /// Required by the API.
-    pub opportunity: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub opportunity: Option<serde_json::Value>,
     /// Required by the API.
-    pub new: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub new: Option<bool>,
 }
 
 /// `customFieldsInputArraySchema` from the GoHighLevel OpenAPI spec.

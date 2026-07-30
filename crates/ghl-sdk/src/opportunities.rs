@@ -194,7 +194,7 @@ pub struct OpportunityPage {
 
 /// Access to the Opportunities API. Obtained via [`Ghl::opportunities`].
 pub struct OpportunitiesService {
-    client: Ghl,
+    pub(crate) client: Ghl,
 }
 
 impl OpportunitiesService {

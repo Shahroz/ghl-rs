@@ -31,14 +31,27 @@ async fn main() -> Result<(), ghl_sdk::Error> {
 }
 ```
 
-Typed service coverage today: **contacts, opportunities, conversations, calendars, locations**, plus OAuth/token exchange. Every other endpoint across GoHighLevel's **45 modules / 1,203 operations** (API v2 and v3) is reachable through `ghl.request_raw()` — arbitrary method/path/query/body with the same auth, retry, and rate-limit handling — or the `get_raw()` / `post_raw()` helpers.
+## Every v2 endpoint is a typed method
 
-For typed request/response bodies on those endpoints, enable the `models` feature to get **2,417 generated DTOs** from [`ghl-models`](https://crates.io/crates/ghl-models):
+576 generated methods across all 41 API v2 modules. Enable the feature named after the module:
 
 ```toml
-ghl-sdk = { version = "0.3", features = ["models"] }
-ghl-models = { version = "0.3", features = ["invoices"] }
+ghl-sdk = { version = "0.4", features = ["invoices"] }
 ```
+
+```rust,ignore
+use ghl_sdk::services::invoices::ListInvoicesParams;
+
+// Required query params are constructor args; optional ones are setters.
+let params = ListInvoicesParams::new(&loc, "location", "20", "0").status("draft");
+let page = ghl.invoices().list_invoices(&params).await?;   // typed response
+```
+
+One module compiles in a second or two; `features = ["full"]` (all 41) takes closer to a minute.
+
+API v3 (627 more operations) is reachable via `ghl.request_raw(…, Some("v3"))` with [`ghl-models`](https://crates.io/crates/ghl-models) v3 DTOs.
+
+**Strict on send, lenient on receive:** request types keep the spec's required fields non-`Option`; response types make everything optional, because GoHighLevel sometimes omits fields its own spec marks required and a strict type would make that unrecoverable.
 
 **Docs:** [usage guide](https://github.com/Shahroz/ghl-rs/blob/main/docs/GUIDE.md) · [full API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/README.md) (all 45 modules, every endpoint/struct/enum).
 

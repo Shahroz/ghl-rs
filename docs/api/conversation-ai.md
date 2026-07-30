@@ -4,46 +4,29 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `conversation-ai` cargo feature on `ghl-sdk`, then call any of the 12 generated methods on `ghl.conversation_ai()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features conversation-ai
-use ghl_models::v2::conversation_ai::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["conversation-ai"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "conversation-ai"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/conversation-ai/agents` | Create an Agent | `conversation-ai.post_conversation_ai_agents` |
-| `GET` | `/conversation-ai/agents/search` | Search Agents | `conversation-ai.get_conversation_ai_agents_search` |
-| `DELETE` | `/conversation-ai/agents/{agentId}` | Delete Agent | `conversation-ai.delete_conversation_ai_agents_by_agentId` |
-| `GET` | `/conversation-ai/agents/{agentId}` | Get Agent | `conversation-ai.get_conversation_ai_agents_by_agentId` |
-| `PUT` | `/conversation-ai/agents/{agentId}` | Update Agent | `conversation-ai.put_conversation_ai_agents_by_agentId` |
-| `POST` | `/conversation-ai/agents/{agentId}/actions` | Attach Action to Agent | `conversation-ai.post_conversation_ai_agents_by_agentId_actions` |
-| `GET` | `/conversation-ai/agents/{agentId}/actions/list` | List Actions for an Agent | `conversation-ai.get_conversation_ai_agents_by_agentId_actions_list` |
-| `DELETE` | `/conversation-ai/agents/{agentId}/actions/{actionId}` | Remove Action from Agent | `conversation-ai.delete_conversation_ai_agents_by_agentId_actions_by_actionId` |
-| `GET` | `/conversation-ai/agents/{agentId}/actions/{actionId}` | Get Action by ID | `conversation-ai.get_conversation_ai_agents_by_agentId_actions_by_actionId` |
-| `PUT` | `/conversation-ai/agents/{agentId}/actions/{actionId}` | Update Action | `conversation-ai.put_conversation_ai_agents_by_agentId_actions_by_actionId` |
-| `PATCH` | `/conversation-ai/agents/{agentId}/followup-settings` | Update Followup Settings | `conversation-ai.patch_conversation_ai_agents_by_agentId_followup_settings` |
-| `GET` | `/conversation-ai/generations` | Get the generation details | `conversation-ai.get_conversation_ai_generations` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/conversation-ai/agents` | Create an Agent | `create_an_agent()` | `conversation-ai.post_conversation_ai_agents` |
+| `GET` | `/conversation-ai/agents/search` | Search Agents | `search_agents()` | `conversation-ai.get_conversation_ai_agents_search` |
+| `DELETE` | `/conversation-ai/agents/{agentId}` | Delete Agent | `delete_agent()` | `conversation-ai.delete_conversation_ai_agents_by_agentId` |
+| `GET` | `/conversation-ai/agents/{agentId}` | Get Agent | `get_agent()` | `conversation-ai.get_conversation_ai_agents_by_agentId` |
+| `PUT` | `/conversation-ai/agents/{agentId}` | Update Agent | `update_agent()` | `conversation-ai.put_conversation_ai_agents_by_agentId` |
+| `POST` | `/conversation-ai/agents/{agentId}/actions` | Attach Action to Agent | `attach_action_to_agent()` | `conversation-ai.post_conversation_ai_agents_by_agentId_actions` |
+| `GET` | `/conversation-ai/agents/{agentId}/actions/list` | List Actions for an Agent | `list_actions_for_an_agent()` | `conversation-ai.get_conversation_ai_agents_by_agentId_actions_list` |
+| `DELETE` | `/conversation-ai/agents/{agentId}/actions/{actionId}` | Remove Action from Agent | `remove_action_from_agent()` | `conversation-ai.delete_conversation_ai_agents_by_agentId_actions_by_actionId` |
+| `GET` | `/conversation-ai/agents/{agentId}/actions/{actionId}` | Get Action by ID | `get_action_by_id()` | `conversation-ai.get_conversation_ai_agents_by_agentId_actions_by_actionId` |
+| `PUT` | `/conversation-ai/agents/{agentId}/actions/{actionId}` | Update Action | `update_action()` | `conversation-ai.put_conversation_ai_agents_by_agentId_actions_by_actionId` |
+| `PATCH` | `/conversation-ai/agents/{agentId}/followup-settings` | Update Followup Settings | `update_followup_settings()` | `conversation-ai.patch_conversation_ai_agents_by_agentId_followup_settings` |
+| `GET` | `/conversation-ai/generations` | Get the generation details | `get_the_generation_details()` | `conversation-ai.get_conversation_ai_generations` |
 
 ### Endpoint details — v2
 
@@ -58,6 +41,12 @@ Operation id: `conversation-ai.post_conversation_ai_agents` · `Version: 2021-04
 *Request body*: [`CreateEmployeeDto`](#createemployeedto)
 
 *Response*: [`EmployeeResponseDTO`](#employeeresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversation_ai().create_an_agent(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -93,6 +82,15 @@ Operation id: `conversation-ai.get_conversation_ai_agents_search` · `Version: 2
 
 *Response*: [`SearchEmployeeResponseDTO`](#searchemployeeresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::conversation_ai::SearchAgentsParams;
+
+let params = SearchAgentsParams::new();
+let out = ghl.conversation_ai().search_agents(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -121,6 +119,12 @@ Operation id: `conversation-ai.delete_conversation_ai_agents_by_agentId` · `Ver
 | `agentId` | string | **yes** | Conversations AI agent id |
 
 *Response*: [`DeleteEmployeeResponseDTO`](#deleteemployeeresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversation_ai().delete_agent(&agentId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -153,6 +157,12 @@ Operation id: `conversation-ai.get_conversation_ai_agents_by_agentId` · `Versio
 | `agentId` | string | **yes** | Conversations AI agent id |
 
 *Response*: [`EmployeeResponseDTO`](#employeeresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversation_ai().get_agent(&agentId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -187,6 +197,12 @@ Operation id: `conversation-ai.put_conversation_ai_agents_by_agentId` · `Versio
 *Request body*: [`UpdateEmployeeDto`](#updateemployeedto)
 
 *Response*: [`EmployeeResponseDTO`](#employeeresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversation_ai().update_agent(&agentId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -225,6 +241,12 @@ Operation id: `conversation-ai.post_conversation_ai_agents_by_agentId_actions` �
 
 *Response*: [`createActionResponseDTO`](#createactionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversation_ai().attach_action_to_agent(&agentId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -260,6 +282,12 @@ Operation id: `conversation-ai.get_conversation_ai_agents_by_agentId_actions_lis
 
 *Response*: [`fetchActionsForEmployeeResponseDTO`](#fetchactionsforemployeeresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversation_ai().list_actions_for_an_agent(&agentId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -292,6 +320,12 @@ Operation id: `conversation-ai.delete_conversation_ai_agents_by_agentId_actions_
 | `agentId` | string | **yes** | — |
 
 *Response*: [`deleteActionResponseDTO`](#deleteactionresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversation_ai().remove_action_from_agent(&actionId, &agentId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -326,6 +360,12 @@ Operation id: `conversation-ai.get_conversation_ai_agents_by_agentId_actions_by_
 | `agentId` | string | **yes** | — |
 
 *Response*: [`fetchActionDetailsResponseDTO`](#fetchactiondetailsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversation_ai().get_action_by_id(&actionId, &agentId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -362,6 +402,12 @@ Operation id: `conversation-ai.put_conversation_ai_agents_by_agentId_actions_by_
 *Request body*: [`CreateActionDTO`](#createactiondto)
 
 *Response*: [`updateActionResponseDTO`](#updateactionresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversation_ai().update_action(&actionId, &agentId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -401,6 +447,12 @@ Operation id: `conversation-ai.patch_conversation_ai_agents_by_agentId_followup_
 
 *Response*: [`updateActionResponseDTO`](#updateactionresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.conversation_ai().update_followup_settings(&agentId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -436,6 +488,15 @@ Operation id: `conversation-ai.get_conversation_ai_generations` · `Version: 202
 | `source` | enum: `conversation`, `workflow` | **yes** | — |
 
 *Response*: [`FetchAIResponseDetailsResponseDTO`](#fetchairesponsedetailsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::conversation_ai::GetTheGenerationDetailsParams;
+
+let params = GetTheGenerationDetailsParams::new("messageId", "source");
+let out = ghl.conversation_ai().get_the_generation_details(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

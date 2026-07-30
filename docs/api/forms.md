@@ -4,37 +4,20 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `forms` cargo feature on `ghl-sdk`, then call any of the 3 generated methods on `ghl.forms()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features forms
-use ghl_models::v2::forms::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["forms"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "forms"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/forms/` | Get Forms | `forms.get_forms` |
-| `GET` | `/forms/submissions` | Get Forms Submissions | `forms.get_forms_submissions` |
-| `POST` | `/forms/upload-custom-files` | Upload files to custom fields | `forms.post_forms_upload_custom_files` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/forms/` | Get Forms | `get_forms()` | `forms.get_forms` |
+| `GET` | `/forms/submissions` | Get Forms Submissions | `get_forms_submissions()` | `forms.get_forms_submissions` |
+| `POST` | `/forms/upload-custom-files` | Upload files to custom fields | `upload_files_to_custom_fields()` | `forms.post_forms_upload_custom_files` |
 
 ### Endpoint details — v2
 
@@ -54,6 +37,15 @@ Operation id: `forms.get_forms` · `Version: 2021-07-28` · Scopes: `forms.reado
 | `type` | string | no | — |
 
 *Response*: [`FormsSuccessfulResponseDto`](#formssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::forms::GetFormsParams;
+
+let params = GetFormsParams::new("locationId");
+let out = ghl.forms().get_forms(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -91,6 +83,15 @@ Operation id: `forms.get_forms_submissions` · `Version: 2021-07-28` · Scopes: 
 
 *Response*: [`FormsSubmissionsSuccessfulResponseDto`](#formssubmissionssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::forms::GetFormsSubmissionsParams;
+
+let params = GetFormsSubmissionsParams::new("locationId");
+let out = ghl.forms().get_forms_submissions(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -121,6 +122,15 @@ Operation id: `forms.post_forms_upload_custom_files` · `Version: 2021-07-28` ·
 |---|---|---|---|
 | `contactId` | string | **yes** | Contact ID to upload the file to. |
 | `locationId` | string | **yes** | Location ID of the contact. |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::forms::UploadFilesToCustomFieldsParams;
+
+let params = UploadFilesToCustomFieldsParams::new("contactId", "locationId");
+let out = ghl.forms().upload_files_to_custom_fields(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

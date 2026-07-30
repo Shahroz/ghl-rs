@@ -4,39 +4,22 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `brand-boards` cargo feature on `ghl-sdk`, then call any of the 5 generated methods on `ghl.brand_boards()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features brand-boards
-use ghl_models::v2::brand_boards::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["brand-boards"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "brand-boards"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `POST` | `/brand-boards/` | Create a new brand board | `brand-boards.post_brand_boards` |
-| `GET` | `/brand-boards/{locationId}` | Get Brand Boards | `brand-boards.get_brand_boards_by_locationId` |
-| `DELETE` | `/brand-boards/{locationId}/{id}` | Delete a Brand Board | `brand-boards.delete_brand_boards_by_locationId_by_id` |
-| `GET` | `/brand-boards/{locationId}/{id}` | Get Brand Board | `brand-boards.get_brand_boards_by_locationId_by_id` |
-| `PATCH` | `/brand-boards/{locationId}/{id}` | Update a Brand Board | `brand-boards.patch_brand_boards_by_locationId_by_id` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `POST` | `/brand-boards/` | Create a new brand board | `create_a_new_brand_board()` | `brand-boards.post_brand_boards` |
+| `GET` | `/brand-boards/{locationId}` | Get Brand Boards | `get_brand_boards()` | `brand-boards.get_brand_boards_by_locationId` |
+| `DELETE` | `/brand-boards/{locationId}/{id}` | Delete a Brand Board | `delete_a_brand_board()` | `brand-boards.delete_brand_boards_by_locationId_by_id` |
+| `GET` | `/brand-boards/{locationId}/{id}` | Get Brand Board | `get_brand_board()` | `brand-boards.get_brand_boards_by_locationId_by_id` |
+| `PATCH` | `/brand-boards/{locationId}/{id}` | Update a Brand Board | `update_a_brand_board()` | `brand-boards.patch_brand_boards_by_locationId_by_id` |
 
 ### Endpoint details — v2
 
@@ -51,6 +34,12 @@ Operation id: `brand-boards.post_brand_boards` · `Version: 2021-07-28` · Scope
 *Request body*: [`CreateBrandBoardParam`](#createbrandboardparam)
 
 *Response*: [`GetBrandBoardSuccessDTO`](#getbrandboardsuccessdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.brand_boards().create_a_new_brand_board(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -93,6 +82,15 @@ Operation id: `brand-boards.get_brand_boards_by_locationId` · `Version: 2021-07
 
 *Response*: [`GetBrandBoardsByLocationSuccessDTO`](#getbrandboardsbylocationsuccessdto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::brand_boards::GetBrandBoardsParams;
+
+let params = GetBrandBoardsParams::new();
+let out = ghl.brand_boards().get_brand_boards(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -125,6 +123,12 @@ Operation id: `brand-boards.delete_brand_boards_by_locationId_by_id` · `Version
 | `id` | string | **yes** | Brand board ID to update, retrieve, or delete |
 
 *Response*: [`GetBrandBoardSuccessDTO`](#getbrandboardsuccessdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.brand_boards().delete_a_brand_board(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -159,6 +163,12 @@ Operation id: `brand-boards.get_brand_boards_by_locationId_by_id` · `Version: 2
 | `id` | string | **yes** | Brand board ID to update, retrieve, or delete |
 
 *Response*: [`GetBrandBoardSuccessDTO`](#getbrandboardsuccessdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.brand_boards().get_brand_board(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -195,6 +205,12 @@ Operation id: `brand-boards.patch_brand_boards_by_locationId_by_id` · `Version:
 *Request body*: [`UpdateBrandBoardBody`](#updatebrandboardbody)
 
 *Response*: [`GetBrandBoardSuccessDTO`](#getbrandboardsuccessdto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.brand_boards().update_a_brand_board(&locationId, &id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

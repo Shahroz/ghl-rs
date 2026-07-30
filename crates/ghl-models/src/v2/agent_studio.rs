@@ -71,15 +71,22 @@ pub struct CreatePublicAgentDTO {
 pub struct CreatePublicAgentResponseDTO {
     /// Success status
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Response message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Created agent data with metadata
     /// Required by the API.
-    pub agent: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub agent: Option<serde_json::Value>,
     /// Created versions array (initial staging version)
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub versions: Vec<serde_json::Value>,
 }
@@ -89,10 +96,14 @@ pub struct CreatePublicAgentResponseDTO {
 pub struct DeletePublicAgentResponseDTO {
     /// Success status
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Response message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Deleted agent ID
     #[serde(rename = "agentId", default, skip_serializing_if = "Option::is_none")]
     pub agent_id: Option<String>,
@@ -144,48 +155,85 @@ pub struct ExecutePublicAgentDTO {
 pub struct ExecutePublicAgentResponseDTO {
     /// Success status
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Unique session identifier that maintains conversational context across multiple
     /// interactions within the same agent session. Use this ID in subsequent requests to
     /// continue the conversation.
     /// Required by the API.
-    #[serde(rename = "executionId")]
-    pub execution_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "executionId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub execution_id: Option<String>,
     /// Unique identifier for a single interaction cycle, consisting of one user input and the
     /// corresponding agent response. Each message exchange generates a new interactionId.
     /// Required by the API.
-    #[serde(rename = "interactionId")]
-    pub interaction_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "interactionId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub interaction_id: Option<String>,
     /// Agent response text
     /// Required by the API.
-    pub response: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub response: Option<String>,
     /// Response type
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Expected input type for next interaction
     /// Required by the API.
-    #[serde(rename = "nextExpectedInput")]
-    pub next_expected_input: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "nextExpectedInput",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub next_expected_input: Option<String>,
     /// When end node is added in the graph, this will be true if the agent reached the end node
     /// in the graph
     /// Required by the API.
-    #[serde(rename = "goalCompletion")]
-    pub goal_completion: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "goalCompletion",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub goal_completion: Option<bool>,
     /// Execution status
     /// Required by the API.
-    #[serde(rename = "executionStatus")]
-    pub execution_status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "executionStatus",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub execution_status: Option<String>,
     /// Whether flow was switched
     /// Required by the API.
-    #[serde(rename = "flowSwitch")]
-    pub flow_switch: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "flowSwitch",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub flow_switch: Option<bool>,
     /// Response attachments
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub attachments: Vec<serde_json::Value>,
     /// Generated outputs
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "generativeOutputs",
         default,
@@ -199,13 +247,19 @@ pub struct ExecutePublicAgentResponseDTO {
 pub struct GetAgentByIdResponseDTO {
     /// Success status
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Response message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Agent metadata with all active versions
     /// Required by the API.
-    pub agent: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub agent: Option<serde_json::Value>,
     /// Request trace ID for debugging
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
@@ -216,19 +270,26 @@ pub struct GetAgentByIdResponseDTO {
 pub struct GetPublishedAgentsResponseDTO {
     /// Success status
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Response message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// List of agents with metadata
     /// Nested object; raw JSON (see the API docs for its fields).
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub agents: Vec<serde_json::Value>,
     /// Pagination metadata
     /// Nested object; raw JSON (see the API docs for its fields).
     /// Required by the API.
-    pub pagination: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pagination: Option<serde_json::Value>,
 }
 
 /// `InternalServerErrorDTO` from the GoHighLevel OpenAPI spec.
@@ -267,13 +328,19 @@ pub struct PromoteAndPublishDTO {
 pub struct PromoteAndPublishResponseDTO {
     /// Success status
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Response message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Result data with production and new draft version details
     /// Required by the API.
-    pub data: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<serde_json::Value>,
 }
 
 /// `PublicAttachmentSchema` from the GoHighLevel OpenAPI spec.
@@ -313,13 +380,19 @@ pub struct UpdatePublicAgentMetadataDTO {
 pub struct UpdatePublicAgentResponseDTO {
     /// Success status
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Response message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Updated agent or version data
     /// Required by the API.
-    pub data: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<serde_json::Value>,
 }
 
 /// `UpdatePublicAgentVersionDTO` from the GoHighLevel OpenAPI spec.

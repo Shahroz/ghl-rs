@@ -76,10 +76,30 @@ def snake(name: str) -> str:
     return s
 
 
+# rustdoc's `bare_urls` lint fires on the raw links HighLevel puts in its
+# descriptions, so make them proper autolinks.
+_BARE_URL = re.compile(r"(?<![<(\[])(https?://[^\s<>\)\]]+)")
+
+
+_HTML_TAG = re.compile(r"</?[a-zA-Z][^>]*>")
+
+
+def _wrap_bare_urls(text):
+    """Strip HighLevel's inline HTML, then autolink what's left.
+
+    Descriptions contain fragments like `<a href="https://…">docs</a>`; leaving
+    them in trips rustdoc's `invalid_html_tags`, and wrapping the URL inside the
+    attribute makes it worse. Drop the markup first, then autolink bare URLs.
+    """
+    text = _HTML_TAG.sub(" ", text)
+    text = text.replace("&nbsp;", " ").replace("&amp;", "&")
+    return _BARE_URL.sub(r"<\1>", text)
+
+
 def doc_lines(text, indent="    "):
     if not text:
         return []
-    text = re.sub(r"\s+", " ", str(text)).strip()
+    text = _wrap_bare_urls(re.sub(r"\s+", " ", str(text)).strip())
     if not text:
         return []
     out, line = [], ""
@@ -94,12 +114,59 @@ def doc_lines(text, indent="    "):
     return out
 
 
+def _collect_refs(node, acc):
+    if isinstance(node, dict):
+        ref = node.get("$ref")
+        if isinstance(ref, str):
+            acc.add(ref.split("/")[-1])
+        for v in node.values():
+            _collect_refs(v, acc)
+    elif isinstance(node, list):
+        for v in node:
+            _collect_refs(v, acc)
+
+
+def request_only_schemas(spec):
+    """Schema names reachable only from request bodies.
+
+    Response shapes must deserialize even when the API omits a field the spec
+    calls required (it happens), so only request-only schemas keep their
+    required fields non-`Option`. Strict on what we send, lenient on what we
+    receive.
+    """
+    schemas = (spec.get("components") or {}).get("schemas") or {}
+    req, resp = set(), set()
+    for _, item in (spec.get("paths") or {}).items():
+        for _, op in item.items():
+            if not isinstance(op, dict):
+                continue
+            if op.get("requestBody"):
+                _collect_refs(op["requestBody"], req)
+            if op.get("responses"):
+                _collect_refs(op["responses"], resp)
+
+    def expand(seed):
+        seen, stack = set(seed), list(seed)
+        while stack:
+            name = stack.pop()
+            if name in schemas:
+                acc = set()
+                _collect_refs(schemas[name], acc)
+                for x in acc - seen:
+                    seen.add(x)
+                    stack.append(x)
+        return seen
+
+    return expand(req) - expand(resp)
+
+
 class Generator:
     def __init__(self, spec, known_types):
         self.spec = spec
         self.schemas = (spec.get("components") or {}).get("schemas") or {}
         # Schema names defined in THIS spec — refs to anything else degrade to Value.
         self.known = known_types
+        self.request_only = request_only_schemas(spec)
 
     def ref_type(self, ref):
         name = ref.split("/")[-1]
@@ -174,7 +241,10 @@ class Generator:
         lines.append("#[derive(Debug, Clone, Default, Serialize, Deserialize)]")
         lines.append(f"pub struct {pascal(name)} {{")
 
-        required = set(schema.get("required") or [])
+        # See `request_only_schemas`: response shapes stay lenient.
+        strict = name in self.request_only
+        spec_required = set(schema.get("required") or [])
+        required = spec_required if strict else set()
         props = schema.get("properties") or {}
         if not props:
             lines.append("    /// The spec defines no fields for this schema.")
@@ -196,8 +266,12 @@ class Generator:
                 lines.append(dl)
             for extra in extra_docs:
                 lines.extend(doc_lines(extra))
-            if is_req:
+            if prop_name in spec_required:
                 lines.append("    /// Required by the API.")
+                if not strict:
+                    lines.append(
+                        "    /// (Optional here so responses that omit it still parse.)"
+                    )
 
             attrs = []
             if field != prop_name:

@@ -4,76 +4,59 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `invoices` cargo feature on `ghl-sdk`, then call any of the 42 generated methods on `ghl.invoices()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features invoices
-use ghl_models::v2::invoices::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["invoices"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "invoices"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/invoices/` | List invoices | `invoices.get_invoices` |
-| `POST` | `/invoices/` | Create Invoice | `invoices.post_invoices` |
-| `POST` | `/invoices/estimate` | Create New Estimate | `invoices.post_invoices_estimate` |
-| `GET` | `/invoices/estimate/list` | List Estimates | `invoices.get_invoices_estimate_list` |
-| `GET` | `/invoices/estimate/number/generate` | Generate Estimate Number | `invoices.get_invoices_estimate_number_generate` |
-| `PATCH` | `/invoices/estimate/stats/last-visited-at` | Update estimate last visited at | `invoices.patch_invoices_estimate_stats_last_visited_at` |
-| `GET` | `/invoices/estimate/template` | List Estimate Templates | `invoices.get_invoices_estimate_template` |
-| `POST` | `/invoices/estimate/template` | Create Estimate Template | `invoices.post_invoices_estimate_template` |
-| `GET` | `/invoices/estimate/template/preview` | Preview Estimate Template | `invoices.get_invoices_estimate_template_preview` |
-| `DELETE` | `/invoices/estimate/template/{templateId}` | Delete Estimate Template | `invoices.delete_invoices_estimate_template_by_templateId` |
-| `PUT` | `/invoices/estimate/template/{templateId}` | Update Estimate Template | `invoices.put_invoices_estimate_template_by_templateId` |
-| `DELETE` | `/invoices/estimate/{estimateId}` | Delete Estimate | `invoices.delete_invoices_estimate_by_estimateId` |
-| `PUT` | `/invoices/estimate/{estimateId}` | Update Estimate | `invoices.put_invoices_estimate_by_estimateId` |
-| `POST` | `/invoices/estimate/{estimateId}/invoice` | Create Invoice from Estimate | `invoices.post_invoices_estimate_by_estimateId_invoice` |
-| `POST` | `/invoices/estimate/{estimateId}/send` | Send Estimate | `invoices.post_invoices_estimate_by_estimateId_send` |
-| `GET` | `/invoices/generate-invoice-number` | Generate Invoice Number | `invoices.get_invoices_generate_invoice_number` |
-| `GET` | `/invoices/schedule` | List schedules | `invoices.get_invoices_schedule` |
-| `POST` | `/invoices/schedule` | Create Invoice Schedule | `invoices.post_invoices_schedule` |
-| `DELETE` | `/invoices/schedule/{scheduleId}` | Delete schedule | `invoices.delete_invoices_schedule_by_scheduleId` |
-| `GET` | `/invoices/schedule/{scheduleId}` | Get an schedule | `invoices.get_invoices_schedule_by_scheduleId` |
-| `PUT` | `/invoices/schedule/{scheduleId}` | Update schedule | `invoices.put_invoices_schedule_by_scheduleId` |
-| `POST` | `/invoices/schedule/{scheduleId}/auto-payment` | Manage Auto payment for an schedule invoice | `invoices.post_invoices_schedule_by_scheduleId_auto_payment` |
-| `POST` | `/invoices/schedule/{scheduleId}/cancel` | Cancel an scheduled invoice | `invoices.post_invoices_schedule_by_scheduleId_cancel` |
-| `POST` | `/invoices/schedule/{scheduleId}/schedule` | Schedule an schedule invoice | `invoices.post_invoices_schedule_by_scheduleId_schedule` |
-| `POST` | `/invoices/schedule/{scheduleId}/updateAndSchedule` | Update scheduled recurring invoice | `invoices.post_invoices_schedule_by_scheduleId_updateAndSchedule` |
-| `GET` | `/invoices/settings` | Get Invoice Settings | `invoices.get_invoices_settings` |
-| `PATCH` | `/invoices/stats/last-visited-at` | Update invoice last visited at | `invoices.patch_invoices_stats_last_visited_at` |
-| `GET` | `/invoices/template` | List templates | `invoices.get_invoices_template` |
-| `POST` | `/invoices/template` | Create template | `invoices.post_invoices_template` |
-| `DELETE` | `/invoices/template/{templateId}` | Delete template | `invoices.delete_invoices_template_by_templateId` |
-| `GET` | `/invoices/template/{templateId}` | Get an template | `invoices.get_invoices_template_by_templateId` |
-| `PUT` | `/invoices/template/{templateId}` | Update template | `invoices.put_invoices_template_by_templateId` |
-| `PATCH` | `/invoices/template/{templateId}/late-fees-configuration` | Update template late fees configuration | `invoices.patch_invoices_template_by_templateId_late_fees_configuration` |
-| `PATCH` | `/invoices/template/{templateId}/payment-methods-configuration` | Update template late fees configuration | `invoices.patch_invoices_template_by_templateId_payment_methods_configuration` |
-| `POST` | `/invoices/text2pay` | Create & Send | `invoices.post_invoices_text2pay` |
-| `DELETE` | `/invoices/{invoiceId}` | Delete invoice | `invoices.delete_invoices_by_invoiceId` |
-| `GET` | `/invoices/{invoiceId}` | Get invoice | `invoices.get_invoices_by_invoiceId` |
-| `PUT` | `/invoices/{invoiceId}` | Update invoice | `invoices.put_invoices_by_invoiceId` |
-| `PATCH` | `/invoices/{invoiceId}/late-fees-configuration` | Update invoice late fees configuration | `invoices.patch_invoices_by_invoiceId_late_fees_configuration` |
-| `POST` | `/invoices/{invoiceId}/record-payment` | Record a manual payment for an invoice | `invoices.post_invoices_by_invoiceId_record_payment` |
-| `POST` | `/invoices/{invoiceId}/send` | Send invoice | `invoices.post_invoices_by_invoiceId_send` |
-| `POST` | `/invoices/{invoiceId}/void` | Void invoice | `invoices.post_invoices_by_invoiceId_void` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/invoices/` | List invoices | `list_invoices()` | `invoices.get_invoices` |
+| `POST` | `/invoices/` | Create Invoice | `create_invoice()` | `invoices.post_invoices` |
+| `POST` | `/invoices/estimate` | Create New Estimate | `create_new_estimate()` | `invoices.post_invoices_estimate` |
+| `GET` | `/invoices/estimate/list` | List Estimates | `list_estimates()` | `invoices.get_invoices_estimate_list` |
+| `GET` | `/invoices/estimate/number/generate` | Generate Estimate Number | `generate_estimate_number()` | `invoices.get_invoices_estimate_number_generate` |
+| `PATCH` | `/invoices/estimate/stats/last-visited-at` | Update estimate last visited at | `update_estimate_last_visited_at()` | `invoices.patch_invoices_estimate_stats_last_visited_at` |
+| `GET` | `/invoices/estimate/template` | List Estimate Templates | `list_estimate_templates()` | `invoices.get_invoices_estimate_template` |
+| `POST` | `/invoices/estimate/template` | Create Estimate Template | `create_estimate_template()` | `invoices.post_invoices_estimate_template` |
+| `GET` | `/invoices/estimate/template/preview` | Preview Estimate Template | `preview_estimate_template()` | `invoices.get_invoices_estimate_template_preview` |
+| `DELETE` | `/invoices/estimate/template/{templateId}` | Delete Estimate Template | `delete_estimate_template()` | `invoices.delete_invoices_estimate_template_by_templateId` |
+| `PUT` | `/invoices/estimate/template/{templateId}` | Update Estimate Template | `update_estimate_template()` | `invoices.put_invoices_estimate_template_by_templateId` |
+| `DELETE` | `/invoices/estimate/{estimateId}` | Delete Estimate | `delete_estimate()` | `invoices.delete_invoices_estimate_by_estimateId` |
+| `PUT` | `/invoices/estimate/{estimateId}` | Update Estimate | `update_estimate()` | `invoices.put_invoices_estimate_by_estimateId` |
+| `POST` | `/invoices/estimate/{estimateId}/invoice` | Create Invoice from Estimate | `create_invoice_from_estimate()` | `invoices.post_invoices_estimate_by_estimateId_invoice` |
+| `POST` | `/invoices/estimate/{estimateId}/send` | Send Estimate | `send_estimate()` | `invoices.post_invoices_estimate_by_estimateId_send` |
+| `GET` | `/invoices/generate-invoice-number` | Generate Invoice Number | `generate_invoice_number()` | `invoices.get_invoices_generate_invoice_number` |
+| `GET` | `/invoices/schedule` | List schedules | `list_schedules()` | `invoices.get_invoices_schedule` |
+| `POST` | `/invoices/schedule` | Create Invoice Schedule | `create_invoice_schedule()` | `invoices.post_invoices_schedule` |
+| `DELETE` | `/invoices/schedule/{scheduleId}` | Delete schedule | `delete_schedule()` | `invoices.delete_invoices_schedule_by_scheduleId` |
+| `GET` | `/invoices/schedule/{scheduleId}` | Get an schedule | `get_an_schedule()` | `invoices.get_invoices_schedule_by_scheduleId` |
+| `PUT` | `/invoices/schedule/{scheduleId}` | Update schedule | `update_schedule()` | `invoices.put_invoices_schedule_by_scheduleId` |
+| `POST` | `/invoices/schedule/{scheduleId}/auto-payment` | Manage Auto payment for an schedule invoice | `manage_auto_payment_for_an_schedule_invoice()` | `invoices.post_invoices_schedule_by_scheduleId_auto_payment` |
+| `POST` | `/invoices/schedule/{scheduleId}/cancel` | Cancel an scheduled invoice | `cancel_an_scheduled_invoice()` | `invoices.post_invoices_schedule_by_scheduleId_cancel` |
+| `POST` | `/invoices/schedule/{scheduleId}/schedule` | Schedule an schedule invoice | `schedule_an_schedule_invoice()` | `invoices.post_invoices_schedule_by_scheduleId_schedule` |
+| `POST` | `/invoices/schedule/{scheduleId}/updateAndSchedule` | Update scheduled recurring invoice | `update_scheduled_recurring_invoice()` | `invoices.post_invoices_schedule_by_scheduleId_updateAndSchedule` |
+| `GET` | `/invoices/settings` | Get Invoice Settings | `get_invoice_settings()` | `invoices.get_invoices_settings` |
+| `PATCH` | `/invoices/stats/last-visited-at` | Update invoice last visited at | `update_invoice_last_visited_at()` | `invoices.patch_invoices_stats_last_visited_at` |
+| `GET` | `/invoices/template` | List templates | `list_templates()` | `invoices.get_invoices_template` |
+| `POST` | `/invoices/template` | Create template | `create_template()` | `invoices.post_invoices_template` |
+| `DELETE` | `/invoices/template/{templateId}` | Delete template | `delete_template()` | `invoices.delete_invoices_template_by_templateId` |
+| `GET` | `/invoices/template/{templateId}` | Get an template | `get_an_template()` | `invoices.get_invoices_template_by_templateId` |
+| `PUT` | `/invoices/template/{templateId}` | Update template | `update_template()` | `invoices.put_invoices_template_by_templateId` |
+| `PATCH` | `/invoices/template/{templateId}/late-fees-configuration` | Update template late fees configuration | `update_template_late_fees_configuration()` | `invoices.patch_invoices_template_by_templateId_late_fees_configuration` |
+| `PATCH` | `/invoices/template/{templateId}/payment-methods-configuration` | Update template late fees configuration | `update_template_late_fees_configuration_op()` | `invoices.patch_invoices_template_by_templateId_payment_methods_configuration` |
+| `POST` | `/invoices/text2pay` | Create & Send | `create_send()` | `invoices.post_invoices_text2pay` |
+| `DELETE` | `/invoices/{invoiceId}` | Delete invoice | `delete_invoice()` | `invoices.delete_invoices_by_invoiceId` |
+| `GET` | `/invoices/{invoiceId}` | Get invoice | `get_invoice()` | `invoices.get_invoices_by_invoiceId` |
+| `PUT` | `/invoices/{invoiceId}` | Update invoice | `update_invoice()` | `invoices.put_invoices_by_invoiceId` |
+| `PATCH` | `/invoices/{invoiceId}/late-fees-configuration` | Update invoice late fees configuration | `update_invoice_late_fees_configuration()` | `invoices.patch_invoices_by_invoiceId_late_fees_configuration` |
+| `POST` | `/invoices/{invoiceId}/record-payment` | Record a manual payment for an invoice | `record_a_manual_payment_for_an_invoice()` | `invoices.post_invoices_by_invoiceId_record_payment` |
+| `POST` | `/invoices/{invoiceId}/send` | Send invoice | `send_invoice()` | `invoices.post_invoices_by_invoiceId_send` |
+| `POST` | `/invoices/{invoiceId}/void` | Void invoice | `void_invoice()` | `invoices.post_invoices_by_invoiceId_void` |
 
 ### Endpoint details — v2
 
@@ -103,6 +86,15 @@ Operation id: `invoices.get_invoices` · `Version: 2021-07-28` · Scopes: `invoi
 | `sortOrder` | enum: `ascend`, `descend` | no | The order of sort which should be applied for the sortField |
 
 *Response*: [`ListInvoicesResponseDto`](#listinvoicesresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::ListInvoicesParams;
+
+let params = ListInvoicesParams::new("altId", "altType", "limit", "offset");
+let out = ghl.invoices().list_invoices(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -135,6 +127,12 @@ Operation id: `invoices.post_invoices` · `Version: 2021-07-28` · Scopes: `invo
 
 *Response*: [`CreateInvoiceResponseDto`](#createinvoiceresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().create_invoice(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -162,6 +160,12 @@ Operation id: `invoices.post_invoices_estimate` · `Version: 2021-07-28` · Scop
 *Request body*: [`CreateEstimatesDto`](#createestimatesdto)
 
 *Response*: [`EstimateResponseDto`](#estimateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().create_new_estimate(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -203,6 +207,15 @@ Operation id: `invoices.get_invoices_estimate_list` · `Version: 2021-07-28` · 
 
 *Response*: [`ListEstimatesResponseDTO`](#listestimatesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::ListEstimatesParams;
+
+let params = ListEstimatesParams::new("altId", "altType", "limit", "offset");
+let out = ghl.invoices().list_estimates(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -239,6 +252,15 @@ Operation id: `invoices.get_invoices_estimate_number_generate` · `Version: 2021
 
 *Response*: [`GenerateEstimateNumberResponse`](#generateestimatenumberresponse)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::GenerateEstimateNumberParams;
+
+let params = GenerateEstimateNumberParams::new("altId", "altType");
+let out = ghl.invoices().generate_estimate_number(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -265,6 +287,12 @@ API to update estimate last visited at by estimate id
 Operation id: `invoices.patch_invoices_estimate_stats_last_visited_at` · `Version: 2021-07-28`
 
 *Request body*: [`EstimateIdParam`](#estimateidparam)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_estimate_last_visited_at(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -302,6 +330,15 @@ Operation id: `invoices.get_invoices_estimate_template` · `Version: 2021-07-28`
 
 *Response*: [`ListEstimateTemplateResponseDTO`](#listestimatetemplateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::ListEstimateTemplatesParams;
+
+let params = ListEstimateTemplatesParams::new("altId", "altType", "limit", "offset");
+let out = ghl.invoices().list_estimate_templates(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -332,6 +369,12 @@ Operation id: `invoices.post_invoices_estimate_template` · `Version: 2021-07-28
 *Request body*: [`EstimateTemplatesDto`](#estimatetemplatesdto)
 
 *Response*: [`EstimateTemplateResponseDTO`](#estimatetemplateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().create_estimate_template(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -366,6 +409,15 @@ Operation id: `invoices.get_invoices_estimate_template_preview` · `Version: 202
 | `templateId` | string | **yes** | Template Id |
 
 *Response*: [`EstimateTemplateResponseDTO`](#estimatetemplateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::PreviewEstimateTemplateParams;
+
+let params = PreviewEstimateTemplateParams::new("altId", "altType", "templateId");
+let out = ghl.invoices().preview_estimate_template(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -402,6 +454,12 @@ Operation id: `invoices.delete_invoices_estimate_template_by_templateId` · `Ver
 *Request body*: [`AltDto`](#altdto)
 
 *Response*: [`EstimateTemplateResponseDTO`](#estimatetemplateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().delete_estimate_template(&templateId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -440,6 +498,12 @@ Operation id: `invoices.put_invoices_estimate_template_by_templateId` · `Versio
 
 *Response*: [`EstimateTemplateResponseDTO`](#estimatetemplateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_estimate_template(&templateId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -476,6 +540,12 @@ Operation id: `invoices.delete_invoices_estimate_by_estimateId` · `Version: 202
 *Request body*: [`AltDto`](#altdto)
 
 *Response*: [`EstimateResponseDto`](#estimateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().delete_estimate(&estimateId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -514,6 +584,12 @@ Operation id: `invoices.put_invoices_estimate_by_estimateId` · `Version: 2021-0
 
 *Response*: [`EstimateResponseDto`](#estimateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_estimate(&estimateId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -550,6 +626,12 @@ Operation id: `invoices.post_invoices_estimate_by_estimateId_invoice` · `Versio
 *Request body*: [`CreateInvoiceFromEstimateDto`](#createinvoicefromestimatedto)
 
 *Response*: [`CreateInvoiceFromEstimateResponseDTO`](#createinvoicefromestimateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().create_invoice_from_estimate(&estimateId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -588,6 +670,12 @@ Operation id: `invoices.post_invoices_estimate_by_estimateId_send` · `Version: 
 
 *Response*: [`EstimateResponseDto`](#estimateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().send_estimate(&estimateId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -623,6 +711,15 @@ Operation id: `invoices.get_invoices_generate_invoice_number` · `Version: 2021-
 | `altType` | enum: `location` | **yes** | — |
 
 *Response*: [`GenerateInvoiceNumberResponseDto`](#generateinvoicenumberresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::GenerateInvoiceNumberParams;
+
+let params = GenerateInvoiceNumberParams::new("altId", "altType");
+let out = ghl.invoices().generate_invoice_number(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -665,6 +762,15 @@ Operation id: `invoices.get_invoices_schedule` · `Version: 2021-07-28` · Scope
 
 *Response*: [`ListSchedulesResponseDto`](#listschedulesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::ListSchedulesParams;
+
+let params = ListSchedulesParams::new("altId", "altType", "limit", "offset");
+let out = ghl.invoices().list_schedules(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -695,6 +801,12 @@ Operation id: `invoices.post_invoices_schedule` · `Version: 2021-07-28` · Scop
 *Request body*: [`CreateInvoiceScheduleDto`](#createinvoicescheduledto)
 
 *Response*: [`CreateInvoiceScheduleResponseDto`](#createinvoicescheduleresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().create_invoice_schedule(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -734,6 +846,15 @@ Operation id: `invoices.delete_invoices_schedule_by_scheduleId` · `Version: 202
 | `altType` | enum: `location` | **yes** | Alt Type |
 
 *Response*: [`DeleteInvoiceScheduleResponseDto`](#deleteinvoicescheduleresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::DeleteScheduleParams;
+
+let params = DeleteScheduleParams::new("altId", "altType");
+let out = ghl.invoices().delete_schedule(&scheduleId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -778,6 +899,15 @@ Operation id: `invoices.get_invoices_schedule_by_scheduleId` · `Version: 2021-0
 
 *Response*: [`GetScheduleResponseDto`](#getscheduleresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::GetAnScheduleParams;
+
+let params = GetAnScheduleParams::new("altId", "altType");
+let out = ghl.invoices().get_an_schedule(&scheduleId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -816,6 +946,12 @@ Operation id: `invoices.put_invoices_schedule_by_scheduleId` · `Version: 2021-0
 
 *Response*: [`UpdateInvoiceScheduleResponseDto`](#updateinvoicescheduleresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_schedule(&scheduleId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -852,6 +988,12 @@ Operation id: `invoices.post_invoices_schedule_by_scheduleId_auto_payment` · `V
 *Request body*: [`AutoPaymentScheduleDto`](#autopaymentscheduledto)
 
 *Response*: [`AutoPaymentInvoiceScheduleResponseDto`](#autopaymentinvoicescheduleresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().manage_auto_payment_for_an_schedule_invoice(&scheduleId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -890,6 +1032,12 @@ Operation id: `invoices.post_invoices_schedule_by_scheduleId_cancel` · `Version
 
 *Response*: [`CancelInvoiceScheduleResponseDto`](#cancelinvoicescheduleresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().cancel_an_scheduled_invoice(&scheduleId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -927,6 +1075,12 @@ Operation id: `invoices.post_invoices_schedule_by_scheduleId_schedule` · `Versi
 
 *Response*: [`ScheduleInvoiceScheduleResponseDto`](#scheduleinvoicescheduleresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().schedule_an_schedule_invoice(&scheduleId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -962,6 +1116,12 @@ Operation id: `invoices.post_invoices_schedule_by_scheduleId_updateAndSchedule` 
 
 *Response*: [`UpdateAndScheduleInvoiceScheduleResponseDto`](#updateandscheduleinvoicescheduleresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_scheduled_recurring_invoice(&scheduleId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -995,6 +1155,15 @@ Operation id: `invoices.get_invoices_settings` · `Version: 2021-07-28` · Scope
 
 *Response*: [`GetInvoiceSettingsResponseDto`](#getinvoicesettingsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::GetInvoiceSettingsParams;
+
+let params = GetInvoiceSettingsParams::new("altId", "altType");
+let out = ghl.invoices().get_invoice_settings(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1021,6 +1190,12 @@ API to update invoice last visited at by invoice id
 Operation id: `invoices.patch_invoices_stats_last_visited_at` · `Version: 2021-07-28`
 
 *Request body*: [`PatchInvoiceStatsLastViewedDto`](#patchinvoicestatslastvieweddto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_invoice_last_visited_at(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1062,6 +1237,15 @@ Operation id: `invoices.get_invoices_template` · `Version: 2021-07-28` · Scope
 
 *Response*: [`ListTemplatesResponseDto`](#listtemplatesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::ListTemplatesParams;
+
+let params = ListTemplatesParams::new("altId", "altType", "limit", "offset");
+let out = ghl.invoices().list_templates(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1092,6 +1276,12 @@ Operation id: `invoices.post_invoices_template` · `Version: 2021-07-28` · Scop
 *Request body*: [`CreateInvoiceTemplateDto`](#createinvoicetemplatedto)
 
 *Response*: [`CreateInvoiceTemplateResponseDto`](#createinvoicetemplateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().create_template(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1131,6 +1321,15 @@ Operation id: `invoices.delete_invoices_template_by_templateId` · `Version: 202
 | `altType` | enum: `location` | **yes** | Alt Type |
 
 *Response*: [`DeleteInvoiceTemplateResponseDto`](#deleteinvoicetemplateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::DeleteTemplateParams;
+
+let params = DeleteTemplateParams::new("altId", "altType");
+let out = ghl.invoices().delete_template(&templateId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1175,6 +1374,15 @@ Operation id: `invoices.get_invoices_template_by_templateId` · `Version: 2021-0
 
 *Response*: [`GetTemplateResponseDto`](#gettemplateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::GetAnTemplateParams;
+
+let params = GetAnTemplateParams::new("altId", "altType");
+let out = ghl.invoices().get_an_template(&templateId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1213,6 +1421,12 @@ Operation id: `invoices.put_invoices_template_by_templateId` · `Version: 2021-0
 
 *Response*: [`UpdateInvoiceTemplateResponseDto`](#updateinvoicetemplateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_template(&templateId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1249,6 +1463,12 @@ Operation id: `invoices.patch_invoices_template_by_templateId_late_fees_configur
 *Request body*: [`UpdateInvoiceLateFeesConfigurationDto`](#updateinvoicelatefeesconfigurationdto)
 
 *Response*: [`UpdateInvoiceTemplateResponseDto`](#updateinvoicetemplateresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_template_late_fees_configuration(&templateId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1287,6 +1507,12 @@ Operation id: `invoices.patch_invoices_template_by_templateId_payment_methods_co
 
 *Response*: [`UpdateInvoiceTemplateResponseDto`](#updateinvoicetemplateresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_template_late_fees_configuration_op(&templateId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1317,6 +1543,12 @@ Operation id: `invoices.post_invoices_text2pay` · `Version: 2021-07-28` · Scop
 *Request body*: [`Text2PayDto`](#text2paydto)
 
 *Response*: [`Text2PayInvoiceResponseDto`](#text2payinvoiceresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().create_send(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1356,6 +1588,15 @@ Operation id: `invoices.delete_invoices_by_invoiceId` · `Version: 2021-07-28` �
 | `altType` | enum: `location` | **yes** | Alt Type |
 
 *Response*: [`DeleteInvoiceResponseDto`](#deleteinvoiceresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::DeleteInvoiceParams;
+
+let params = DeleteInvoiceParams::new("altId", "altType");
+let out = ghl.invoices().delete_invoice(&invoiceId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1400,6 +1641,15 @@ Operation id: `invoices.get_invoices_by_invoiceId` · `Version: 2021-07-28` · S
 
 *Response*: [`GetInvoiceResponseDto`](#getinvoiceresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::invoices::GetInvoiceParams;
+
+let params = GetInvoiceParams::new("altId", "altType");
+let out = ghl.invoices().get_invoice(&invoiceId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1438,6 +1688,12 @@ Operation id: `invoices.put_invoices_by_invoiceId` · `Version: 2021-07-28` · S
 
 *Response*: [`UpdateInvoiceResponseDto`](#updateinvoiceresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_invoice(&invoiceId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1474,6 +1730,12 @@ Operation id: `invoices.patch_invoices_by_invoiceId_late_fees_configuration` · 
 *Request body*: [`UpdateInvoiceLateFeesConfigurationDto`](#updateinvoicelatefeesconfigurationdto)
 
 *Response*: [`UpdateInvoiceResponseDto`](#updateinvoiceresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().update_invoice_late_fees_configuration(&invoiceId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1512,6 +1774,12 @@ Operation id: `invoices.post_invoices_by_invoiceId_record_payment` · `Version: 
 
 *Response*: [`RecordPaymentResponseDto`](#recordpaymentresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().record_a_manual_payment_for_an_invoice(&invoiceId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1549,6 +1817,12 @@ Operation id: `invoices.post_invoices_by_invoiceId_send` · `Version: 2021-07-28
 
 *Response*: [`SendInvoicesResponseDto`](#sendinvoicesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().send_invoice(&invoiceId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1585,6 +1859,12 @@ Operation id: `invoices.post_invoices_by_invoiceId_void` · `Version: 2021-07-28
 *Request body*: [`VoidInvoiceDto`](#voidinvoicedto)
 
 *Response*: [`VoidInvoiceResponseDto`](#voidinvoiceresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.invoices().void_invoice(&invoiceId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

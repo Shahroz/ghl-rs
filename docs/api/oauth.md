@@ -4,37 +4,20 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `oauth` cargo feature on `ghl-sdk`, then call any of the 3 generated methods on `ghl.oauth()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features oauth
-use ghl_models::v2::oauth::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["oauth"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "oauth"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/oauth/installedLocations` | Get Location where app is installed | `oauth.get_oauth_installedLocations` |
-| `POST` | `/oauth/locationToken` | Get Location Access Token from Agency Token | `oauth.post_oauth_locationToken` |
-| `POST` | `/oauth/token` | Get Access Token | `oauth.post_oauth_token` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/oauth/installedLocations` | Get Location where app is installed | `get_location_where_app_is_installed()` | `oauth.get_oauth_installedLocations` |
+| `POST` | `/oauth/locationToken` | Get Location Access Token from Agency Token | `get_location_access_token_from_agency_token()` | `oauth.post_oauth_locationToken` |
+| `POST` | `/oauth/token` | Get Access Token | `get_access_token()` | `oauth.post_oauth_token` |
 
 ### Endpoint details — v2
 
@@ -63,6 +46,15 @@ Operation id: `oauth.get_oauth_installedLocations` · `Version: 2021-07-28` · S
 
 *Response*: [`GetInstalledLocationsSuccessfulResponseDto`](#getinstalledlocationssuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::oauth::GetLocationWhereAppIsInstalledParams;
+
+let params = GetLocationWhereAppIsInstalledParams::new("companyId", "appId");
+let out = ghl.oauth().get_location_where_app_is_installed(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -90,6 +82,12 @@ Operation id: `oauth.post_oauth_locationToken` · `Version: 2021-07-28` · Scope
 
 *Response*: [`GetLocationAccessTokenSuccessfulResponseDto`](#getlocationaccesstokensuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.oauth().get_location_access_token_from_agency_token().await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -112,6 +110,12 @@ Use Access Tokens to access GoHighLevel resources on behalf of an authenticated 
 Operation id: `oauth.post_oauth_token`
 
 *Response*: [`GetAccessCodeSuccessfulResponseDto`](#getaccesscodesuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.oauth().get_access_token().await?;
+```
 
 <details><summary>MCP call</summary>
 

@@ -23,8 +23,13 @@ use serde::{Deserialize, Serialize};
 pub struct ListNumberItemResponseDto {
     /// Phone number in E.164 format
     /// Required by the API.
-    #[serde(rename = "phoneNumber")]
-    pub phone_number: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "phoneNumber",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub phone_number: Option<String>,
     /// Human-friendly label for the number
     #[serde(
         rename = "friendlyName",
@@ -128,17 +133,28 @@ pub struct ListNumbersV3Http200ResponseDto {
     /// Outcome indicator from the shared success helper.
     /// Allowed values: `success`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// V3 list payload: numbers, pagination fields, isUnderLc (renamed from isUnderGhl), etc.
     /// Required by the API.
-    pub data: ListNumbersV3ResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<ListNumbersV3ResponseDto>,
     /// Human-readable success message.
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// HTTP status echoed in the response body.
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
 }
 
 /// `ListNumbersV3ResponseDto` from the GoHighLevel OpenAPI spec.
@@ -146,6 +162,7 @@ pub struct ListNumbersV3Http200ResponseDto {
 pub struct ListNumbersV3ResponseDto {
     /// Active numbers available for the location
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub numbers: Vec<ListNumberItemResponseDto>,
     /// Whether the account is managed under LC. Renamed from isUnderGhl.
@@ -199,17 +216,28 @@ pub struct PurchaseNumberForLocationV3Http201ResponseDto {
     /// Outcome indicator from the shared success helper.
     /// Allowed values: `success`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// V3 purchase payload: purchased number, location, Twilio account id, and underLcAccount.
     /// Required by the API.
-    pub data: PurchaseNumberForLocationV3ResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<PurchaseNumberForLocationV3ResponseDto>,
     /// Human-readable success message.
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// HTTP status echoed in the response body.
     /// Required by the API.
-    #[serde(rename = "statusCode")]
-    pub status_code: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "statusCode",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub status_code: Option<f64>,
 }
 
 /// `PurchaseNumberForLocationV3ResponseDto` from the GoHighLevel OpenAPI spec.
@@ -217,19 +245,33 @@ pub struct PurchaseNumberForLocationV3Http201ResponseDto {
 pub struct PurchaseNumberForLocationV3ResponseDto {
     /// E.164 phone number that was purchased (from the request body)
     /// Required by the API.
-    pub number: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub number: Option<String>,
     /// Location that owns the Twilio / numbers account
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Twilio account document identifier
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Whether the account is managed under LC. Renamed from under_ghl_account in the legacy
     /// document.
     /// Required by the API.
-    #[serde(rename = "underLcAccount")]
-    pub under_lc_account: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "underLcAccount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub under_lc_account: Option<bool>,
 }
 
 /// `PurchasePhoneNumberBodyDto` from the GoHighLevel OpenAPI spec.
@@ -289,11 +331,18 @@ pub struct PurchasePhoneNumberBodyDto {
 pub struct RcsSenderIdResponseDto {
     /// RCS sender ID
     /// Required by the API.
-    pub number: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub number: Option<String>,
     /// Entry type
     /// Required by the API.
-    #[serde(rename = "numberType")]
-    pub number_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "numberType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub number_type: Option<String>,
     /// Human-friendly label for the sender ID
     #[serde(
         rename = "friendlyName",

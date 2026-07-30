@@ -172,7 +172,7 @@ pub struct ListMeta {
 
 /// Access to the Contacts API. Obtained via [`Ghl::contacts`].
 pub struct ContactsService {
-    client: Ghl,
+    pub(crate) client: Ghl,
 }
 
 impl ContactsService {

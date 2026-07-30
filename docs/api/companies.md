@@ -4,35 +4,18 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `companies` cargo feature on `ghl-sdk`, then call any of the 1 generated methods on `ghl.companies()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features companies
-use ghl_models::v2::companies::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["companies"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "companies"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/companies/{companyId}` | Get Company | `companies.get_companies_by_companyId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/companies/{companyId}` | Get Company | `get_company()` | `companies.get_companies_by_companyId` |
 
 ### Endpoint details — v2
 
@@ -51,6 +34,12 @@ Operation id: `companies.get_companies_by_companyId` · `Version: 2021-07-28` ·
 | `companyId` | string | **yes** | — |
 
 *Response*: [`GetCompanyByIdSuccessfulResponseDto`](#getcompanybyidsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.companies().get_company(&companyId).await?;
+```
 
 <details><summary>MCP call</summary>
 

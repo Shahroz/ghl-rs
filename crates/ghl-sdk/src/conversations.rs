@@ -182,7 +182,7 @@ pub struct MessagePage {
 
 /// Access to the Conversations API. Obtained via [`Ghl::conversations`].
 pub struct ConversationsService {
-    client: Ghl,
+    pub(crate) client: Ghl,
 }
 
 impl ConversationsService {

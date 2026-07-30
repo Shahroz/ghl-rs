@@ -19,6 +19,10 @@ import re
 import sys
 from collections import defaultdict
 
+# Reuse the service generator so every endpoint can name its Rust method.
+sys.path.insert(0, str(pathlib.Path(__file__).parent))
+from generate_services import HANDWRITTEN, ServiceGen  # noqa: E402
+
 METHODS = ("get", "post", "put", "patch", "delete")
 # Enums with more members than this get hoisted into the shared page.
 BIG_ENUM = 30
@@ -178,7 +182,8 @@ class ModuleDoc:
         return ("v3:" if op["api_version"] == "v3" else "") + base
 
 
-def render_module(md, shared_enums):
+def render_module(md, shared_enums, rust_methods=None):
+    rust_methods = rust_methods or {}
     m = md.module
     out = [f"# `{m}`", ""]
 
@@ -195,12 +200,32 @@ def render_module(md, shared_enums):
     # How to call it
     out.append("## How to call it")
     out.append("")
-    if m in TYPED_SERVICES:
+    if rust_methods:
+        n = len(rust_methods)
+        rust_mod = re.sub(r"[^a-z0-9]+", "_", m)
+        out.append(f"**Every endpoint has a typed Rust method.** Enable the `{m}` "
+                   f"cargo feature on `ghl-sdk`, then call any of the {n} generated "
+                   f"methods on `ghl.{rust_mod}()`:")
+        out.append("")
+        out.append("```toml")
+        out.append(f'ghl-sdk = {{ version = "0.4", features = ["{m}"] }}')
+        out.append("```")
+        out.append("")
+        if m in TYPED_SERVICES:
+            svc, methods = TYPED_SERVICES[m]
+            out.append(f"This module also has hand-written ergonomic helpers on the same "
+                       f"`{svc}`: " + ", ".join(f"`{x}()`" for x in methods)
+                       + " (envelope unwrapping, paginated `Stream`s).")
+            out.append("")
+        if m in MCP_TOOLS:
+            out.append("MCP tools: " + ", ".join(f"`{t}`" for t in MCP_TOOLS.get(m, [])) + ".")
+            out.append("")
+    elif m in TYPED_SERVICES:
         svc, methods = TYPED_SERVICES[m]
         out.append(f"This module has a **typed SDK service**: `{svc}` with "
                    + ", ".join(f"`{x}()`" for x in methods) + ".")
         out.append("")
-        out.append(f"MCP tools: " + ", ".join(f"`{t}`" for t in MCP_TOOLS.get(m, [])) + ".")
+        out.append("MCP tools: " + ", ".join(f"`{t}`" for t in MCP_TOOLS.get(m, [])) + ".")
     else:
         out.append("No hand-written service yet — reach these endpoints two ways:")
         out.append("")
@@ -228,10 +253,20 @@ def render_module(md, shared_enums):
             continue
         out.append(f"## Endpoints — API {api_version}")
         out.append("")
-        out.append("| Method | Path | Summary | Operation id |")
-        out.append("|---|---|---|---|")
+        show_rust = api_version == "v2" and bool(rust_methods)
+        if show_rust:
+            out.append("| Method | Path | Summary | Rust method | Operation id |")
+            out.append("|---|---|---|---|---|")
+        else:
+            out.append("| Method | Path | Summary | Operation id |")
+            out.append("|---|---|---|---|")
         for op in block["ops"]:
-            out.append(f"| `{op['method']}` | `{op['path']}` | {op['summary'] or '—'} | `{md.op_id(op)}` |")
+            row = f"| `{op['method']}` | `{op['path']}` | {op['summary'] or '—'} |"
+            if show_rust:
+                rmm = rust_methods.get((op["method"], op["path"]))
+                row += f" `{rmm[0]}()` |" if rmm else " — |"
+            row += f" `{md.op_id(op)}` |"
+            out.append(row)
         out.append("")
 
         out.append(f"### Endpoint details — {api_version}")
@@ -246,6 +281,7 @@ def render_module(md, shared_enums):
             if op["desc"] and op["desc"] != op["summary"]:
                 out.append(op["desc"])
                 out.append("")
+            rm = rust_methods.get((op["method"], op["path"])) if api_version == "v2" else None
             meta = [f"Operation id: `{oid}`"]
             if op["version"]:
                 meta.append(f"`Version: {op['version']}`")
@@ -294,6 +330,25 @@ def render_module(md, shared_enums):
                 out.append(f"*Response*: [`{op['response']}`](#{anchor(op['response'])})")
                 out.append("")
 
+            if rm:
+                fn, params_ty, svc, rust_mod = rm
+                arg_bits = [f"&{p['name']}" for p in path_p]
+                if params_ty:
+                    arg_bits.append("&params")
+                if op["body"]:
+                    arg_bits.append("&body")
+                out.append("*Rust*:")
+                out.append("")
+                out.append("```rust,ignore")
+                if params_ty:
+                    req_q = [q for q in query_p if q["required"]]
+                    ctor = ", ".join(f"\"{q['name']}\"" for q in req_q)
+                    out.append(f"use ghl_sdk::services::{rust_mod}::{params_ty};")
+                    out.append("")
+                    out.append(f"let params = {params_ty}::new({ctor});")
+                out.append(f"let out = ghl.{rust_mod}().{fn}({', '.join(arg_bits)}).await?;")
+                out.append("```")
+                out.append("")
             # Ready-to-run MCP call
             args = {"operation_id": oid}
             if path_p:
@@ -368,6 +423,23 @@ def main():
     out_dir = pathlib.Path(sys.argv[2])
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    # module -> {(METHOD, path): (rust_fn, params_ty, service, rust_mod)}
+    rust_methods = {}
+    for f in sorted((docs_root / "apps").glob("*.json")):
+        spec = json.loads(f.read_text())
+        if not (spec.get("paths") or {}):
+            continue
+        g = ServiceGen(f.stem, spec)
+        rust_methods[f.stem] = {
+            (o["http"], o["path"]): (
+                o["fn"],
+                o["params_ty"] if o["query"] else None,
+                g.svc_name(),
+                g.rust_mod,
+            )
+            for o in g.ops
+        }
+
     mods = {}
     for api_version, sub in (("v2", "apps"), ("v3", "apps/v3")):
         for f in sorted((docs_root / sub).glob("*.json")):
@@ -379,7 +451,7 @@ def main():
     index_rows = []
     total_ops = total_models = 0
     for module, md in sorted(mods.items()):
-        page = render_module(md, shared_enums)
+        page = render_module(md, shared_enums, rust_methods.get(module, {}))
         (out_dir / f"{module}.md").write_text(page + "\n")
         ops = sum(len(b["ops"]) for b in md.versions.values())
         models = sum(len(b["schemas"]) for b in md.versions.values())

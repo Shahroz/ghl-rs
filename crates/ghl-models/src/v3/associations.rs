@@ -23,45 +23,85 @@ use serde::{Deserialize, Serialize};
 pub struct DeleteAssociationsResponseDTO {
     /// Deletion status
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Association Id
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
 }
 
 /// `GetPostSuccessfulResponseDto` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct GetPostSuccessfulResponseDto {
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// First Objects Association Label (custom_objects.children)
     /// Required by the API.
-    pub key: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub key: Option<String>,
     /// First Objects Association Label (custom_objects.children)
     /// Required by the API.
-    #[serde(rename = "firstObjectLabel")]
-    pub first_object_label: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "firstObjectLabel",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub first_object_label: Option<serde_json::Value>,
     /// First Objects Key
     /// Required by the API.
-    #[serde(rename = "firstObjectKey")]
-    pub first_object_key: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "firstObjectKey",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub first_object_key: Option<serde_json::Value>,
     /// Second Object Association Label (contact)
     /// Required by the API.
-    #[serde(rename = "secondObjectLabel")]
-    pub second_object_label: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "secondObjectLabel",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub second_object_label: Option<serde_json::Value>,
     /// Second Objects Key
     /// Required by the API.
-    #[serde(rename = "secondObjectKey")]
-    pub second_object_key: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "secondObjectKey",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub second_object_key: Option<serde_json::Value>,
     /// Association Type can be USER_DEFINED or SYSTEM_DEFINED
     /// Required by the API.
-    #[serde(rename = "associationType")]
-    pub association_type: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "associationType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub association_type: Option<serde_json::Value>,
 }
 
 /// `UpdateAssociationReqDto` from the GoHighLevel OpenAPI spec.

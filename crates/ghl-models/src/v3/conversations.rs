@@ -48,10 +48,14 @@ pub struct CallDataDTO {
 pub struct CancelScheduledResponseDto {
     /// HTTP Status code of the request
     /// Required by the API.
-    pub status: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<f64>,
     /// Error message of the request
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
 }
 
 /// `CompleteFileUploadDto` from the GoHighLevel OpenAPI spec.
@@ -83,11 +87,18 @@ pub struct CompleteFileUploadDto {
 pub struct CompleteFileUploadResponseDto {
     /// Map of filename to public URL
     /// Required by the API.
-    #[serde(rename = "uploadedFiles")]
-    pub uploaded_files: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "uploadedFiles",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub uploaded_files: Option<serde_json::Value>,
     /// File metadata
     /// Required by the API.
-    pub metadata: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub metadata: Option<serde_json::Value>,
 }
 
 /// `ConversationCreateResponseDto` from the GoHighLevel OpenAPI spec.
@@ -95,30 +106,51 @@ pub struct CompleteFileUploadResponseDto {
 pub struct ConversationCreateResponseDto {
     /// Unique identifier for the conversation
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Date when the conversation was last updated
     /// Required by the API.
-    #[serde(rename = "dateUpdated")]
-    pub date_updated: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dateUpdated",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub date_updated: Option<String>,
     /// Date when the conversation was created
     /// Required by the API.
-    #[serde(rename = "dateAdded")]
-    pub date_added: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dateAdded", default, skip_serializing_if = "Option::is_none")]
+    pub date_added: Option<String>,
     /// Flag indicating if this conversation has been deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Unique identifier of the contact associated with this conversation
     /// Required by the API.
-    #[serde(rename = "contactId")]
-    pub contact_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
+    pub contact_id: Option<String>,
     /// Unique identifier of the business location where this conversation takes place
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Date of the last message in the conversation
     /// Required by the API.
-    #[serde(rename = "lastMessageDate")]
-    pub last_message_date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "lastMessageDate",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_message_date: Option<String>,
     /// Unique identifier of the team member assigned to this conversation
     #[serde(
         rename = "assignedTo",
@@ -136,12 +168,18 @@ pub struct ConversationDto {
     pub id: Option<String>,
     /// Location ID as string
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Contact ID as string
     /// Required by the API.
-    #[serde(rename = "contactId")]
-    pub contact_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
+    pub contact_id: Option<String>,
     /// Assigned User ID as string
     #[serde(
         rename = "assignedTo",
@@ -192,7 +230,9 @@ pub struct ConversationDto {
     pub starred: Option<bool>,
     /// Deleted status of the conversation.
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
 }
 
 /// `ConversationSchema` from the GoHighLevel OpenAPI spec.
@@ -200,51 +240,85 @@ pub struct ConversationDto {
 pub struct ConversationSchema {
     /// Conversation Id
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Contact Id
     /// Required by the API.
-    #[serde(rename = "contactId")]
-    pub contact_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
+    pub contact_id: Option<String>,
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Content of the most recent message in the conversation
     /// Required by the API.
-    #[serde(rename = "lastMessageBody")]
-    pub last_message_body: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "lastMessageBody",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_message_body: Option<String>,
     /// Channel/type of the most recent message (SMS, Email, Call, etc)
     /// Allowed values: `TYPE_CALL`, `TYPE_SMS`, `TYPE_RCS`, `TYPE_EMAIL`,
     /// `TYPE_SMS_REVIEW_REQUEST`, `TYPE_WEBCHAT`, `TYPE_SMS_NO_SHOW_REQUEST`,
     /// `TYPE_CAMPAIGN_SMS`, `TYPE_CAMPAIGN_CALL`, `TYPE_CAMPAIGN_EMAIL`,
     /// `TYPE_CAMPAIGN_VOICEMAIL`, `TYPE_FACEBOOK`.
     /// Required by the API.
-    #[serde(rename = "lastMessageType")]
-    pub last_message_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "lastMessageType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_message_type: Option<String>,
     /// Primary channel/type of the conversation (Phone, Email, etc)
     /// Allowed values: `TYPE_PHONE`, `TYPE_EMAIL`, `TYPE_FB_MESSENGER`, `TYPE_REVIEW`,
     /// `TYPE_GROUP_SMS`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Number of unread messages in this conversation
     /// Required by the API.
-    #[serde(rename = "unreadCount")]
-    pub unread_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "unreadCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub unread_count: Option<f64>,
     /// Complete name of the contact (first and last name)
     /// Required by the API.
-    #[serde(rename = "fullName")]
-    pub full_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "fullName", default, skip_serializing_if = "Option::is_none")]
+    pub full_name: Option<String>,
     /// Alternative display name for the contact - used when full name is not available
     /// Required by the API.
-    #[serde(rename = "contactName")]
-    pub contact_name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contactName",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub contact_name: Option<String>,
     /// Primary email address of the contact
     /// Required by the API.
-    pub email: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
     /// Primary phone number of the contact
     /// Required by the API.
-    pub phone: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub phone: Option<String>,
 }
 
 /// `CreateConversationDto` from the GoHighLevel OpenAPI spec.
@@ -265,10 +339,14 @@ pub struct CreateConversationDto {
 pub struct CreateConversationSuccessResponse {
     /// Indicates whether the API request was successful.
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Conversation data of the provided conversation ID.
     /// Required by the API.
-    pub conversation: ConversationCreateResponseDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub conversation: Option<ConversationCreateResponseDto>,
 }
 
 /// `CreateLiveChatMessageFeedbackResponse` from the GoHighLevel OpenAPI spec.
@@ -276,7 +354,9 @@ pub struct CreateConversationSuccessResponse {
 pub struct CreateLiveChatMessageFeedbackResponse {
     /// Whether the live chat feedback was recorded successfully
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `DeleteConversationSuccessfulResponse` from the GoHighLevel OpenAPI spec.
@@ -284,7 +364,9 @@ pub struct CreateLiveChatMessageFeedbackResponse {
 pub struct DeleteConversationSuccessfulResponse {
     /// Boolean value as the API response.
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// Aggregate delivery event counters for the email message. Values are merged into existing
@@ -357,6 +439,7 @@ pub struct ErrorDto {
 pub struct ExportMessagesResponseDto {
     /// Array of messages
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub messages: Vec<GetMessageResponseDto>,
     /// Cursor for fetching next page. Null if no more results.
@@ -368,7 +451,9 @@ pub struct ExportMessagesResponseDto {
     pub next_cursor: Option<String>,
     /// Total number of messages matching the query
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
 }
 
 /// `ForwardConfigDto` from the GoHighLevel OpenAPI spec.
@@ -493,27 +578,43 @@ pub struct ForwardResponseDto {
 pub struct GetConversationByIdResponse {
     /// Unique identifier of the contact associated with this conversation
     /// Required by the API.
-    #[serde(rename = "contactId")]
-    pub contact_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
+    pub contact_id: Option<String>,
     /// Unique identifier of the business location where this conversation takes place
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Flag indicating if this conversation has been moved to trash/deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Flag indicating if this conversation is currently in the main inbox view
     /// Required by the API.
-    pub inbox: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub inbox: Option<bool>,
     /// Communication channel type for this conversation: 1 (Phone), 2 (Email), 3 (Facebook
     /// Messenger), 4 (Review), 5 (Group SMS), 6 (Internal Chat - coming soon)
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<f64>,
     /// Number of messages in this conversation that have not been read by the user
     /// Required by the API.
-    #[serde(rename = "unreadCount")]
-    pub unread_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "unreadCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub unread_count: Option<f64>,
     /// Unique identifier of the team member currently responsible for handling this
     /// conversation
     #[serde(
@@ -524,7 +625,9 @@ pub struct GetConversationByIdResponse {
     pub assigned_to: Option<String>,
     /// Unique identifier for this specific conversation thread
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Flag indicating if this conversation has been marked as important/starred by the user
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub starred: Option<bool>,
@@ -535,10 +638,14 @@ pub struct GetConversationByIdResponse {
 pub struct GetConversationSuccessfulResponse {
     /// Boolean value as the API response.
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Conversation data of the provided conversation ID.
     /// Required by the API.
-    pub conversation: ConversationDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub conversation: Option<ConversationDto>,
 }
 
 /// `GetEmailMessageResponseDto` from the GoHighLevel OpenAPI spec.
@@ -546,40 +653,59 @@ pub struct GetConversationSuccessfulResponse {
 pub struct GetEmailMessageResponseDto {
     /// Unique identifier for the email message
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// External Id
     #[serde(rename = "altId", default, skip_serializing_if = "Option::is_none")]
     pub alt_id: Option<String>,
     /// Message Id or thread Id
     /// Required by the API.
-    #[serde(rename = "threadId")]
-    pub thread_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "threadId", default, skip_serializing_if = "Option::is_none")]
+    pub thread_id: Option<String>,
     /// Location ID associated with the email message
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Contact ID associated with the email message
     /// Required by the API.
-    #[serde(rename = "contactId")]
-    pub contact_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
+    pub contact_id: Option<String>,
     /// Conversation ID associated with the email message
     /// Required by the API.
-    #[serde(rename = "conversationId")]
-    pub conversation_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "conversationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub conversation_id: Option<String>,
     /// Timestamp when the email message was created
     /// Required by the API.
-    #[serde(rename = "dateAdded")]
-    pub date_added: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dateAdded", default, skip_serializing_if = "Option::is_none")]
+    pub date_added: Option<String>,
     /// Subject line of the email message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub subject: Option<String>,
     /// Body content of the email message
     /// Required by the API.
-    pub body: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub body: Option<String>,
     /// Direction of the email message
     /// Allowed values: `inbound`, `outbound`.
     /// Required by the API.
-    pub direction: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub direction: Option<String>,
     /// Delivery status of the email message
     /// Allowed values: `pending`, `scheduled`, `sent`, `delivered`, `read`, `undelivered`,
     /// `connected`, `failed`, `opened`.
@@ -587,8 +713,13 @@ pub struct GetEmailMessageResponseDto {
     pub status: Option<String>,
     /// Content type of the email body
     /// Required by the API.
-    #[serde(rename = "contentType")]
-    pub content_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contentType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub content_type: Option<String>,
     /// An array of attachment URLs.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub attachments: Vec<String>,
@@ -597,10 +728,12 @@ pub struct GetEmailMessageResponseDto {
     pub provider: Option<String>,
     /// Name and Email Id of the sender
     /// Required by the API.
-    #[serde(rename = "from")]
-    pub from_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "from", default, skip_serializing_if = "Option::is_none")]
+    pub from_: Option<String>,
     /// List of email Ids of the receivers
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub to: Vec<String>,
     /// List of email Ids of the people in the cc field
@@ -634,42 +767,64 @@ pub struct GetEmailMessageResponseDto {
 pub struct GetMessageResponseDto {
     /// Unique identifier for the message
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Numeric message type code
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<f64>,
     /// Type of the message as a string
     /// Allowed values: `TYPE_CALL`, `TYPE_SMS`, `TYPE_RCS`, `TYPE_EMAIL`,
     /// `TYPE_SMS_REVIEW_REQUEST`, `TYPE_WEBCHAT`, `TYPE_SMS_NO_SHOW_REQUEST`,
     /// `TYPE_CAMPAIGN_SMS`, `TYPE_CAMPAIGN_CALL`, `TYPE_CAMPAIGN_EMAIL`,
     /// `TYPE_CAMPAIGN_VOICEMAIL`, `TYPE_FACEBOOK`.
     /// Required by the API.
-    #[serde(rename = "messageType")]
-    pub message_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "messageType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub message_type: Option<String>,
     /// Location ID associated with the message
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Contact ID associated with the message
     /// Required by the API.
-    #[serde(rename = "contactId")]
-    pub contact_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
+    pub contact_id: Option<String>,
     /// Conversation ID associated with the message
     /// Required by the API.
-    #[serde(rename = "conversationId")]
-    pub conversation_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "conversationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub conversation_id: Option<String>,
     /// Timestamp when the message was created
     /// Required by the API.
-    #[serde(rename = "dateAdded")]
-    pub date_added: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dateAdded", default, skip_serializing_if = "Option::is_none")]
+    pub date_added: Option<String>,
     /// Body content of the message
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub body: Option<String>,
     /// Direction of the message
     /// Allowed values: `inbound`, `outbound`.
     /// Required by the API.
-    pub direction: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub direction: Option<String>,
     /// Delivery status of the message
     /// Allowed values: `connected`, `delivered`, `failed`, `opened`, `pending`, `read`,
     /// `scheduled`, `sent`, `undelivered`, `clicked`, `opt_out`, `queued`.
@@ -677,8 +832,13 @@ pub struct GetMessageResponseDto {
     pub status: Option<String>,
     /// Content type of the message body
     /// Required by the API.
-    #[serde(rename = "contentType")]
-    pub content_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "contentType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub content_type: Option<String>,
     /// An array of attachment URLs. Attachments will be empty for Call and Voicemails, type 1
     /// and 10. Please use get call recording API to fetch call recording and voicemails.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -714,26 +874,42 @@ pub struct GetMessageResponseDto {
 pub struct GetMessageTranscriptionResponseDto {
     /// Media channel describes the user interaction channel
     /// Required by the API.
-    #[serde(rename = "mediaChannel")]
-    pub media_channel: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "mediaChannel",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub media_channel: Option<f64>,
     /// Index of the sentence in the transcription
     /// Required by the API.
-    #[serde(rename = "sentenceIndex")]
-    pub sentence_index: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "sentenceIndex",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub sentence_index: Option<f64>,
     /// Start time of the sentence in milliseconds
     /// Required by the API.
-    #[serde(rename = "startTime")]
-    pub start_time: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "startTime", default, skip_serializing_if = "Option::is_none")]
+    pub start_time: Option<f64>,
     /// End time of the sentence in milliseconds
     /// Required by the API.
-    #[serde(rename = "endTime")]
-    pub end_time: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "endTime", default, skip_serializing_if = "Option::is_none")]
+    pub end_time: Option<f64>,
     /// Transcript of the sentence
     /// Required by the API.
-    pub transcript: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub transcript: Option<String>,
     /// Confidence of the transcription
     /// Required by the API.
-    pub confidence: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub confidence: Option<f64>,
 }
 
 /// `GetMessagesByConversationResponseDto` from the GoHighLevel OpenAPI spec.
@@ -741,16 +917,23 @@ pub struct GetMessageTranscriptionResponseDto {
 pub struct GetMessagesByConversationResponseDto {
     /// Id of the last message in the messages array
     /// Required by the API.
-    #[serde(rename = "lastMessageId")]
-    pub last_message_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "lastMessageId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub last_message_id: Option<String>,
     /// Next page value true indicates only 20 message is in the response. Rest of the messages
     /// are in the next page. Please use the lastMessageId value in the query to get the next
     /// page messages
     /// Required by the API.
-    #[serde(rename = "nextPage")]
-    pub next_page: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "nextPage", default, skip_serializing_if = "Option::is_none")]
+    pub next_page: Option<bool>,
     /// Array of messages
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub messages: Vec<GetMessageResponseDto>,
 }
@@ -786,24 +969,33 @@ pub struct InitiateFileUploadDto {
 pub struct InitiateFileUploadResponseDto {
     /// Signed URL for direct upload to GCS. Use PUT request with file content.
     /// Required by the API.
-    #[serde(rename = "uploadUrl")]
-    pub upload_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "uploadUrl", default, skip_serializing_if = "Option::is_none")]
+    pub upload_url: Option<String>,
     /// Unique upload ID for tracking and completing the upload
     /// Required by the API.
-    #[serde(rename = "uploadId")]
-    pub upload_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "uploadId", default, skip_serializing_if = "Option::is_none")]
+    pub upload_id: Option<String>,
     /// File path in GCS bucket (needed for confirmation endpoint)
     /// Required by the API.
-    #[serde(rename = "filePath")]
-    pub file_path: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "filePath", default, skip_serializing_if = "Option::is_none")]
+    pub file_path: Option<String>,
     /// URL expiration timestamp (Unix milliseconds)
     /// Required by the API.
-    #[serde(rename = "expiresAt")]
-    pub expires_at: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "expiresAt", default, skip_serializing_if = "Option::is_none")]
+    pub expires_at: Option<f64>,
     /// Maximum allowed file size in bytes
     /// Required by the API.
-    #[serde(rename = "maxFileSize")]
-    pub max_file_size: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "maxFileSize",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub max_file_size: Option<f64>,
 }
 
 /// `MessageMeta` from the GoHighLevel OpenAPI spec.
@@ -907,18 +1099,28 @@ pub struct ProcessMessageBodyDto {
 pub struct ProcessMessageResponseDto {
     /// Whether the message processing succeeded
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Conversation ID.
     /// Required by the API.
-    #[serde(rename = "conversationId")]
-    pub conversation_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "conversationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub conversation_id: Option<String>,
     /// This is the main Message ID
     /// Required by the API.
-    #[serde(rename = "messageId")]
-    pub message_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "messageId", default, skip_serializing_if = "Option::is_none")]
+    pub message_id: Option<String>,
     /// Result message returned after processing
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Contact ID associated with the processed message
     #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
     pub contact_id: Option<String>,
@@ -971,11 +1173,14 @@ pub struct ProcessOutboundMessageBodyDto {
 pub struct SendConversationResponseDto {
     /// The list of all conversations found for the given query
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub conversations: Vec<ConversationSchema>,
     /// Total Number of results found for the given query
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
 }
 
 /// `SendMessageBodyDto` from the GoHighLevel OpenAPI spec.
@@ -1113,8 +1318,13 @@ pub struct SendMessageBodyDto {
 pub struct SendMessageResponseDto {
     /// Conversation ID.
     /// Required by the API.
-    #[serde(rename = "conversationId")]
-    pub conversation_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "conversationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub conversation_id: Option<String>,
     /// This contains the email message ID (only for Email type). Use this ID to send inbound
     /// replies through this API to create a threaded email.
     #[serde(
@@ -1125,8 +1335,9 @@ pub struct SendMessageResponseDto {
     pub email_message_id: Option<String>,
     /// This is the main Message ID
     /// Required by the API.
-    #[serde(rename = "messageId")]
-    pub message_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "messageId", default, skip_serializing_if = "Option::is_none")]
+    pub message_id: Option<String>,
     /// When sending via the GMB channel, we will be returning list of `messageIds` instead of
     /// single `messageId`.
     #[serde(rename = "messageIds", default, skip_serializing_if = "Vec::is_empty")]
@@ -1144,7 +1355,9 @@ pub struct SendMessageResponseDto {
     /// Message status
     /// Allowed values: `delivered`, `failed`, `pending`, `read`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
 }
 
 /// `SendReviewReplyDto` from the GoHighLevel OpenAPI spec.
@@ -1245,10 +1458,14 @@ pub struct UpdateEmailMessageStatusDto {
 pub struct UpdateEmailMessageStatusResponseDto {
     /// Whether the status update was persisted successfully.
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Human-readable result message.
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
 }
 
 /// `UpdateMessageStatusDto` from the GoHighLevel OpenAPI spec.
@@ -1347,10 +1564,14 @@ pub struct UploadFilesErrorResponseDto {
     /// HTTP Status code of the request
     /// Allowed values: `400`, `413`, `415`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Error message of the request
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
 }
 
 /// `UploadFilesResponseDto` from the GoHighLevel OpenAPI spec.
@@ -1358,8 +1579,13 @@ pub struct UploadFilesErrorResponseDto {
 pub struct UploadFilesResponseDto {
     /// Map of uploaded file names to their accessible URLs
     /// Required by the API.
-    #[serde(rename = "uploadedFiles")]
-    pub uploaded_files: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "uploadedFiles",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub uploaded_files: Option<serde_json::Value>,
     /// Twilio media SIDs for group SMS (when isGroupSms=true)
     #[serde(
         rename = "twilioMediaSids",

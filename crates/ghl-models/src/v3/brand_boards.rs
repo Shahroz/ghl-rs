@@ -23,15 +23,19 @@ use serde::{Deserialize, Serialize};
 pub struct BrandBoardListItemDTO {
     /// Brand board ID
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Brand board name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Last update timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Whether this is the default brand board for the location
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub default: Option<bool>,
@@ -269,22 +273,29 @@ pub struct BrandVoiceAnswersPublicV1Dto {
 pub struct BrandVoicePublicV1Dto {
     /// Brand voice ID
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Brand voice name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Whether this is the default brand voice
     /// Required by the API.
-    #[serde(rename = "isDefault")]
-    pub is_default: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isDefault", default, skip_serializing_if = "Option::is_none")]
+    pub is_default: Option<bool>,
     /// Creation timestamp
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Last update timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `Color` from the GoHighLevel OpenAPI spec.
@@ -295,19 +306,29 @@ pub struct Color {
     pub id: Option<String>,
     /// Color in 8-digit hexadecimal notation with alpha channel
     /// Required by the API.
-    pub hexa: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hexa: Option<String>,
     /// Color with red, green, blue, and alpha channel values
     /// Required by the API.
-    pub rgba: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rgba: Option<String>,
     /// Color in HEX format
     /// Required by the API.
-    pub hex: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hex: Option<String>,
     /// Color in RGB format
     /// Required by the API.
-    pub rgb: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rgb: Option<String>,
     /// Display label for the color
     /// Required by the API.
-    pub label: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
 }
 
 /// `CreateBrandBoardParam` from the GoHighLevel OpenAPI spec.
@@ -380,29 +401,43 @@ pub struct CreateBrandVoicePublicV1BodyDto {
 pub struct CreateBrandVoicePublicV1ResponseDto {
     /// Brand voice ID
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Brand voice name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Whether this is the default brand voice
     /// Required by the API.
-    #[serde(rename = "isDefault")]
-    pub is_default: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isDefault", default, skip_serializing_if = "Option::is_none")]
+    pub is_default: Option<bool>,
     /// Creation timestamp
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Last update timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Whether the brand voice has been soft deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Brand voice answers
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub answers: Option<BrandVoiceAnswersPublicV1Dto>,
@@ -416,7 +451,9 @@ pub struct CreateBrandVoicePublicV1ResponseDto {
 pub struct DeleteBrandVoicePublicV1ResponseDto {
     /// Whether the brand voice is deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Trace ID of request
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
@@ -430,13 +467,19 @@ pub struct Font {
     pub id: Option<String>,
     /// Font family name
     /// Required by the API.
-    pub font: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub font: Option<String>,
     /// Fallback font family
     /// Required by the API.
-    pub fallback: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub fallback: Option<String>,
     /// Display label for the font
     /// Required by the API.
-    pub label: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
 }
 
 /// `GetBrandBoardSuccessDTO` from the GoHighLevel OpenAPI spec.
@@ -444,15 +487,23 @@ pub struct Font {
 pub struct GetBrandBoardSuccessDTO {
     /// Brand board ID
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Brand board name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Array of logos
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub logos: Vec<Logo>,
@@ -464,10 +515,14 @@ pub struct GetBrandBoardSuccessDTO {
     pub fonts: Vec<Font>,
     /// Whether this is the default brand board for the location
     /// Required by the API.
-    pub default: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub default: Option<bool>,
     /// Whether the brand board has been soft deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Parent folder ID in media library
     #[serde(rename = "parentId", default, skip_serializing_if = "Option::is_none")]
     pub parent_id: Option<String>,
@@ -500,12 +555,18 @@ pub struct GetBrandBoardSuccessDTO {
 pub struct GetBrandBoardsByLocationSuccessDTO {
     /// Array of brand boards for the location
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(rename = "brandBoards", default, skip_serializing_if = "Vec::is_empty")]
     pub brand_boards: Vec<BrandBoardListItemDTO>,
     /// Total number of brand boards matching the query
     /// Required by the API.
-    #[serde(rename = "totalCount")]
-    pub total_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "totalCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub total_count: Option<f64>,
 }
 
 /// `GetBrandVoicePublicV1ResponseDto` from the GoHighLevel OpenAPI spec.
@@ -513,29 +574,43 @@ pub struct GetBrandBoardsByLocationSuccessDTO {
 pub struct GetBrandVoicePublicV1ResponseDto {
     /// Brand voice ID
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Brand voice name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Whether this is the default brand voice
     /// Required by the API.
-    #[serde(rename = "isDefault")]
-    pub is_default: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isDefault", default, skip_serializing_if = "Option::is_none")]
+    pub is_default: Option<bool>,
     /// Creation timestamp
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Last update timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Whether the brand voice has been soft deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Brand voice answers
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub answers: Option<BrandVoiceAnswersPublicV1Dto>,
@@ -564,11 +639,14 @@ pub struct InvalidLocationDTO {
 pub struct ListBrandVoicesPublicV1ResponseDto {
     /// List of brand voices
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<BrandVoicePublicV1Dto>,
     /// Total count of brand voices
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Trace ID of request
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
@@ -583,13 +661,19 @@ pub struct Logo {
     /// Public URL of the logo image. Used for uploading to the brand board folder in media
     /// library
     /// Required by the API.
-    pub url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
     /// Display label for the logo (e.g., Primary, Secondary)
     /// Required by the API.
-    pub label: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub label: Option<String>,
     /// Storage path of the logo in the media library
     /// Required by the API.
-    pub path: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub path: Option<String>,
 }
 
 /// `MetaData` from the GoHighLevel OpenAPI spec.
@@ -623,14 +707,17 @@ pub struct MetaData {
 pub struct MissingAssets {
     /// Logo labels that used fallbacks
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub logos: Vec<String>,
     /// Font labels that used defaults
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub fonts: Vec<String>,
     /// Color labels that used defaults
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub colors: Vec<String>,
 }
@@ -658,11 +745,18 @@ pub struct NotFoundDTO {
 pub struct SetDefaultBrandVoicePublicV1ResponseDto {
     /// Whether the operation was successful
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Brand voice ID that was set as default
     /// Required by the API.
-    #[serde(rename = "brandVoiceId")]
-    pub brand_voice_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "brandVoiceId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub brand_voice_id: Option<String>,
     /// Trace ID of request
     #[serde(rename = "traceId", default, skip_serializing_if = "Option::is_none")]
     pub trace_id: Option<String>,
@@ -823,29 +917,43 @@ pub struct UpdateBrandVoicePublicV1BodyDto {
 pub struct UpdateBrandVoicePublicV1ResponseDto {
     /// Brand voice ID
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Brand voice name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Whether this is the default brand voice
     /// Required by the API.
-    #[serde(rename = "isDefault")]
-    pub is_default: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isDefault", default, skip_serializing_if = "Option::is_none")]
+    pub is_default: Option<bool>,
     /// Creation timestamp
     /// Required by the API.
-    #[serde(rename = "createdAt")]
-    pub created_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "createdAt", default, skip_serializing_if = "Option::is_none")]
+    pub created_at: Option<String>,
     /// Last update timestamp
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Whether the brand voice has been soft deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
     /// Brand voice answers
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub answers: Option<BrandVoiceAnswersPublicV1Dto>,

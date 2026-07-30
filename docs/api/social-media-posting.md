@@ -4,74 +4,57 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `social-media-posting` cargo feature on `ghl-sdk`, then call any of the 40 generated methods on `ghl.social_media_posting()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features social-media-posting
-use ghl_models::v2::social_media_posting::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["social-media-posting"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "social-media-posting"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/social-media-posting/oauth/facebook/start` | Starts OAuth For Facebook Account | `social-media-posting.get_social_media_posting_oauth_facebook_start` |
-| `GET` | `/social-media-posting/oauth/google/start` | Starts OAuth For Google Account | `social-media-posting.get_social_media_posting_oauth_google_start` |
-| `GET` | `/social-media-posting/oauth/instagram/start` | Starts OAuth For Instagram Account | `social-media-posting.get_social_media_posting_oauth_instagram_start` |
-| `GET` | `/social-media-posting/oauth/linkedin/start` | Starts OAuth For LinkedIn Account | `social-media-posting.get_social_media_posting_oauth_linkedin_start` |
-| `GET` | `/social-media-posting/oauth/tiktok-business/start` | Starts OAuth For Tiktok Business Account | `social-media-posting.get_social_media_posting_oauth_tiktok_business_start` |
-| `GET` | `/social-media-posting/oauth/tiktok/start` | Starts OAuth For Tiktok Account | `social-media-posting.get_social_media_posting_oauth_tiktok_start` |
-| `GET` | `/social-media-posting/oauth/twitter/start` | Starts OAuth For Twitter Account | `social-media-posting.get_social_media_posting_oauth_twitter_start` |
-| `GET` | `/social-media-posting/oauth/{locationId}/facebook/accounts/{accountId}` | Get facebook pages | `social-media-posting.get_social_media_posting_oauth_by_locationId_facebook_accounts_by_accountId` |
-| `POST` | `/social-media-posting/oauth/{locationId}/facebook/accounts/{accountId}` | Attach facebook pages | `social-media-posting.post_social_media_posting_oauth_by_locationId_facebook_accounts_by_accountId` |
-| `GET` | `/social-media-posting/oauth/{locationId}/google/locations/{accountId}` | Get google business locations | `social-media-posting.get_social_media_posting_oauth_by_locationId_google_locations_by_accountId` |
-| `POST` | `/social-media-posting/oauth/{locationId}/google/locations/{accountId}` | Set google business locations | `social-media-posting.post_social_media_posting_oauth_by_locationId_google_locations_by_accountId` |
-| `GET` | `/social-media-posting/oauth/{locationId}/instagram/accounts/{accountId}` | Get Instagram Professional Accounts | `social-media-posting.get_social_media_posting_oauth_by_locationId_instagram_accounts_by_accountId` |
-| `POST` | `/social-media-posting/oauth/{locationId}/instagram/accounts/{accountId}` | Attach Instagram Professional Accounts | `social-media-posting.post_social_media_posting_oauth_by_locationId_instagram_accounts_by_accountId` |
-| `GET` | `/social-media-posting/oauth/{locationId}/linkedin/accounts/{accountId}` | Get Linkedin pages and profile | `social-media-posting.get_social_media_posting_oauth_by_locationId_linkedin_accounts_by_accountId` |
-| `POST` | `/social-media-posting/oauth/{locationId}/linkedin/accounts/{accountId}` | Attach linkedin pages and profile | `social-media-posting.post_social_media_posting_oauth_by_locationId_linkedin_accounts_by_accountId` |
-| `GET` | `/social-media-posting/oauth/{locationId}/tiktok-business/accounts/{accountId}` | Get Tiktok Business profile | `social-media-posting.get_social_media_posting_oauth_by_locationId_tiktok_business_accounts_by_accountId` |
-| `GET` | `/social-media-posting/oauth/{locationId}/tiktok/accounts/{accountId}` | Get Tiktok profile | `social-media-posting.get_social_media_posting_oauth_by_locationId_tiktok_accounts_by_accountId` |
-| `POST` | `/social-media-posting/oauth/{locationId}/tiktok/accounts/{accountId}` | Attach Tiktok profile | `social-media-posting.post_social_media_posting_oauth_by_locationId_tiktok_accounts_by_accountId` |
-| `GET` | `/social-media-posting/oauth/{locationId}/twitter/accounts/{accountId}` | Get Twitter profile | `social-media-posting.get_social_media_posting_oauth_by_locationId_twitter_accounts_by_accountId` |
-| `POST` | `/social-media-posting/oauth/{locationId}/twitter/accounts/{accountId}` | Attach Twitter profile | `social-media-posting.post_social_media_posting_oauth_by_locationId_twitter_accounts_by_accountId` |
-| `POST` | `/social-media-posting/statistics` | Get Social Media Statistics | `social-media-posting.post_social_media_posting_statistics` |
-| `GET` | `/social-media-posting/{locationId}/accounts` | Get Accounts | `social-media-posting.get_social_media_posting_by_locationId_accounts` |
-| `DELETE` | `/social-media-posting/{locationId}/accounts/{id}` | Delete Account | `social-media-posting.delete_social_media_posting_by_locationId_accounts_by_id` |
-| `GET` | `/social-media-posting/{locationId}/categories` | Get categories by location id | `social-media-posting.get_social_media_posting_by_locationId_categories` |
-| `GET` | `/social-media-posting/{locationId}/categories/{id}` | Get categories by id | `social-media-posting.get_social_media_posting_by_locationId_categories_by_id` |
-| `GET` | `/social-media-posting/{locationId}/csv` | Get Upload Status | `social-media-posting.get_social_media_posting_by_locationId_csv` |
-| `POST` | `/social-media-posting/{locationId}/csv` | Upload CSV | `social-media-posting.post_social_media_posting_by_locationId_csv` |
-| `DELETE` | `/social-media-posting/{locationId}/csv/{csvId}/post/{postId}` | Delete CSV Post | `social-media-posting.delete_social_media_posting_by_locationId_csv_by_csvId_post_by_postId` |
-| `DELETE` | `/social-media-posting/{locationId}/csv/{id}` | Delete CSV | `social-media-posting.delete_social_media_posting_by_locationId_csv_by_id` |
-| `GET` | `/social-media-posting/{locationId}/csv/{id}` | Get CSV Post | `social-media-posting.get_social_media_posting_by_locationId_csv_by_id` |
-| `PATCH` | `/social-media-posting/{locationId}/csv/{id}` | Start CSV Finalize | `social-media-posting.patch_social_media_posting_by_locationId_csv_by_id` |
-| `POST` | `/social-media-posting/{locationId}/posts` | Create post | `social-media-posting.post_social_media_posting_by_locationId_posts` |
-| `POST` | `/social-media-posting/{locationId}/posts/bulk-delete` | Bulk Delete Social Planner Posts | `social-media-posting.post_social_media_posting_by_locationId_posts_bulk_delete` |
-| `POST` | `/social-media-posting/{locationId}/posts/list` | Get posts | `social-media-posting.post_social_media_posting_by_locationId_posts_list` |
-| `DELETE` | `/social-media-posting/{locationId}/posts/{id}` | Delete Post | `social-media-posting.delete_social_media_posting_by_locationId_posts_by_id` |
-| `GET` | `/social-media-posting/{locationId}/posts/{id}` | Get post | `social-media-posting.get_social_media_posting_by_locationId_posts_by_id` |
-| `PUT` | `/social-media-posting/{locationId}/posts/{id}` | Edit post | `social-media-posting.put_social_media_posting_by_locationId_posts_by_id` |
-| `POST` | `/social-media-posting/{locationId}/set-accounts` | Set Accounts | `social-media-posting.post_social_media_posting_by_locationId_set_accounts` |
-| `GET` | `/social-media-posting/{locationId}/tags` | Get tags by location id | `social-media-posting.get_social_media_posting_by_locationId_tags` |
-| `POST` | `/social-media-posting/{locationId}/tags/details` | Get tags by ids | `social-media-posting.post_social_media_posting_by_locationId_tags_details` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/social-media-posting/oauth/facebook/start` | Starts OAuth For Facebook Account | `starts_o_auth_for_facebook_account()` | `social-media-posting.get_social_media_posting_oauth_facebook_start` |
+| `GET` | `/social-media-posting/oauth/google/start` | Starts OAuth For Google Account | `starts_o_auth_for_google_account()` | `social-media-posting.get_social_media_posting_oauth_google_start` |
+| `GET` | `/social-media-posting/oauth/instagram/start` | Starts OAuth For Instagram Account | `starts_o_auth_for_instagram_account()` | `social-media-posting.get_social_media_posting_oauth_instagram_start` |
+| `GET` | `/social-media-posting/oauth/linkedin/start` | Starts OAuth For LinkedIn Account | `starts_o_auth_for_linked_in_account()` | `social-media-posting.get_social_media_posting_oauth_linkedin_start` |
+| `GET` | `/social-media-posting/oauth/tiktok-business/start` | Starts OAuth For Tiktok Business Account | `starts_o_auth_for_tiktok_business_account()` | `social-media-posting.get_social_media_posting_oauth_tiktok_business_start` |
+| `GET` | `/social-media-posting/oauth/tiktok/start` | Starts OAuth For Tiktok Account | `starts_o_auth_for_tiktok_account()` | `social-media-posting.get_social_media_posting_oauth_tiktok_start` |
+| `GET` | `/social-media-posting/oauth/twitter/start` | Starts OAuth For Twitter Account | `starts_o_auth_for_twitter_account()` | `social-media-posting.get_social_media_posting_oauth_twitter_start` |
+| `GET` | `/social-media-posting/oauth/{locationId}/facebook/accounts/{accountId}` | Get facebook pages | `get_facebook_pages()` | `social-media-posting.get_social_media_posting_oauth_by_locationId_facebook_accounts_by_accountId` |
+| `POST` | `/social-media-posting/oauth/{locationId}/facebook/accounts/{accountId}` | Attach facebook pages | `attach_facebook_pages()` | `social-media-posting.post_social_media_posting_oauth_by_locationId_facebook_accounts_by_accountId` |
+| `GET` | `/social-media-posting/oauth/{locationId}/google/locations/{accountId}` | Get google business locations | `get_google_business_locations()` | `social-media-posting.get_social_media_posting_oauth_by_locationId_google_locations_by_accountId` |
+| `POST` | `/social-media-posting/oauth/{locationId}/google/locations/{accountId}` | Set google business locations | `set_google_business_locations()` | `social-media-posting.post_social_media_posting_oauth_by_locationId_google_locations_by_accountId` |
+| `GET` | `/social-media-posting/oauth/{locationId}/instagram/accounts/{accountId}` | Get Instagram Professional Accounts | `get_instagram_professional_accounts()` | `social-media-posting.get_social_media_posting_oauth_by_locationId_instagram_accounts_by_accountId` |
+| `POST` | `/social-media-posting/oauth/{locationId}/instagram/accounts/{accountId}` | Attach Instagram Professional Accounts | `attach_instagram_professional_accounts()` | `social-media-posting.post_social_media_posting_oauth_by_locationId_instagram_accounts_by_accountId` |
+| `GET` | `/social-media-posting/oauth/{locationId}/linkedin/accounts/{accountId}` | Get Linkedin pages and profile | `get_linkedin_pages_and_profile()` | `social-media-posting.get_social_media_posting_oauth_by_locationId_linkedin_accounts_by_accountId` |
+| `POST` | `/social-media-posting/oauth/{locationId}/linkedin/accounts/{accountId}` | Attach linkedin pages and profile | `attach_linkedin_pages_and_profile()` | `social-media-posting.post_social_media_posting_oauth_by_locationId_linkedin_accounts_by_accountId` |
+| `GET` | `/social-media-posting/oauth/{locationId}/tiktok-business/accounts/{accountId}` | Get Tiktok Business profile | `get_tiktok_business_profile()` | `social-media-posting.get_social_media_posting_oauth_by_locationId_tiktok_business_accounts_by_accountId` |
+| `GET` | `/social-media-posting/oauth/{locationId}/tiktok/accounts/{accountId}` | Get Tiktok profile | `get_tiktok_profile()` | `social-media-posting.get_social_media_posting_oauth_by_locationId_tiktok_accounts_by_accountId` |
+| `POST` | `/social-media-posting/oauth/{locationId}/tiktok/accounts/{accountId}` | Attach Tiktok profile | `attach_tiktok_profile()` | `social-media-posting.post_social_media_posting_oauth_by_locationId_tiktok_accounts_by_accountId` |
+| `GET` | `/social-media-posting/oauth/{locationId}/twitter/accounts/{accountId}` | Get Twitter profile | `get_twitter_profile()` | `social-media-posting.get_social_media_posting_oauth_by_locationId_twitter_accounts_by_accountId` |
+| `POST` | `/social-media-posting/oauth/{locationId}/twitter/accounts/{accountId}` | Attach Twitter profile | `attach_twitter_profile()` | `social-media-posting.post_social_media_posting_oauth_by_locationId_twitter_accounts_by_accountId` |
+| `POST` | `/social-media-posting/statistics` | Get Social Media Statistics | `get_social_media_statistics()` | `social-media-posting.post_social_media_posting_statistics` |
+| `GET` | `/social-media-posting/{locationId}/accounts` | Get Accounts | `get_accounts()` | `social-media-posting.get_social_media_posting_by_locationId_accounts` |
+| `DELETE` | `/social-media-posting/{locationId}/accounts/{id}` | Delete Account | `delete_account()` | `social-media-posting.delete_social_media_posting_by_locationId_accounts_by_id` |
+| `GET` | `/social-media-posting/{locationId}/categories` | Get categories by location id | `get_categories_by_location_id()` | `social-media-posting.get_social_media_posting_by_locationId_categories` |
+| `GET` | `/social-media-posting/{locationId}/categories/{id}` | Get categories by id | `get_categories_by_id()` | `social-media-posting.get_social_media_posting_by_locationId_categories_by_id` |
+| `GET` | `/social-media-posting/{locationId}/csv` | Get Upload Status | `get_upload_status()` | `social-media-posting.get_social_media_posting_by_locationId_csv` |
+| `POST` | `/social-media-posting/{locationId}/csv` | Upload CSV | `upload_csv()` | `social-media-posting.post_social_media_posting_by_locationId_csv` |
+| `DELETE` | `/social-media-posting/{locationId}/csv/{csvId}/post/{postId}` | Delete CSV Post | `delete_csv_post()` | `social-media-posting.delete_social_media_posting_by_locationId_csv_by_csvId_post_by_postId` |
+| `DELETE` | `/social-media-posting/{locationId}/csv/{id}` | Delete CSV | `delete_csv()` | `social-media-posting.delete_social_media_posting_by_locationId_csv_by_id` |
+| `GET` | `/social-media-posting/{locationId}/csv/{id}` | Get CSV Post | `get_csv_post()` | `social-media-posting.get_social_media_posting_by_locationId_csv_by_id` |
+| `PATCH` | `/social-media-posting/{locationId}/csv/{id}` | Start CSV Finalize | `start_csv_finalize()` | `social-media-posting.patch_social_media_posting_by_locationId_csv_by_id` |
+| `POST` | `/social-media-posting/{locationId}/posts` | Create post | `create_post()` | `social-media-posting.post_social_media_posting_by_locationId_posts` |
+| `POST` | `/social-media-posting/{locationId}/posts/bulk-delete` | Bulk Delete Social Planner Posts | `bulk_delete_social_planner_posts()` | `social-media-posting.post_social_media_posting_by_locationId_posts_bulk_delete` |
+| `POST` | `/social-media-posting/{locationId}/posts/list` | Get posts | `get_posts()` | `social-media-posting.post_social_media_posting_by_locationId_posts_list` |
+| `DELETE` | `/social-media-posting/{locationId}/posts/{id}` | Delete Post | `delete_post()` | `social-media-posting.delete_social_media_posting_by_locationId_posts_by_id` |
+| `GET` | `/social-media-posting/{locationId}/posts/{id}` | Get post | `get_post()` | `social-media-posting.get_social_media_posting_by_locationId_posts_by_id` |
+| `PUT` | `/social-media-posting/{locationId}/posts/{id}` | Edit post | `edit_post()` | `social-media-posting.put_social_media_posting_by_locationId_posts_by_id` |
+| `POST` | `/social-media-posting/{locationId}/set-accounts` | Set Accounts | `set_accounts()` | `social-media-posting.post_social_media_posting_by_locationId_set_accounts` |
+| `GET` | `/social-media-posting/{locationId}/tags` | Get tags by location id | `get_tags_by_location_id()` | `social-media-posting.get_social_media_posting_by_locationId_tags` |
+| `POST` | `/social-media-posting/{locationId}/tags/details` | Get tags by ids | `get_tags_by_ids()` | `social-media-posting.post_social_media_posting_by_locationId_tags_details` |
 
 ### Endpoint details — v2
 
@@ -91,6 +74,15 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_facebook_star
 | `userId` | string | **yes** | User ID |
 | `page` | string | no | Facebook Page |
 | `reconnect` | string | no | Reconnect boolean as string |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::StartsOAuthForFacebookAccountParams;
+
+let params = StartsOAuthForFacebookAccountParams::new("locationId", "userId");
+let out = ghl.social_media_posting().starts_o_auth_for_facebook_account(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -126,6 +118,15 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_google_start`
 | `page` | string | no | Page |
 | `reconnect` | string | no | Reconnect |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::StartsOAuthForGoogleAccountParams;
+
+let params = StartsOAuthForGoogleAccountParams::new("locationId", "userId");
+let out = ghl.social_media_posting().starts_o_auth_for_google_account(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -159,6 +160,15 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_instagram_sta
 | `userId` | string | **yes** | User Id |
 | `page` | string | no | Page |
 | `reconnect` | string | no | Reconnect |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::StartsOAuthForInstagramAccountParams;
+
+let params = StartsOAuthForInstagramAccountParams::new("locationId", "userId");
+let out = ghl.social_media_posting().starts_o_auth_for_instagram_account(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -194,6 +204,15 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_linkedin_star
 | `page` | string | no | Page |
 | `reconnect` | string | no | Reconnect |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::StartsOAuthForLinkedInAccountParams;
+
+let params = StartsOAuthForLinkedInAccountParams::new("locationId", "userId");
+let out = ghl.social_media_posting().starts_o_auth_for_linked_in_account(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -227,6 +246,15 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_tiktok_busine
 | `userId` | string | **yes** | User Id |
 | `page` | string | no | Page |
 | `reconnect` | string | no | Reconnect |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::StartsOAuthForTiktokBusinessAccountParams;
+
+let params = StartsOAuthForTiktokBusinessAccountParams::new("locationId", "userId");
+let out = ghl.social_media_posting().starts_o_auth_for_tiktok_business_account(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -262,6 +290,15 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_tiktok_start`
 | `page` | string | no | Page |
 | `reconnect` | string | no | Reconnect |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::StartsOAuthForTiktokAccountParams;
+
+let params = StartsOAuthForTiktokAccountParams::new("locationId", "userId");
+let out = ghl.social_media_posting().starts_o_auth_for_tiktok_account(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -296,6 +333,15 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_twitter_start
 | `page` | string | no | Page |
 | `reconnect` | string | no | Reconnect |
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::StartsOAuthForTwitterAccountParams;
+
+let params = StartsOAuthForTwitterAccountParams::new("locationId", "userId");
+let out = ghl.social_media_posting().starts_o_auth_for_twitter_account(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -327,6 +373,12 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_by_locationId
 | `accountId` | string | **yes** | Account Id |
 
 *Response*: [`GetFacebookAccountsResponseDTO`](#getfacebookaccountsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_facebook_pages(&locationId, &accountId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -361,6 +413,12 @@ Operation id: `social-media-posting.post_social_media_posting_oauth_by_locationI
 *Request body*: [`AttachFBAccountDTO`](#attachfbaccountdto)
 
 *Response*: [`SocialMediaFBAccountResponseDTO`](#socialmediafbaccountresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().attach_facebook_pages(&locationId, &accountId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -397,6 +455,12 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_by_locationId
 
 *Response*: [`GetGoogleLocationResponseDTO`](#getgooglelocationresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_google_business_locations(&locationId, &accountId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -430,6 +494,12 @@ Operation id: `social-media-posting.post_social_media_posting_oauth_by_locationI
 *Request body*: [`AttachGMBLocationDTO`](#attachgmblocationdto)
 
 *Response*: [`SocialMediaGmbAccountResponseDTO`](#socialmediagmbaccountresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().set_google_business_locations(&locationId, &accountId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -466,6 +536,12 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_by_locationId
 
 *Response*: [`GetInstagramAccountsResponseDTO`](#getinstagramaccountsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_instagram_professional_accounts(&locationId, &accountId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -499,6 +575,12 @@ Operation id: `social-media-posting.post_social_media_posting_oauth_by_locationI
 *Request body*: [`AttachIGAccountDTO`](#attachigaccountdto)
 
 *Response*: [`SocialMediaInstagramAccountResponseDTO`](#socialmediainstagramaccountresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().attach_instagram_professional_accounts(&locationId, &accountId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -535,6 +617,12 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_by_locationId
 
 *Response*: [`GetLinkedInAccountsResponseDTO`](#getlinkedinaccountsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_linkedin_pages_and_profile(&locationId, &accountId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -568,6 +656,12 @@ Operation id: `social-media-posting.post_social_media_posting_oauth_by_locationI
 *Request body*: [`AttachLinkedinAccountDTO`](#attachlinkedinaccountdto)
 
 *Response*: [`SocialMediaLinkedInAccountResponseDTO`](#socialmedialinkedinaccountresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().attach_linkedin_pages_and_profile(&locationId, &accountId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -604,6 +698,12 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_by_locationId
 
 *Response*: [`GetTiktokBusinessAccountResponseDTO`](#gettiktokbusinessaccountresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_tiktok_business_profile(&locationId, &accountId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -635,6 +735,12 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_by_locationId
 | `accountId` | string | **yes** | Account Id |
 
 *Response*: [`GetTiktokAccountResponseDTO`](#gettiktokaccountresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_tiktok_profile(&locationId, &accountId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -669,6 +775,12 @@ Operation id: `social-media-posting.post_social_media_posting_oauth_by_locationI
 *Request body*: [`AttachTiktokAccountDTO`](#attachtiktokaccountdto)
 
 *Response*: [`SocialMediaTiktokAccountResponseDTO`](#socialmediatiktokaccountresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().attach_tiktok_profile(&locationId, &accountId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -707,6 +819,12 @@ Operation id: `social-media-posting.get_social_media_posting_oauth_by_locationId
 
 *Response*: [`GetTwitterAccountsResponseDTO`](#gettwitteraccountsresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_twitter_profile(&locationId, &accountId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -742,6 +860,12 @@ Operation id: `social-media-posting.post_social_media_posting_oauth_by_locationI
 *Request body*: [`AttachTwitterAccountDTO`](#attachtwitteraccountdto)
 
 *Response*: [`SocialMediaTwitterAccountResponseDTO`](#socialmediatwitteraccountresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().attach_twitter_profile(&locationId, &accountId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -779,6 +903,15 @@ Operation id: `social-media-posting.post_social_media_posting_statistics` · `Ve
 
 *Request body fields*: `profileIds`**\***, `platforms`  (**\*** = required)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::GetSocialMediaStatisticsParams;
+
+let params = GetSocialMediaStatisticsParams::new("locationId");
+let out = ghl.social_media_posting().get_social_media_statistics(&params, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -813,6 +946,12 @@ Operation id: `social-media-posting.get_social_media_posting_by_locationId_accou
 | `locationId` | string | **yes** | Location Id |
 
 *Response*: [`AccountsListResponseDTO`](#accountslistresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_accounts(&locationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -854,6 +993,15 @@ Operation id: `social-media-posting.delete_social_media_posting_by_locationId_ac
 
 *Response*: [`LocationAndAccountDeleteResponseDTO`](#locationandaccountdeleteresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::DeleteAccountParams;
+
+let params = DeleteAccountParams::new();
+let out = ghl.social_media_posting().delete_account(&locationId, &id, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -893,6 +1041,15 @@ Operation id: `social-media-posting.get_social_media_posting_by_locationId_categ
 
 *Response*: [`GetByLocationIdResponseDTO`](#getbylocationidresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::GetCategoriesByLocationIdParams;
+
+let params = GetCategoriesByLocationIdParams::new();
+let out = ghl.social_media_posting().get_categories_by_location_id(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -923,6 +1080,12 @@ Operation id: `social-media-posting.get_social_media_posting_by_locationId_categ
 | `locationId` | string | **yes** | Location Id |
 
 *Response*: [`GetByIdResponseDTO`](#getbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_categories_by_id(&id, &locationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -964,6 +1127,15 @@ Operation id: `social-media-posting.get_social_media_posting_by_locationId_csv` 
 
 *Response*: [`GetUploadStatusResponseDTO`](#getuploadstatusresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::GetUploadStatusParams;
+
+let params = GetUploadStatusParams::new();
+let out = ghl.social_media_posting().get_upload_status(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -993,6 +1165,12 @@ Operation id: `social-media-posting.post_social_media_posting_by_locationId_csv`
 | `locationId` | string | **yes** | Location Id |
 
 *Response*: [`UploadFileResponseDTO`](#uploadfileresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().upload_csv(&locationId).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1026,6 +1204,12 @@ Operation id: `social-media-posting.delete_social_media_posting_by_locationId_cs
 
 *Response*: [`DeletePostResponseDTO`](#deletepostresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().delete_csv_post(&locationId, &postId, &csvId).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1058,6 +1242,12 @@ Operation id: `social-media-posting.delete_social_media_posting_by_locationId_cs
 | `id` | string | **yes** | CSV Id |
 
 *Response*: [`DeleteCsvResponseDTO`](#deletecsvresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().delete_csv(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1098,6 +1288,15 @@ Operation id: `social-media-posting.get_social_media_posting_by_locationId_csv_b
 
 *Response*: [`GetCsvPostResponseDTO`](#getcsvpostresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::GetCsvPostParams;
+
+let params = GetCsvPostParams::new();
+let out = ghl.social_media_posting().get_csv_post(&locationId, &id, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1131,6 +1330,12 @@ Operation id: `social-media-posting.patch_social_media_posting_by_locationId_csv
 *Request body*: [`CSVDefaultDTO`](#csvdefaultdto)
 
 *Response*: [`CsvPostStatusResponseDTO`](#csvpoststatusresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().start_csv_finalize(&locationId, &id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1170,6 +1375,12 @@ Operation id: `social-media-posting.post_social_media_posting_by_locationId_post
 
 *Response*: [`CreatePostSuccessfulResponseDTO`](#createpostsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().create_post(&locationId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1200,6 +1411,12 @@ Operation id: `social-media-posting.post_social_media_posting_by_locationId_post
 *Request body*: [`DeletePostsDto`](#deletepostsdto)
 
 *Response*: [`BulkDeleteResponseDto`](#bulkdeleteresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().bulk_delete_social_planner_posts(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1235,6 +1452,12 @@ Operation id: `social-media-posting.post_social_media_posting_by_locationId_post
 
 *Response*: [`PostSuccessfulResponseDTO`](#postsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_posts(&locationId, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1269,6 +1492,12 @@ Operation id: `social-media-posting.delete_social_media_posting_by_locationId_po
 
 *Response*: [`DeletePostSuccessfulResponseDTO`](#deletepostsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().delete_post(&locationId, &id).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1300,6 +1529,12 @@ Operation id: `social-media-posting.get_social_media_posting_by_locationId_posts
 | `id` | string | **yes** | Post Id |
 
 *Response*: [`GetPostSuccessfulResponseDTO`](#getpostsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_post(&locationId, &id).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1337,6 +1572,12 @@ Operation id: `social-media-posting.put_social_media_posting_by_locationId_posts
 
 *Response*: [`UpdatePostSuccessfulResponseDTO`](#updatepostsuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().edit_post(&locationId, &id, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1372,6 +1613,12 @@ Operation id: `social-media-posting.post_social_media_posting_by_locationId_set_
 *Request body*: [`SetAccountsDTO`](#setaccountsdto)
 
 *Response*: [`SetAccountsResponseDTO`](#setaccountsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().set_accounts(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -1414,6 +1661,15 @@ Operation id: `social-media-posting.get_social_media_posting_by_locationId_tags`
 
 *Response*: [`GetTagsByLocationIdResponseDTO`](#gettagsbylocationidresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::social_media_posting::GetTagsByLocationIdParams;
+
+let params = GetTagsByLocationIdParams::new();
+let out = ghl.social_media_posting().get_tags_by_location_id(&locationId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -1445,6 +1701,12 @@ Operation id: `social-media-posting.post_social_media_posting_by_locationId_tags
 *Request body*: [`UpdateTagDTO`](#updatetagdto)
 
 *Response*: [`GetTagsByIdResponseDTO`](#gettagsbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.social_media_posting().get_tags_by_ids(&locationId, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

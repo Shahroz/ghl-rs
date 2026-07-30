@@ -4,41 +4,24 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `medias` cargo feature on `ghl-sdk`, then call any of the 7 generated methods on `ghl.medias()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features medias
-use ghl_models::v2::medias::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["medias"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "medias"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `PUT` | `/medias/delete-files` | Bulk Delete / Trash Files or Folders | `medias.put_medias_delete_files` |
-| `GET` | `/medias/files` | Get List of Files/ Folders | `medias.get_medias_files` |
-| `POST` | `/medias/folder` | Create Folder | `medias.post_medias_folder` |
-| `PUT` | `/medias/update-files` | Bulk Update Files/ Folders | `medias.put_medias_update_files` |
-| `POST` | `/medias/upload-file` | Upload File into Media Storage | `medias.post_medias_upload_file` |
-| `DELETE` | `/medias/{id}` | Delete File or Folder | `medias.delete_medias_by_id` |
-| `POST` | `/medias/{id}` | Update File/ Folder | `medias.post_medias_by_id` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `PUT` | `/medias/delete-files` | Bulk Delete / Trash Files or Folders | `bulk_delete_trash_files_or_folders()` | `medias.put_medias_delete_files` |
+| `GET` | `/medias/files` | Get List of Files/ Folders | `get_list_of_files_folders()` | `medias.get_medias_files` |
+| `POST` | `/medias/folder` | Create Folder | `create_folder()` | `medias.post_medias_folder` |
+| `PUT` | `/medias/update-files` | Bulk Update Files/ Folders | `bulk_update_files_folders()` | `medias.put_medias_update_files` |
+| `POST` | `/medias/upload-file` | Upload File into Media Storage | `upload_file_into_media_storage()` | `medias.post_medias_upload_file` |
+| `DELETE` | `/medias/{id}` | Delete File or Folder | `delete_file_or_folder()` | `medias.delete_medias_by_id` |
+| `POST` | `/medias/{id}` | Update File/ Folder | `update_file_folder()` | `medias.post_medias_by_id` |
 
 ### Endpoint details — v2
 
@@ -51,6 +34,12 @@ Soft-deletes or trashes multiple files and folders in a single request
 Operation id: `medias.put_medias_delete_files` · `Version: 2021-07-28`
 
 *Request body*: [`DeleteMediaObjectsBodyParams`](#deletemediaobjectsbodyparams)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.medias().bulk_delete_trash_files_or_folders(&body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -93,6 +82,15 @@ Operation id: `medias.get_medias_files` · `Version: 2021-07-28` · Scopes: `med
 
 *Response*: [`GetFilesResponseDTO`](#getfilesresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::medias::GetListOfFilesFoldersParams;
+
+let params = GetListOfFilesFoldersParams::new("sortBy", "sortOrder", "type", "altType", "altId");
+let out = ghl.medias().get_list_of_files_folders(&params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -125,6 +123,12 @@ Operation id: `medias.post_medias_folder` · `Version: 2021-07-28`
 
 *Response*: [`FolderDTO`](#folderdto)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.medias().create_folder(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -151,6 +155,12 @@ Operation id: `medias.put_medias_update_files` · `Version: 2021-07-28`
 
 *Request body*: [`UpdateMediaObjects`](#updatemediaobjects)
 
+*Rust*:
+
+```rust,ignore
+let out = ghl.medias().bulk_update_files_folders(&body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -176,6 +186,12 @@ If hosted is set to true then fileUrl is required. Else file is required. If add
 Operation id: `medias.post_medias_upload_file` · `Version: 2021-07-28` · Scopes: `medias.write`
 
 *Response*: [`UploadFileResponseDTO`](#uploadfileresponsedto)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.medias().upload_file_into_media_storage().await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -210,6 +226,15 @@ Operation id: `medias.delete_medias_by_id` · `Version: 2021-07-28` · Scopes: `
 |---|---|---|---|
 | `altType` | enum: `location` | **yes** | AltType |
 | `altId` | string | **yes** | location Id |
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::medias::DeleteFileOrFolderParams;
+
+let params = DeleteFileOrFolderParams::new("altType", "altId");
+let out = ghl.medias().delete_file_or_folder(&id, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -246,6 +271,12 @@ Operation id: `medias.post_medias_by_id` · `Version: 2021-07-28`
 | `id` | string | **yes** | Unique identifier of the file or folder to update |
 
 *Request body*: [`UpdateObject`](#updateobject)
+
+*Rust*:
+
+```rust,ignore
+let out = ghl.medias().update_file_folder(&id, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 

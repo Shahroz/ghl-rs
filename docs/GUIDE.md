@@ -1,6 +1,6 @@
 # ghl-rs usage guide
 
-Everything you need to go from zero to calling any of GoHighLevel's **1,203 API operations** from Rust or from an AI agent.
+Everything you need to call GoHighLevel from Rust or from an AI agent. **Every API v2 endpoint has a typed Rust method** — 576 of them — so you shouldn't need HighLevel's docs open alongside.
 
 - **[Full API reference](api/README.md)** — every module, endpoint, struct, and enum
 - [docs.rs/ghl-sdk](https://docs.rs/ghl-sdk) · [docs.rs/ghl-models](https://docs.rs/ghl-models)
@@ -10,10 +10,10 @@ Everything you need to go from zero to calling any of GoHighLevel's **1,203 API 
 1. [Which crate do I need?](#1-which-crate-do-i-need)
 2. [Authentication](#2-authentication)
 3. [Calling the API from Rust](#3-calling-the-api-from-rust)
-4. [The three coverage tiers](#4-the-three-coverage-tiers)
+4. [Coverage](#4-coverage)
 5. [Typed module cookbook](#5-typed-module-cookbook)
 6. [Reaching any other endpoint](#6-reaching-any-other-endpoint)
-7. [Data models, structs & enums](#7-data-models-structs--enums)
+7. [Data models, structs & enums](#7-data-models-structs-and-enums)
 8. [Pagination](#8-pagination)
 9. [Errors](#9-errors)
 10. [Rate limits](#10-rate-limits)
@@ -28,18 +28,22 @@ Everything you need to go from zero to calling any of GoHighLevel's **1,203 API 
 
 | You want to… | Use | Install |
 |---|---|---|
-| Call the API from Rust code | `ghl-sdk` | `cargo add ghl-sdk` |
+| Call the API from Rust code | `ghl-sdk` | `cargo add ghl-sdk --features invoices,contacts` |
 | Typed request/response structs for any module | `ghl-models` | `cargo add ghl-models --features invoices,payments` |
 | Let Claude/ChatGPT/Gemini use your CRM | `ghl-mcp` | `cargo install ghl-mcp` |
 
 `ghl-sdk` re-exports the models when you enable its `models` feature, so you can depend on just the SDK if you prefer:
 
 ```toml
-ghl-sdk = { version = "0.3", features = ["models"] }
-ghl-models = { version = "0.3", features = ["invoices"] }   # pick your modules
+# Generated services + their DTOs, per module:
+ghl-sdk = { version = "0.4", features = ["invoices", "contacts"] }
+
+# Or just the DTOs, no services:
+ghl-sdk = { version = "0.4", features = ["models"] }
+ghl-models = { version = "0.4", features = ["invoices"] }
 ```
 
-Models are feature-gated per module for a real reason: one module compiles in ~1.3s, all 45 take ~30s.
+Everything is feature-gated per module for a real reason: one module compiles in about a second, all 41 take closer to a minute.
 
 ---
 
@@ -142,21 +146,57 @@ Builder options:
 
 ---
 
-## 4. The three coverage tiers
+## 4. Coverage
 
-Be aware of what you get where — the guarantees differ:
+**Every API v2 endpoint has a typed Rust method** — 576 operations across 41 modules, generated from HighLevel's specs with typed parameters and responses. You should never need to open HighLevel's API docs to make a call.
 
-| Tier | Covers | You get |
+| What | Covers | You get |
 |---|---|---|
-| **1. Typed services** | 5 modules, 21 methods | Real Rust types, compile-time field checks, parsed responses, paginated `Stream`s |
-| **2. Generated DTOs + `request_raw`** | All 45 modules, 2,417 structs | Typed request/response bodies you serialize yourself; you pick the path |
-| **3. Meta-tools (MCP)** | All 1,203 operations | Agents call anything; params validated, body passed through |
+| **Generated services** | **all 41 v2 modules, 576 methods** | Typed params + response structs, one method per endpoint |
+| **Hand-written helpers** | 5 modules, 21 methods | Envelope unwrapping, paginated `Stream`s — on the same services |
+| **`request_raw`** | anything, incl. all 627 v3 operations | You supply path/query/body; same auth, retry, rate limiting |
+| **MCP meta-tools** | all 1,203 operations | For AI agents |
 
-Tier 1 is the nicest but narrowest. Tier 2 gives you type safety everywhere with slightly more assembly. Tier 3 is for agents.
+Enable a module by cargo feature:
+
+```toml
+ghl-sdk = { version = "0.4", features = ["invoices", "payments"] }
+```
+
+```rust,ignore
+use ghl_sdk::services::invoices::ListInvoicesParams;
+
+let params = ListInvoicesParams::new(&loc, "location", "20", "0").status("draft");
+let page = ghl.invoices().list_invoices(&params).await?;
+println!("{:?} invoices", page.total);
+```
+
+Features matter for compile time: one module is a second or two, all 41 (`features = ["full"]`) is closer to a minute.
+
+### The generated method shape
+
+Every generated method looks the same:
+
+```text
+async fn <name>(&self, <path params…>, params: &XParams, body: &Dto) -> Result<Response>
+```
+
+- **Path parameters** — positional `&str` args in URL order.
+- **Query parameters** — one `XParams` struct: required fields are `new()` arguments, optional ones are chainable setters. Omitted entirely when an endpoint has no query params.
+- **Body** — the generated DTO from `ghl-models`.
+- **Returns** — the response type the spec names (about 3 in 4 endpoints), else `serde_json::Value`.
+
+Find the exact method for any endpoint in the [API reference](api/README.md) — every endpoint lists its Rust method name and a ready-to-paste call.
+
+### Strict on send, lenient on receive
+
+Request types keep the spec's required fields non-`Option`, so forgetting a mandatory field is a compile error. Response types make **everything** optional: GoHighLevel sometimes omits fields its own spec marks required, and a strict response type would turn that into an unrecoverable deserialization error. This follows Postel's law and is why `page.total` is `Option<f64>` rather than `f64`.
 
 ---
 
 ## 5. Typed module cookbook
+
+The five modules below have hand-written helpers in addition to their generated methods. For every *other* module, the pattern is the generated one from §4 — look up the method name in the [API reference](api/README.md).
 
 ### Contacts
 
@@ -276,7 +316,7 @@ let all = ghl.locations().search(None, 50).await?;
 
 ## 6. Reaching any other endpoint
 
-Every one of the 1,203 operations is callable with `request_raw`, which goes through the same auth, retry, and rate-limit handling as the typed services:
+API v3 endpoints and anything else without a generated method are callable with `request_raw`, which goes through the same auth, retry, and rate-limit handling as the typed services:
 
 ```rust,ignore
 // request_raw(method, path, query, body, version_header_override)
@@ -326,12 +366,12 @@ Look up the exact path, params, and required scopes for any endpoint in the **[A
 
 ---
 
-## 7. Data models, structs & enums
+## 7. Data models, structs and enums
 
 `ghl-models` ships **2,417 structs** — 1,074 for v2, 1,329 for v3 — across 45 modules.
 
 ```toml
-ghl-models = { version = "0.3", features = ["invoices", "payments", "products"] }
+ghl-models = { version = "0.4", features = ["invoices", "payments", "products"] }
 ```
 
 ```rust,ignore

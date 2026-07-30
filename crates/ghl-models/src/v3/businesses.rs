@@ -31,10 +31,14 @@ pub struct BusinessCreatedByOrUpdatedBy {
 pub struct BusinessDto {
     /// Business Id
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Business Name
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// phone number
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub phone: Option<String>,
@@ -71,8 +75,13 @@ pub struct BusinessDto {
     pub updated_by: Option<BusinessCreatedByOrUpdatedBy>,
     /// locaitonId
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Created By
     #[serde(rename = "createdBy", default, skip_serializing_if = "Option::is_none")]
     pub created_by: Option<BusinessCreatedByOrUpdatedBy>,
@@ -123,7 +132,9 @@ pub struct CreateBusinessDto {
 pub struct DeleteBusinessResponseDto {
     /// Success value
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `GetBusinessByIdResponseDto` from the GoHighLevel OpenAPI spec.
@@ -131,7 +142,9 @@ pub struct DeleteBusinessResponseDto {
 pub struct GetBusinessByIdResponseDto {
     /// Business Response
     /// Required by the API.
-    pub business: BusinessDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub business: Option<BusinessDto>,
 }
 
 /// `GetBusinessByLocationResponseDto` from the GoHighLevel OpenAPI spec.
@@ -139,6 +152,7 @@ pub struct GetBusinessByIdResponseDto {
 pub struct GetBusinessByLocationResponseDto {
     /// Business Response
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub businesses: Vec<BusinessDto>,
 }
@@ -177,8 +191,12 @@ pub struct UpdateBusinessDto {
 pub struct UpdateBusinessResponseDto {
     /// Success Value
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Business Response
     /// Required by the API.
-    pub buiseness: BusinessDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub buiseness: Option<BusinessDto>,
 }

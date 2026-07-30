@@ -2190,29 +2190,49 @@ pub struct PublishAdDTO {
 pub struct PublishingProgressResponseDTO {
     /// Campaign identifier
     /// Required by the API.
-    #[serde(rename = "campaignId")]
-    pub campaign_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "campaignId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub campaign_id: Option<String>,
     /// Current campaign publishing status in ad-publishing
     /// Allowed values: `DRAFT`, `SCHEDULED`, `PUBLISHED`, `PUBLISHING`, `FAILED`, `IN_REVIEW`,
     /// `PAUSED`, `ARCHIVED`, `WITH_ISSUES`, `REJECTED`.
     /// Required by the API.
-    #[serde(rename = "publishingStatus")]
-    pub publishing_status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "publishingStatus",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub publishing_status: Option<String>,
     /// Total publish steps tracked in Redis (campaign + ad sets + ads)
     /// Required by the API.
-    pub total: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub total: Option<f64>,
     /// Number of publish steps completed so far
     /// Required by the API.
-    pub processed: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub processed: Option<f64>,
     /// Whether publishing is finished (Redis complete/failed, processed >= total, or status is
     /// no longer PUBLISHING)
     /// Required by the API.
-    #[serde(rename = "isComplete")]
-    pub is_complete: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "isComplete",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub is_complete: Option<bool>,
     /// Whether publishing failed (Redis failed status or campaign FAILED)
     /// Required by the API.
-    #[serde(rename = "hasFailed")]
-    pub has_failed: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "hasFailed", default, skip_serializing_if = "Option::is_none")]
+    pub has_failed: Option<bool>,
 }
 
 /// `QuestionDetailsDTO` from the GoHighLevel OpenAPI spec.

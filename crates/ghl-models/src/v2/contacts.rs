@@ -30,7 +30,9 @@ pub struct AddContactToCampaignDto {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct AttributionSource {
     /// Required by the API.
-    pub url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub url: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub campaign: Option<String>,
     #[serde(rename = "utmSource", default, skip_serializing_if = "Option::is_none")]
@@ -90,8 +92,11 @@ pub struct CheckboxField {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ContactsBulkUpateResponse {
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub ids: Vec<String>,
 }
@@ -559,7 +564,9 @@ pub struct DeleteTaskSuccessfulResponseDto {
 pub struct DndSettingSchema {
     /// Allowed values: `active`, `inactive`, `permanent`.
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub message: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1142,13 +1149,21 @@ pub struct UpdateTagsDTO {
 pub struct UpdateTagsResponseDTO {
     /// Indicates if the operation was successful
     /// Required by the API.
-    pub succeded: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub succeded: Option<bool>,
     /// Number of errors encountered during the operation
     /// Required by the API.
-    #[serde(rename = "errorCount")]
-    pub error_count: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "errorCount",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub error_count: Option<f64>,
     /// Responses for each contact processed
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub responses: Vec<String>,
 }
@@ -1294,7 +1309,9 @@ pub struct UpsertContactsSuccessfulResponseDto {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CustomFieldsInputArraySchema {
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub key: Option<String>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -1305,7 +1322,9 @@ pub struct CustomFieldsInputArraySchema {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CustomFieldsInputObjectSchema {
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub key: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

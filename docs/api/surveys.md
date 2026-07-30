@@ -4,36 +4,19 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `surveys` cargo feature on `ghl-sdk`, then call any of the 2 generated methods on `ghl.surveys()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features surveys
-use ghl_models::v2::surveys::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["surveys"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "surveys"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/surveys/` | Get Surveys | `surveys.get_surveys` |
-| `GET` | `/surveys/submissions` | Get Surveys Submissions | `surveys.get_surveys_submissions` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/surveys/` | Get Surveys | `get_surveys()` | `surveys.get_surveys` |
+| `GET` | `/surveys/submissions` | Get Surveys Submissions | `get_surveys_submissions()` | `surveys.get_surveys_submissions` |
 
 ### Endpoint details — v2
 
@@ -53,6 +36,15 @@ Operation id: `surveys.get_surveys` · `Version: 2021-07-28` · Scopes: `surveys
 | `type` | string | no | — |
 
 *Response*: [`GetSurveysSuccessfulResponseDto`](#getsurveyssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::surveys::GetSurveysParams;
+
+let params = GetSurveysParams::new("locationId");
+let out = ghl.surveys().get_surveys(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -89,6 +81,15 @@ Operation id: `surveys.get_surveys_submissions` · `Version: 2021-07-28` · Scop
 | `endAt` | string | no | Get submission by ending of this date. By default it will be current date(YYYY-MM-DD). |
 
 *Response*: [`GetSurveysSubmissionSuccessfulResponseDto`](#getsurveyssubmissionsuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::surveys::GetSurveysSubmissionsParams;
+
+let params = GetSurveysSubmissionsParams::new("locationId");
+let out = ghl.surveys().get_surveys_submissions(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 

@@ -4,38 +4,21 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `snapshots` cargo feature on `ghl-sdk`, then call any of the 4 generated methods on `ghl.snapshots()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features snapshots
-use ghl_models::v2::snapshots::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["snapshots"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "snapshots"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/snapshots/` | Get Snapshots | `snapshots.get_snapshots` |
-| `POST` | `/snapshots/share/link` | Create Snapshot Share Link | `snapshots.post_snapshots_share_link` |
-| `GET` | `/snapshots/snapshot-status/{snapshotId}` | Get Snapshot Push between Dates | `snapshots.get_snapshots_snapshot_status_by_snapshotId` |
-| `GET` | `/snapshots/snapshot-status/{snapshotId}/location/{locationId}` | Get Last Snapshot Push | `snapshots.get_snapshots_snapshot_status_by_snapshotId_location_by_locationId` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/snapshots/` | Get Snapshots | `get_snapshots()` | `snapshots.get_snapshots` |
+| `POST` | `/snapshots/share/link` | Create Snapshot Share Link | `create_snapshot_share_link()` | `snapshots.post_snapshots_share_link` |
+| `GET` | `/snapshots/snapshot-status/{snapshotId}` | Get Snapshot Push between Dates | `get_snapshot_push_between_dates()` | `snapshots.get_snapshots_snapshot_status_by_snapshotId` |
+| `GET` | `/snapshots/snapshot-status/{snapshotId}/location/{locationId}` | Get Last Snapshot Push | `get_last_snapshot_push()` | `snapshots.get_snapshots_snapshot_status_by_snapshotId_location_by_locationId` |
 
 ### Endpoint details — v2
 
@@ -54,6 +37,15 @@ Operation id: `snapshots.get_snapshots` · `Version: 2021-07-28`
 | `companyId` | string | **yes** | Company Id |
 
 *Response*: [`GetSnapshotsSuccessfulResponseDto`](#getsnapshotssuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::snapshots::GetSnapshotsParams;
+
+let params = GetSnapshotsParams::new("companyId");
+let out = ghl.snapshots().get_snapshots(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -88,6 +80,15 @@ Operation id: `snapshots.post_snapshots_share_link` · `Version: 2021-07-28`
 *Request body*: [`CreateSnapshotShareLinkRequestDTO`](#createsnapshotsharelinkrequestdto)
 
 *Response*: [`CreateSnapshotShareLinkSuccessfulResponseDTO`](#createsnapshotsharelinksuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::snapshots::CreateSnapshotShareLinkParams;
+
+let params = CreateSnapshotShareLinkParams::new("companyId");
+let out = ghl.snapshots().create_snapshot_share_link(&params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -134,6 +135,15 @@ Operation id: `snapshots.get_snapshots_snapshot_status_by_snapshotId` · `Versio
 
 *Response*: [`GetSnapshotPushStatusSuccessfulResponseDTO`](#getsnapshotpushstatussuccessfulresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::snapshots::GetSnapshotPushBetweenDatesParams;
+
+let params = GetSnapshotPushBetweenDatesParams::new("companyId", "from", "to", "lastDoc", "limit");
+let out = ghl.snapshots().get_snapshot_push_between_dates(&snapshotId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -179,6 +189,15 @@ Operation id: `snapshots.get_snapshots_snapshot_status_by_snapshotId_location_by
 | `companyId` | string | **yes** | — |
 
 *Response*: [`GetLatestSnapshotPushStatusSuccessfulResponseDTO`](#getlatestsnapshotpushstatussuccessfulresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::snapshots::GetLastSnapshotPushParams;
+
+let params = GetLastSnapshotPushParams::new("companyId");
+let out = ghl.snapshots().get_last_snapshot_push(&snapshotId, &locationId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 

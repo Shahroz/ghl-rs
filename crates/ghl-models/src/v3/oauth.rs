@@ -23,10 +23,14 @@ use serde::{Deserialize, Serialize};
 pub struct AipErrorBodyDto {
     /// Machine-readable error code (see AipErrorCode enum in @platform-core/aip-framework)
     /// Required by the API.
-    pub code: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub code: Option<String>,
     /// Human-readable error message
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
     /// Additional error context (field name, identifier, etc.)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub details: Option<serde_json::Value>,
@@ -40,7 +44,9 @@ pub struct AipErrorBodyDto {
 pub struct AipErrorResponseDto {
     /// AIP-compliant error envelope
     /// Required by the API.
-    pub error: AipErrorBodyDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub error: Option<AipErrorBodyDto>,
 }
 
 /// `GetAccessTokenBodyDto` from the GoHighLevel OpenAPI spec.
@@ -131,8 +137,9 @@ pub struct GetAccessTokenSuccessfulResponseDto {
     pub approved_locations: Vec<String>,
     /// USER ID - Represent user id of person who performed installation
     /// Required by the API.
-    #[serde(rename = "userId")]
-    pub user_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "userId", default, skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<String>,
     /// Plan Id of the subscribed plan in paid apps.
     #[serde(rename = "planId", default, skip_serializing_if = "Option::is_none")]
     pub plan_id: Option<String>,
@@ -184,11 +191,14 @@ pub struct GetInstalledLocationsSuccessfulResponseDto {
 pub struct GetInstalledLocationsV3SuccessfulResponseDto {
     /// List of locations with their installation status for the requested app
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub items: Vec<InstalledLocationSchema>,
     /// Pagination metadata (AIP-158)
     /// Required by the API.
-    pub pagination: V3PaginationMetaDto,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub pagination: Option<V3PaginationMetaDto>,
     /// Query metadata (filters and sort applied)
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub metadata: Option<V3InstalledLocationsListMetadataDto>,
@@ -242,8 +252,9 @@ pub struct GetLocationAccessTokenSuccessfulResponseDto {
     pub plan_id: Option<String>,
     /// USER ID - Represent user id of person who performed installation
     /// Required by the API.
-    #[serde(rename = "userId")]
-    pub user_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "userId", default, skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<String>,
     /// App ID of the installed application
     #[serde(rename = "appId", default, skip_serializing_if = "Option::is_none")]
     pub app_id: Option<String>,
@@ -287,8 +298,9 @@ pub struct GetLocationAccessTokenV3SuccessfulResponseDto {
     pub plan_id: Option<String>,
     /// USER ID - Represent user id of person who performed installation
     /// Required by the API.
-    #[serde(rename = "userId")]
-    pub user_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "userId", default, skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<String>,
     /// App ID of the installed application
     #[serde(rename = "appId", default, skip_serializing_if = "Option::is_none")]
     pub app_id: Option<String>,
@@ -309,14 +321,19 @@ pub struct GetLocationAccessTokenV3SuccessfulResponseDto {
 pub struct InstalledLocationSchema {
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Name of the location
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Address linked to location
     /// Required by the API.
-    pub address: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub address: Option<String>,
     /// Check if the requested app is installed for following location
     #[serde(
         rename = "isInstalled",
@@ -368,12 +385,22 @@ pub struct V3PaginationMetaDto {
     pub total_records: Option<f64>,
     /// True when a next page is available
     /// Required by the API.
-    #[serde(rename = "hasNextPage")]
-    pub has_next_page: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "hasNextPage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub has_next_page: Option<bool>,
     /// True when a previous page is available
     /// Required by the API.
-    #[serde(rename = "hasPrevPage")]
-    pub has_prev_page: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "hasPrevPage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub has_prev_page: Option<bool>,
     /// Opaque token to fetch the next page
     #[serde(
         rename = "nextPageToken",
@@ -390,8 +417,13 @@ pub struct V3PaginationMetaDto {
     pub prev_page_token: Option<String>,
     /// Number of items returned in the current page
     /// Required by the API.
-    #[serde(rename = "currentPageSize")]
-    pub current_page_size: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "currentPageSize",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub current_page_size: Option<f64>,
     /// Estimated total records; present when exact total is unknown
     #[serde(
         rename = "estimatedTotalRecords",

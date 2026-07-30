@@ -214,16 +214,27 @@ pub struct AppointmentEditSchema {
 pub struct AppointmentSchemaResponse {
     /// Calendar Id
     /// Required by the API.
-    #[serde(rename = "calendarId")]
-    pub calendar_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "calendarId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub calendar_id: Option<String>,
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Contact Id
     /// Required by the API.
-    #[serde(rename = "contactId")]
-    pub contact_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
+    pub contact_id: Option<String>,
     /// Start Time
     #[serde(rename = "startTime", default, skip_serializing_if = "Option::is_none")]
     pub start_time: Option<String>,
@@ -270,17 +281,21 @@ pub struct AppointmentSchemaResponse {
     pub rrule: Option<String>,
     /// Id
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
 }
 
 /// `Availability` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Availability {
-    /// Formulate the date string in the format of `<YYYY-MM-DD in local
-    /// timezone>T00:00:00.000Z`.
+    /// Formulate the date string in the format of ` T00:00:00.000Z`.
     /// Required by the API.
-    pub date: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub date: Option<String>,
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub hours: Vec<Hour>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -350,22 +365,33 @@ pub struct BlockSlotEditRequestDTO {
 pub struct BlockedSlotSuccessfulResponseDto {
     /// Id
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Location Id
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Start Time
     /// Required by the API.
-    #[serde(rename = "startTime")]
-    pub start_time: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "startTime", default, skip_serializing_if = "Option::is_none")]
+    pub start_time: Option<serde_json::Value>,
     /// End Time
     /// Required by the API.
-    #[serde(rename = "endTime")]
-    pub end_time: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "endTime", default, skip_serializing_if = "Option::is_none")]
+    pub end_time: Option<serde_json::Value>,
     /// Calendar id
     #[serde(
         rename = "calendarId",
@@ -386,7 +412,9 @@ pub struct BlockedSlotSuccessfulResponseDto {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CalendarByIdSuccessfulResponseDTO {
     /// Required by the API.
-    pub calendar: CalendarDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub calendar: Option<CalendarDTO>,
 }
 
 /// `CalendarCreateDTO` from the GoHighLevel OpenAPI spec.
@@ -718,8 +746,13 @@ pub struct CalendarDTO {
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub notifications: Vec<CalendarNotification>,
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Group Id
     #[serde(rename = "groupId", default, skip_serializing_if = "Option::is_none")]
     pub group_id: Option<String>,
@@ -732,7 +765,9 @@ pub struct CalendarDTO {
     #[serde(rename = "eventType", default, skip_serializing_if = "Option::is_none")]
     pub event_type: Option<String>,
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1026,7 +1061,9 @@ pub struct CalendarDTO {
     )]
     pub look_busy_config: Option<LookBusyConfiguration>,
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
 }
 
 /// `CalendarDeleteSuccessfulResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -1034,7 +1071,9 @@ pub struct CalendarDTO {
 pub struct CalendarDeleteSuccessfulResponseDTO {
     /// Success
     /// Required by the API.
-    pub success: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub success: Option<bool>,
 }
 
 /// `CalendarEventDTO` from the GoHighLevel OpenAPI spec.
@@ -1042,39 +1081,66 @@ pub struct CalendarDeleteSuccessfulResponseDTO {
 pub struct CalendarEventDTO {
     /// Event Id or Instance id for a recurring event
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Calendar Event address
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub address: Option<String>,
     /// Calendar Event title
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Calendar ID
     /// Required by the API.
-    #[serde(rename = "calendarId")]
-    pub calendar_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "calendarId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub calendar_id: Option<String>,
     /// Location ID
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Contact ID
     /// Required by the API.
-    #[serde(rename = "contactId")]
-    pub contact_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "contactId", default, skip_serializing_if = "Option::is_none")]
+    pub contact_id: Option<String>,
     /// Group ID
     /// Required by the API.
-    #[serde(rename = "groupId")]
-    pub group_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "groupId", default, skip_serializing_if = "Option::is_none")]
+    pub group_id: Option<String>,
     /// Appointment Status
     /// Required by the API.
-    #[serde(rename = "appointmentStatus")]
-    pub appointment_status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "appointmentStatus",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub appointment_status: Option<String>,
     /// AssignedUser - the primary owner of an appointment
     /// Required by the API.
-    #[serde(rename = "assignedUserId")]
-    pub assigned_user_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "assignedUserId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub assigned_user_id: Option<String>,
     /// Users - the secondary owners of an appointment.
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub users: Vec<String>,
     /// Notes
@@ -1096,20 +1162,28 @@ pub struct CalendarEventDTO {
     pub rrule: Option<String>,
     /// Start Time
     /// Required by the API.
-    #[serde(rename = "startTime")]
-    pub start_time: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "startTime", default, skip_serializing_if = "Option::is_none")]
+    pub start_time: Option<serde_json::Value>,
     /// End Time
     /// Required by the API.
-    #[serde(rename = "endTime")]
-    pub end_time: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "endTime", default, skip_serializing_if = "Option::is_none")]
+    pub end_time: Option<serde_json::Value>,
     /// Date Added
     /// Required by the API.
-    #[serde(rename = "dateAdded")]
-    pub date_added: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dateAdded", default, skip_serializing_if = "Option::is_none")]
+    pub date_added: Option<serde_json::Value>,
     /// Date Updated
     /// Required by the API.
-    #[serde(rename = "dateUpdated")]
-    pub date_updated: serde_json::Value,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dateUpdated",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub date_updated: Option<serde_json::Value>,
     /// Ids of associated resources rooms and/or equipments
     #[serde(
         rename = "assignedResources",
@@ -1137,21 +1211,46 @@ pub struct CalendarNotification {
     #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
     pub type_: Option<String>,
     /// Required by the API.
-    #[serde(rename = "shouldSendToContact")]
-    pub should_send_to_contact: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "shouldSendToContact",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub should_send_to_contact: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "shouldSendToGuest")]
-    pub should_send_to_guest: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "shouldSendToGuest",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub should_send_to_guest: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "shouldSendToUser")]
-    pub should_send_to_user: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "shouldSendToUser",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub should_send_to_user: Option<bool>,
     /// Required by the API.
-    #[serde(rename = "shouldSendToSelectedUsers")]
-    pub should_send_to_selected_users: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "shouldSendToSelectedUsers",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub should_send_to_selected_users: Option<bool>,
     /// Comma separated emails
     /// Required by the API.
-    #[serde(rename = "selectedUsers")]
-    pub selected_users: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "selectedUsers",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub selected_users: Option<String>,
 }
 
 /// `CalendarNotificationDeleteResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -1159,7 +1258,9 @@ pub struct CalendarNotification {
 pub struct CalendarNotificationDeleteResponseDTO {
     /// Result of delete/update operation
     /// Required by the API.
-    pub message: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub message: Option<String>,
 }
 
 /// `CalendarNotificationResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -1236,19 +1337,32 @@ pub struct CalendarNotificationResponseDTO {
 pub struct CalendarResourceByIdResponseDTO {
     /// Location ID of the resource
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Name of the resource
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Allowed values: `equipments`, `rooms`.
     /// Required by the API.
-    #[serde(rename = "resourceType")]
-    pub resource_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "resourceType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub resource_type: Option<String>,
     /// Whether the resource is active
     /// Required by the API.
-    #[serde(rename = "isActive")]
-    pub is_active: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isActive", default, skip_serializing_if = "Option::is_none")]
+    pub is_active: Option<bool>,
     /// Description of the resource
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -1267,6 +1381,7 @@ pub struct CalendarResourceByIdResponseDTO {
     pub capacity: Option<f64>,
     /// Calendar IDs
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(rename = "calendarIds", default, skip_serializing_if = "Vec::is_empty")]
     pub calendar_ids: Vec<String>,
 }
@@ -1276,19 +1391,32 @@ pub struct CalendarResourceByIdResponseDTO {
 pub struct CalendarResourceResponseDTO {
     /// Location ID of the resource
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Name of the resource
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Allowed values: `equipments`, `rooms`.
     /// Required by the API.
-    #[serde(rename = "resourceType")]
-    pub resource_type: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "resourceType",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub resource_type: Option<String>,
     /// Whether the resource is active
     /// Required by the API.
-    #[serde(rename = "isActive")]
-    pub is_active: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "isActive", default, skip_serializing_if = "Option::is_none")]
+    pub is_active: Option<bool>,
     /// Description of the resource
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
@@ -1753,7 +1881,9 @@ pub struct CreatedOrUpdatedBy {
     pub user_id: Option<String>,
     /// The source of the appointment
     /// Required by the API.
-    pub source: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub source: Option<String>,
 }
 
 /// `DeleteAppointmentSchema` from the GoHighLevel OpenAPI spec.
@@ -1783,6 +1913,7 @@ pub struct DeleteNoteSuccessfulResponseDto {
 pub struct GetAllSchedulesResponseDTO {
     /// Array of schedules
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub schedules: Vec<ScheduleObjectResponseDTO>,
 }
@@ -1861,14 +1992,25 @@ pub struct GroupCreateSuccessfulResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct GroupDTO {
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// Required by the API.
-    pub slug: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub slug: Option<String>,
     #[serde(rename = "isActive", default, skip_serializing_if = "Option::is_none")]
     pub is_active: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1907,17 +2049,29 @@ pub struct GroupUpdateDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct Hour {
     /// Required by the API.
-    #[serde(rename = "openHour")]
-    pub open_hour: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "openHour", default, skip_serializing_if = "Option::is_none")]
+    pub open_hour: Option<f64>,
     /// Required by the API.
-    #[serde(rename = "openMinute")]
-    pub open_minute: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "openMinute",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub open_minute: Option<f64>,
     /// Required by the API.
-    #[serde(rename = "closeHour")]
-    pub close_hour: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "closeHour", default, skip_serializing_if = "Option::is_none")]
+    pub close_hour: Option<f64>,
     /// Required by the API.
-    #[serde(rename = "closeMinute")]
-    pub close_minute: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "closeMinute",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub close_minute: Option<f64>,
 }
 
 /// `LocationConfiguration` from the GoHighLevel OpenAPI spec.
@@ -1943,7 +2097,9 @@ pub struct LocationConfigurationResponse {
     /// Allowed values: `custom`, `zoom_conference`, `google_conference`, `inbound_call`,
     /// `outbound_call`, `physical`, `booker`, `ms_teams_conference`.
     /// Required by the API.
-    pub kind: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub kind: Option<String>,
     /// Address for meeting location. Not applicable on "zoom_conference", "google_conference"
     /// and "ms_teams_conference" kind
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -1958,11 +2114,18 @@ pub struct LocationConfigurationResponse {
 pub struct LookBusyConfiguration {
     /// Apply Look Busy
     /// Required by the API.
-    pub enabled: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub enabled: Option<bool>,
     /// Percentage of slots that will be hidden
     /// Required by the API.
-    #[serde(rename = "LookBusyPercentage")]
-    pub look_busy_percentage: f64,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "LookBusyPercentage",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub look_busy_percentage: Option<f64>,
 }
 
 /// `NoteCreatedBySchema` from the GoHighLevel OpenAPI spec.
@@ -1988,6 +2151,7 @@ pub struct NotesDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct OpenHour {
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(
         rename = "daysOfTheWeek",
         default,
@@ -1995,6 +2159,7 @@ pub struct OpenHour {
     )]
     pub days_of_the_week: Vec<f64>,
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub hours: Vec<Hour>,
 }
@@ -2039,11 +2204,14 @@ pub struct ResourceDeleteResponseDTO {
 pub struct ScheduleIntervalDTO {
     /// Start time in HH:MM format (24-hour format)
     /// Required by the API.
-    #[serde(rename = "from")]
-    pub from_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "from", default, skip_serializing_if = "Option::is_none")]
+    pub from_: Option<String>,
     /// End time in HH:MM format (24-hour format)
     /// Required by the API.
-    pub to: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub to: Option<String>,
 }
 
 /// `ScheduleObjectResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -2051,39 +2219,60 @@ pub struct ScheduleIntervalDTO {
 pub struct ScheduleObjectResponseDTO {
     /// Unique identifier for the schedule
     /// Required by the API.
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Human-readable name for the schedule
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Location ID where this schedule applies
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Schedule rules defining when the schedule is active
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub rules: Vec<ScheduleRuleDTO>,
     /// Timezone for the schedule (IANA timezone identifier)
     /// Required by the API.
-    pub timezone: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub timezone: Option<String>,
     /// ISO date string when the schedule was created
     /// Required by the API.
-    #[serde(rename = "dateAdded")]
-    pub date_added: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "dateAdded", default, skip_serializing_if = "Option::is_none")]
+    pub date_added: Option<String>,
     /// ISO date string when the schedule was last updated
     /// Required by the API.
-    #[serde(rename = "dateUpdated")]
-    pub date_updated: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "dateUpdated",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub date_updated: Option<String>,
     /// User ID associated with the schedule
     /// Required by the API.
-    #[serde(rename = "userId")]
-    pub user_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "userId", default, skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<String>,
     /// Calendar IDs associated with the schedule
     #[serde(rename = "calendarIds", default, skip_serializing_if = "Vec::is_empty")]
     pub calendar_ids: Vec<String>,
     /// Whether the schedule has been deleted
     /// Required by the API.
-    pub deleted: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub deleted: Option<bool>,
 }
 
 /// `ScheduleResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -2091,7 +2280,9 @@ pub struct ScheduleObjectResponseDTO {
 pub struct ScheduleResponseDTO {
     /// Schedule
     /// Required by the API.
-    pub schedule: ScheduleObjectResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub schedule: Option<ScheduleObjectResponseDTO>,
 }
 
 /// `ScheduleRuleDTO` from the GoHighLevel OpenAPI spec.
@@ -2100,10 +2291,12 @@ pub struct ScheduleRuleDTO {
     /// Type of schedule rule - weekday (recurring) or date (specific date)
     /// Allowed values: `wday`, `date`.
     /// Required by the API.
-    #[serde(rename = "type")]
-    pub type_: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "type", default, skip_serializing_if = "Option::is_none")]
+    pub type_: Option<String>,
     /// Time intervals for the rule (e.g., 9 AM to 5 PM)
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub intervals: Vec<ScheduleIntervalDTO>,
     /// Specific date in YYYY-MM-DD format (only for date-type rules)
@@ -2133,6 +2326,7 @@ pub struct SchedulesDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct SlotsSchema {
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub slots: Vec<String>,
 }
@@ -2180,8 +2374,9 @@ pub struct TeamMember {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct TeamMemberResponse {
     /// Required by the API.
-    #[serde(rename = "userId")]
-    pub user_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "userId", default, skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<String>,
     /// Allowed values: `0`, `0.5`, `1`.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub priority: Option<String>,
@@ -2216,8 +2411,7 @@ pub struct TeamMemberResponse {
 /// `UpdateAvailability` from the GoHighLevel OpenAPI spec.
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct UpdateAvailability {
-    /// Formulate the date string in the format of `<YYYY-MM-DD in local
-    /// timezone>T00:00:00.000Z`.
+    /// Formulate the date string in the format of ` T00:00:00.000Z`.
     /// Required by the API.
     pub date: String,
     /// Required by the API.
@@ -2388,5 +2582,7 @@ pub struct ValidateGroupSlugPostBody {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct ValidateGroupSlugSuccessResponseDTO {
     /// Required by the API.
-    pub available: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub available: Option<bool>,
 }

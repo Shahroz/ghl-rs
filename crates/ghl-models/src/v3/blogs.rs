@@ -22,19 +22,33 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct AuthorResponseDTO {
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Required by the API.
-    #[serde(rename = "canonicalLink")]
-    pub canonical_link: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "canonicalLink",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub canonical_link: Option<String>,
 }
 
 /// `AuthorsResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -42,6 +56,7 @@ pub struct AuthorResponseDTO {
 pub struct AuthorsResponseDTO {
     /// Array of authors
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub authors: Vec<AuthorResponseDTO>,
 }
@@ -51,6 +66,7 @@ pub struct AuthorsResponseDTO {
 pub struct BlogGetResponseWrapperDTO {
     /// Object containing response data of blog
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub data: Vec<BlogResponseDTO>,
 }
@@ -60,7 +76,9 @@ pub struct BlogGetResponseWrapperDTO {
 pub struct BlogPostCreateResponseWrapperDTO {
     /// Object containing response data of blog post create.
     /// Required by the API.
-    pub data: BlogPostResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub data: Option<BlogPostResponseDTO>,
 }
 
 /// `BlogPostGetResponseWrapperDTO` from the GoHighLevel OpenAPI spec.
@@ -68,6 +86,7 @@ pub struct BlogPostCreateResponseWrapperDTO {
 pub struct BlogPostGetResponseWrapperDTO {
     /// Object containing response data of blog posts
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub blogs: Vec<BlogPostResponseDTO>,
 }
@@ -77,6 +96,7 @@ pub struct BlogPostGetResponseWrapperDTO {
 pub struct BlogPostResponseDTO {
     /// Array of category IDs associated with the blog post
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub categories: Vec<String>,
     /// Array of tags associated with the blog post
@@ -84,32 +104,48 @@ pub struct BlogPostResponseDTO {
     pub tags: Vec<String>,
     /// Indicates whether the blog post is archived
     /// Required by the API.
-    pub archived: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub archived: Option<bool>,
     /// Unique identifier of the blog post
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Title of the blog post
     /// Required by the API.
-    pub title: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
     /// Description of the blog post
     /// Required by the API.
-    pub description: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
     /// URL of the image associated with the blog post
     /// Required by the API.
-    #[serde(rename = "imageUrl")]
-    pub image_url: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "imageUrl", default, skip_serializing_if = "Option::is_none")]
+    pub image_url: Option<String>,
     /// Publication status of the blog post
     /// Required by the API.
-    pub status: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub status: Option<String>,
     /// Alternative text for the blog post image
     /// Required by the API.
-    #[serde(rename = "imageAltText")]
-    pub image_alt_text: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "imageAltText",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub image_alt_text: Option<String>,
     /// URL slug for the blog post
     /// Required by the API.
-    #[serde(rename = "urlSlug")]
-    pub url_slug: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "urlSlug", default, skip_serializing_if = "Option::is_none")]
+    pub url_slug: Option<String>,
     /// Canonical link of the blog post
     #[serde(
         rename = "canonicalLink",
@@ -122,12 +158,18 @@ pub struct BlogPostResponseDTO {
     pub author: Option<String>,
     /// Timestamp when the blog post was published
     /// Required by the API.
-    #[serde(rename = "publishedAt")]
-    pub published_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "publishedAt",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub published_at: Option<String>,
     /// Timestamp when the blog post was last updated
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
 }
 
 /// `BlogPostUpdateResponseWrapperDTO` from the GoHighLevel OpenAPI spec.
@@ -135,8 +177,13 @@ pub struct BlogPostResponseDTO {
 pub struct BlogPostUpdateResponseWrapperDTO {
     /// Object containing response data of blog post update
     /// Required by the API.
-    #[serde(rename = "updatedBlogPost")]
-    pub updated_blog_post: BlogPostResponseDTO,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "updatedBlogPost",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub updated_blog_post: Option<BlogPostResponseDTO>,
 }
 
 /// `BlogResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -144,11 +191,14 @@ pub struct BlogPostUpdateResponseWrapperDTO {
 pub struct BlogResponseDTO {
     /// Unique identifier of the blog
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     /// Name of the blog
     /// Required by the API.
-    pub name: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub name: Option<String>,
 }
 
 /// `CategoriesResponseDTO` from the GoHighLevel OpenAPI spec.
@@ -156,6 +206,7 @@ pub struct BlogResponseDTO {
 pub struct CategoriesResponseDTO {
     /// Array of categories
     /// Required by the API.
+    /// (Optional here so responses that omit it still parse.)
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub categories: Vec<CategoryResponseDTO>,
 }
@@ -164,22 +215,35 @@ pub struct CategoriesResponseDTO {
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]
 pub struct CategoryResponseDTO {
     /// Required by the API.
-    #[serde(rename = "_id")]
-    pub id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "_id", default, skip_serializing_if = "Option::is_none")]
+    pub id: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub label: Option<String>,
     /// Required by the API.
-    #[serde(rename = "locationId")]
-    pub location_id: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "locationId",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub location_id: Option<String>,
     /// Required by the API.
-    #[serde(rename = "updatedAt")]
-    pub updated_at: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "updatedAt", default, skip_serializing_if = "Option::is_none")]
+    pub updated_at: Option<String>,
     /// Required by the API.
-    #[serde(rename = "canonicalLink")]
-    pub canonical_link: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(
+        rename = "canonicalLink",
+        default,
+        skip_serializing_if = "Option::is_none"
+    )]
+    pub canonical_link: Option<String>,
     /// Required by the API.
-    #[serde(rename = "urlSlug")]
-    pub url_slug: String,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(rename = "urlSlug", default, skip_serializing_if = "Option::is_none")]
+    pub url_slug: Option<String>,
 }
 
 /// `CreateBlogPostParams` from the GoHighLevel OpenAPI spec.
@@ -292,5 +356,7 @@ pub struct UpdateBlogPostParams {
 pub struct UrlSlugCheckResponseDTO {
     /// Indicates whether the url slug exists or not
     /// Required by the API.
-    pub exists: bool,
+    /// (Optional here so responses that omit it still parse.)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub exists: Option<bool>,
 }

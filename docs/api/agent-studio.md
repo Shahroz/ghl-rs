@@ -4,45 +4,28 @@
 
 ## How to call it
 
-No hand-written service yet — reach these endpoints two ways:
+**Every endpoint has a typed Rust method.** Enable the `agent-studio` cargo feature on `ghl-sdk`, then call any of the 11 generated methods on `ghl.agent_studio()`:
 
-**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
-
-```rust,ignore
-// cargo add ghl-models --features agent-studio
-use ghl_models::v2::agent_studio::*;
-
-let body = serde_json::to_value(/* a Create…Dto from above */)?;
-let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```toml
+ghl-sdk = { version = "0.4", features = ["agent-studio"] }
 ```
 
-**From an AI agent** (MCP meta-tools):
-
-```json
-{
-  "name": "ghl_search_operations",
-  "arguments": {
-    "query": "",
-    "module": "agent-studio"
-  }
-}
-```
 
 ## Endpoints — API v2
 
-| Method | Path | Summary | Operation id |
-|---|---|---|---|
-| `GET` | `/agent-studio/agent` | List Agents | `agent-studio.get_agent_studio_agent` |
-| `POST` | `/agent-studio/agent` | Create Agent | `agent-studio.post_agent_studio_agent` |
-| `PATCH` | `/agent-studio/agent/versions/{versionId}` | Update Agent | `agent-studio.patch_agent_studio_agent_versions_by_versionId` |
-| `POST` | `/agent-studio/agent/versions/{versionId}/publish` | Promote to Production | `agent-studio.post_agent_studio_agent_versions_by_versionId_publish` |
-| `DELETE` | `/agent-studio/agent/{agentId}` | Delete Agent | `agent-studio.delete_agent_studio_agent_by_agentId` |
-| `GET` | `/agent-studio/agent/{agentId}` | Get Agent | `agent-studio.get_agent_studio_agent_by_agentId` |
-| `PATCH` | `/agent-studio/agent/{agentId}` | Update Agent Metadata | `agent-studio.patch_agent_studio_agent_by_agentId` |
-| `POST` | `/agent-studio/agent/{agentId}/execute` | Execute Agent | `agent-studio.post_agent_studio_agent_by_agentId_execute` |
-| `GET` | `/agent-studio/public-api/agents` | List Agents (Deprecated) | `agent-studio.get_agent_studio_public_api_agents` |
-| `GET` | `/agent-studio/public-api/agents/{agentId}` | Get Agent (Deprecated) | `agent-studio.get_agent_studio_public_api_agents_by_agentId` |
-| `POST` | `/agent-studio/public-api/agents/{agentId}/execute` | Execute Agent (Deprecated) | `agent-studio.post_agent_studio_public_api_agents_by_agentId_execute` |
+| Method | Path | Summary | Rust method | Operation id |
+|---|---|---|---|---|
+| `GET` | `/agent-studio/agent` | List Agents | `list_agents()` | `agent-studio.get_agent_studio_agent` |
+| `POST` | `/agent-studio/agent` | Create Agent | `create_agent()` | `agent-studio.post_agent_studio_agent` |
+| `PATCH` | `/agent-studio/agent/versions/{versionId}` | Update Agent | `update_agent()` | `agent-studio.patch_agent_studio_agent_versions_by_versionId` |
+| `POST` | `/agent-studio/agent/versions/{versionId}/publish` | Promote to Production | `promote_to_production()` | `agent-studio.post_agent_studio_agent_versions_by_versionId_publish` |
+| `DELETE` | `/agent-studio/agent/{agentId}` | Delete Agent | `delete_agent()` | `agent-studio.delete_agent_studio_agent_by_agentId` |
+| `GET` | `/agent-studio/agent/{agentId}` | Get Agent | `get_agent()` | `agent-studio.get_agent_studio_agent_by_agentId` |
+| `PATCH` | `/agent-studio/agent/{agentId}` | Update Agent Metadata | `update_agent_metadata()` | `agent-studio.patch_agent_studio_agent_by_agentId` |
+| `POST` | `/agent-studio/agent/{agentId}/execute` | Execute Agent | `execute_agent()` | `agent-studio.post_agent_studio_agent_by_agentId_execute` |
+| `GET` | `/agent-studio/public-api/agents` | List Agents (Deprecated) | `list_agents_deprecated()` | `agent-studio.get_agent_studio_public_api_agents` |
+| `GET` | `/agent-studio/public-api/agents/{agentId}` | Get Agent (Deprecated) | `get_agent_deprecated()` | `agent-studio.get_agent_studio_public_api_agents_by_agentId` |
+| `POST` | `/agent-studio/public-api/agents/{agentId}/execute` | Execute Agent (Deprecated) | `execute_agent_deprecated()` | `agent-studio.post_agent_studio_public_api_agents_by_agentId_execute` |
 
 ### Endpoint details — v2
 
@@ -65,6 +48,15 @@ Operation id: `agent-studio.get_agent_studio_agent` · `Version: 2021-04-15` · 
 | `source` | string | no | — |
 
 *Response*: [`GetPublishedAgentsResponseDTO`](#getpublishedagentsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::ListAgentsParams;
+
+let params = ListAgentsParams::new("locationId", "limit", "offset");
+let out = ghl.agent_studio().list_agents(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -101,6 +93,15 @@ Operation id: `agent-studio.post_agent_studio_agent` · `Version: 2021-04-15` ·
 *Request body*: [`CreatePublicAgentDTO`](#createpublicagentdto)
 
 *Response*: [`CreatePublicAgentResponseDTO`](#createpublicagentresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::CreateAgentParams;
+
+let params = CreateAgentParams::new();
+let out = ghl.agent_studio().create_agent(&params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -141,6 +142,15 @@ Operation id: `agent-studio.patch_agent_studio_agent_versions_by_versionId` · `
 *Request body*: [`UpdatePublicAgentVersionDTO`](#updatepublicagentversiondto)
 
 *Response*: [`UpdatePublicAgentResponseDTO`](#updatepublicagentresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::UpdateAgentParams;
+
+let params = UpdateAgentParams::new();
+let out = ghl.agent_studio().update_agent(&versionId, &params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -185,6 +195,15 @@ Operation id: `agent-studio.post_agent_studio_agent_versions_by_versionId_publis
 
 *Response*: [`PromoteAndPublishResponseDTO`](#promoteandpublishresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::PromoteToProductionParams;
+
+let params = PromoteToProductionParams::new();
+let out = ghl.agent_studio().promote_to_production(&versionId, &params, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -227,6 +246,15 @@ Operation id: `agent-studio.delete_agent_studio_agent_by_agentId` · `Version: 2
 
 *Response*: [`DeletePublicAgentResponseDTO`](#deletepublicagentresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::DeleteAgentParams;
+
+let params = DeleteAgentParams::new("locationId");
+let out = ghl.agent_studio().delete_agent(&agentId, &params).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -268,6 +296,15 @@ Operation id: `agent-studio.get_agent_studio_agent_by_agentId` · `Version: 2021
 | `source` | string | no | — |
 
 *Response*: [`GetAgentByIdResponseDTO`](#getagentbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::GetAgentParams;
+
+let params = GetAgentParams::new("locationId");
+let out = ghl.agent_studio().get_agent(&agentId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -312,6 +349,15 @@ Operation id: `agent-studio.patch_agent_studio_agent_by_agentId` · `Version: 20
 
 *Response*: [`UpdatePublicAgentResponseDTO`](#updatepublicagentresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::UpdateAgentMetadataParams;
+
+let params = UpdateAgentMetadataParams::new();
+let out = ghl.agent_studio().update_agent_metadata(&agentId, &params, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -355,6 +401,15 @@ Operation id: `agent-studio.post_agent_studio_agent_by_agentId_execute` · `Vers
 
 *Response*: [`ExecutePublicAgentResponseDTO`](#executepublicagentresponsedto)
 
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::ExecuteAgentParams;
+
+let params = ExecuteAgentParams::new();
+let out = ghl.agent_studio().execute_agent(&agentId, &params, &body).await?;
+```
+
 <details><summary>MCP call</summary>
 
 ```json
@@ -392,6 +447,15 @@ Operation id: `agent-studio.get_agent_studio_public_api_agents` · `Version: 202
 | `source` | string | no | — |
 
 *Response*: [`GetPublishedAgentsResponseDTO`](#getpublishedagentsresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::ListAgentsDeprecatedParams;
+
+let params = ListAgentsDeprecatedParams::new("locationId", "limit", "offset");
+let out = ghl.agent_studio().list_agents_deprecated(&params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -433,6 +497,15 @@ Operation id: `agent-studio.get_agent_studio_public_api_agents_by_agentId` · `V
 | `source` | string | no | — |
 
 *Response*: [`GetAgentByIdResponseDTO`](#getagentbyidresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::GetAgentDeprecatedParams;
+
+let params = GetAgentDeprecatedParams::new("locationId");
+let out = ghl.agent_studio().get_agent_deprecated(&agentId, &params).await?;
+```
 
 <details><summary>MCP call</summary>
 
@@ -476,6 +549,15 @@ Operation id: `agent-studio.post_agent_studio_public_api_agents_by_agentId_execu
 *Request body*: [`ExecutePublicAgentDTO`](#executepublicagentdto)
 
 *Response*: [`ExecutePublicAgentResponseDTO`](#executepublicagentresponsedto)
+
+*Rust*:
+
+```rust,ignore
+use ghl_sdk::services::agent_studio::ExecuteAgentDeprecatedParams;
+
+let params = ExecuteAgentDeprecatedParams::new();
+let out = ghl.agent_studio().execute_agent_deprecated(&agentId, &params, &body).await?;
+```
 
 <details><summary>MCP call</summary>
 
