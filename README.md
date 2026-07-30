@@ -26,6 +26,16 @@ One typed SDK. One static-binary MCP server. Every location in your agency — n
 
 Hand-written services give you the nicest ergonomics for the busiest modules; the meta-tools and generated DTOs cover everything else — invoices, payments, ad publishing, social planner, voice AI, SaaS, custom objects, workflows, and the rest — so no endpoint is ever out of reach.
 
+## Documentation
+
+| Doc | What's in it |
+|---|---|
+| **[Usage guide](docs/GUIDE.md)** | Auth decision tree, per-module cookbook, pagination, errors, rate limits, agency/multi-location, v2-vs-v3, troubleshooting |
+| **[API reference](docs/api/README.md)** | All **45 modules**: every endpoint (params, body fields, scopes, `Version`), every struct, every enum value |
+| [docs.rs/ghl-sdk](https://docs.rs/ghl-sdk) | Client API docs |
+| [docs.rs/ghl-models](https://docs.rs/ghl-models) | All 2,417 DTOs, field by field |
+| [Design proposal](docs/PROPOSAL.md) | Research and architecture rationale |
+
 ## Why this exists
 
 GoHighLevel powers **60k+ agencies and ~2M businesses**, but its developer stack has gaps:

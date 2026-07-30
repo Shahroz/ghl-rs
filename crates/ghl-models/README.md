@@ -53,6 +53,10 @@ Regenerate after HighLevel updates its specs:
 python3 xtask/generate_models.py /path/to/highlevel-api-docs crates/ghl-models
 ```
 
+## Full reference
+
+Every model, field, and enum value is documented per module in the [API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/README.md), and field-by-field on [docs.rs](https://docs.rs/ghl-models). Large repeated value lists (country codes, timezones) live in [shared enums](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/shared-enums.md).
+
 ## Related crates
 
 - [`ghl-sdk`](https://crates.io/crates/ghl-sdk) — the async API client (auth, retries, rate limits, pagination). Re-exports these models under its `models` feature.

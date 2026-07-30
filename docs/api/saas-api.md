@@ -1,0 +1,1054 @@
+# `saas-api`
+
+**22** operations / **20** models in API v2
+
+## How to call it
+
+No hand-written service yet — reach these endpoints two ways:
+
+**From Rust** (typed body via [`ghl-models`](https://docs.rs/ghl-models)):
+
+```rust,ignore
+// cargo add ghl-models --features saas-api
+use ghl_models::v2::saas_api::*;
+
+let body = serde_json::to_value(/* a Create…Dto from above */)?;
+let out = ghl.request_raw("POST", "/path/", &[], Some(&body), None).await?;
+```
+
+**From an AI agent** (MCP meta-tools):
+
+```json
+{
+  "name": "ghl_search_operations",
+  "arguments": {
+    "query": "",
+    "module": "saas-api"
+  }
+}
+```
+
+## Endpoints — API v2
+
+| Method | Path | Summary | Operation id |
+|---|---|---|---|
+| `GET` | `/saas-api/public-api/agency-plans/{companyId}` | Get Agency Plans | `saas-api.get_saas_api_public_api_agency_plans_by_companyId` |
+| `POST` | `/saas-api/public-api/bulk-disable-saas/{companyId}` | Disable SaaS for locations | `saas-api.post_saas_api_public_api_bulk_disable_saas_by_companyId` |
+| `POST` | `/saas-api/public-api/bulk-enable-saas/{companyId}` | Bulk Enable SaaS | `saas-api.post_saas_api_public_api_bulk_enable_saas_by_companyId` |
+| `POST` | `/saas-api/public-api/enable-saas/{locationId}` | Enable SaaS for Sub-Account (Formerly Location) | `saas-api.post_saas_api_public_api_enable_saas_by_locationId` |
+| `GET` | `/saas-api/public-api/get-saas-subscription/{locationId}` | Get Location Subscription Details | `saas-api.get_saas_api_public_api_get_saas_subscription_by_locationId` |
+| `GET` | `/saas-api/public-api/locations` | Get locations by stripeId with companyId | `saas-api.get_saas_api_public_api_locations` |
+| `POST` | `/saas-api/public-api/pause/{locationId}` | Pause location | `saas-api.post_saas_api_public_api_pause_by_locationId` |
+| `GET` | `/saas-api/public-api/saas-locations/{companyId}` | Get SaaS Locations | `saas-api.get_saas_api_public_api_saas_locations_by_companyId` |
+| `GET` | `/saas-api/public-api/saas-plan/{planId}` | Get SaaS Plan | `saas-api.get_saas_api_public_api_saas_plan_by_planId` |
+| `POST` | `/saas-api/public-api/update-rebilling/{companyId}` | Update Rebilling | `saas-api.post_saas_api_public_api_update_rebilling_by_companyId` |
+| `PUT` | `/saas-api/public-api/update-saas-subscription/{locationId}` | Update SaaS subscription | `saas-api.put_saas_api_public_api_update_saas_subscription_by_locationId` |
+| `GET` | `/saas/agency-plans/{companyId}` | Get Agency Plans | `saas-api.get_saas_agency_plans_by_companyId` |
+| `POST` | `/saas/bulk-disable-saas/{companyId}` | Disable SaaS for locations | `saas-api.post_saas_bulk_disable_saas_by_companyId` |
+| `POST` | `/saas/bulk-enable-saas/{companyId}` | Bulk Enable SaaS | `saas-api.post_saas_bulk_enable_saas_by_companyId` |
+| `POST` | `/saas/enable-saas/{locationId}` | Enable SaaS for Sub-Account (Formerly Location) | `saas-api.post_saas_enable_saas_by_locationId` |
+| `GET` | `/saas/get-saas-subscription/{locationId}` | Get Location Subscription Details | `saas-api.get_saas_get_saas_subscription_by_locationId` |
+| `GET` | `/saas/locations` | Get locations by stripeId with companyId | `saas-api.get_saas_locations` |
+| `POST` | `/saas/pause/{locationId}` | Pause location | `saas-api.post_saas_pause_by_locationId` |
+| `GET` | `/saas/saas-locations/{companyId}` | Get SaaS Locations | `saas-api.get_saas_saas_locations_by_companyId` |
+| `GET` | `/saas/saas-plan/{planId}` | Get SaaS Plan | `saas-api.get_saas_saas_plan_by_planId` |
+| `POST` | `/saas/update-rebilling/{companyId}` | Update Rebilling | `saas-api.post_saas_update_rebilling_by_companyId` |
+| `PUT` | `/saas/update-saas-subscription/{locationId}` | Update SaaS subscription | `saas-api.put_saas_update_saas_subscription_by_locationId` |
+
+### Endpoint details — v2
+
+#### `GET /saas-api/public-api/agency-plans/{companyId}`
+
+**Get Agency Plans**
+
+Fetch all agency subscription plans for a given company ID
+
+Operation id: `saas-api.get_saas_api_public_api_agency_plans_by_companyId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | Company ID to get agency plans for |
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.get_saas_api_public_api_agency_plans_by_companyId",
+    "path_params": {
+      "companyId": "<companyId>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `POST /saas-api/public-api/bulk-disable-saas/{companyId}`
+
+**Disable SaaS for locations**
+
+Disable SaaS for locations for given locationIds
+
+Operation id: `saas-api.post_saas_api_public_api_bulk_disable_saas_by_companyId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | Company ID to disable SaaS for |
+
+*Request body*: [`BulkDisableSaasDto`](#bulkdisablesaasdto)
+
+*Response*: [`BulkDisableSaasResponseDto`](#bulkdisablesaasresponsedto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.post_saas_api_public_api_bulk_disable_saas_by_companyId",
+    "path_params": {
+      "companyId": "<companyId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `POST /saas-api/public-api/bulk-enable-saas/{companyId}`
+
+**Bulk Enable SaaS**
+
+Enable SaaS mode for multiple locations with support for both SaaS v1 and v2
+
+Operation id: `saas-api.post_saas_api_public_api_bulk_enable_saas_by_companyId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | Company ID to enable SaaS for |
+
+*Request body*: [`BulkEnableSaasRequestDto`](#bulkenablesaasrequestdto)
+
+*Response*: [`BulkEnableSaasResponseDto`](#bulkenablesaasresponsedto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.post_saas_api_public_api_bulk_enable_saas_by_companyId",
+    "path_params": {
+      "companyId": "<companyId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `POST /saas-api/public-api/enable-saas/{locationId}`
+
+**Enable SaaS for Sub-Account (Formerly Location)**
+
+<div> <p>Enable SaaS for Sub-Account (Formerly Location) based on the data provided</p> <div> <span style= "display: inline-block; width: 25px; height: 25px; background-color: yellow; color: black; font-weight: bold; font-size: 24px; text-align: center; line-height: 22px; border: 2px solid black; border-radius: 10%; margin-right: 10px;"> ! </span> <span> <strong> This feature is only available on Agency Pro ($497) plan. </strong> </span> </div> </div>
+
+Operation id: `saas-api.post_saas_api_public_api_enable_saas_by_locationId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `locationId` | string | **yes** | Location ID to enable SaaS for |
+
+*Request body*: [`EnableSaasDto`](#enablesaasdto)
+
+*Response*: [`EnableSaasResponseDto`](#enablesaasresponsedto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.post_saas_api_public_api_enable_saas_by_locationId",
+    "path_params": {
+      "locationId": "<locationId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `GET /saas-api/public-api/get-saas-subscription/{locationId}`
+
+**Get Location Subscription Details**
+
+Fetch subscription details for a specific location from location metadata
+
+Operation id: `saas-api.get_saas_api_public_api_get_saas_subscription_by_locationId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `locationId` | string | **yes** | Location ID to get subscription details for |
+
+*Query parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | Company ID to filter subscription details |
+
+*Response*: [`LocationSubscriptionResponseDto`](#locationsubscriptionresponsedto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.get_saas_api_public_api_get_saas_subscription_by_locationId",
+    "path_params": {
+      "locationId": "<locationId>"
+    },
+    "query": {
+      "companyId": "<companyId>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `GET /saas-api/public-api/locations`
+
+**Get locations by stripeId with companyId**
+
+Get locations by stripeCustomerId or stripeSubscriptionId with companyId
+
+Operation id: `saas-api.get_saas_api_public_api_locations` · `Version: 2021-04-15`
+
+*Query parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `customerId` | string | no | Stripe customer ID to find locations for |
+| `subscriptionId` | string | no | Stripe subscription ID to find locations for |
+| `companyId` | string | **yes** | Company ID to filter locations |
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.get_saas_api_public_api_locations",
+    "query": {
+      "companyId": "<companyId>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `POST /saas-api/public-api/pause/{locationId}`
+
+**Pause location**
+
+Pause Sub account for given locationId
+
+Operation id: `saas-api.post_saas_api_public_api_pause_by_locationId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `locationId` | string | **yes** | Location ID to pause/unpause |
+
+*Request body*: [`PauseLocationDto`](#pauselocationdto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.post_saas_api_public_api_pause_by_locationId",
+    "path_params": {
+      "locationId": "<locationId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `GET /saas-api/public-api/saas-locations/{companyId}`
+
+**Get SaaS Locations**
+
+Fetch all SaaS-activated locations for a company with pagination
+
+Operation id: `saas-api.get_saas_api_public_api_saas_locations_by_companyId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | Company ID to get SaaS locations for |
+
+*Query parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `page` | number | no | Page number for pagination |
+
+*Response*: [`GetSaasLocationsResponseDto`](#getsaaslocationsresponsedto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.get_saas_api_public_api_saas_locations_by_companyId",
+    "path_params": {
+      "companyId": "<companyId>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `GET /saas-api/public-api/saas-plan/{planId}`
+
+**Get SaaS Plan**
+
+Fetch a specific SaaS plan by plan ID
+
+Operation id: `saas-api.get_saas_api_public_api_saas_plan_by_planId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `planId` | string | **yes** | Plan ID to get SaaS plan details for |
+
+*Query parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | Company ID to filter SaaS plan |
+
+*Response*: [`SaasPlanResponseDto`](#saasplanresponsedto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.get_saas_api_public_api_saas_plan_by_planId",
+    "path_params": {
+      "planId": "<planId>"
+    },
+    "query": {
+      "companyId": "<companyId>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `POST /saas-api/public-api/update-rebilling/{companyId}`
+
+**Update Rebilling**
+
+Bulk update rebilling for given locationIds
+
+Operation id: `saas-api.post_saas_api_public_api_update_rebilling_by_companyId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | Company ID to update rebilling for |
+
+*Request body*: [`UpdateRebillingDto`](#updaterebillingdto)
+
+*Response*: [`UpdateRebillingResponseDto`](#updaterebillingresponsedto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.post_saas_api_public_api_update_rebilling_by_companyId",
+    "path_params": {
+      "companyId": "<companyId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `PUT /saas-api/public-api/update-saas-subscription/{locationId}`
+
+**Update SaaS subscription**
+
+Update SaaS subscription for given locationId and customerId
+
+Operation id: `saas-api.put_saas_api_public_api_update_saas_subscription_by_locationId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `locationId` | string | **yes** | Location ID to update subscription for |
+
+*Request body*: [`UpdateSubscriptionDto`](#updatesubscriptiondto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.put_saas_api_public_api_update_saas_subscription_by_locationId",
+    "path_params": {
+      "locationId": "<locationId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `GET /saas/agency-plans/{companyId}`
+
+**Get Agency Plans**
+
+Fetch all agency subscription plans for a given company ID
+
+Operation id: `saas-api.get_saas_agency_plans_by_companyId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | — |
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.get_saas_agency_plans_by_companyId",
+    "path_params": {
+      "companyId": "<companyId>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `POST /saas/bulk-disable-saas/{companyId}`
+
+**Disable SaaS for locations**
+
+Disable SaaS for locations for given locationIds
+
+Operation id: `saas-api.post_saas_bulk_disable_saas_by_companyId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | — |
+
+*Request body*: [`BulkDisableSaasDto`](#bulkdisablesaasdto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.post_saas_bulk_disable_saas_by_companyId",
+    "path_params": {
+      "companyId": "<companyId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `POST /saas/bulk-enable-saas/{companyId}`
+
+**Bulk Enable SaaS**
+
+Enable SaaS mode for multiple locations with support for both SaaS v1 and v2
+
+Operation id: `saas-api.post_saas_bulk_enable_saas_by_companyId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | — |
+
+*Request body*: [`BulkEnableSaasRequestDto`](#bulkenablesaasrequestdto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.post_saas_bulk_enable_saas_by_companyId",
+    "path_params": {
+      "companyId": "<companyId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `POST /saas/enable-saas/{locationId}`
+
+**Enable SaaS for Sub-Account (Formerly Location)**
+
+<div> <p>Enable SaaS for Sub-Account (Formerly Location) based on the data provided</p> <div> <span style= "display: inline-block; width: 25px; height: 25px; background-color: yellow; color: black; font-weight: bold; font-size: 24px; text-align: center; line-height: 22px; border: 2px solid black; border-radius: 10%; margin-right: 10px;"> ! </span> <span> <strong> This feature is only available on Agency Pro ($497) plan. </strong> </span> </div> </div>
+
+Operation id: `saas-api.post_saas_enable_saas_by_locationId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `locationId` | string | **yes** | — |
+
+*Request body*: [`EnableSaasDto`](#enablesaasdto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.post_saas_enable_saas_by_locationId",
+    "path_params": {
+      "locationId": "<locationId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `GET /saas/get-saas-subscription/{locationId}`
+
+**Get Location Subscription Details**
+
+Fetch subscription details for a specific location from location metadata
+
+Operation id: `saas-api.get_saas_get_saas_subscription_by_locationId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `locationId` | string | **yes** | — |
+
+*Query parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | — |
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.get_saas_get_saas_subscription_by_locationId",
+    "path_params": {
+      "locationId": "<locationId>"
+    },
+    "query": {
+      "companyId": "<companyId>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `GET /saas/locations`
+
+**Get locations by stripeId with companyId**
+
+Get locations by stripeCustomerId or stripeSubscriptionId with companyId
+
+Operation id: `saas-api.get_saas_locations` · `Version: 2021-04-15`
+
+*Query parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `customerId` | string | **yes** | — |
+| `subscriptionId` | string | **yes** | — |
+| `companyId` | string | **yes** | — |
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.get_saas_locations",
+    "query": {
+      "customerId": "<customerId>",
+      "subscriptionId": "<subscriptionId>",
+      "companyId": "<companyId>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `POST /saas/pause/{locationId}`
+
+**Pause location**
+
+Pause Sub account for given locationId
+
+Operation id: `saas-api.post_saas_pause_by_locationId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `locationId` | string | **yes** | — |
+
+*Request body*: [`PauseLocationDto`](#pauselocationdto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.post_saas_pause_by_locationId",
+    "path_params": {
+      "locationId": "<locationId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `GET /saas/saas-locations/{companyId}`
+
+**Get SaaS Locations**
+
+Fetch all SaaS-activated locations for a company with pagination
+
+Operation id: `saas-api.get_saas_saas_locations_by_companyId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | — |
+
+*Query parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `page` | number | **yes** | — |
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.get_saas_saas_locations_by_companyId",
+    "path_params": {
+      "companyId": "<companyId>"
+    },
+    "query": {
+      "page": "<page>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `GET /saas/saas-plan/{planId}`
+
+**Get SaaS Plan**
+
+Fetch a specific SaaS plan by plan ID
+
+Operation id: `saas-api.get_saas_saas_plan_by_planId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `planId` | string | **yes** | — |
+
+*Query parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | — |
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.get_saas_saas_plan_by_planId",
+    "path_params": {
+      "planId": "<planId>"
+    },
+    "query": {
+      "companyId": "<companyId>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `POST /saas/update-rebilling/{companyId}`
+
+**Update Rebilling**
+
+Bulk update rebilling for given locationIds
+
+Operation id: `saas-api.post_saas_update_rebilling_by_companyId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `companyId` | string | **yes** | — |
+
+*Request body*: [`UpdateRebillingDto`](#updaterebillingdto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.post_saas_update_rebilling_by_companyId",
+    "path_params": {
+      "companyId": "<companyId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+#### `PUT /saas/update-saas-subscription/{locationId}`
+
+**Update SaaS subscription**
+
+Update SaaS subscription for given locationId and customerId
+
+Operation id: `saas-api.put_saas_update_saas_subscription_by_locationId` · `Version: 2021-04-15`
+
+*Path parameters*
+
+| Name | Type | Required | Description |
+|---|---|---|---|
+| `locationId` | string | **yes** | — |
+
+*Request body*: [`UpdateSubscriptionDto`](#updatesubscriptiondto)
+
+<details><summary>MCP call</summary>
+
+```json
+{
+  "name": "ghl_execute_operation",
+  "arguments": {
+    "operation_id": "saas-api.put_saas_update_saas_subscription_by_locationId",
+    "path_params": {
+      "locationId": "<locationId>"
+    },
+    "body": {
+      "<field>": "<value>"
+    }
+  }
+}
+```
+
+</details>
+
+## Data models — API v2
+
+In Rust: `ghl_models::v2::saas_api::*` (enable the `saas-api` feature). Full field docs on [docs.rs](https://docs.rs/ghl-models/latest/ghl_models/v2/saas_api/).
+
+### `AgencyPlanResponseDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `planId` | String | **yes** | Unique identifier for the plan |
+| `title` | String | **yes** | Title of the plan |
+| `description` | String | **yes** | Description of the plan |
+| `saasProducts` | Vec<String> | **yes** | Array of SaaS products included in the plan |
+| `addOns` | Vec<String> | no | Array of add-ons included in the plan |
+| `planLevel` | f64 | **yes** | Level of the plan (0-4) |
+| `trialPeriod` | f64 | **yes** | Trial period in days |
+| `userLimit` | f64 | no | User limit for the plan |
+| `contactLimit` | f64 | no | Contact limit for the plan |
+| `prices` | Vec<JSON> | **yes** | Pricing information for the plan |
+| `categoryId` | String | no | Category ID for the plan |
+| `snapshotId` | String | no | Snapshot ID for the plan |
+| `productId` | String | no | Product ID for the plan |
+| `isSaaSV2` | bool | **yes** | Indicates if this is a SaaS V2 plan |
+| `providerLocationId` | String | no | Provider location ID |
+| `createdAt` | String | **yes** | Creation timestamp |
+| `updatedAt` | String | **yes** | Last update timestamp |
+
+### `BadRequestDTO`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `statusCode` | f64 | no | Status code |
+| `message` | String | no | Error message |
+
+### `BulkDisableSaasDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `locationIds` | Vec<String> | **yes** | Location IDs |
+
+### `BulkDisableSaasResponseDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `data` | JSON | **yes** | Response data from the bulk disable SaaS operation |
+
+### `BulkEnableSaasActionPayloadDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `priceId` | String | no | Price ID for the SaaS plan |
+| `stripeAccountId` | String | no | Stripe account ID |
+| `saasPlanId` | String | **yes** | SaaS plan ID |
+| `providerLocationId` | String | no | Provider location ID |
+
+### `BulkEnableSaasRequestDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `locationIds` | Vec<String> | **yes** | Array of location IDs to enable SaaS for |
+| `isSaaSV2` | bool | **yes** | Indicates if the SaaS is V2 |
+| `actionPayload` | [`BulkEnableSaasActionPayloadDto`](#bulkenablesaasactionpayloaddto) | **yes** | Action payload for the bulk enable SaaS operation |
+
+### `BulkEnableSaasResponseDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `success` | bool | **yes** | Indicates if the bulk enable SaaS operation was successful |
+| `message` | String | **yes** | Message indicating the bulk enable SaaS operation |
+| `bulkActionUrl` | String | no | URL for the bulk enable SaaS operation |
+
+### `EnableSaasDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `stripeAccountId` | String | no | Stripe account id(Required only for SaaS V1) |
+| `name` | String | no | Name of the stripe customer(Required only for SaaS V1) |
+| `email` | String | no | Email of the stripe customer(Required only for SaaS V1) |
+| `stripeCustomerId` | String | no | Stripe customer id if exists(Required only for SaaS V1) |
+| `companyId` | String | **yes** | — |
+| `isSaaSV2` | bool | **yes** | Denotes if it is a saas v2 or v1 sub-account |
+| `contactId` | String | no | Agency subaccount used for payment provider integration(Required Only for SaaS V2) |
+| `providerLocationId` | String | no | Agency Subaccount ID |
+| `description` | String | no | Description |
+| `saasPlanId` | String | no | Required only while pre-configuring saas subscription |
+| `priceId` | String | no | Required only while pre-configuring saas subscription |
+
+### `EnableSaasResponseDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `data` | JSON | **yes** | Response data from the enable SaaS operation |
+
+### `GetSaasLocationsResponseDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `locations` | Vec<SaasLocationDto> | **yes** | Array of SaaS locations |
+| `pagination` | JSON | **yes** | — |
+
+### `InternalServerErrorDTO`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `statusCode` | f64 | no | Status code |
+| `message` | String | no | Error message |
+
+### `LocationSubscriptionResponseDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `locationId` | String | **yes** | Location ID |
+| `isSaaSV2` | bool | **yes** | Indicates if the SaaS is V2 |
+| `companyId` | String | **yes** | Company ID |
+| `saasMode` | String | no | SaaS mode |
+| `subscriptionId` | String | no | Subscription ID |
+| `customerId` | String | no | Customer ID |
+| `productId` | String | no | Product ID |
+| `priceId` | String | no | Price ID |
+| `saasPlanId` | String | no | SaaS plan ID |
+| `subscriptionStatus` | String | no | Subscription status |
+
+### `PauseLocationDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `paused` | bool | **yes** | Paused |
+| `companyId` | String | **yes** | Company ID |
+
+### `ResourceNotFoundDTO`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `statusCode` | f64 | no | Status code |
+| `message` | String | no | Error message |
+
+### `SaasLocationDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `locationId` | String | **yes** | Location ID |
+| `companyId` | String | **yes** | Company ID |
+| `saasMode` | String | **yes** | SaaS mode |
+| `subscriptionId` | String | **yes** | Subscription ID |
+| `customerId` | String | no | Customer ID |
+| `name` | String | no | Name |
+| `email` | String | no | Email |
+| `providerLocationId` | String | no | Provider location ID |
+| `isSaaSV2` | bool | no | Indicates if the SaaS is V2 |
+| `subscriptionInfo` | JSON | no | Subscription information |
+
+### `SaasPlanResponseDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `planId` | String | **yes** | Unique identifier for the SaaS plan |
+| `companyId` | String | **yes** | Company ID associated with the SaaS plan |
+| `title` | String | **yes** | Title of the SaaS plan |
+| `description` | String | **yes** | Description of the SaaS plan |
+| `saasProducts` | Vec<String> | **yes** | Array of SaaS products included in the plan |
+| `addOns` | Vec<String> | no | Array of add-ons included in the plan |
+| `planLevel` | f64 | **yes** | Level of the plan (0-4) |
+| `trialPeriod` | f64 | **yes** | Trial period in days |
+| `setupFee` | f64 | no | Setup fee for the plan |
+| `userLimit` | f64 | no | User limit for the plan |
+| `contactLimit` | f64 | no | Contact limit for the plan |
+| `prices` | Vec<JSON> | **yes** | Prices for the plan |
+| `categoryId` | String | no | Category ID for the plan |
+| `snapshotId` | String | no | Snapshot ID for the plan |
+| `providerLocationId` | String | no | Provider location ID |
+| `productId` | String | no | Product ID for the plan |
+| `isSaaSV2` | bool | **yes** | Indicates if this is a SaaS V2 plan |
+| `createdAt` | String | **yes** | Creation timestamp |
+| `updatedAt` | String | **yes** | Last update timestamp |
+
+### `UnauthorizedDTO`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `statusCode` | f64 | no | Status code |
+| `message` | String | no | Error message |
+| `error` | String | no | Error message |
+
+### `UpdateRebillingDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `product` | String — `contentAI`, `workflow_premium_actions`, `workflow_ai`, `conversationAI`, `EmailNotification`, `whatsApp`, `reviewsAI`, `VERIFIED_CALLER_ID`, `WALLET_SALES_TAX`, `NOTIFICATION_SMS`, `EmailSmtp`, `EmailVerification`, `autoCompleteAddress`, `funnelAI`, `domainPurchase`, `Phone`, `Email` | **yes** | The product to update rebilling for |
+| `locationIds` | Vec<String> | **yes** | Array of location IDs to update rebilling for |
+| `config` | JSON | **yes** | Configuration for rebilling settings |
+
+### `UpdateRebillingResponseDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `success` | bool | **yes** | Indicates if the rebilling update was successful |
+
+### `UpdateSubscriptionDto`
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `subscriptionId` | String | **yes** | Subscription ID |
+| `customerId` | String | **yes** | Customer ID |
+| `companyId` | String | **yes** | Company ID |
+

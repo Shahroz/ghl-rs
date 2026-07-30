@@ -77,6 +77,10 @@ The operations catalog is generated from [HighLevel's official OpenAPI specs](ht
 
 For typed request/response structs in your own Rust code, see [`ghl-models`](https://crates.io/crates/ghl-models) (2,417 generated DTOs).
 
+## Full endpoint reference
+
+Every operation id, its parameters, and its required scopes are listed per module in the [API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/README.md). The [usage guide](https://github.com/Shahroz/ghl-rs/blob/main/docs/GUIDE.md) covers the meta-tool workflow end to end.
+
 ## Configuration
 
 Flags win over environment variables.

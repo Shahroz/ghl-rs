@@ -36,7 +36,18 @@ Regenerates every DTO (~2,400 structs) into `crates/ghl-models/src/{v2,v3}/`,
 one Rust module per API module. **Also update `crates/ghl-models/Cargo.toml`** if
 HighLevel adds or renames a module, since each one is its own cargo feature.
 
-## After regenerating either
+## 3. API reference docs
+
+```bash
+python3 xtask/generate_api_docs.py ../highlevel-api-docs docs/api
+```
+
+Writes `docs/api/<module>.md` for all 45 modules (every endpoint with params,
+body fields, scopes, `Version` header, and a copy-pasteable MCP call; every model
+with field types; every enum with allowed values), plus `docs/api/README.md` as
+the index and `docs/api/shared-enums.md` for big repeated value lists.
+
+## After regenerating any of these
 
 ```bash
 cargo test --workspace && cargo clippy --workspace --all-targets

@@ -40,6 +40,8 @@ ghl-sdk = { version = "0.3", features = ["models"] }
 ghl-models = { version = "0.3", features = ["invoices"] }
 ```
 
+**Docs:** [usage guide](https://github.com/Shahroz/ghl-rs/blob/main/docs/GUIDE.md) · [full API reference](https://github.com/Shahroz/ghl-rs/blob/main/docs/api/README.md) (all 45 modules, every endpoint/struct/enum).
+
 Looking for the AI-agent side? See [`ghl-mcp`](https://crates.io/crates/ghl-mcp), the MCP server built on this SDK.
 
 License: MIT or Apache-2.0. *Not affiliated with HighLevel Inc.*
