@@ -1,4 +1,9 @@
 //! Tests for the generated typed services (see `xtask/generate_services.py`).
+//!
+//! The whole file needs the `invoices` feature: without it the generated service
+//! and its params types don't exist, and `cargo clippy --all-targets` with no
+//! features would fail to compile this target.
+#![cfg(feature = "invoices")]
 
 use ghl_sdk::services::invoices::ListInvoicesParams;
 use ghl_sdk::Ghl;

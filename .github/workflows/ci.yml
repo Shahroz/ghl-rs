@@ -43,6 +43,9 @@ jobs:
       - run: cargo clippy --workspace --all-targets
       - run: cargo clippy --workspace --all-targets --all-features
       - run: cargo test --workspace
+      # Feature-gated tests (generated services, webhooks) only compile with
+      # their features on, so run them explicitly too.
+      - run: cargo test --workspace --all-features
       # Docs are built with every feature on, matching how docs.rs renders them:
       # ghl-models' module-index links only resolve when those modules are compiled.
       - run: cargo doc --workspace --all-features --no-deps
